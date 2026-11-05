@@ -1,0 +1,1 @@
+- [Baksa review boundaries](baksa-review-boundaries.md) — review designs before implementing commerce; preserve supplied identity and distinguish prototypes from live services.
