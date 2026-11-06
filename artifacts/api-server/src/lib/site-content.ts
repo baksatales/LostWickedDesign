@@ -39,7 +39,8 @@ export const defaultSite = siteDocumentSchema.parse({
   sections: [
     { ...section("opening", "hero", "Every creation has a story.\nFind the one that speaks to yours.",
       "Open the baksa. Meet a thoughtful edit of Indian makers, objects with personality, and gifts you’ll want to keep.",
-      "/gift-finder", "Find a gift in four questions"), eyebrow: "दिल से दुनिया तक", layout: "split" },
+      "/gift-finder", "Find a gift in four questions"), eyebrow: "दिल से दुनिया तक", layout: "split",
+      image: "/images/baksa/baksa-painted-garden.webp", imageAlt: "An original decorative Indian garden illustration with flowering trees, peacocks and a lotus pond" },
     { ...section("todays-tale", "story", "A little lotus.\nA lovely place to begin.",
       "A closer look at Blue Lotus Pond, from the supplied Tathaastu catalogue. One object, three small chapters.",
       "/stories/tathaastu", "Read the tale"), eyebrow: "Today’s Tale · No. 01",
@@ -102,6 +103,10 @@ export const defaultSite = siteDocumentSchema.parse({
     page("checkout", "The final thoughtful details.", "Review your bag. Payment will open only after secure commerce setup is complete.", "Checkout"),
   ],
   labels: {
+    "hero.note": "Independent Indian makers · stories worth keeping",
+    "trunk.eyebrow": "A little something inside",
+    "trunk.intro": "Open the baksa; let a story find you.",
+    "art.credit": "A painted garden · decorative original artwork",
     "quiz.recipient.title": "Who is the lucky person?",
     "quiz.occasion.title": "What are we celebrating?",
     "quiz.feeling.title": "What would make them smile?",

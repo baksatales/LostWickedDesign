@@ -33,6 +33,22 @@
   payment/payout/refund was performed. AI provider is configured, but account-
   gated writing has not been exercised with a live Supabase account.
 
+## Illustrated homepage visual verification
+
+- The homepage now uses original generated garden artwork, with an editable
+  hero image and the supplied original trunk artwork kept separate.
+- Frontend TypeScript and production build pass. The shared entry is about
+  639 KB before compression; existing non-blocking bundle/sourcemap notices remain.
+- Desktop full-page and 390px mobile screenshots show the new composition
+  without browser runtime errors. Mobile copy follows the painting in normal
+  document flow, avoiding overlaps with the trunk caption and actions.
+- Visual checks caught inherited light-on-light story copy and banner buttons;
+  targeted home-only contrast overrides correct those treatments. Sample badges
+  are positioned below the arched image corners so their disclosure is not clipped.
+- Existing trunk actions, section visibility/order, editor inputs, links and
+  measurement guards were preserved in code. This visual update did not rerun
+  authenticated or payment journeys.
+
 ## Earlier storefront verification
 
 Tests run locally by Agent for this build:

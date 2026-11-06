@@ -20,17 +20,17 @@ Retain the supplied prototype's opening-and-closing trunk interaction and Today'
 
 **How to apply:** Include these surfaces in the first-build brief. Keep sponsorship disclosed and separate from recommendation eligibility; favour guided discovery and manageable choices over intrusive ads or manipulative urgency. Pricing and self-service advertising are not yet agreed.
 
-Luxury must remain story-led and fun, not merely restrained typography and conventional product grids. Good Earth is a user-named source of inspiration, not an identity to copy.
+Luxury must remain story-led and fun, not merely restrained typography and conventional product grids. The homepage must be illustration-led, not stacked blocks of colour. Use Good Earth only as inspiration; Baksa Tales must not look like an exact copy.
 
-**Why:** The user described the first implementation as looking like any other site and said it lacked storytelling and a fun vibe.
+**Why:** The user repeatedly rejected the generic direction, saying “I want the most stunning home pgae .. illustrated like the good earth ... you have now just added blocks of colors.” They explicitly reinforced: “just make sure we dont look an excat copy of good earth”.
 
-**How to apply:** Discuss narrative, imagery, discovery and playful interactions before another visual rewrite. Keep functional, responsive and user-friendly shopping alongside the editorial experience.
+**How to apply:** When a build is authorised, deliver the actual illustrated homepage rather than another planning round or recoloured layout. Use original artwork, preserve the supplied trunk and keep functional, responsive shopping alongside the editorial experience. Do not use an unrelated product photograph as a backdrop behind the trunk.
 
 Use the quiz as the single guided-discovery route; omit the separate “Start with a feeling” section. Storytelling should feel royal, fun, Indian and ready for a global audience.
 
 **Why:** The user explicitly requested fewer discovery choices and named these qualities for the storytelling design.
 
-**How to apply:** Consolidate guided-discovery calls to action around the same quiz. Preserve straightforward shopping and editorial reading without adding competing mood finders or discovery tools. Discuss the design before implementing it.
+**How to apply:** Consolidate guided-discovery calls to action around the same quiz. Preserve straightforward shopping and editorial reading without adding competing mood finders or discovery tools.
 
 The user wants visual and editorial elements editable so they can change the look and feel and keep refreshing the website; the supplied Claude-generated buyer, maker and admin designs are inspiration.
 
