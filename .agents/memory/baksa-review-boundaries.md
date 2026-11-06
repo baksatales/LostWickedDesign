@@ -52,7 +52,7 @@ The user wants visual and editorial elements editable so they can change the loo
 
 Use a new development Supabase project for the initial connection, not an existing or production database.
 
-**Why:** The user explicitly chose “Create a new development project” during connection setup.
+**Why:** The user explicitly chose “Create a new development project” during connection setup and later confirmed the separate verified-account admin grant worked.
 
 **How to apply:** Keep remote schema changes and admin grants explicit. Do not treat providing public connection settings as permission to alter another database or assign an arbitrary account administrative access.
 
