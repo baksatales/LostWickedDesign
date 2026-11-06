@@ -20,11 +20,11 @@ Retain the supplied prototype's opening-and-closing trunk interaction and Today'
 
 **How to apply:** Include these surfaces in the first-build brief. Keep sponsorship disclosed and separate from recommendation eligibility; favour guided discovery and manageable choices over intrusive ads or manipulative urgency. Pricing and self-service advertising are not yet agreed.
 
-Luxury must remain story-led and fun, not merely restrained typography and conventional product grids. The homepage must be illustration-led, not stacked blocks of colour. Use Good Earth only as inspiration; Baksa Tales must not look like an exact copy.
+Luxury must remain story-led and fun, not merely restrained typography and conventional product grids or stacked blocks of colour. Use Good Earth only as inspiration; Baksa Tales must not look like an exact copy. Do not reinstate the dense full garden illustration or its “BAKSA TALES · 01” label.
 
-**Why:** The user repeatedly rejected the generic direction, saying “I want the most stunning home pgae .. illustrated like the good earth ... you have now just added blocks of colors.” They explicitly reinforced: “just make sure we dont look an excat copy of good earth”.
+**Why:** The user rejected both the generic colour-block direction and the later dense garden, which they called “too busy”. They explicitly chose “Remove it entirely” rather than keeping small botanical accents, and also asked not to look like an exact copy of Good Earth.
 
-**How to apply:** When a build is authorised, deliver the actual illustrated homepage rather than another planning round or recoloured layout. Use original artwork, preserve the supplied trunk and keep functional, responsive shopping alongside the editorial experience. Do not use an unrelated product photograph as a backdrop behind the trunk.
+**How to apply:** Keep the original trunk, products and stories as the visual priorities. Avoid adding decorative full-panel artwork without a clear purpose and approval. Preserve functional, responsive shopping alongside the editorial experience. Do not use an unrelated product photograph as a backdrop behind the trunk.
 
 Use the quiz as the single guided-discovery route; omit the separate “Start with a feeling” section. Storytelling should feel royal, fun, Indian and ready for a global audience.
 

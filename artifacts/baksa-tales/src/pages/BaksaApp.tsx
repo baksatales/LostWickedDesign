@@ -68,13 +68,13 @@ function HomePage({ catalog, saved, toggle, catalogError, retryCatalog, document
   const page=(id:string)=>siteDoc.pages.find(p=>p.id===id);
   const visibleStories=siteDoc.stories.filter(s=>s.visible);
   const imageUrlSafe=(v:string)=>imageUrl(v||'baksatales-trunk-mark.png');
-  const renderSection=(section:SiteDocument['sections'][number],index:number)=>{
+  const renderSection=(section:SiteDocument['sections'][number])=>{
     const toneClass=`bk-home-section tone-${section.tone} layout-${section.layout}`;
      if(section.type==='hero') {
-       const heroImage=section.image;
-       const isGarden=heroImage.endsWith('baksa-painted-garden.webp');
+       // Also retire the old illustration from cached content and local drafts.
+       const heroImage=section.image.endsWith('/baksa-painted-garden.webp')?'':section.image;
        return <section key={section.id} className={`${toneClass} bk-dynamic-hero ${heroImage?'has-art':''}`} aria-labelledby={`home-title-${section.id}`}>
-         {heroImage&&<div className="bk-dynamic-image"><img src={imageUrlSafe(heroImage)} alt={section.imageAlt}/><span className="bk-image-index">{siteDoc.brand.name.toUpperCase()} · {String(index+1).padStart(2,'0')}</span>{isGarden&&<span className="bk-art-credit">{siteDoc.labels['art.credit']||'A painted garden · decorative original artwork'}</span>}</div>}
+         {heroImage&&<div className="bk-dynamic-image"><img src={imageUrlSafe(heroImage)} alt={section.imageAlt}/></div>}
          <div className="bk-dynamic-copy"><span className="bk-eyebrow">{section.eyebrow}</span><h1 id={`home-title-${section.id}`}>{section.title}</h1><p>{section.text}</p><div className="bk-hero-actions"><DocLink className="bk-btn" href={section.link.href}>{section.link.label}<ArrowRight size={16}/></DocLink><span className="bk-hero-note">{siteDoc.labels['hero.note']||'Independent Indian makers · stories worth keeping'}</span></div></div>
          <div className="bk-trunk-stage"><div className="bk-trunk-caption"><span className="bk-eyebrow">{siteDoc.labels['trunk.eyebrow']||'A little something inside'}</span><p>{siteDoc.labels['trunk.intro']||'Open the baksa; let a story find you.'}</p></div><div className="bk-trunk-area"><div className={`stage ${opened?'open':''}`}><div className="trunk"><div className="cards" aria-hidden={!opened}>{siteDoc.trunkCards.slice(0,3).map((card,i)=><DocLink key={card.id} className={`scard bk-trunk-card ${i===2?'smood':''}`} href={card.link.href} tabIndex={opened?0:-1} aria-label={`${card.link.label}: ${card.title}`} onClick={e=>{if(!opened)e.preventDefault()}}>{card.image&&<img className="art" src={imageUrlSafe(card.image)} alt=""/>}<span className="cap"><b>{card.sponsored?'SPONSORED · LABELLED':siteDoc.brand.name.toUpperCase()}</b><strong>{card.title}</strong><small>{card.caption}</small></span></DocLink>)}</div><div className="inside" aria-hidden="true"/><img className="body" src={imageUrl(siteDoc.brand.logo)} alt={`${siteDoc.brand.name} trunk`}/><img className="lid" src={imageUrl(siteDoc.brand.logo)} alt="" aria-hidden="true"/></div></div><div className="stage-ctl"><button className="bk-btn secondary bk-trunk-toggle" aria-expanded={opened} onClick={()=>setOpened(v=>!v)}>{opened?<><Minus size={15}/> {siteDoc.labels['trunk.close']||'Close the baksa'}</>:<><Plus size={15}/> {siteDoc.labels['trunk.open']||'Open the baksa'}</>}</button></div></div></div>
        </section>;
