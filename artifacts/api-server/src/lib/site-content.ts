@@ -136,6 +136,14 @@ export const defaultSite = siteDocumentSchema.parse({
   },
 });
 
+// Random constants shared with the persistence migration, not derived from text.
+defaultSite.stories.forEach((story, i) => {
+  story.analyticsKey = ["e45fb32669c94bd890bf137b4e15aac2", "2d12694a17df43d8b25c692f681f09bc"][i];
+});
+defaultSite.trunkCards.forEach((card, i) => {
+  card.analyticsKey = ["f8a572bd947b4f4c813a64f2a0803abc", "ba23169cfbc640529e81a2d19ebf850c", "37dc61b5d5234f98af2cae10d49d65ab"][i];
+});
+
 export function isSafeImage(value: string) {
   if (!value) return true;
   return /^\/images\/baksa\/[a-zA-Z0-9_.-]+\.(webp|png|jpg|jpeg|avif)$/i.test(value)

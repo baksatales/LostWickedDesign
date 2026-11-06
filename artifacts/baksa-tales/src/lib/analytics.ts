@@ -1,7 +1,7 @@
-type StoryData = { story_position: number; sponsored: boolean; sample: boolean };
+type StoryData = { story_key?: string; story_position: number; sponsored: boolean; sample: boolean };
 type Events = {
   trunk_opened: undefined;
-  sponsored_card_followed: { card_position: number };
+  sponsored_card_followed: { card_key?: string; card_position: number };
   story_opened: StoryData;
   story_commerce_link_followed: StoryData & { destination: 'maker' | 'product' | 'shop' };
   gift_finder_completed: { recommendation_count: number; sample: boolean };
@@ -14,6 +14,11 @@ declare global {
       track(name: string, data?: Record<string, string | number | boolean>): void | Promise<unknown>;
     };
   }
+}
+
+/** Missing legacy keys stay positional; never substitute editable IDs or titles. */
+export function editorialKey(kind: 'story' | 'card', key: unknown): { story_key?: string; card_key?: string } {
+  return typeof key === 'string' && /^[0-9a-f]{32}$/.test(key) ? { [`${kind}_key`]: key } : {};
 }
 
 /** Never await analytics in a shopping flow; absent/failed trackers are harmless. */

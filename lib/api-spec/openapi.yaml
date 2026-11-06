@@ -362,6 +362,10 @@ components:
       additionalProperties: false
       required: [id, maker, title, intro, image, imageAlt, sponsored, sample, visible, chapters, link]
       properties:
+        analyticsKey:
+          type: string
+          pattern: '^[0-9a-f]{32}$'
+          description: Opaque persistence-owned measurement key. Optional for legacy imports; never editable editorial text.
         id: { type: string, pattern: '^[a-z0-9-]{1,60}$' }
         maker: { type: string, maxLength: 100 }
         title: { type: string, minLength: 1, maxLength: 140 }
@@ -396,6 +400,10 @@ components:
       additionalProperties: false
       required: [id, title, caption, image, imageAlt, sponsored, link]
       properties:
+        analyticsKey:
+          type: string
+          pattern: '^[0-9a-f]{32}$'
+          description: Opaque persistence-owned measurement key. Optional for legacy imports; never editable editorial text.
         id: { type: string, pattern: '^[a-z0-9-]{1,60}$' }
         title: { type: string, minLength: 1, maxLength: 90 }
         caption: { type: string, maxLength: 150 }

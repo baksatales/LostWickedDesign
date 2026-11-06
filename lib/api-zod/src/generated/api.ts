@@ -86,6 +86,7 @@ export const getSiteResponseDocumentSectionsItemProductIdsMax = 12;
 
 export const getSiteResponseDocumentSectionsMax = 20;
 
+export const getSiteResponseDocumentStoriesItemAnalyticsKeyRegExp = new RegExp('^[0-9a-f]{32}$');
 export const getSiteResponseDocumentStoriesItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
 export const getSiteResponseDocumentStoriesItemMakerMax = 100;
 
@@ -117,6 +118,7 @@ export const getSiteResponseDocumentStoriesItemLinkHrefMax = 500;
 
 export const getSiteResponseDocumentStoriesMax = 20;
 
+export const getSiteResponseDocumentTrunkCardsItemAnalyticsKeyRegExp = new RegExp('^[0-9a-f]{32}$');
 export const getSiteResponseDocumentTrunkCardsItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
 export const getSiteResponseDocumentTrunkCardsItemTitleMax = 90;
 
@@ -207,6 +209,7 @@ export const GetSiteResponse = zod.object({
   "productIds": zod.array(zod.string().max(getSiteResponseDocumentSectionsItemProductIdsItemMax)).max(getSiteResponseDocumentSectionsItemProductIdsMax)
 })).min(1).max(getSiteResponseDocumentSectionsMax),
   "stories": zod.array(zod.object({
+  "analyticsKey": zod.string().regex(getSiteResponseDocumentStoriesItemAnalyticsKeyRegExp).optional().describe('Opaque persistence-owned measurement key. Optional for legacy imports; never editable editorial text.'),
   "id": zod.string().regex(getSiteResponseDocumentStoriesItemIdRegExp),
   "maker": zod.string().max(getSiteResponseDocumentStoriesItemMakerMax),
   "title": zod.string().min(1).max(getSiteResponseDocumentStoriesItemTitleMax),
@@ -230,6 +233,7 @@ export const GetSiteResponse = zod.object({
 })
 })).max(getSiteResponseDocumentStoriesMax),
   "trunkCards": zod.array(zod.object({
+  "analyticsKey": zod.string().regex(getSiteResponseDocumentTrunkCardsItemAnalyticsKeyRegExp).optional().describe('Opaque persistence-owned measurement key. Optional for legacy imports; never editable editorial text.'),
   "id": zod.string().regex(getSiteResponseDocumentTrunkCardsItemIdRegExp),
   "title": zod.string().min(1).max(getSiteResponseDocumentTrunkCardsItemTitleMax),
   "caption": zod.string().max(getSiteResponseDocumentTrunkCardsItemCaptionMax),
@@ -320,6 +324,7 @@ export const getSiteDraftResponseDocumentSectionsItemProductIdsMax = 12;
 
 export const getSiteDraftResponseDocumentSectionsMax = 20;
 
+export const getSiteDraftResponseDocumentStoriesItemAnalyticsKeyRegExp = new RegExp('^[0-9a-f]{32}$');
 export const getSiteDraftResponseDocumentStoriesItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
 export const getSiteDraftResponseDocumentStoriesItemMakerMax = 100;
 
@@ -351,6 +356,7 @@ export const getSiteDraftResponseDocumentStoriesItemLinkHrefMax = 500;
 
 export const getSiteDraftResponseDocumentStoriesMax = 20;
 
+export const getSiteDraftResponseDocumentTrunkCardsItemAnalyticsKeyRegExp = new RegExp('^[0-9a-f]{32}$');
 export const getSiteDraftResponseDocumentTrunkCardsItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
 export const getSiteDraftResponseDocumentTrunkCardsItemTitleMax = 90;
 
@@ -441,6 +447,7 @@ export const GetSiteDraftResponse = zod.object({
   "productIds": zod.array(zod.string().max(getSiteDraftResponseDocumentSectionsItemProductIdsItemMax)).max(getSiteDraftResponseDocumentSectionsItemProductIdsMax)
 })).min(1).max(getSiteDraftResponseDocumentSectionsMax),
   "stories": zod.array(zod.object({
+  "analyticsKey": zod.string().regex(getSiteDraftResponseDocumentStoriesItemAnalyticsKeyRegExp).optional().describe('Opaque persistence-owned measurement key. Optional for legacy imports; never editable editorial text.'),
   "id": zod.string().regex(getSiteDraftResponseDocumentStoriesItemIdRegExp),
   "maker": zod.string().max(getSiteDraftResponseDocumentStoriesItemMakerMax),
   "title": zod.string().min(1).max(getSiteDraftResponseDocumentStoriesItemTitleMax),
@@ -464,6 +471,7 @@ export const GetSiteDraftResponse = zod.object({
 })
 })).max(getSiteDraftResponseDocumentStoriesMax),
   "trunkCards": zod.array(zod.object({
+  "analyticsKey": zod.string().regex(getSiteDraftResponseDocumentTrunkCardsItemAnalyticsKeyRegExp).optional().describe('Opaque persistence-owned measurement key. Optional for legacy imports; never editable editorial text.'),
   "id": zod.string().regex(getSiteDraftResponseDocumentTrunkCardsItemIdRegExp),
   "title": zod.string().min(1).max(getSiteDraftResponseDocumentTrunkCardsItemTitleMax),
   "caption": zod.string().max(getSiteDraftResponseDocumentTrunkCardsItemCaptionMax),
@@ -558,6 +566,7 @@ export const saveSiteDraftBodyDocumentSectionsItemProductIdsMax = 12;
 
 export const saveSiteDraftBodyDocumentSectionsMax = 20;
 
+export const saveSiteDraftBodyDocumentStoriesItemAnalyticsKeyRegExp = new RegExp('^[0-9a-f]{32}$');
 export const saveSiteDraftBodyDocumentStoriesItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
 export const saveSiteDraftBodyDocumentStoriesItemMakerMax = 100;
 
@@ -589,6 +598,7 @@ export const saveSiteDraftBodyDocumentStoriesItemLinkHrefMax = 500;
 
 export const saveSiteDraftBodyDocumentStoriesMax = 20;
 
+export const saveSiteDraftBodyDocumentTrunkCardsItemAnalyticsKeyRegExp = new RegExp('^[0-9a-f]{32}$');
 export const saveSiteDraftBodyDocumentTrunkCardsItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
 export const saveSiteDraftBodyDocumentTrunkCardsItemTitleMax = 90;
 
@@ -681,6 +691,7 @@ export const SaveSiteDraftBody = zod.object({
   "productIds": zod.array(zod.string().max(saveSiteDraftBodyDocumentSectionsItemProductIdsItemMax)).max(saveSiteDraftBodyDocumentSectionsItemProductIdsMax)
 })).min(1).max(saveSiteDraftBodyDocumentSectionsMax),
   "stories": zod.array(zod.object({
+  "analyticsKey": zod.string().regex(saveSiteDraftBodyDocumentStoriesItemAnalyticsKeyRegExp).optional().describe('Opaque persistence-owned measurement key. Optional for legacy imports; never editable editorial text.'),
   "id": zod.string().regex(saveSiteDraftBodyDocumentStoriesItemIdRegExp),
   "maker": zod.string().max(saveSiteDraftBodyDocumentStoriesItemMakerMax),
   "title": zod.string().min(1).max(saveSiteDraftBodyDocumentStoriesItemTitleMax),
@@ -704,6 +715,7 @@ export const SaveSiteDraftBody = zod.object({
 })
 })).max(saveSiteDraftBodyDocumentStoriesMax),
   "trunkCards": zod.array(zod.object({
+  "analyticsKey": zod.string().regex(saveSiteDraftBodyDocumentTrunkCardsItemAnalyticsKeyRegExp).optional().describe('Opaque persistence-owned measurement key. Optional for legacy imports; never editable editorial text.'),
   "id": zod.string().regex(saveSiteDraftBodyDocumentTrunkCardsItemIdRegExp),
   "title": zod.string().min(1).max(saveSiteDraftBodyDocumentTrunkCardsItemTitleMax),
   "caption": zod.string().max(saveSiteDraftBodyDocumentTrunkCardsItemCaptionMax),
@@ -791,6 +803,7 @@ export const saveSiteDraftResponseDocumentSectionsItemProductIdsMax = 12;
 
 export const saveSiteDraftResponseDocumentSectionsMax = 20;
 
+export const saveSiteDraftResponseDocumentStoriesItemAnalyticsKeyRegExp = new RegExp('^[0-9a-f]{32}$');
 export const saveSiteDraftResponseDocumentStoriesItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
 export const saveSiteDraftResponseDocumentStoriesItemMakerMax = 100;
 
@@ -822,6 +835,7 @@ export const saveSiteDraftResponseDocumentStoriesItemLinkHrefMax = 500;
 
 export const saveSiteDraftResponseDocumentStoriesMax = 20;
 
+export const saveSiteDraftResponseDocumentTrunkCardsItemAnalyticsKeyRegExp = new RegExp('^[0-9a-f]{32}$');
 export const saveSiteDraftResponseDocumentTrunkCardsItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
 export const saveSiteDraftResponseDocumentTrunkCardsItemTitleMax = 90;
 
@@ -912,6 +926,7 @@ export const SaveSiteDraftResponse = zod.object({
   "productIds": zod.array(zod.string().max(saveSiteDraftResponseDocumentSectionsItemProductIdsItemMax)).max(saveSiteDraftResponseDocumentSectionsItemProductIdsMax)
 })).min(1).max(saveSiteDraftResponseDocumentSectionsMax),
   "stories": zod.array(zod.object({
+  "analyticsKey": zod.string().regex(saveSiteDraftResponseDocumentStoriesItemAnalyticsKeyRegExp).optional().describe('Opaque persistence-owned measurement key. Optional for legacy imports; never editable editorial text.'),
   "id": zod.string().regex(saveSiteDraftResponseDocumentStoriesItemIdRegExp),
   "maker": zod.string().max(saveSiteDraftResponseDocumentStoriesItemMakerMax),
   "title": zod.string().min(1).max(saveSiteDraftResponseDocumentStoriesItemTitleMax),
@@ -935,6 +950,7 @@ export const SaveSiteDraftResponse = zod.object({
 })
 })).max(saveSiteDraftResponseDocumentStoriesMax),
   "trunkCards": zod.array(zod.object({
+  "analyticsKey": zod.string().regex(saveSiteDraftResponseDocumentTrunkCardsItemAnalyticsKeyRegExp).optional().describe('Opaque persistence-owned measurement key. Optional for legacy imports; never editable editorial text.'),
   "id": zod.string().regex(saveSiteDraftResponseDocumentTrunkCardsItemIdRegExp),
   "title": zod.string().min(1).max(saveSiteDraftResponseDocumentTrunkCardsItemTitleMax),
   "caption": zod.string().max(saveSiteDraftResponseDocumentTrunkCardsItemCaptionMax),
@@ -1037,6 +1053,7 @@ export const publishSiteResponseDocumentSectionsItemProductIdsMax = 12;
 
 export const publishSiteResponseDocumentSectionsMax = 20;
 
+export const publishSiteResponseDocumentStoriesItemAnalyticsKeyRegExp = new RegExp('^[0-9a-f]{32}$');
 export const publishSiteResponseDocumentStoriesItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
 export const publishSiteResponseDocumentStoriesItemMakerMax = 100;
 
@@ -1068,6 +1085,7 @@ export const publishSiteResponseDocumentStoriesItemLinkHrefMax = 500;
 
 export const publishSiteResponseDocumentStoriesMax = 20;
 
+export const publishSiteResponseDocumentTrunkCardsItemAnalyticsKeyRegExp = new RegExp('^[0-9a-f]{32}$');
 export const publishSiteResponseDocumentTrunkCardsItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
 export const publishSiteResponseDocumentTrunkCardsItemTitleMax = 90;
 
@@ -1158,6 +1176,7 @@ export const PublishSiteResponse = zod.object({
   "productIds": zod.array(zod.string().max(publishSiteResponseDocumentSectionsItemProductIdsItemMax)).max(publishSiteResponseDocumentSectionsItemProductIdsMax)
 })).min(1).max(publishSiteResponseDocumentSectionsMax),
   "stories": zod.array(zod.object({
+  "analyticsKey": zod.string().regex(publishSiteResponseDocumentStoriesItemAnalyticsKeyRegExp).optional().describe('Opaque persistence-owned measurement key. Optional for legacy imports; never editable editorial text.'),
   "id": zod.string().regex(publishSiteResponseDocumentStoriesItemIdRegExp),
   "maker": zod.string().max(publishSiteResponseDocumentStoriesItemMakerMax),
   "title": zod.string().min(1).max(publishSiteResponseDocumentStoriesItemTitleMax),
@@ -1181,6 +1200,7 @@ export const PublishSiteResponse = zod.object({
 })
 })).max(publishSiteResponseDocumentStoriesMax),
   "trunkCards": zod.array(zod.object({
+  "analyticsKey": zod.string().regex(publishSiteResponseDocumentTrunkCardsItemAnalyticsKeyRegExp).optional().describe('Opaque persistence-owned measurement key. Optional for legacy imports; never editable editorial text.'),
   "id": zod.string().regex(publishSiteResponseDocumentTrunkCardsItemIdRegExp),
   "title": zod.string().min(1).max(publishSiteResponseDocumentTrunkCardsItemTitleMax),
   "caption": zod.string().max(publishSiteResponseDocumentTrunkCardsItemCaptionMax),
@@ -1285,6 +1305,7 @@ export const restoreSiteResponseDocumentSectionsItemProductIdsMax = 12;
 
 export const restoreSiteResponseDocumentSectionsMax = 20;
 
+export const restoreSiteResponseDocumentStoriesItemAnalyticsKeyRegExp = new RegExp('^[0-9a-f]{32}$');
 export const restoreSiteResponseDocumentStoriesItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
 export const restoreSiteResponseDocumentStoriesItemMakerMax = 100;
 
@@ -1316,6 +1337,7 @@ export const restoreSiteResponseDocumentStoriesItemLinkHrefMax = 500;
 
 export const restoreSiteResponseDocumentStoriesMax = 20;
 
+export const restoreSiteResponseDocumentTrunkCardsItemAnalyticsKeyRegExp = new RegExp('^[0-9a-f]{32}$');
 export const restoreSiteResponseDocumentTrunkCardsItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
 export const restoreSiteResponseDocumentTrunkCardsItemTitleMax = 90;
 
@@ -1406,6 +1428,7 @@ export const RestoreSiteResponse = zod.object({
   "productIds": zod.array(zod.string().max(restoreSiteResponseDocumentSectionsItemProductIdsItemMax)).max(restoreSiteResponseDocumentSectionsItemProductIdsMax)
 })).min(1).max(restoreSiteResponseDocumentSectionsMax),
   "stories": zod.array(zod.object({
+  "analyticsKey": zod.string().regex(restoreSiteResponseDocumentStoriesItemAnalyticsKeyRegExp).optional().describe('Opaque persistence-owned measurement key. Optional for legacy imports; never editable editorial text.'),
   "id": zod.string().regex(restoreSiteResponseDocumentStoriesItemIdRegExp),
   "maker": zod.string().max(restoreSiteResponseDocumentStoriesItemMakerMax),
   "title": zod.string().min(1).max(restoreSiteResponseDocumentStoriesItemTitleMax),
@@ -1429,6 +1452,7 @@ export const RestoreSiteResponse = zod.object({
 })
 })).max(restoreSiteResponseDocumentStoriesMax),
   "trunkCards": zod.array(zod.object({
+  "analyticsKey": zod.string().regex(restoreSiteResponseDocumentTrunkCardsItemAnalyticsKeyRegExp).optional().describe('Opaque persistence-owned measurement key. Optional for legacy imports; never editable editorial text.'),
   "id": zod.string().regex(restoreSiteResponseDocumentTrunkCardsItemIdRegExp),
   "title": zod.string().min(1).max(restoreSiteResponseDocumentTrunkCardsItemTitleMax),
   "caption": zod.string().max(restoreSiteResponseDocumentTrunkCardsItemCaptionMax),

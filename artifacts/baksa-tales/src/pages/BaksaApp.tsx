@@ -12,7 +12,7 @@ import type { Catalog, GiftMatch, Maker, Product, Runtime, Workspace, SiteDocume
 import { starterDocument } from './starter-document';
 import { SiteDocumentContext, useSitePage, PageArtwork, Seo, imageUrl, money, errText } from './storefront-shared';
 import { RouteContent } from '../components/route-content';
-import { commerceDestination, trackEvent } from '../lib/analytics';
+import { commerceDestination, editorialKey, trackEvent } from '../lib/analytics';
 import '../baksa.css';
 import '../editorial-refinements.css';
 import '../storefront-density.css';
@@ -115,7 +115,7 @@ function HomePage({ catalog, saved, toggle, catalogError, retryCatalog, document
     const card=e.target.closest('.bk-trunk-card');
     if(!opened||!card)return;
     const position=Array.from(card.parentElement?.children||[]).indexOf(card);
-    if(siteDoc.trunkCards[position]?.sponsored)trackEvent('sponsored_card_followed',{card_position:position+1});
+    if(siteDoc.trunkCards[position]?.sponsored)trackEvent('sponsored_card_followed',{...editorialKey('card',siteDoc.trunkCards[position].analyticsKey),card_position:position+1});
   }} className={`bk-home ${siteDoc.theme.motion?'bk-motion':'bk-still'} ${siteDoc.theme.ornament?'bk-ornament':''}`} style={{'--bk-paper':siteDoc.theme.background,'--bk-cream':siteDoc.theme.surface,'--bk-maroon':siteDoc.theme.primary,'--bk-crimson':siteDoc.theme.primary,'--bk-teal':siteDoc.theme.secondary,'--bk-gold':siteDoc.theme.accent,'--bk-ink':siteDoc.theme.ink,'--bk-muted':siteDoc.theme.muted,'--bk-display':siteDoc.theme.headingFont==='georgia'?'Georgia,serif':siteDoc.theme.headingFont==='cormorant'?'Cormorant Garamond,Georgia,serif':"'EB Garamond',Georgia,serif",'--bk-body':siteDoc.theme.bodyFont==='system'?'system-ui,sans-serif':siteDoc.theme.bodyFont==='georgia'?'Georgia,serif':"'Source Sans 3',sans-serif",'--bk-radius':`${siteDoc.theme.radius}px`,'--bk-space':siteDoc.theme.spacing==='compact'?'48px':siteDoc.theme.spacing==='generous'?'94px':'72px'} as CSSProperties}>
     <Seo title={page('shop')?.title||'Handmade gifts, found with feeling'} description={page('shop')?.description||'Discover meaningful gifts through the makers and stories behind them.'}/>
     {siteDoc.sections.filter(s=>s.visible).map(renderSection)}
@@ -138,7 +138,7 @@ function StoryPage({id,document:siteDoc,measure=true}:{id:string;document:SiteDo
   useEffect(()=>{
     if(!measure||!story||openedStory.current===id)return;
     openedStory.current=id;
-    trackEvent('story_opened',{story_position:storyPosition,sponsored:story.sponsored,sample:story.sample});
+    trackEvent('story_opened',{...editorialKey('story',story.analyticsKey),story_position:storyPosition,sponsored:story.sponsored,sample:story.sample});
   },[id,measure,storyPosition,story]);
   useEffect(()=>{
     if(!story||story.chapters.length<2)return;
@@ -168,7 +168,7 @@ function StoryPage({id,document:siteDoc,measure=true}:{id:string;document:SiteDo
     if(!anchor)return;
     // Read the app route, not the rendered href (which can include a preview base).
     const destination=commerceDestination(anchor.closest('.bk-story-cover')?siteHref(story.link.href):'/makers');
-    if(destination)trackEvent('story_commerce_link_followed',{story_position:storyPosition,sponsored:story.sponsored,sample:story.sample,destination});
+    if(destination)trackEvent('story_commerce_link_followed',{...editorialKey('story',story.analyticsKey),story_position:storyPosition,sponsored:story.sponsored,sample:story.sample,destination});
   }}><Seo title={story.title} description={story.intro}/>
     <div className="bk-story-mast"><span className="bk-story-mast-brand">{siteDoc.brand.name}<i> / </i>{labels['story.reading']||'A tale from the baksa'}</span></div>
     <header className="bk-story-cover">

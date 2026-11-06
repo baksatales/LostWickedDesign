@@ -34,7 +34,7 @@ beforeAll(async () => {
   // Supabase grants table access by default; RLS and subsequent reviewed revokes
   // still apply. Reproduce those grants before testing the hardening migrations.
   await db.exec("grant all on all tables in schema public to anon,authenticated; grant usage,select on all sequences in schema public to anon,authenticated;");
-  for (const file of ["005_reviewed_first_build", "006_editorial_and_operations"]) {
+  for (const file of ["005_reviewed_first_build", "006_editorial_and_operations", "007_editorial_analytics_keys"]) {
     await db.exec(await readFile(`${root}/supabase/migrations/${file}.sql`, "utf8"));
   }
   await db.exec(`
@@ -48,6 +48,37 @@ beforeAll(async () => {
   `);
 }, 60_000);
 afterAll(async () => { await db?.close(); });
+
+it("backfills legacy draft, live content and history without publishing or changing revisions", async () => {
+  const isolated = new PGlite();
+  try {
+    await isolated.exec(`
+      create role anon; create role authenticated;
+      create table site_content(id boolean primary key,draft jsonb,published jsonb,revision int,published_revision int);
+      create table site_versions(id bigint primary key,document jsonb);
+    `);
+    const old = structuredClone(defaultSite);
+    old.stories.forEach(s=>delete s.analyticsKey);
+    old.trunkCards.forEach(c=>delete c.analyticsKey);
+    // Include custom legacy content, not only registered defaults.
+    old.stories[0]!.id="legacy-custom";
+    await isolated.query("insert into site_versions values(1,$1::jsonb)",[JSON.stringify(old)]);
+    const reordered = structuredClone(old); reordered.stories.reverse(); reordered.trunkCards.reverse();
+    await isolated.query("insert into site_content values(true,$1::jsonb,$2::jsonb,8,6)",[JSON.stringify(reordered),JSON.stringify(old)]);
+    await isolated.exec(await readFile(`${root}/supabase/migrations/007_editorial_analytics_keys.sql`,"utf8"));
+    const row = (await isolated.query<{draft:typeof defaultSite;published:typeof defaultSite;revision:number;published_revision:number}>(
+      "select * from site_content")).rows[0]!;
+    const history = (await isolated.query<{document:typeof defaultSite}>("select document from site_versions")).rows[0]!.document;
+    expect(row.revision).toBe(8); expect(row.published_revision).toBe(6);
+    for(const kind of ["stories","trunkCards"] as const){
+      for(const item of row.draft[kind]){
+        expect(item.analyticsKey).toMatch(/^[0-9a-f]{32}$/);
+        expect(item.analyticsKey).toBe(row.published[kind].find(s=>s.id===item.id)!.analyticsKey);
+        expect(item.analyticsKey).toBe(history[kind].find(s=>s.id===item.id)!.analyticsKey);
+      }
+    }
+  } finally { await isolated.close(); }
+});
 
 describe("editorial PostgreSQL transactions and RLS", () => {
   it("saves privately, publishes atomically and prevents stale overwrites", async () => {
@@ -85,6 +116,60 @@ describe("editorial PostgreSQL transactions and RLS", () => {
       await expect(db.query("select baksa_edit_site('publish',3)")).rejects.toMatchObject({ code: "42501" });
       await expect(db.query("select baksa_site_draft()")).rejects.toMatchObject({ code: "42501" });
     }
+  });
+  it("persists opaque identities through edits, legacy imports, reordering and restores", async () => {
+    await asUser(1);
+    const read = async () => (await db.query<{result:{document:typeof defaultSite;revision:number}}>(
+      "select baksa_site_draft() as result")).rows[0]!.result;
+    let draft = await read();
+    const key = draft.document.stories[0]!.analyticsKey;
+    const changed = structuredClone(draft.document);
+    changed.stories[0]!.id = "renamed-story";
+    changed.sections.filter(s=>s.storyId==="tathaastu").forEach(s=>s.storyId="renamed-story");
+    changed.stories.reverse(); changed.trunkCards.reverse();
+    await db.query("select baksa_edit_site('save',$1,$2::jsonb)",[draft.revision,JSON.stringify(changed)]);
+    draft = await read();
+    expect(draft.document.stories.find(s=>s.id==="renamed-story")!.analyticsKey).toBe(key);
+    const legacy = structuredClone(draft.document);
+    legacy.stories.forEach(s=>delete s.analyticsKey);
+    legacy.trunkCards.forEach(c=>delete c.analyticsKey);
+    await db.query("select baksa_edit_site('save',$1,$2::jsonb)",[draft.revision,JSON.stringify(legacy)]);
+    draft = await read();
+    expect(draft.document.stories.find(s=>s.id==="renamed-story")!.analyticsKey).toBe(key);
+    const forged = structuredClone(draft.document);
+    forged.stories[0]!.analyticsKey="00000000000040008000000000000001";
+    await expect(db.query("select baksa_edit_site('save',$1,$2::jsonb)",[draft.revision,JSON.stringify(forged)]))
+      .rejects.toMatchObject({code:"22023"});
+    const duplicate = structuredClone(draft.document);
+    duplicate.stories[1]!.analyticsKey=duplicate.stories[0]!.analyticsKey;
+    await expect(db.query("select baksa_edit_site('save',$1,$2::jsonb)",[draft.revision,JSON.stringify(duplicate)]))
+      .rejects.toMatchObject({code:"22023"});
+    const added = structuredClone(draft.document);
+    const fresh = structuredClone(added.stories[0]!);
+    fresh.id="new-story"; delete fresh.analyticsKey; added.stories.push(fresh);
+    await db.query("select baksa_edit_site('save',$1,$2::jsonb)",[draft.revision,JSON.stringify(added)]);
+    draft = await read();
+    expect(draft.document.stories.at(-1)!.analyticsKey).toMatch(/^[0-9a-f]{32}$/);
+    expect(draft.document.stories.at(-1)!.analyticsKey).not.toBe(key);
+    await db.query("select baksa_edit_site('restore',$1,null,1)",[draft.revision]);
+    expect((await read()).document.stories[0]!.analyticsKey).toBe(key);
+    draft = await read();
+    const removed = structuredClone(draft.document);
+    removed.stories.shift();
+    removed.sections.filter(s=>s.type==="story").forEach(s=>s.visible=false);
+    await db.query("select baksa_edit_site('save',$1,$2::jsonb)",[draft.revision,JSON.stringify(removed)]);
+    draft = await read();
+    const replacement = structuredClone(defaultSite.stories[0]!);
+    delete replacement.analyticsKey;
+    draft.document.stories.push(replacement);
+    await db.query("select baksa_edit_site('save',$1,$2::jsonb)",[draft.revision,JSON.stringify(draft.document)]);
+    draft = await read();
+    expect(draft.document.stories.at(-1)!.analyticsKey).not.toBe(key);
+    await db.query("select baksa_edit_site('restore',$1,null,1)",[draft.revision]);
+    expect((await read()).document.stories[0]!.analyticsKey).toBe(key);
+    await asUser(3);
+    await expect(db.query("select * from site_analytics_keys")).rejects.toMatchObject({code:"42501"});
+    await expect(db.query("select baksa_key_site($1::jsonb)",[JSON.stringify(defaultSite)])).rejects.toMatchObject({code:"42501"});
   });
   it("makes product images draft-only and prevents another account editing them", async () => {
     await asUser(2);

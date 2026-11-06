@@ -78,6 +78,7 @@ test('a reordered story is counted once using only published position and flags'
   await render();
   expect(track).not.toHaveBeenCalled();
   const story=doc.stories.shift()!;
+  story.analyticsKey='e45fb32669c94bd890bf137b4e15aac2';
   story.sponsored=true;
   story.sample=false;
   doc.stories.push(story);
@@ -85,7 +86,7 @@ test('a reordered story is counted once using only published position and flags'
   await render();
   expect(container.querySelector('.bk-story-page')).not.toBeNull();
   expect(track.mock.calls).toEqual([['story_opened',{
-    story_position:doc.stories.length,sponsored:true,sample:false,
+    story_key:story.analyticsKey,story_position:doc.stories.length,sponsored:true,sample:false,
   }]]);
   await render();
   expect(track).toHaveBeenCalledTimes(1);

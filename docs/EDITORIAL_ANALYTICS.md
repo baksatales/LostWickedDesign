@@ -17,18 +17,47 @@ normally have no tracker. Do not add a script, website ID, or analytics secrets.
 | Description | Event name | Properties |
 | --- | --- | --- |
 | Closed trunk opened by the shopper; closing is not counted | `trunk_opened` | None |
-| Open trunk's visibly disclosed sponsored card followed | `sponsored_card_followed` | `card_position` |
-| Available visible story rendered, including direct visits | `story_opened` | `story_position`, `sponsored`, `sample` |
-| Story's commerce CTA or “Meet the makers” footer followed | `story_commerce_link_followed` | `story_position`, `sponsored`, `sample`, `destination` |
+| Open trunk's visibly disclosed sponsored card followed | `sponsored_card_followed` | `card_key`, `card_position` |
+| Available visible story rendered, including direct visits | `story_opened` | `story_key`, `story_position`, `sponsored`, `sample` |
+| Story's commerce CTA or “Meet the makers” footer followed | `story_commerce_link_followed` | `story_key`, `story_position`, `sponsored`, `sample`, `destination` |
 | Gift finder successfully returned recommendations, including zero matches | `gift_finder_completed` | `recommendation_count`, `sample` |
 | Gift recommendation product link followed | `gift_recommendation_opened` | `recommendation_position`, `sample` |
 
 Positions are one-based: story position is its position in the editorial document,
 card position is its trunk slot, recommendation position is its result rank.
-They are deliberately not content identifiers and can change when content is
-reordered. `destination` is only `maker`, `product`, or `shop`; `maker` includes
+Positions change when content is reordered; group by `story_key` or `card_key`
+to compare the same content across placements. Keys are random opaque values,
+not editable IDs or hashes of content. `destination` is only `maker`, `product`, or `shop`; `maker` includes
 the makers listing. External and unrelated links are not commerce conversions.
 Flags distinguish disclosed sponsorship and sample catalogue content.
+
+## Stable identity and migration
+
+- Apply `supabase/migrations/007_editorial_analytics_keys.sql` after migration 006
+  on an owner-authorized database. This task does not run it against a remote
+  database. It adds protected key storage and a write trigger under the existing
+  revision-checked transaction; direct authenticated RPC writes cannot invent keys.
+- New stories/cards receive random UUID-derived 32-character keys on save, never
+  on public reads. Supplied API defaults have fixed random keys registered by the
+  migration. Studio shows keys read-only for matching reports to editorial items.
+- Existing published documents, drafts and history are backfilled once. Existing
+  editable IDs associate legacy items *inside persistence only*. Legacy ID renames
+  cannot be reliably linked retroactively; reused legacy IDs are assumed to be
+  the same content. Neither IDs nor their hashes go to analytics.
+- Reorders, visibility, titles, links, maker names and ID renames retain keys.
+  Restoring a version keeps its keys and remains draft-only. Publication and
+  revision numbers are unchanged by backfill; no version is published by it.
+- JSON exports include keys. Imports without keys match current draft IDs locally
+  in storage, or receive fresh keys for new items. Studio preserves keys on
+  matching IDs; storage rejects changing an existing item's key, unknown keys,
+  wrong-kind keys and duplicate keys in one collection. New copies must use a new
+  editable ID and omit the key. Cross-site keys must be omitted.
+- A retained exported key can deliberately reintroduce deleted content as the same
+  identity. A new item without a key and without a matching current draft ID is a
+  new identity, even if it reuses a previously deleted item's ID.
+- Legacy API documents without keys still emit positional events. Invalid keys
+  are omitted rather than replaced by editable fields. Historical positional-only
+  events cannot be retroactively attributed to stable identities.
 
 ## Counting and privacy boundaries
 
@@ -58,7 +87,7 @@ Flags distinguish disclosed sponsorship and sample catalogue content.
 ## Questions to ask after collection starts
 
 - How often are trunk openings followed by sponsored-card activations?
-- Which story positions lead to maker, product, or shop link activations?
+- Which stories lead to commerce activations across placement changes?
 - How many successful gift-finder runs return no matches, and which result ranks
   receive the most recommendation activations?
 

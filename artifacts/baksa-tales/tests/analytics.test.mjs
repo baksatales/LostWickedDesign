@@ -1,6 +1,16 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { trackEvent, commerceDestination } from '../src/lib/analytics.ts';
+import { trackEvent, commerceDestination, editorialKey } from '../src/lib/analytics.ts';
+
+test('only opaque keys are forwarded, never editable IDs or fallback text', () => {
+  const key = 'e45fb32669c94bd890bf137b4e15aac2';
+  assert.deepEqual(editorialKey('story', key), { story_key: key });
+  assert.deepEqual(editorialKey('card', key), { card_key: key });
+  for (const unsafe of [undefined, null, '', 'private-person', 'private@example.test', '/stories/one', key + 'extra']) {
+    assert.deepEqual(editorialKey('story', unsafe), {});
+    assert.deepEqual(editorialKey('card', unsafe), {});
+  }
+});
 
 test('analytics is safe without a browser or tracker', () => {
   delete globalThis.window;

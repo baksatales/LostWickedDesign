@@ -126,6 +126,7 @@ test('opening counts once, closing never counts, and closed cards cannot navigat
 });
 
 test.each([0, 1])('card %i preserves navigation and counts only disclosed sponsorship', async index => {
+  state.document!.trunkCards[1].analyticsKey='ba23169cfbc640529e81a2d19ebf850c';
   await render();
   await click(element('.bk-trunk-toggle'));
   const card = container.querySelectorAll<HTMLAnchorElement>('.bk-trunk-card')[index];
@@ -136,7 +137,7 @@ test.each([0, 1])('card %i preserves navigation and counts only disclosed sponso
   expect(location.history).toEqual(['/', href]);
   expect(container.textContent).toContain('The considered edit.');
   expectEvents(index === 1
-    ? [['trunk_opened', undefined], ['sponsored_card_followed', { card_position: 2 }]]
+    ? [['trunk_opened', undefined], ['sponsored_card_followed', { card_key:'ba23169cfbc640529e81a2d19ebf850c',card_position: 2 }]]
     : [['trunk_opened', undefined]]);
 });
 
@@ -167,6 +168,7 @@ test.each([
   ['.bk-story-end a', '/makers', 'maker'],
 ])('story link %s to %s navigates without exposing link detail', async (selector, href, destination) => {
   const story = state.document!.stories[0];
+  story.analyticsKey='e45fb32669c94bd890bf137b4e15aac2';
   story.link.href = href;
   await render(`/stories/${story.id}`);
   const anchor = element<HTMLAnchorElement>(selector);
@@ -174,7 +176,7 @@ test.each([
   await click(anchor.querySelector('svg')!);
   expect(location.history!.at(-1)).toBe(href);
   expect(container.querySelector('.bk-story-page')).toBeNull();
-  const flags = { story_position: 1, sponsored: story.sponsored, sample: story.sample };
+  const flags = { story_key:story.analyticsKey,story_position: 1, sponsored: story.sponsored, sample: story.sample };
   expectEvents([
     ['story_opened', flags],
     ['story_commerce_link_followed', { ...flags, destination }],

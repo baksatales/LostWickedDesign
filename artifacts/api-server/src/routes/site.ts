@@ -47,6 +47,7 @@ router.put("/admin/site", limits, async (req, res) => {
   const document = validateSiteDocument(parsed.data.document);
   const { data, error } = await db.rpc("baksa_edit_site", { _action: "save", _expected: parsed.data.expectedRevision, _document: document });
   if (error?.code === "40001") throw new HttpError(409, "Someone else changed this draft. Your edits have not overwritten theirs. Reload the current version before saving again.");
+  if (error?.code === "22023") throw new HttpError(400, "Analytics keys cannot be edited or duplicated. Keep the exported keys, or omit keys on new imported content.");
   if (error?.code === "PGRST202") throw new HttpError(503, "Site Studio storage is not configured. Your draft was not saved.");
   checkDb(error);
   res.json(GetSiteDraftResponse.parse(data));

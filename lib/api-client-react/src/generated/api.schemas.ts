@@ -149,6 +149,11 @@ export interface SiteChapter {
 }
 
 export interface SiteStory {
+  /**
+     * Opaque persistence-owned measurement key. Optional for legacy imports; never editable editorial text.
+     * @pattern ^[0-9a-f]{32}$
+     */
+  analyticsKey?: string;
   /** @pattern ^[a-z0-9-]{1,60}$ */
   id: string;
   /** @maxLength 100 */
@@ -233,6 +238,11 @@ export interface SiteSection {
 }
 
 export interface SiteTrunkCard {
+  /**
+     * Opaque persistence-owned measurement key. Optional for legacy imports; never editable editorial text.
+     * @pattern ^[0-9a-f]{32}$
+     */
+  analyticsKey?: string;
   /** @pattern ^[a-z0-9-]{1,60}$ */
   id: string;
   /**
