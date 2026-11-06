@@ -4,9 +4,9 @@ import type { Request } from "express";
 export class HttpError extends Error {
   constructor(public status: number, message: string) { super(message); }
 }
-export function publicConfig() {
-  const url = process.env.SUPABASE_URL ?? "";
-  const anon = process.env.SUPABASE_ANON_KEY ?? "";
+function configuredValues() {
+  const url = (process.env.SUPABASE_URL ?? "").trim().replace(/\/+$/, "");
+  const anon = (process.env.SUPABASE_ANON_KEY ?? "").trim();
   // Never send a mistakenly configured service-role/secret key to the browser.
   let safe = anon.startsWith("sb_publishable_");
   if (!safe && anon.split(".").length === 3) {
@@ -15,7 +15,16 @@ export function publicConfig() {
       safe = claims.role === "anon";
     } catch { safe = false; }
   }
-  if (!safe || !/^https:\/\/[a-z0-9.-]+(?::\d+)?$/i.test(url)) return { url: "", anon: "" };
+  return { url, anon, keyValid: safe, urlValid: /^https:\/\/[a-z0-9.-]+(?::\d+)?$/i.test(url) };
+}
+/** Safe diagnostics: never returns a credential, host, token payload or key fragment. */
+export function connectionConfigurationStatus() {
+  const { keyValid, urlValid } = configuredValues();
+  return { keyValid, urlValid };
+}
+export function publicConfig() {
+  const { url, anon, keyValid, urlValid } = configuredValues();
+  if (!keyValid || !urlValid) return { url: "", anon: "" };
   return { url, anon };
 }
 export function connection(token?: string): SupabaseClient {
