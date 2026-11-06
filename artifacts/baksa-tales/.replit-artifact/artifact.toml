@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Baksa Tales"
+description = "An editorial Indian handmade marketplace with story-led discovery, guided gifting and secure maker/admin workflows."
+version = "1.0.0"
+id = "artifacts/baksa-tales"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23368
+
+[services.development]
+run = "pnpm --filter @workspace/baksa-tales run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/baksa-tales", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/baksa-tales/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23368"
+BASE_PATH = "/"

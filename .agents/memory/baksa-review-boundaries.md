@@ -6,7 +6,7 @@ Baksa Tales is an Indian handmade multivendor marketplace centred on maker stori
 
 **Why:** The supplied briefs establish this identity. The user requested analysis and screen review first, and subsequently asked to get the first build sorted.
 
-**How to apply:** Implementation is now requested; move to Build mode for functional work. Preview interactions and sample catalogue data must not imply real payments, authentication, AI or order persistence.
+**How to apply:** Full implementation is now authorised. The user has reiterated that the goal is the complete marketplace, not an endless sequence of isolated mockups. Keep partial milestones explicit; sample data must not imply real payments, authentication, AI or order persistence.
 
 Preserve the supplied trunk logo and real product photographs. The proposed direction is warm, editorial and culturally rooted rather than generic black-and-gold luxury.
 

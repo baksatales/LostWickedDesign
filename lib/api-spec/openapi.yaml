@@ -11,6 +11,114 @@ tags:
   - name: health
     description: Health operations
 paths:
+  /catalog:
+    get:
+      operationId: getCatalog
+      responses:
+        "200":
+          description: Public catalogue. Sample mode is explicit.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Catalog" }
+  /runtime:
+    get:
+      operationId: getRuntime
+      responses:
+        "200":
+          description: Public integration capabilities, never service credentials.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Runtime" }
+  /recommendations:
+    post:
+      operationId: findGifts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/GiftInput" }
+      responses:
+        "200":
+          description: Explainable catalogue matches, not live AI.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/GiftResults" }
+  /applications:
+    post:
+      operationId: applyToSell
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ApplicationInput" }
+      responses:
+        "201":
+          description: Persisted application.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Receipt" }
+  /corporate:
+    post:
+      operationId: createBrief
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/BriefInput" }
+      responses:
+        "201":
+          description: Persisted brief.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Receipt" }
+  /workspace:
+    get:
+      operationId: getWorkspace
+      responses:
+        "200":
+          description: Role-scoped workspace; requires a verified Supabase session.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Workspace" }
+  /maker/products:
+    post:
+      operationId: saveProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ProductInput" }
+      responses:
+        "200":
+          description: Saved private draft.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Receipt" }
+  /maker/products/{id}/submit:
+    post:
+      operationId: submitProduct
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Submitted through the database review workflow.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Receipt" }
+  /admin/review:
+    post:
+      operationId: reviewProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ReviewInput" }
+      responses:
+        "200":
+          description: Recorded review.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Receipt" }
   /healthz:
     get:
       operationId: healthCheck
@@ -26,6 +134,141 @@ paths:
                 $ref: "#/components/schemas/HealthStatus"
 components:
   schemas:
+    Runtime:
+      type: object
+      required: [database, auth, payments, ai, supabaseUrl, supabaseAnonKey, message]
+      properties:
+        database: { type: boolean }
+        auth: { type: boolean }
+        payments: { type: boolean }
+        ai: { type: boolean }
+        supabaseUrl: { type: string }
+        supabaseAnonKey: { type: string }
+        message: { type: string }
+    Maker:
+      type: object
+      required: [id, slug, brand, craft, tagline, story, image]
+      properties:
+        id: { type: string }
+        slug: { type: string }
+        brand: { type: string }
+        craft: { type: string }
+        tagline: { type: string }
+        story: { type: string }
+        image: { type: string }
+    Product:
+      type: object
+      required: [id, slug, makerId, name, pricePaise, image, category, material, description, dispatchDays, stock, sample]
+      properties:
+        id: { type: string }
+        slug: { type: string }
+        makerId: { type: string }
+        name: { type: string }
+        pricePaise: { type: integer }
+        image: { type: string }
+        category: { type: string }
+        material: { type: string }
+        description: { type: string }
+        dispatchDays: { type: integer }
+        stock: { type: integer }
+        sample: { type: boolean }
+        status: { type: string }
+        reviewNote: { type: string }
+    Catalog:
+      type: object
+      required: [sample, products, makers]
+      properties:
+        sample: { type: boolean }
+        products: { type: array, items: { $ref: "#/components/schemas/Product" } }
+        makers: { type: array, items: { $ref: "#/components/schemas/Maker" } }
+    GiftInput:
+      type: object
+      required: [recipient, occasion, feeling, budgetPaise]
+      properties:
+        recipient: { type: string, maxLength: 40 }
+        occasion: { type: string, maxLength: 40 }
+        feeling: { type: string, maxLength: 40 }
+        budgetPaise: { type: integer, minimum: 100, maximum: 100000000 }
+    GiftMatch:
+      type: object
+      required: [product, reason]
+      properties:
+        product: { $ref: "#/components/schemas/Product" }
+        reason: { type: string }
+    GiftResults:
+      type: object
+      required: [sample, matches, message]
+      properties:
+        sample: { type: boolean }
+        matches: { type: array, items: { $ref: "#/components/schemas/GiftMatch" } }
+        message: { type: string }
+    ApplicationInput:
+      type: object
+      required: [brand, contactName, phone, craft, city, state, gstRegistered]
+      properties:
+        brand: { type: string, minLength: 1, maxLength: 150 }
+        contactName: { type: string, minLength: 1, maxLength: 150 }
+        phone: { type: string, pattern: '^[6-9][0-9]{9}$' }
+        craft: { type: string, minLength: 1, maxLength: 200 }
+        city: { type: string, minLength: 1, maxLength: 100 }
+        state: { type: string, minLength: 1, maxLength: 100 }
+        gstRegistered: { type: boolean }
+        gstin: { type: string, maxLength: 15 }
+        link: { type: string, maxLength: 400 }
+    BriefInput:
+      type: object
+      required: [purpose, quantity, budgetPaise, neededBy, contactName, company, email, message]
+      properties:
+        purpose: { type: string, minLength: 1, maxLength: 200 }
+        quantity: { type: integer, minimum: 1, maximum: 100000 }
+        budgetPaise: { type: integer, minimum: 100, maximum: 100000000 }
+        neededBy: { type: string, pattern: '^\d{4}-\d{2}-\d{2}$' }
+        contactName: { type: string, minLength: 1, maxLength: 150 }
+        company: { type: string, minLength: 1, maxLength: 150 }
+        email: { type: string, format: email, maxLength: 250 }
+        message: { type: string, maxLength: 4000 }
+    ProductInput:
+      type: object
+      required: [name, pricePaise, stock, material, description, dispatchDays, factualConfirmation]
+      properties:
+        id: { type: string }
+        name: { type: string, minLength: 1, maxLength: 200 }
+        pricePaise: { type: integer, minimum: 100, maximum: 100000000 }
+        stock: { type: integer, minimum: 0, maximum: 100000 }
+        material: { type: string, minLength: 1, maxLength: 500 }
+        description: { type: string, minLength: 1, maxLength: 5000 }
+        dispatchDays: { type: integer, minimum: 1, maximum: 60 }
+        factualConfirmation: { type: boolean }
+    ReviewInput:
+      type: object
+      required: [productId, decision, handmade, material, photos, price, story, note]
+      properties:
+        productId: { type: string }
+        decision: { type: string, enum: [approved, changes] }
+        handmade: { type: boolean }
+        material: { type: boolean }
+        photos: { type: boolean }
+        price: { type: boolean }
+        story: { type: boolean }
+        note: { type: string, maxLength: 3000 }
+    Receipt:
+      type: object
+      required: [id, message]
+      properties:
+        id: { type: string }
+        message: { type: string }
+    Workspace:
+      type: object
+      required: [userId, email, roles, products, ordersCount, applicationsCount, briefsCount]
+      properties:
+        userId: { type: string }
+        email: { type: string }
+        roles: { type: array, items: { type: string } }
+        maker: { $ref: "#/components/schemas/Maker" }
+        products: { type: array, items: { $ref: "#/components/schemas/Product" } }
+        ordersCount: { type: integer }
+        applicationsCount: { type: integer }
+        briefsCount: { type: integer }
     HealthStatus:
       type: object
       properties:
