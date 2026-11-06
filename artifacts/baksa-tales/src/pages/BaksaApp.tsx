@@ -1,7 +1,7 @@
 import { lazy, useContext, useEffect, useMemo, useRef, useState, type AnchorHTMLAttributes, type CSSProperties, type Dispatch, type FormEvent, type ReactNode, type SetStateAction } from 'react';
 import { Link, useLocation } from 'wouter';
 import { createClient, type SupabaseClient, type User } from '@supabase/supabase-js';
-import { ArrowLeft, ArrowRight, BookOpen, Check, Heart, Menu, Minus, Package, Plus, Search, ShoppingBag, UserRound, X } from 'lucide-react';
+import { ArrowRight, BookOpen, Check, Heart, Menu, Minus, Package, Plus, Search, ShoppingBag, UserRound, X } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   getGetWorkspaceQueryKey, getGetOperationsQueryKey,
@@ -85,7 +85,21 @@ function HomePage({ catalog, saved, toggle, catalogError, retryCatalog, document
     }
     if(section.type==='story'){
       const story=visibleStories.find(s=>s.id===section.storyId)||visibleStories[0];
-      return <section key={section.id} className={`bk-section bk-editorial-story ${toneClass}`}><div><span className="bk-eyebrow">{section.eyebrow}</span><h2>{section.title}</h2><p>{section.text}</p><DocLink className="bk-textlink" href={section.link.href}>{section.link.label}<ArrowRight size={15}/></DocLink></div><div className="bk-story-stamp"><img src={imageUrlSafe(section.image||story?.image||'t-bluelotus.webp')} alt={section.imageAlt||story?.imageAlt}/><span>{story?.maker||'Baksa Tales'}<small>{story?.sponsored?'Sponsored placement':story?.sample?'Sample catalogue story':'Maker story'}</small></span></div></section>;
+      return <section key={section.id} className={`bk-section bk-editorial-story ${toneClass}`}>
+        <div className="bk-tale-copy">
+          <span className="bk-eyebrow">{section.eyebrow||siteDoc.labels['story.today']||'Today’s Tale'}</span>
+          <h2>{section.title}</h2><p>{section.text}</p>
+          <div className="bk-tale-actions">
+            {story&&<Link className="bk-btn bk-tale-read" href={`/stories/${story.id}`}><BookOpen size={16}/>{siteDoc.labels['story.read']||'Read the tale'}<ArrowRight size={16}/></Link>}
+            <DocLink className="bk-textlink" href={section.link.href}>{section.link.label}<ArrowRight size={15}/></DocLink>
+          </div>
+        </div>
+        {story?<Link className="bk-story-stamp bk-tale-art" href={`/stories/${story.id}`} aria-label={`${siteDoc.labels['story.read']||'Read the tale'}: ${story.title}`}>
+          <span className="bk-tale-index">{siteDoc.labels['story.today']||'Today’s Tale'} <i>·</i> {String(visibleStories.indexOf(story)+1).padStart(2,'0')}</span>
+          <img src={imageUrlSafe(section.image||story.image)} alt={section.imageAlt||story.imageAlt}/>
+          <span className="bk-tale-caption"><strong>{story.title}</strong><small>{story.maker} · {story.sponsored?'Sponsored placement':story.sample?'Sample catalogue story':'Maker story'}</small></span>
+        </Link>:<div className="bk-story-stamp bk-tale-art"><img src={imageUrlSafe(section.image||'t-bluelotus.webp')} alt={section.imageAlt}/></div>}
+      </section>;
     }
     if(section.type==='maker'){
       const maker=catalog?.makers[0];
@@ -115,13 +129,37 @@ function StorefrontPreview({document:doc,catalog,catalogError,retryCatalog,story
 
 function StoryPage({id,document:siteDoc,measure=true}:{id:string;document:SiteDocument;measure?:boolean}){
   const story=siteDoc.stories.find(s=>s.id===id&&s.visible);
+  const labels=siteDoc.labels||{};
   const openedStory=useRef<string|null>(null);
+  const [activeChapter,setActiveChapter]=useState(0);
+  useEffect(()=>{setActiveChapter(0);},[id]);
   const storyPosition=siteDoc.stories.findIndex(s=>s.id===id)+1;
   useEffect(()=>{
     if(!measure||!story||openedStory.current===id)return;
     openedStory.current=id;
     trackEvent('story_opened',{story_position:storyPosition,sponsored:story.sponsored,sample:story.sample});
   },[id,measure,storyPosition,story]);
+  useEffect(()=>{
+    if(!story||story.chapters.length<2)return;
+    const update=()=>{
+      const chapters=story.chapters.map(chapter=>document.getElementById(`story-chapter-${chapter.id}`)).filter((node):node is HTMLElement=>!!node);
+      let current=0;
+      chapters.forEach((node,index)=>{if(node.getBoundingClientRect().top<=240)current=index;});
+      setActiveChapter(current);
+    };
+    window.addEventListener('scroll',update,{passive:true});
+    update();
+    return()=>window.removeEventListener('scroll',update);
+  },[story]);
+  const jumpToChapter=(index:number)=>{
+    const chapter=story?.chapters[index];
+    if(!chapter)return;
+    const reduceMotion=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const target=document.getElementById(`story-chapter-${chapter.id}`);
+    target?.scrollIntoView?.({behavior:siteDoc.theme.motion&&!reduceMotion?'smooth':'auto',block:'start'});
+    target?.focus({preventScroll:true});
+    setActiveChapter(index);
+  };
   if(!story)return <main className="bk-formpage"><Seo title="Story not found" description="This editorial story is not currently available."/><span className="bk-eyebrow">A story not in this edit</span><h1>This chapter is not available.</h1><Link className="bk-btn" href="/makers">Meet the makers</Link></main>;
   return <main className="bk-story-page" onClickCapture={e=>{
     if(!measure||e.defaultPrevented||!(e.target instanceof Element))return;
@@ -130,7 +168,30 @@ function StoryPage({id,document:siteDoc,measure=true}:{id:string;document:SiteDo
     // Read the app route, not the rendered href (which can include a preview base).
     const destination=commerceDestination(anchor.closest('.bk-story-cover')?siteHref(story.link.href):'/makers');
     if(destination)trackEvent('story_commerce_link_followed',{story_position:storyPosition,sponsored:story.sponsored,sample:story.sample,destination});
-  }}><Seo title={story.title} description={story.intro}/><header className="bk-story-cover"><img src={imageUrl(story.image)} alt={story.imageAlt}/><div><span className="bk-eyebrow">{story.sponsored?'Sponsored placement':story.sample?'Sample catalogue story':'Maker story'}{story.sample?' · sample':''}</span><p className="bk-story-maker">{story.maker}</p><h1>{story.title}</h1><p>{story.intro}</p><Link className="bk-btn secondary" href={siteHref(story.link.href)}>{story.link.label}<ArrowRight size={16}/></Link></div></header>{story.chapters.map((chapter,i)=><article className={`bk-story-chapter ${i%2?'reverse':''}`} key={chapter.id}><div className="bk-story-chapter-copy"><span className="bk-eyebrow">Chapter {String(i+1).padStart(2,'0')}</span><h2>{chapter.title}</h2><p>{chapter.body}</p>{chapter.quote&&<blockquote>“{chapter.quote}”</blockquote>}</div>{chapter.image&&<img src={imageUrl(chapter.image)} alt={chapter.imageAlt}/>}</article>)}<footer className="bk-story-end"><span className="bk-eyebrow">Keep exploring</span><h2>Find another story in the baksa.</h2><Link className="bk-btn" href="/makers">Meet the makers <ArrowRight size={16}/></Link></footer></main>;
+  }}><Seo title={story.title} description={story.intro}/>
+    <div className="bk-story-mast"><span className="bk-story-mast-brand">{siteDoc.brand.name}<i> / </i>{labels['story.reading']||'A tale from the baksa'}</span></div>
+    <header className="bk-story-cover">
+      <div className="bk-story-cover-art"><img src={imageUrl(story.image)} alt={story.imageAlt}/><span className="bk-story-art-tag">{labels['story.today']||'Today’s Tale'}</span></div>
+      <div className="bk-story-cover-copy">
+        <span className="bk-eyebrow">{story.sponsored?'Sponsored placement':story.sample?'Sample catalogue story':'Maker story'}{story.sample?' · sample':''}</span>
+        <p className="bk-story-maker">{story.maker}</p><h1>{story.title}</h1><p className="bk-story-intro">{story.intro}</p>
+        <Link className="bk-btn secondary" href={siteHref(story.link.href)}>{story.link.label}<ArrowRight size={16}/></Link>
+        <div className="bk-story-cover-note"><BookOpen size={15}/><span>{labels['story.chapters']||'A story in'} {story.chapters.length} {labels['story.chapterCount']||'chapters'}</span></div>
+      </div>
+    </header>
+    {story.chapters.length>1&&<nav className="bk-story-contents" aria-label={labels['story.contents']||'In this tale'}>
+      <span className="bk-story-contents-title">{labels['story.contents']||'In this tale'}</span>
+      <div className="bk-story-stops">{story.chapters.map((chapter,i)=><button key={chapter.id} type="button" className={activeChapter===i?'active':''} aria-current={activeChapter===i?'step':undefined} onClick={()=>jumpToChapter(i)}><span>{String(i+1).padStart(2,'0')}</span>{chapter.title}</button>)}</div>
+    </nav>}
+    <div className="bk-story-reading">
+      {story.chapters.map((chapter,i)=><article id={`story-chapter-${chapter.id}`} tabIndex={-1} className={`bk-story-chapter ${i%2?'reverse':''}`} key={chapter.id}>
+        <div className="bk-story-chapter-copy"><span className="bk-story-chapter-no">{String(i+1).padStart(2,'0')} <i>/</i> {String(story.chapters.length).padStart(2,'0')}</span><span className="bk-eyebrow">{labels['story.chapter']||'Chapter'} {String(i+1).padStart(2,'0')}</span><h2>{chapter.title}</h2><p>{chapter.body}</p>{chapter.quote&&<blockquote>“{chapter.quote}”</blockquote>}
+          {i<story.chapters.length-1&&<button type="button" className="bk-story-next" onClick={()=>jumpToChapter(i+1)}>{labels['story.nextChapter']||'Continue reading'}<ArrowRight size={15}/></button>}
+        </div>{chapter.image&&<figure className="bk-story-chapter-figure"><img src={imageUrl(chapter.image)} alt={chapter.imageAlt}/><figcaption>{story.maker}<span>{labels['story.chapter']||'Chapter'} {String(i+1).padStart(2,'0')}</span></figcaption></figure>}
+      </article>)}
+    </div>
+    <footer className="bk-story-end"><span className="bk-eyebrow">{labels['story.keepExploring']||'Keep exploring'}</span><h2>{labels['story.endTitle']||'There are more tales in the baksa.'}</h2><p>{labels['story.endText']||'Meet the makers and find the next story that stays with you.'}</p><Link className="bk-btn" href="/makers">{labels['story.endLink']||'Meet the makers'} <ArrowRight size={16}/></Link></footer>
+  </main>;
 }
 function PageHeading({id,eyebrow,title,intro,description}:{id:string;eyebrow:string;title:string;intro:string;description:string}){
   const content=useSitePage(id);

@@ -280,3 +280,22 @@ test('real Site Studio home and story previews never measure or navigate', async
   expectEvents([]);
   expect(fetchMock).not.toHaveBeenCalled();
 });
+
+test('chapter controls move focus without motion or extra discovery events', async () => {
+  const story = state.document!.stories[0];
+  story.chapters = [0, 1, 2].map(index => ({
+    ...story.chapters[0], id: `reader-${index}`, title: `Reader chapter ${index + 1}`,
+  }));
+  state.document!.theme.motion = false;
+  await render(`/stories/${story.id}`);
+  const chapter = element<HTMLElement>('#story-chapter-reader-1');
+  const scroll = vi.fn();
+  chapter.scrollIntoView = scroll;
+  await click(element('.bk-story-stops button:nth-child(2)'));
+  expect(scroll).toHaveBeenCalledWith({ behavior: 'auto', block: 'start' });
+  expect(document.activeElement).toBe(chapter);
+  expect(element('.bk-story-stops button:nth-child(2)').getAttribute('aria-current')).toBe('step');
+  expectEvents([['story_opened', {
+    story_position: 1, sponsored: story.sponsored, sample: story.sample,
+  }]]);
+});

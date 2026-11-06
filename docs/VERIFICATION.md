@@ -56,6 +56,17 @@ boundary; the generated mutation hook and UI run normally.
 
 ## Illustrated homepage visual verification
 
+- Subsequent storytelling refinement adds chapter navigation, active-chapter
+  indicators and motion-aware continuation controls. Chapter jumps move keyboard
+  focus to the selected article; active state resets when the story changes.
+- Current frontend check: 22 UI tests and five analytics tests pass, including a
+  chapter-control regression covering focus, disabled motion and no extra
+  discovery events. TypeScript passes.
+- Desktop homepage and mobile story screenshots render without browser errors.
+  Story labels are included in the server editor defaults. Visual inspection
+  caught inherited stamp positioning; the chapter-feature index now explicitly
+  resets its bottom/min-width values, and maker-name text uses the primary ink.
+
 - The homepage now uses original generated garden artwork, with an editable
   hero image and the supplied original trunk artwork kept separate.
 - Frontend TypeScript and production build pass. The shared entry is about
