@@ -26,6 +26,12 @@ Luxury must remain story-led and fun, not merely restrained typography and conve
 
 **How to apply:** Keep the original trunk, products and stories as the visual priorities. Avoid adding decorative full-panel artwork without a clear purpose and approval. Preserve functional, responsive shopping alongside the editorial experience. Do not use an unrelated product photograph as a backdrop behind the trunk.
 
+Premium presentation must use screen space purposefully, without oversized headings and large empty gaps pushing useful content out of view.
+
+**Why:** The user asked to improve the display and homepage while viewing corporate gifting, saying “you are wasting so much space”.
+
+**How to apply:** Prefer balanced desktop compositions and shorter vertical transitions so the trunk, stories, products and forms appear sooner. Keep mobile content readable and controls comfortably usable; do not equate luxury with excessive whitespace.
+
 Use the quiz as the single guided-discovery route; omit the separate “Start with a feeling” section. Storytelling should feel royal, fun, Indian and ready for a global audience.
 
 **Why:** The user explicitly requested fewer discovery choices and named these qualities for the storytelling design.

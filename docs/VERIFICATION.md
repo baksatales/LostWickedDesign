@@ -56,6 +56,16 @@ boundary; the generated mutation hook and UI run normally.
 
 ## Illustrated homepage visual verification
 
+- Latest density pass: desktop homepage places the heading and original trunk
+  side by side, with Today's Tale entering the opening viewport. Corporate
+  gifting places editable introductory copy beside the complete enquiry form.
+- Desktop homepage/corporate and 390px corporate screenshots show the tighter
+  layout without browser runtime errors. Form controls retain their required
+  fields, numeric conversions, pending/error state and confirmed-success handling.
+- Frontend typecheck, 27 frontend/analytics tests and production build passed
+  for the density pass. Tablet and editor-container styles keep columns usable
+  without applying these layout changes to private workspaces or checkout.
+
 - Subsequent storytelling refinement adds chapter navigation, active-chapter
   indicators and motion-aware continuation controls. Chapter jumps move keyboard
   focus to the selected article; active state resets when the story changes.
