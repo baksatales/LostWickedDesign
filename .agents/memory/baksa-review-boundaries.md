@@ -19,3 +19,9 @@ Retain the supplied prototype's opening-and-closing trunk interaction and Today'
 **Why:** The user explicitly identified these discovery surfaces as potential monetisation opportunities and requested behavioural/psychological principles to reduce decision fatigue in a luxury environment.
 
 **How to apply:** Include these surfaces in the first-build brief. Keep sponsorship disclosed and separate from recommendation eligibility; favour guided discovery and manageable choices over intrusive ads or manipulative urgency. Pricing and self-service advertising are not yet agreed.
+
+Luxury must remain story-led and fun, not merely restrained typography and conventional product grids. Good Earth is a user-named source of inspiration, not an identity to copy.
+
+**Why:** The user described the first implementation as looking like any other site and said it lacked storytelling and a fun vibe.
+
+**How to apply:** Discuss narrative, imagery, discovery and playful interactions before another visual rewrite. Keep functional, responsive and user-friendly shopping alongside the editorial experience.
