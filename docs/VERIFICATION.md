@@ -1,5 +1,40 @@
 # Verification record
 
+## Current editorial/backend verification
+
+- 46 tests pass: 17 supplied domain, 17 API boundary, six editorial validation,
+  and six isolated PostgreSQL integration tests.
+- PostgreSQL tests apply supplied schema/security/logic plus reviewed migrations
+  to a disposable in-memory WASM PostgreSQL instance. A test-only auth schema
+  models verified IDs; it is never used by the running application.
+- Verified: draft privacy, atomic publication, stale-edit rejection, historical
+  restoration into draft only, denied buyer/maker editorial RPCs, owned draft-only
+  image changes, application approval linking only the verified applicant,
+  double-approval rejection, order-feed isolation, unpaid/invalid/cross-maker
+  fulfilment rejection and atomic fulfilment audit events.
+- API checks verify anonymous requests cannot access editorial drafts, change
+  content, call AI, approve applicants, update profiles or fulfil orders.
+- Content validation verifies safe URLs/assets, unique IDs, valid story
+  references, bounded documents, font tokens and readable theme contrast.
+- Backend and shared-library TypeScript checks pass.
+- Frontend TypeScript and production build pass. Build reports a pre-existing
+  tooltip sourcemap warning and a 696 KB entry-chunk warning; neither stops it.
+- One browser pass verified local design edits updating the real component
+  preview, draft retention after reload, public-page isolation, trunk open/close,
+  the three-chapter Tathaastu story and its maker link, and protected admin
+  access. Public homepage/story and the embedded mobile preview had no measured
+  horizontal overflow at 390px.
+- The pass found an outer editor grid overflow on mobile. Its automatic minimum
+  grid width was removed; a subsequent 390px screenshot confirms the editor
+  controls now fit the screen. The complete browser pass was not repeated.
+- Story editing also previews its complete draft chapters. Local preview does
+  not enable real CMS publication, private records or AI spending.
+- These are not hosted Supabase Auth/PostgREST tests. No remote migration or real
+  payment/payout/refund was performed. AI provider is configured, but account-
+  gated writing has not been exercised with a live Supabase account.
+
+## Earlier storefront verification
+
 Tests run locally by Agent for this build:
 
 - Supplied business-rule suite: **17 passed**. These cover the provided calculations
@@ -20,4 +55,4 @@ Tests run locally by Agent for this build:
 The additive Supabase migration has **not** been applied or tested against a real
 Supabase instance. Real buyer/maker/admin isolation, database persistence,
 concurrent financial flows, uploads and full maker publication remain unverified.
-There are no real payment or live AI test results.
+There are no real payment or authenticated live-AI test results.

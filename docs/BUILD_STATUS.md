@@ -1,5 +1,36 @@
 # Baksa Tales — first implementation
 
+## Editorial Studio and operational expansion
+
+The current build adds a document-backed content/theme API and prepared Supabase
+storage for owner-managed brand settings, navigation, homepage sections, trunk
+cards, story chapters, page introductions/SEO and quiz display labels. Content
+save, publish and restore are distinct actions. Versions restore to a draft, not
+straight to the public site; revision checks refuse stale overwrites.
+
+New protected operations cover verified-applicant approval, corporate pipeline
+stages, maker profiles, draft image ordering and safe order fulfilment transitions.
+Order feeds are scoped to the buyer, owning maker or admin and return the latest
+100 records. Financial settlement, refunds and delivery confirmation are not
+exposed as arbitrary status selectors.
+
+The OpenAI integration is provisioned for authenticated maker/admin writing
+assistance. It drafts from user-supplied facts for human review, does not save or
+publish, and is billed to Replit credits. The gift quiz remains explainable
+rules-based matching; it is not represented as generative AI. AI access cannot be
+used until Supabase identity and roles are connected. The per-user quota is
+process-local; production needs shared quota enforcement.
+
+`006_editorial_and_operations.sql` adds editorial tables/RPCs and the new
+operational transactions. **46 local tests pass**, including six actual isolated
+PostgreSQL/WASM checks. These tests do not apply anything to a remote Supabase
+project and do not prove hosted Auth/email/PostgREST integration.
+
+Real account persistence remains blocked by the absent owner-authorized
+development Supabase connection and migrations. Payment processing, refunds,
+payouts, private course access, binary media uploads and courier integrations are
+not complete. This is not a launch-ready marketplace.
+
 ## Scope and source of truth
 
 The supplied `BAKSA_REPLIT_PROMPT` takes priority over the older Lovable kit.
@@ -24,7 +55,7 @@ photographs and logos are supplied assets, not generated substitutes.
 - [x] Implement persistent guest wishlist/bag and grouped maker selections.
 - [x] Wire sign-in, application/brief forms, private drafts and listing reviews to real APIs, with honest missing-setup states.
 - [x] Check storefront desktop and mobile renders; frontend and backend TypeScript checks pass.
-- [x] Execute 32 domain/API tests; no anonymous privileged writes or fake save confirmations accepted.
+- [x] Execute 46 domain/API/editorial/PostgreSQL tests; no anonymous privileged writes or fake save confirmations accepted.
 - [ ] Connect an owner-authorized development Supabase project.
 - [ ] Apply reviewed migrations to that development project and validate SQL/RLS.
 - [ ] Establish the first admin with explicit owner authorization.
@@ -35,7 +66,8 @@ photographs and logos are supplied assets, not generated substitutes.
 - [ ] Test concurrent stock, idempotency, signatures, failure reconciliation and refunds.
 - [ ] Implement historical financial snapshots and manual settlements.
 - [ ] Connect private file storage and server-verified Academy access.
-- [ ] Connect live AI listing assistance with fact confirmation.
+- [x] Provision AI writing provider and implement protected, human-reviewed draft endpoint.
+- [ ] Verify AI writing through a real approved maker/admin account.
 - [ ] Complete mobile/desktop browser acceptance for all connected critical journeys.
 
 ## Feature matrix
@@ -43,18 +75,18 @@ photographs and logos are supplied assets, not generated substitutes.
 | Surface | Current state | Remaining acceptance |
 | --- | --- | --- |
 | Public catalogue and four maker collections | Implemented; API tests pass; sample content labelled | Confirm real maker facts, stock and prices |
-| Homepage trunk and Today's stories | Implemented with supplied artwork and manual controls | Real sponsorship agreements and admin scheduling are deferred |
+| Homepage trunk and Today's stories | Editable content contract and protected draft/publication backend | Real sponsorship agreements and scheduling remain deferred |
 | Search, filters, product and maker routes | Implemented; public search/product journey browser pass and mobile render checked | Broader route acceptance as real catalogue becomes available |
 | Four-question gift finder | Implemented; server matching tested, strict budget enforced | Real delivery eligibility; no live AI claim |
 | Guest wishlist and bag | Implemented; browser pass confirms persistence after refresh | Signed-in merge and server-side checkout validation remain |
 | Corporate and seller forms | Implemented against real API adapters; unavailable setup fails explicitly | Connect Supabase and test persistence; seller needs verified account |
 | Email sign-in and role gates | Implemented, not verified with live accounts | Supabase configuration, redirect/email settings and real RBAC tests |
-| Maker private product draft and admin five-check review | API/UI adapters implemented, unverified | Supabase setup, actual photo uploads and admin application management |
-| Maker/admin operation pages | Partial protected surfaces and real-count adapters | Record management, secure approval, fulfilment, earnings and settlements |
+| Maker private product draft and admin five-check review | Protected adapters plus transactional draft image replacement; SQL tests pass | Hosted Supabase setup and binary photo uploads |
+| Maker/admin operations | Scoped feed and approval/brief/fulfilment/profile APIs implemented; relevant SQL transactions tested | Hosted-account browser verification, earnings and settlements |
 | Buyer orders, addresses and classes | Partial account surface only | Full records/actions and paid access checks |
 | Academy | Information page only | Course proposals, purchase, private video and booking integration |
 | Multivendor payment/refund operations | Disabled; not implemented in this milestone | Atomic reservations/checkout, real test gateway, webhook/reconciliation tests |
-| Live AI assistance | Disabled; manual description remains available | Real provider, authorization, fact confirmation and tests |
+| Live AI assistance | Provider provisioned; private review-only drafting endpoint implemented | Verified Supabase roles, hosted-account acceptance, shared production quotas |
 | Courier, PIN verification, CRM, messaging | Not connected | Provider adapters, authorization and delivery tests |
 
 ## Security audit
@@ -100,7 +132,8 @@ No simulated SMS/phone OTP is provided.
 Do not run the kit's local auth stub on Supabase. The original SQL is preserved
 under `reference/baksa-kit/supabase/migrations/` for review. On a clean authorized
 development project, apply schema/security/logic then the new
-`supabase/migrations/005_reviewed_first_build.sql` atomically. Do not apply
+`supabase/migrations/005_reviewed_first_build.sql` and then
+`supabase/migrations/006_editorial_and_operations.sql` atomically. Do not apply
 `004_seed.sql` without confirming the sample facts and creating a safe import.
 The backend requires the security-revision RPC before any database workflow.
 
@@ -118,4 +151,5 @@ process. Publishing this app does not migrate an external Supabase database.
 - `pnpm --filter @workspace/api-spec run codegen` after API contract changes
 - Health: `/api/healthz`; integration capabilities: `/api/runtime`
 
-No live publishing, payments or paid third-party setup has been authorized.
+No live publishing or payments have been performed. AI integration setup was
+included in the requested build with a user-facing Replit-credit usage notice.

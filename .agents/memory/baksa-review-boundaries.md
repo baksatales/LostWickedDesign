@@ -31,3 +31,9 @@ Use the quiz as the single guided-discovery route; omit the separate “Start wi
 **Why:** The user explicitly requested fewer discovery choices and named these qualities for the storytelling design.
 
 **How to apply:** Consolidate guided-discovery calls to action around the same quiz. Preserve straightforward shopping and editorial reading without adding competing mood finders or discovery tools. Discuss the design before implementing it.
+
+The user wants visual and editorial elements editable so they can change the look and feel and keep refreshing the website; the supplied Claude-generated buyer, maker and admin designs are inspiration.
+
+**Why:** The user explicitly authorised the end-to-end build and requested owner-controlled refreshes rather than code-dependent content changes.
+
+**How to apply:** Treat owner editing as a core product experience, not a developer-only configuration file. Preserve the agreed identity and clearly separate editable presentation from protected business rules.

@@ -36,11 +36,11 @@ router.get("/runtime", async (_req, res): Promise<void> => {
   const configured = !!cfg.url && !!cfg.anon;
   const ready = await securityReady();
   res.json(GetRuntimeResponse.parse({
-    database: ready, auth: configured, payments: false, ai: false,
+    database: ready, auth: configured, payments: false, ai: !!(process.env.AI_INTEGRATIONS_OPENAI_BASE_URL && process.env.AI_INTEGRATIONS_OPENAI_API_KEY),
     supabaseUrl: cfg.url, supabaseAnonKey: cfg.anon,
-    message: ready ? "Catalogue and account workflows connected. Payments and AI still require setup." :
+    message: ready ? "Catalogue and account workflows connected. Payments still require setup; AI writing requires an approved maker or admin account." :
       configured ? "Sign-in is connected. The reviewed database security migration still needs applying." :
-      "Development catalogue. Connect Supabase to enable accounts and saved maker/admin workflows. Payments and AI are not connected.",
+      "Development catalogue. Connect Supabase to enable accounts and saved maker/admin workflows. Payments are not connected; AI writing requires a verified maker or admin account.",
   }));
 });
 router.get("/catalog", async (_req, res): Promise<void> => {

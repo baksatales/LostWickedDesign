@@ -9,6 +9,8 @@ beforeAll(async () => {
   // Force isolated setup-required mode: these tests must never write to a remote DB.
   vi.stubEnv("SUPABASE_URL", "");
   vi.stubEnv("SUPABASE_ANON_KEY", "");
+  vi.stubEnv("AI_INTEGRATIONS_OPENAI_BASE_URL", "");
+  vi.stubEnv("AI_INTEGRATIONS_OPENAI_API_KEY", "");
   server = createServer(app);
   await new Promise<void>(resolve => server.listen(0, "127.0.0.1", resolve));
   url = `http://127.0.0.1:${(server.address() as AddressInfo).port}/api`;
@@ -73,6 +75,30 @@ describe("public storefront API", () => {
 });
 
 describe("mutation boundaries without external setup", () => {
+  it("serves an explicit default editorial document without exposing a draft", async () => {
+    const response = await fetch(url + "/site");
+    const result = await response.json();
+    expect(response.status).toBe(200);
+    expect(result.configured).toBe(false);
+    expect(result.revision).toBe(0);
+    expect(result.document.sections.some((s: { type: string }) => s.type === "story")).toBe(true);
+    expect(result).not.toHaveProperty("draft");
+    expect(JSON.stringify(result)).not.toContain("Start with the feeling");
+  });
+  it("protects all editorial, AI and operational endpoints from anonymous writes", async () => {
+    for (const [path, method] of [
+      ["/admin/site", "GET"], ["/admin/site", "PUT"], ["/admin/site/publish", "POST"],
+      ["/admin/site/restore", "POST"], ["/operations", "GET"],
+      ["/admin/applications/10000000-0000-4000-8000-000000000001", "PATCH"],
+      ["/admin/briefs/10000000-0000-4000-8000-000000000001", "PATCH"],
+      ["/orders/10000000-0000-4000-8000-000000000001/fulfilment", "PATCH"],
+      ["/maker/brand", "PUT"], ["/maker/products/10000000-0000-4000-8000-000000000001/images", "PUT"],
+      ["/editorial/assist", "POST"],
+    ]) {
+      const response = await fetch(url + path, { method, headers: { "content-type": "application/json", "x-role": "admin" }, ...(method !== "GET" ? { body: "{}" } : {}) });
+      expect(response.status, `${method} ${path}`).toBe(401);
+    }
+  });
   it("refuses an anonymous workspace, including a forged role header", async () => {
     expect((await fetch(url + "/workspace", { headers: { "x-role": "admin" } })).status).toBe(401);
   });

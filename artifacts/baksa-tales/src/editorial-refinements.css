@@ -1,0 +1,67 @@
+/* Keep the original baksa artwork legible; optional hero photography is explicit. */
+.bk-dynamic-image {
+  background:
+    radial-gradient(ellipse at 50% 48%, color-mix(in srgb, var(--bk-gold) 20%, transparent), transparent 65%),
+    var(--bk-cream);
+}
+.bk-dynamic-image::before {
+  content: "";
+  position: absolute;
+  inset: 7%;
+  border: 1px solid color-mix(in srgb, var(--bk-gold) 45%, transparent);
+  border-radius: 48% 48% 2px 2px;
+  pointer-events: none;
+}
+.bk-home-section.tone-dark.bk-editorial-story > div:first-child > p,
+.bk-home-section.tone-dark .bk-storycopy p,
+.bk-home-section.tone-dark .bk-textlink {
+  color: var(--bk-cream);
+}
+.studio-preview-frame { container-type: inline-size; }
+.studio-layout > *,
+.studio-workspace > *,
+.studio-sidebar,
+.studio-tabs {
+  min-width: 0;
+  max-width: 100%;
+}
+@media (max-width: 800px) {
+  .studio-layout,
+  .studio-workspace {
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+  }
+  .studio-tabs {
+    width: 100%;
+    overflow-x: auto;
+  }
+  .studio-tabs button { flex-shrink: 0; }
+  .studio-link-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 34px; }
+}
+/* The editor preview responds to its own width, not the enclosing browser. */
+@container (max-width: 800px) {
+  .studio-preview-frame .bk-dynamic-hero,
+  .studio-preview-frame .bk-editorial-story,
+  .studio-preview-frame .bk-story-cover,
+  .studio-preview-frame .bk-story-chapter,
+  .studio-preview-frame .bk-story-chapter.reverse,
+  .studio-preview-frame .bk-split,
+  .studio-preview-frame .bk-footgrid {
+    grid-template-columns: 1fr;
+  }
+  .studio-preview-frame .bk-dynamic-hero { margin: 12px 14px 20px; padding: 0; min-height: 0; }
+  .studio-preview-frame .bk-dynamic-copy { padding: 28px 22px 14px; }
+  .studio-preview-frame .bk-dynamic-copy h1 { font-size: 42px; }
+  .studio-preview-frame .bk-dynamic-image { min-height: 340px; max-height: 430px; }
+  .studio-preview-frame .bk-dynamic-image > .bk-trunk-area { padding: 12% 4% 0; }
+  .studio-preview-frame .bk-editorial-story { padding: 45px 22px; gap: 25px; }
+  .studio-preview-frame .bk-editorial-story h2 { font-size: 38px; }
+  .studio-preview-frame .bk-story-cover h1 { font-size: 40px; }
+  .studio-preview-frame .bk-productgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .studio-preview-frame .bk-header-main { gap: 10px; padding-inline: 16px; }
+  .studio-preview-frame .bk-nav { display: none; }
+  .studio-preview-frame .bk-actions { gap: 2px; }
+  .studio-preview-frame .bk-section { padding-inline: 22px; }
+  .studio-preview-frame .bk-banner { flex-direction: column; align-items: flex-start; padding: 25px; }
+  .studio-preview-frame .bk-banner h2 { font-size: 36px; }
+}

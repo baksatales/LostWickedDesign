@@ -39,7 +39,13 @@ and warm editorial luxury.
 - Preserve Supabase, original trunk artwork and supplied product photography.
 - Never use browser storage as authoritative account, stock, order, role or payout data.
 - Security patch verification gates all real database workflows; absent setup is not simulated success.
-- Payments and live AI remain disabled until real providers and security tests are in place.
+- Payments remain disabled until a real provider and financial safety tests are in place.
+- OpenAI writing is provisioned through Replit AI Integrations (credit-billed).
+  It is verified-maker/admin-only, review-only, and never publishes or changes prices.
+- Site Studio owns editorial content and validated appearance tokens, not
+  executable HTML/CSS, roles, finance rules or order permissions.
+- Editorial save, publish and restore are separate, revision-checked PostgreSQL
+  transactions. Public RPCs never expose unpublished drafts.
 - Current samples have unverified prices/materials/lead times; never silently promote them to live listings.
 
 ## Product
@@ -52,12 +58,16 @@ implementation is not a launch-ready complete marketplace.
 - Luxury/premium aesthetics throughout buyer, maker and admin experiences.
 - Opening/closing trunk and Today's stories are potential paid brand-feature surfaces.
 - Keep sponsorship disclosed, simplify discovery and avoid fabricated urgency.
+- The quiz is the sole guided-discovery route; omit “Start with a feeling.”
+- Storytelling should feel royal, fun, Indian and welcoming globally.
 
 ## Gotchas
 
 - Do not run the supplied SQL migrations or auth test stub blindly against Supabase.
 - Do not expose a service-role/secret key through the anon-key config.
 - Never alter baksatales.com, DNS, production data or publish without authorization.
+- Apply the reviewed editorial/operations migration after the security patch
+  on an owner-authorized development Supabase project, not an unknown live database.
 
 ## Pointers
 

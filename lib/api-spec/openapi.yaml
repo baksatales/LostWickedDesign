@@ -11,6 +11,166 @@ tags:
   - name: health
     description: Health operations
 paths:
+  /editorial/assist:
+    post:
+      operationId: draftEditorial
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/EditorialInput" }
+      responses:
+        "200":
+          description: AI draft for human review. Never saved or published automatically.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/EditorialDraft" }
+  /site:
+    get:
+      operationId: getSite
+      responses:
+        "200":
+          description: Published content, never unpublished drafts.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SiteState" }
+  /admin/site:
+    get:
+      operationId: getSiteDraft
+      responses:
+        "200":
+          description: Admin draft and version history.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SiteDraft" }
+    put:
+      operationId: saveSiteDraft
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SiteEdit" }
+      responses:
+        "200":
+          description: Saved with optimistic concurrency.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SiteDraft" }
+  /admin/site/publish:
+    post:
+      operationId: publishSite
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SiteRevisionInput" }
+      responses:
+        "200":
+          description: Published atomically.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SiteDraft" }
+  /admin/site/restore:
+    post:
+      operationId: restoreSite
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SiteRestoreInput" }
+      responses:
+        "200":
+          description: Historical version restored into draft only.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SiteDraft" }
+  /operations:
+    get:
+      operationId: getOperations
+      responses:
+        "200":
+          description: Private role-scoped operational data.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Operations" }
+  /admin/applications/{id}:
+    patch:
+      operationId: reviewApplication
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ApplicationDecision" }
+      responses:
+        "200":
+          description: Applicant reviewed.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Receipt" }
+  /admin/briefs/{id}:
+    patch:
+      operationId: updateBrief
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/BriefStageInput" }
+      responses:
+        "200":
+          description: Corporate pipeline updated.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Receipt" }
+  /orders/{id}/fulfilment:
+    patch:
+      operationId: updateFulfilment
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/FulfilmentInput" }
+      responses:
+        "200":
+          description: Safe fulfilment transition recorded.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Receipt" }
+  /maker/brand:
+    put:
+      operationId: saveMakerBrand
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/MakerBrandInput" }
+      responses:
+        "200":
+          description: Owned maker profile saved.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Receipt" }
+  /maker/products/{id}/images:
+    put:
+      operationId: saveProductImages
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ProductImagesInput" }
+      responses:
+        "200":
+          description: Draft images replaced atomically.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Receipt" }
   /catalog:
     get:
       operationId: getCatalog
@@ -134,6 +294,257 @@ paths:
                 $ref: "#/components/schemas/HealthStatus"
 components:
   schemas:
+    EditorialInput:
+      type: object
+      additionalProperties: false
+      required: [purpose, facts, tone]
+      properties:
+        purpose: { type: string, enum: [story, product, caption] }
+        facts: { type: string, minLength: 20, maxLength: 8000 }
+        tone: { type: string, enum: [warm, celebratory, editorial] }
+    EditorialDraft:
+      type: object
+      required: [text, disclosure]
+      properties:
+        text: { type: string }
+        disclosure: { type: string }
+    SiteLink:
+      type: object
+      additionalProperties: false
+      required: [label, href]
+      properties:
+        label: { type: string, minLength: 1, maxLength: 80 }
+        href: { type: string, minLength: 1, maxLength: 500 }
+    SiteTheme:
+      type: object
+      additionalProperties: false
+      required: [background, surface, primary, secondary, accent, ink, muted, headingFont, bodyFont, radius, spacing, motion, ornament]
+      properties:
+        background: { type: string, pattern: '^#[0-9a-fA-F]{6}$' }
+        surface: { type: string, pattern: '^#[0-9a-fA-F]{6}$' }
+        primary: { type: string, pattern: '^#[0-9a-fA-F]{6}$' }
+        secondary: { type: string, pattern: '^#[0-9a-fA-F]{6}$' }
+        accent: { type: string, pattern: '^#[0-9a-fA-F]{6}$' }
+        ink: { type: string, pattern: '^#[0-9a-fA-F]{6}$' }
+        muted: { type: string, pattern: '^#[0-9a-fA-F]{6}$' }
+        headingFont: { type: string, enum: [garamond, cormorant, georgia] }
+        bodyFont: { type: string, enum: [inter, system, georgia] }
+        radius: { type: integer, minimum: 0, maximum: 28 }
+        spacing: { type: string, enum: [compact, comfortable, generous] }
+        motion: { type: boolean }
+        ornament: { type: boolean }
+    SiteBrand:
+      type: object
+      additionalProperties: false
+      required: [name, tagline, logo, mark, announcement, footerTitle, footerText, copyright]
+      properties:
+        name: { type: string, minLength: 1, maxLength: 60 }
+        tagline: { type: string, maxLength: 120 }
+        logo: { type: string, maxLength: 500 }
+        mark: { type: string, maxLength: 500 }
+        announcement: { type: string, maxLength: 180 }
+        footerTitle: { type: string, maxLength: 120 }
+        footerText: { type: string, maxLength: 1000 }
+        copyright: { type: string, maxLength: 180 }
+    SiteChapter:
+      type: object
+      additionalProperties: false
+      required: [id, title, body, image, imageAlt, quote]
+      properties:
+        id: { type: string, minLength: 1, maxLength: 60 }
+        title: { type: string, minLength: 1, maxLength: 140 }
+        body: { type: string, maxLength: 2500 }
+        image: { type: string, maxLength: 500 }
+        imageAlt: { type: string, maxLength: 240 }
+        quote: { type: string, maxLength: 600 }
+    SiteStory:
+      type: object
+      additionalProperties: false
+      required: [id, maker, title, intro, image, imageAlt, sponsored, sample, visible, chapters, link]
+      properties:
+        id: { type: string, pattern: '^[a-z0-9-]{1,60}$' }
+        maker: { type: string, maxLength: 100 }
+        title: { type: string, minLength: 1, maxLength: 140 }
+        intro: { type: string, maxLength: 700 }
+        image: { type: string, maxLength: 500 }
+        imageAlt: { type: string, maxLength: 240 }
+        sponsored: { type: boolean }
+        sample: { type: boolean }
+        visible: { type: boolean }
+        chapters: { type: array, minItems: 1, maxItems: 8, items: { $ref: "#/components/schemas/SiteChapter" } }
+        link: { $ref: "#/components/schemas/SiteLink" }
+    SiteSection:
+      type: object
+      additionalProperties: false
+      required: [id, type, visible, eyebrow, title, text, image, imageAlt, tone, layout, link, storyId, productIds]
+      properties:
+        id: { type: string, pattern: '^[a-z0-9-]{1,60}$' }
+        type: { type: string, enum: [hero, story, products, maker, quiz, invitation] }
+        visible: { type: boolean }
+        eyebrow: { type: string, maxLength: 120 }
+        title: { type: string, maxLength: 180 }
+        text: { type: string, maxLength: 1500 }
+        image: { type: string, maxLength: 500 }
+        imageAlt: { type: string, maxLength: 240 }
+        tone: { type: string, enum: [light, dark, accent] }
+        layout: { type: string, enum: [editorial, centred, split] }
+        link: { $ref: "#/components/schemas/SiteLink" }
+        storyId: { type: string, maxLength: 60 }
+        productIds: { type: array, maxItems: 12, items: { type: string, maxLength: 100 } }
+    SiteTrunkCard:
+      type: object
+      additionalProperties: false
+      required: [id, title, caption, image, imageAlt, sponsored, link]
+      properties:
+        id: { type: string, pattern: '^[a-z0-9-]{1,60}$' }
+        title: { type: string, minLength: 1, maxLength: 90 }
+        caption: { type: string, maxLength: 150 }
+        image: { type: string, maxLength: 500 }
+        imageAlt: { type: string, maxLength: 240 }
+        sponsored: { type: boolean }
+        link: { $ref: "#/components/schemas/SiteLink" }
+    SitePage:
+      type: object
+      additionalProperties: false
+      required: [id, title, description, eyebrow, heading, intro, image, imageAlt]
+      properties:
+        id: { type: string, pattern: '^[a-z0-9-]{1,60}$' }
+        title: { type: string, maxLength: 120 }
+        description: { type: string, maxLength: 300 }
+        eyebrow: { type: string, maxLength: 120 }
+        heading: { type: string, maxLength: 180 }
+        intro: { type: string, maxLength: 1500 }
+        image: { type: string, maxLength: 500 }
+        imageAlt: { type: string, maxLength: 240 }
+    SiteDocument:
+      type: object
+      additionalProperties: false
+      required: [brand, theme, navigation, footerLinks, sections, stories, trunkCards, pages, labels]
+      properties:
+        brand: { $ref: "#/components/schemas/SiteBrand" }
+        theme: { $ref: "#/components/schemas/SiteTheme" }
+        navigation: { type: array, maxItems: 8, items: { $ref: "#/components/schemas/SiteLink" } }
+        footerLinks: { type: array, maxItems: 16, items: { $ref: "#/components/schemas/SiteLink" } }
+        sections: { type: array, minItems: 1, maxItems: 20, items: { $ref: "#/components/schemas/SiteSection" } }
+        stories: { type: array, maxItems: 20, items: { $ref: "#/components/schemas/SiteStory" } }
+        trunkCards: { type: array, minItems: 1, maxItems: 3, items: { $ref: "#/components/schemas/SiteTrunkCard" } }
+        pages: { type: array, maxItems: 30, items: { $ref: "#/components/schemas/SitePage" } }
+        labels: { type: object, additionalProperties: { type: string, maxLength: 500 } }
+    SiteState:
+      type: object
+      required: [document, revision, configured, updatedAt]
+      properties:
+        document: { $ref: "#/components/schemas/SiteDocument" }
+        revision: { type: integer }
+        configured: { type: boolean }
+        updatedAt: { type: string }
+    SiteVersion:
+      type: object
+      required: [id, publishedAt]
+      properties:
+        id: { type: integer }
+        publishedAt: { type: string }
+    SiteDraft:
+      type: object
+      required: [document, revision, publishedRevision, updatedAt, history]
+      properties:
+        document: { $ref: "#/components/schemas/SiteDocument" }
+        revision: { type: integer }
+        publishedRevision: { type: integer }
+        updatedAt: { type: string }
+        history: { type: array, items: { $ref: "#/components/schemas/SiteVersion" } }
+    SiteEdit:
+      type: object
+      required: [document, expectedRevision]
+      properties:
+        document: { $ref: "#/components/schemas/SiteDocument" }
+        expectedRevision: { type: integer, minimum: 0 }
+    SiteRevisionInput:
+      type: object
+      required: [expectedRevision]
+      properties:
+        expectedRevision: { type: integer, minimum: 0 }
+    SiteRestoreInput:
+      type: object
+      required: [expectedRevision, versionId]
+      properties:
+        expectedRevision: { type: integer, minimum: 0 }
+        versionId: { type: integer, minimum: 1 }
+    OperationOrder:
+      type: object
+      required: [id, ref, status, paymentStatus, totalPaise, createdAt, trackingNumber, carrier]
+      properties:
+        id: { type: string }
+        ref: { type: string }
+        status: { type: string }
+        paymentStatus: { type: string }
+        totalPaise: { type: integer }
+        createdAt: { type: string }
+        trackingNumber: { type: string }
+        carrier: { type: string }
+    OperationApplication:
+      type: object
+      required: [id, brand, contactName, craft, city, status]
+      properties:
+        id: { type: string }
+        brand: { type: string }
+        contactName: { type: string }
+        craft: { type: string }
+        city: { type: string }
+        status: { type: string }
+    OperationBrief:
+      type: object
+      required: [id, ref, purpose, company, quantity, budgetPaise, neededBy, stage, contactName, reach, message]
+      properties:
+        id: { type: string }
+        ref: { type: string }
+        purpose: { type: string }
+        company: { type: string }
+        quantity: { type: integer }
+        budgetPaise: { type: integer }
+        neededBy: { type: string }
+        stage: { type: string }
+        contactName: { type: string }
+        reach: { type: string }
+        message: { type: string }
+    Operations:
+      type: object
+      required: [orders, applications, briefs]
+      properties:
+        orders: { type: array, items: { $ref: "#/components/schemas/OperationOrder" } }
+        applications: { type: array, items: { $ref: "#/components/schemas/OperationApplication" } }
+        briefs: { type: array, items: { $ref: "#/components/schemas/OperationBrief" } }
+    ApplicationDecision:
+      type: object
+      required: [decision, note]
+      properties:
+        decision: { type: string, enum: [approved, declined, call] }
+        note: { type: string, maxLength: 1000 }
+    BriefStageInput:
+      type: object
+      required: [stage]
+      properties:
+        stage: { type: string, enum: [new, contacted, proposal, won, lost] }
+    FulfilmentInput:
+      type: object
+      required: [status, trackingNumber, carrier, note]
+      properties:
+        status: { type: string, enum: [packed, dispatched, delayed, problem] }
+        trackingNumber: { type: string, maxLength: 120 }
+        carrier: { type: string, maxLength: 100 }
+        note: { type: string, maxLength: 1000 }
+    MakerBrandInput:
+      type: object
+      required: [tagline, story, heroImage]
+      properties:
+        tagline: { type: string, minLength: 1, maxLength: 240 }
+        story: { type: string, minLength: 1, maxLength: 6000 }
+        heroImage: { type: string, maxLength: 500 }
+    ProductImagesInput:
+      type: object
+      required: [images]
+      properties:
+        images: { type: array, minItems: 1, maxItems: 8, items: { type: string, minLength: 1, maxLength: 500 } }
     Runtime:
       type: object
       required: [database, auth, payments, ai, supabaseUrl, supabaseAnonKey, message]

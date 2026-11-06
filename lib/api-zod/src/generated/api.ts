@@ -8,6 +8,1593 @@
 import * as zod from 'zod';
 
 
+export const draftEditorialBodyFactsMin = 20;
+export const draftEditorialBodyFactsMax = 8000;
+
+
+
+export const DraftEditorialBody = zod.object({
+  "purpose": zod.enum(['story', 'product', 'caption']),
+  "facts": zod.string().min(draftEditorialBodyFactsMin).max(draftEditorialBodyFactsMax),
+  "tone": zod.enum(['warm', 'celebratory', 'editorial'])
+})
+
+export const DraftEditorialResponse = zod.object({
+  "text": zod.string(),
+  "disclosure": zod.string()
+})
+
+
+export const getSiteResponseDocumentBrandNameMax = 60;
+
+export const getSiteResponseDocumentBrandTaglineMax = 120;
+
+export const getSiteResponseDocumentBrandLogoMax = 500;
+
+export const getSiteResponseDocumentBrandMarkMax = 500;
+
+export const getSiteResponseDocumentBrandAnnouncementMax = 180;
+
+export const getSiteResponseDocumentBrandFooterTitleMax = 120;
+
+export const getSiteResponseDocumentBrandFooterTextMax = 1000;
+
+export const getSiteResponseDocumentBrandCopyrightMax = 180;
+
+export const getSiteResponseDocumentThemeBackgroundRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const getSiteResponseDocumentThemeSurfaceRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const getSiteResponseDocumentThemePrimaryRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const getSiteResponseDocumentThemeSecondaryRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const getSiteResponseDocumentThemeAccentRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const getSiteResponseDocumentThemeInkRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const getSiteResponseDocumentThemeMutedRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const getSiteResponseDocumentThemeRadiusMin = 0;
+export const getSiteResponseDocumentThemeRadiusMax = 28;
+
+export const getSiteResponseDocumentNavigationItemLabelMax = 80;
+
+export const getSiteResponseDocumentNavigationItemHrefMax = 500;
+
+export const getSiteResponseDocumentNavigationMax = 8;
+
+export const getSiteResponseDocumentFooterLinksItemLabelMax = 80;
+
+export const getSiteResponseDocumentFooterLinksItemHrefMax = 500;
+
+export const getSiteResponseDocumentFooterLinksMax = 16;
+
+export const getSiteResponseDocumentSectionsItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
+export const getSiteResponseDocumentSectionsItemEyebrowMax = 120;
+
+export const getSiteResponseDocumentSectionsItemTitleMax = 180;
+
+export const getSiteResponseDocumentSectionsItemTextMax = 1500;
+
+export const getSiteResponseDocumentSectionsItemImageMax = 500;
+
+export const getSiteResponseDocumentSectionsItemImageAltMax = 240;
+
+export const getSiteResponseDocumentSectionsItemLinkLabelMax = 80;
+
+export const getSiteResponseDocumentSectionsItemLinkHrefMax = 500;
+
+export const getSiteResponseDocumentSectionsItemStoryIdMax = 60;
+
+export const getSiteResponseDocumentSectionsItemProductIdsItemMax = 100;
+
+export const getSiteResponseDocumentSectionsItemProductIdsMax = 12;
+
+export const getSiteResponseDocumentSectionsMax = 20;
+
+export const getSiteResponseDocumentStoriesItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
+export const getSiteResponseDocumentStoriesItemMakerMax = 100;
+
+export const getSiteResponseDocumentStoriesItemTitleMax = 140;
+
+export const getSiteResponseDocumentStoriesItemIntroMax = 700;
+
+export const getSiteResponseDocumentStoriesItemImageMax = 500;
+
+export const getSiteResponseDocumentStoriesItemImageAltMax = 240;
+
+export const getSiteResponseDocumentStoriesItemChaptersItemIdMax = 60;
+
+export const getSiteResponseDocumentStoriesItemChaptersItemTitleMax = 140;
+
+export const getSiteResponseDocumentStoriesItemChaptersItemBodyMax = 2500;
+
+export const getSiteResponseDocumentStoriesItemChaptersItemImageMax = 500;
+
+export const getSiteResponseDocumentStoriesItemChaptersItemImageAltMax = 240;
+
+export const getSiteResponseDocumentStoriesItemChaptersItemQuoteMax = 600;
+
+export const getSiteResponseDocumentStoriesItemChaptersMax = 8;
+
+export const getSiteResponseDocumentStoriesItemLinkLabelMax = 80;
+
+export const getSiteResponseDocumentStoriesItemLinkHrefMax = 500;
+
+export const getSiteResponseDocumentStoriesMax = 20;
+
+export const getSiteResponseDocumentTrunkCardsItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
+export const getSiteResponseDocumentTrunkCardsItemTitleMax = 90;
+
+export const getSiteResponseDocumentTrunkCardsItemCaptionMax = 150;
+
+export const getSiteResponseDocumentTrunkCardsItemImageMax = 500;
+
+export const getSiteResponseDocumentTrunkCardsItemImageAltMax = 240;
+
+export const getSiteResponseDocumentTrunkCardsItemLinkLabelMax = 80;
+
+export const getSiteResponseDocumentTrunkCardsItemLinkHrefMax = 500;
+
+export const getSiteResponseDocumentTrunkCardsMax = 3;
+
+export const getSiteResponseDocumentPagesItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
+export const getSiteResponseDocumentPagesItemTitleMax = 120;
+
+export const getSiteResponseDocumentPagesItemDescriptionMax = 300;
+
+export const getSiteResponseDocumentPagesItemEyebrowMax = 120;
+
+export const getSiteResponseDocumentPagesItemHeadingMax = 180;
+
+export const getSiteResponseDocumentPagesItemIntroMax = 1500;
+
+export const getSiteResponseDocumentPagesItemImageMax = 500;
+
+export const getSiteResponseDocumentPagesItemImageAltMax = 240;
+
+export const getSiteResponseDocumentPagesMax = 30;
+
+export const getSiteResponseDocumentLabelsMaxOne = 500;
+
+
+
+export const GetSiteResponse = zod.object({
+  "document": zod.object({
+  "brand": zod.object({
+  "name": zod.string().min(1).max(getSiteResponseDocumentBrandNameMax),
+  "tagline": zod.string().max(getSiteResponseDocumentBrandTaglineMax),
+  "logo": zod.string().max(getSiteResponseDocumentBrandLogoMax),
+  "mark": zod.string().max(getSiteResponseDocumentBrandMarkMax),
+  "announcement": zod.string().max(getSiteResponseDocumentBrandAnnouncementMax),
+  "footerTitle": zod.string().max(getSiteResponseDocumentBrandFooterTitleMax),
+  "footerText": zod.string().max(getSiteResponseDocumentBrandFooterTextMax),
+  "copyright": zod.string().max(getSiteResponseDocumentBrandCopyrightMax)
+}),
+  "theme": zod.object({
+  "background": zod.string().regex(getSiteResponseDocumentThemeBackgroundRegExp),
+  "surface": zod.string().regex(getSiteResponseDocumentThemeSurfaceRegExp),
+  "primary": zod.string().regex(getSiteResponseDocumentThemePrimaryRegExp),
+  "secondary": zod.string().regex(getSiteResponseDocumentThemeSecondaryRegExp),
+  "accent": zod.string().regex(getSiteResponseDocumentThemeAccentRegExp),
+  "ink": zod.string().regex(getSiteResponseDocumentThemeInkRegExp),
+  "muted": zod.string().regex(getSiteResponseDocumentThemeMutedRegExp),
+  "headingFont": zod.enum(['garamond', 'cormorant', 'georgia']),
+  "bodyFont": zod.enum(['inter', 'system', 'georgia']),
+  "radius": zod.number().int().min(getSiteResponseDocumentThemeRadiusMin).max(getSiteResponseDocumentThemeRadiusMax),
+  "spacing": zod.enum(['compact', 'comfortable', 'generous']),
+  "motion": zod.boolean(),
+  "ornament": zod.boolean()
+}),
+  "navigation": zod.array(zod.object({
+  "label": zod.string().min(1).max(getSiteResponseDocumentNavigationItemLabelMax),
+  "href": zod.string().min(1).max(getSiteResponseDocumentNavigationItemHrefMax)
+})).max(getSiteResponseDocumentNavigationMax),
+  "footerLinks": zod.array(zod.object({
+  "label": zod.string().min(1).max(getSiteResponseDocumentFooterLinksItemLabelMax),
+  "href": zod.string().min(1).max(getSiteResponseDocumentFooterLinksItemHrefMax)
+})).max(getSiteResponseDocumentFooterLinksMax),
+  "sections": zod.array(zod.object({
+  "id": zod.string().regex(getSiteResponseDocumentSectionsItemIdRegExp),
+  "type": zod.enum(['hero', 'story', 'products', 'maker', 'quiz', 'invitation']),
+  "visible": zod.boolean(),
+  "eyebrow": zod.string().max(getSiteResponseDocumentSectionsItemEyebrowMax),
+  "title": zod.string().max(getSiteResponseDocumentSectionsItemTitleMax),
+  "text": zod.string().max(getSiteResponseDocumentSectionsItemTextMax),
+  "image": zod.string().max(getSiteResponseDocumentSectionsItemImageMax),
+  "imageAlt": zod.string().max(getSiteResponseDocumentSectionsItemImageAltMax),
+  "tone": zod.enum(['light', 'dark', 'accent']),
+  "layout": zod.enum(['editorial', 'centred', 'split']),
+  "link": zod.object({
+  "label": zod.string().min(1).max(getSiteResponseDocumentSectionsItemLinkLabelMax),
+  "href": zod.string().min(1).max(getSiteResponseDocumentSectionsItemLinkHrefMax)
+}),
+  "storyId": zod.string().max(getSiteResponseDocumentSectionsItemStoryIdMax),
+  "productIds": zod.array(zod.string().max(getSiteResponseDocumentSectionsItemProductIdsItemMax)).max(getSiteResponseDocumentSectionsItemProductIdsMax)
+})).min(1).max(getSiteResponseDocumentSectionsMax),
+  "stories": zod.array(zod.object({
+  "id": zod.string().regex(getSiteResponseDocumentStoriesItemIdRegExp),
+  "maker": zod.string().max(getSiteResponseDocumentStoriesItemMakerMax),
+  "title": zod.string().min(1).max(getSiteResponseDocumentStoriesItemTitleMax),
+  "intro": zod.string().max(getSiteResponseDocumentStoriesItemIntroMax),
+  "image": zod.string().max(getSiteResponseDocumentStoriesItemImageMax),
+  "imageAlt": zod.string().max(getSiteResponseDocumentStoriesItemImageAltMax),
+  "sponsored": zod.boolean(),
+  "sample": zod.boolean(),
+  "visible": zod.boolean(),
+  "chapters": zod.array(zod.object({
+  "id": zod.string().min(1).max(getSiteResponseDocumentStoriesItemChaptersItemIdMax),
+  "title": zod.string().min(1).max(getSiteResponseDocumentStoriesItemChaptersItemTitleMax),
+  "body": zod.string().max(getSiteResponseDocumentStoriesItemChaptersItemBodyMax),
+  "image": zod.string().max(getSiteResponseDocumentStoriesItemChaptersItemImageMax),
+  "imageAlt": zod.string().max(getSiteResponseDocumentStoriesItemChaptersItemImageAltMax),
+  "quote": zod.string().max(getSiteResponseDocumentStoriesItemChaptersItemQuoteMax)
+})).min(1).max(getSiteResponseDocumentStoriesItemChaptersMax),
+  "link": zod.object({
+  "label": zod.string().min(1).max(getSiteResponseDocumentStoriesItemLinkLabelMax),
+  "href": zod.string().min(1).max(getSiteResponseDocumentStoriesItemLinkHrefMax)
+})
+})).max(getSiteResponseDocumentStoriesMax),
+  "trunkCards": zod.array(zod.object({
+  "id": zod.string().regex(getSiteResponseDocumentTrunkCardsItemIdRegExp),
+  "title": zod.string().min(1).max(getSiteResponseDocumentTrunkCardsItemTitleMax),
+  "caption": zod.string().max(getSiteResponseDocumentTrunkCardsItemCaptionMax),
+  "image": zod.string().max(getSiteResponseDocumentTrunkCardsItemImageMax),
+  "imageAlt": zod.string().max(getSiteResponseDocumentTrunkCardsItemImageAltMax),
+  "sponsored": zod.boolean(),
+  "link": zod.object({
+  "label": zod.string().min(1).max(getSiteResponseDocumentTrunkCardsItemLinkLabelMax),
+  "href": zod.string().min(1).max(getSiteResponseDocumentTrunkCardsItemLinkHrefMax)
+})
+})).min(1).max(getSiteResponseDocumentTrunkCardsMax),
+  "pages": zod.array(zod.object({
+  "id": zod.string().regex(getSiteResponseDocumentPagesItemIdRegExp),
+  "title": zod.string().max(getSiteResponseDocumentPagesItemTitleMax),
+  "description": zod.string().max(getSiteResponseDocumentPagesItemDescriptionMax),
+  "eyebrow": zod.string().max(getSiteResponseDocumentPagesItemEyebrowMax),
+  "heading": zod.string().max(getSiteResponseDocumentPagesItemHeadingMax),
+  "intro": zod.string().max(getSiteResponseDocumentPagesItemIntroMax),
+  "image": zod.string().max(getSiteResponseDocumentPagesItemImageMax),
+  "imageAlt": zod.string().max(getSiteResponseDocumentPagesItemImageAltMax)
+})).max(getSiteResponseDocumentPagesMax),
+  "labels": zod.record(zod.string(), zod.string().max(getSiteResponseDocumentLabelsMaxOne))
+}),
+  "revision": zod.number().int(),
+  "configured": zod.boolean(),
+  "updatedAt": zod.string()
+})
+
+
+export const getSiteDraftResponseDocumentBrandNameMax = 60;
+
+export const getSiteDraftResponseDocumentBrandTaglineMax = 120;
+
+export const getSiteDraftResponseDocumentBrandLogoMax = 500;
+
+export const getSiteDraftResponseDocumentBrandMarkMax = 500;
+
+export const getSiteDraftResponseDocumentBrandAnnouncementMax = 180;
+
+export const getSiteDraftResponseDocumentBrandFooterTitleMax = 120;
+
+export const getSiteDraftResponseDocumentBrandFooterTextMax = 1000;
+
+export const getSiteDraftResponseDocumentBrandCopyrightMax = 180;
+
+export const getSiteDraftResponseDocumentThemeBackgroundRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const getSiteDraftResponseDocumentThemeSurfaceRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const getSiteDraftResponseDocumentThemePrimaryRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const getSiteDraftResponseDocumentThemeSecondaryRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const getSiteDraftResponseDocumentThemeAccentRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const getSiteDraftResponseDocumentThemeInkRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const getSiteDraftResponseDocumentThemeMutedRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const getSiteDraftResponseDocumentThemeRadiusMin = 0;
+export const getSiteDraftResponseDocumentThemeRadiusMax = 28;
+
+export const getSiteDraftResponseDocumentNavigationItemLabelMax = 80;
+
+export const getSiteDraftResponseDocumentNavigationItemHrefMax = 500;
+
+export const getSiteDraftResponseDocumentNavigationMax = 8;
+
+export const getSiteDraftResponseDocumentFooterLinksItemLabelMax = 80;
+
+export const getSiteDraftResponseDocumentFooterLinksItemHrefMax = 500;
+
+export const getSiteDraftResponseDocumentFooterLinksMax = 16;
+
+export const getSiteDraftResponseDocumentSectionsItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
+export const getSiteDraftResponseDocumentSectionsItemEyebrowMax = 120;
+
+export const getSiteDraftResponseDocumentSectionsItemTitleMax = 180;
+
+export const getSiteDraftResponseDocumentSectionsItemTextMax = 1500;
+
+export const getSiteDraftResponseDocumentSectionsItemImageMax = 500;
+
+export const getSiteDraftResponseDocumentSectionsItemImageAltMax = 240;
+
+export const getSiteDraftResponseDocumentSectionsItemLinkLabelMax = 80;
+
+export const getSiteDraftResponseDocumentSectionsItemLinkHrefMax = 500;
+
+export const getSiteDraftResponseDocumentSectionsItemStoryIdMax = 60;
+
+export const getSiteDraftResponseDocumentSectionsItemProductIdsItemMax = 100;
+
+export const getSiteDraftResponseDocumentSectionsItemProductIdsMax = 12;
+
+export const getSiteDraftResponseDocumentSectionsMax = 20;
+
+export const getSiteDraftResponseDocumentStoriesItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
+export const getSiteDraftResponseDocumentStoriesItemMakerMax = 100;
+
+export const getSiteDraftResponseDocumentStoriesItemTitleMax = 140;
+
+export const getSiteDraftResponseDocumentStoriesItemIntroMax = 700;
+
+export const getSiteDraftResponseDocumentStoriesItemImageMax = 500;
+
+export const getSiteDraftResponseDocumentStoriesItemImageAltMax = 240;
+
+export const getSiteDraftResponseDocumentStoriesItemChaptersItemIdMax = 60;
+
+export const getSiteDraftResponseDocumentStoriesItemChaptersItemTitleMax = 140;
+
+export const getSiteDraftResponseDocumentStoriesItemChaptersItemBodyMax = 2500;
+
+export const getSiteDraftResponseDocumentStoriesItemChaptersItemImageMax = 500;
+
+export const getSiteDraftResponseDocumentStoriesItemChaptersItemImageAltMax = 240;
+
+export const getSiteDraftResponseDocumentStoriesItemChaptersItemQuoteMax = 600;
+
+export const getSiteDraftResponseDocumentStoriesItemChaptersMax = 8;
+
+export const getSiteDraftResponseDocumentStoriesItemLinkLabelMax = 80;
+
+export const getSiteDraftResponseDocumentStoriesItemLinkHrefMax = 500;
+
+export const getSiteDraftResponseDocumentStoriesMax = 20;
+
+export const getSiteDraftResponseDocumentTrunkCardsItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
+export const getSiteDraftResponseDocumentTrunkCardsItemTitleMax = 90;
+
+export const getSiteDraftResponseDocumentTrunkCardsItemCaptionMax = 150;
+
+export const getSiteDraftResponseDocumentTrunkCardsItemImageMax = 500;
+
+export const getSiteDraftResponseDocumentTrunkCardsItemImageAltMax = 240;
+
+export const getSiteDraftResponseDocumentTrunkCardsItemLinkLabelMax = 80;
+
+export const getSiteDraftResponseDocumentTrunkCardsItemLinkHrefMax = 500;
+
+export const getSiteDraftResponseDocumentTrunkCardsMax = 3;
+
+export const getSiteDraftResponseDocumentPagesItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
+export const getSiteDraftResponseDocumentPagesItemTitleMax = 120;
+
+export const getSiteDraftResponseDocumentPagesItemDescriptionMax = 300;
+
+export const getSiteDraftResponseDocumentPagesItemEyebrowMax = 120;
+
+export const getSiteDraftResponseDocumentPagesItemHeadingMax = 180;
+
+export const getSiteDraftResponseDocumentPagesItemIntroMax = 1500;
+
+export const getSiteDraftResponseDocumentPagesItemImageMax = 500;
+
+export const getSiteDraftResponseDocumentPagesItemImageAltMax = 240;
+
+export const getSiteDraftResponseDocumentPagesMax = 30;
+
+export const getSiteDraftResponseDocumentLabelsMaxOne = 500;
+
+
+
+export const GetSiteDraftResponse = zod.object({
+  "document": zod.object({
+  "brand": zod.object({
+  "name": zod.string().min(1).max(getSiteDraftResponseDocumentBrandNameMax),
+  "tagline": zod.string().max(getSiteDraftResponseDocumentBrandTaglineMax),
+  "logo": zod.string().max(getSiteDraftResponseDocumentBrandLogoMax),
+  "mark": zod.string().max(getSiteDraftResponseDocumentBrandMarkMax),
+  "announcement": zod.string().max(getSiteDraftResponseDocumentBrandAnnouncementMax),
+  "footerTitle": zod.string().max(getSiteDraftResponseDocumentBrandFooterTitleMax),
+  "footerText": zod.string().max(getSiteDraftResponseDocumentBrandFooterTextMax),
+  "copyright": zod.string().max(getSiteDraftResponseDocumentBrandCopyrightMax)
+}),
+  "theme": zod.object({
+  "background": zod.string().regex(getSiteDraftResponseDocumentThemeBackgroundRegExp),
+  "surface": zod.string().regex(getSiteDraftResponseDocumentThemeSurfaceRegExp),
+  "primary": zod.string().regex(getSiteDraftResponseDocumentThemePrimaryRegExp),
+  "secondary": zod.string().regex(getSiteDraftResponseDocumentThemeSecondaryRegExp),
+  "accent": zod.string().regex(getSiteDraftResponseDocumentThemeAccentRegExp),
+  "ink": zod.string().regex(getSiteDraftResponseDocumentThemeInkRegExp),
+  "muted": zod.string().regex(getSiteDraftResponseDocumentThemeMutedRegExp),
+  "headingFont": zod.enum(['garamond', 'cormorant', 'georgia']),
+  "bodyFont": zod.enum(['inter', 'system', 'georgia']),
+  "radius": zod.number().int().min(getSiteDraftResponseDocumentThemeRadiusMin).max(getSiteDraftResponseDocumentThemeRadiusMax),
+  "spacing": zod.enum(['compact', 'comfortable', 'generous']),
+  "motion": zod.boolean(),
+  "ornament": zod.boolean()
+}),
+  "navigation": zod.array(zod.object({
+  "label": zod.string().min(1).max(getSiteDraftResponseDocumentNavigationItemLabelMax),
+  "href": zod.string().min(1).max(getSiteDraftResponseDocumentNavigationItemHrefMax)
+})).max(getSiteDraftResponseDocumentNavigationMax),
+  "footerLinks": zod.array(zod.object({
+  "label": zod.string().min(1).max(getSiteDraftResponseDocumentFooterLinksItemLabelMax),
+  "href": zod.string().min(1).max(getSiteDraftResponseDocumentFooterLinksItemHrefMax)
+})).max(getSiteDraftResponseDocumentFooterLinksMax),
+  "sections": zod.array(zod.object({
+  "id": zod.string().regex(getSiteDraftResponseDocumentSectionsItemIdRegExp),
+  "type": zod.enum(['hero', 'story', 'products', 'maker', 'quiz', 'invitation']),
+  "visible": zod.boolean(),
+  "eyebrow": zod.string().max(getSiteDraftResponseDocumentSectionsItemEyebrowMax),
+  "title": zod.string().max(getSiteDraftResponseDocumentSectionsItemTitleMax),
+  "text": zod.string().max(getSiteDraftResponseDocumentSectionsItemTextMax),
+  "image": zod.string().max(getSiteDraftResponseDocumentSectionsItemImageMax),
+  "imageAlt": zod.string().max(getSiteDraftResponseDocumentSectionsItemImageAltMax),
+  "tone": zod.enum(['light', 'dark', 'accent']),
+  "layout": zod.enum(['editorial', 'centred', 'split']),
+  "link": zod.object({
+  "label": zod.string().min(1).max(getSiteDraftResponseDocumentSectionsItemLinkLabelMax),
+  "href": zod.string().min(1).max(getSiteDraftResponseDocumentSectionsItemLinkHrefMax)
+}),
+  "storyId": zod.string().max(getSiteDraftResponseDocumentSectionsItemStoryIdMax),
+  "productIds": zod.array(zod.string().max(getSiteDraftResponseDocumentSectionsItemProductIdsItemMax)).max(getSiteDraftResponseDocumentSectionsItemProductIdsMax)
+})).min(1).max(getSiteDraftResponseDocumentSectionsMax),
+  "stories": zod.array(zod.object({
+  "id": zod.string().regex(getSiteDraftResponseDocumentStoriesItemIdRegExp),
+  "maker": zod.string().max(getSiteDraftResponseDocumentStoriesItemMakerMax),
+  "title": zod.string().min(1).max(getSiteDraftResponseDocumentStoriesItemTitleMax),
+  "intro": zod.string().max(getSiteDraftResponseDocumentStoriesItemIntroMax),
+  "image": zod.string().max(getSiteDraftResponseDocumentStoriesItemImageMax),
+  "imageAlt": zod.string().max(getSiteDraftResponseDocumentStoriesItemImageAltMax),
+  "sponsored": zod.boolean(),
+  "sample": zod.boolean(),
+  "visible": zod.boolean(),
+  "chapters": zod.array(zod.object({
+  "id": zod.string().min(1).max(getSiteDraftResponseDocumentStoriesItemChaptersItemIdMax),
+  "title": zod.string().min(1).max(getSiteDraftResponseDocumentStoriesItemChaptersItemTitleMax),
+  "body": zod.string().max(getSiteDraftResponseDocumentStoriesItemChaptersItemBodyMax),
+  "image": zod.string().max(getSiteDraftResponseDocumentStoriesItemChaptersItemImageMax),
+  "imageAlt": zod.string().max(getSiteDraftResponseDocumentStoriesItemChaptersItemImageAltMax),
+  "quote": zod.string().max(getSiteDraftResponseDocumentStoriesItemChaptersItemQuoteMax)
+})).min(1).max(getSiteDraftResponseDocumentStoriesItemChaptersMax),
+  "link": zod.object({
+  "label": zod.string().min(1).max(getSiteDraftResponseDocumentStoriesItemLinkLabelMax),
+  "href": zod.string().min(1).max(getSiteDraftResponseDocumentStoriesItemLinkHrefMax)
+})
+})).max(getSiteDraftResponseDocumentStoriesMax),
+  "trunkCards": zod.array(zod.object({
+  "id": zod.string().regex(getSiteDraftResponseDocumentTrunkCardsItemIdRegExp),
+  "title": zod.string().min(1).max(getSiteDraftResponseDocumentTrunkCardsItemTitleMax),
+  "caption": zod.string().max(getSiteDraftResponseDocumentTrunkCardsItemCaptionMax),
+  "image": zod.string().max(getSiteDraftResponseDocumentTrunkCardsItemImageMax),
+  "imageAlt": zod.string().max(getSiteDraftResponseDocumentTrunkCardsItemImageAltMax),
+  "sponsored": zod.boolean(),
+  "link": zod.object({
+  "label": zod.string().min(1).max(getSiteDraftResponseDocumentTrunkCardsItemLinkLabelMax),
+  "href": zod.string().min(1).max(getSiteDraftResponseDocumentTrunkCardsItemLinkHrefMax)
+})
+})).min(1).max(getSiteDraftResponseDocumentTrunkCardsMax),
+  "pages": zod.array(zod.object({
+  "id": zod.string().regex(getSiteDraftResponseDocumentPagesItemIdRegExp),
+  "title": zod.string().max(getSiteDraftResponseDocumentPagesItemTitleMax),
+  "description": zod.string().max(getSiteDraftResponseDocumentPagesItemDescriptionMax),
+  "eyebrow": zod.string().max(getSiteDraftResponseDocumentPagesItemEyebrowMax),
+  "heading": zod.string().max(getSiteDraftResponseDocumentPagesItemHeadingMax),
+  "intro": zod.string().max(getSiteDraftResponseDocumentPagesItemIntroMax),
+  "image": zod.string().max(getSiteDraftResponseDocumentPagesItemImageMax),
+  "imageAlt": zod.string().max(getSiteDraftResponseDocumentPagesItemImageAltMax)
+})).max(getSiteDraftResponseDocumentPagesMax),
+  "labels": zod.record(zod.string(), zod.string().max(getSiteDraftResponseDocumentLabelsMaxOne))
+}),
+  "revision": zod.number().int(),
+  "publishedRevision": zod.number().int(),
+  "updatedAt": zod.string(),
+  "history": zod.array(zod.object({
+  "id": zod.number().int(),
+  "publishedAt": zod.string()
+}))
+})
+
+
+export const saveSiteDraftBodyDocumentBrandNameMax = 60;
+
+export const saveSiteDraftBodyDocumentBrandTaglineMax = 120;
+
+export const saveSiteDraftBodyDocumentBrandLogoMax = 500;
+
+export const saveSiteDraftBodyDocumentBrandMarkMax = 500;
+
+export const saveSiteDraftBodyDocumentBrandAnnouncementMax = 180;
+
+export const saveSiteDraftBodyDocumentBrandFooterTitleMax = 120;
+
+export const saveSiteDraftBodyDocumentBrandFooterTextMax = 1000;
+
+export const saveSiteDraftBodyDocumentBrandCopyrightMax = 180;
+
+export const saveSiteDraftBodyDocumentThemeBackgroundRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const saveSiteDraftBodyDocumentThemeSurfaceRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const saveSiteDraftBodyDocumentThemePrimaryRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const saveSiteDraftBodyDocumentThemeSecondaryRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const saveSiteDraftBodyDocumentThemeAccentRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const saveSiteDraftBodyDocumentThemeInkRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const saveSiteDraftBodyDocumentThemeMutedRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const saveSiteDraftBodyDocumentThemeRadiusMin = 0;
+export const saveSiteDraftBodyDocumentThemeRadiusMax = 28;
+
+export const saveSiteDraftBodyDocumentNavigationItemLabelMax = 80;
+
+export const saveSiteDraftBodyDocumentNavigationItemHrefMax = 500;
+
+export const saveSiteDraftBodyDocumentNavigationMax = 8;
+
+export const saveSiteDraftBodyDocumentFooterLinksItemLabelMax = 80;
+
+export const saveSiteDraftBodyDocumentFooterLinksItemHrefMax = 500;
+
+export const saveSiteDraftBodyDocumentFooterLinksMax = 16;
+
+export const saveSiteDraftBodyDocumentSectionsItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
+export const saveSiteDraftBodyDocumentSectionsItemEyebrowMax = 120;
+
+export const saveSiteDraftBodyDocumentSectionsItemTitleMax = 180;
+
+export const saveSiteDraftBodyDocumentSectionsItemTextMax = 1500;
+
+export const saveSiteDraftBodyDocumentSectionsItemImageMax = 500;
+
+export const saveSiteDraftBodyDocumentSectionsItemImageAltMax = 240;
+
+export const saveSiteDraftBodyDocumentSectionsItemLinkLabelMax = 80;
+
+export const saveSiteDraftBodyDocumentSectionsItemLinkHrefMax = 500;
+
+export const saveSiteDraftBodyDocumentSectionsItemStoryIdMax = 60;
+
+export const saveSiteDraftBodyDocumentSectionsItemProductIdsItemMax = 100;
+
+export const saveSiteDraftBodyDocumentSectionsItemProductIdsMax = 12;
+
+export const saveSiteDraftBodyDocumentSectionsMax = 20;
+
+export const saveSiteDraftBodyDocumentStoriesItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
+export const saveSiteDraftBodyDocumentStoriesItemMakerMax = 100;
+
+export const saveSiteDraftBodyDocumentStoriesItemTitleMax = 140;
+
+export const saveSiteDraftBodyDocumentStoriesItemIntroMax = 700;
+
+export const saveSiteDraftBodyDocumentStoriesItemImageMax = 500;
+
+export const saveSiteDraftBodyDocumentStoriesItemImageAltMax = 240;
+
+export const saveSiteDraftBodyDocumentStoriesItemChaptersItemIdMax = 60;
+
+export const saveSiteDraftBodyDocumentStoriesItemChaptersItemTitleMax = 140;
+
+export const saveSiteDraftBodyDocumentStoriesItemChaptersItemBodyMax = 2500;
+
+export const saveSiteDraftBodyDocumentStoriesItemChaptersItemImageMax = 500;
+
+export const saveSiteDraftBodyDocumentStoriesItemChaptersItemImageAltMax = 240;
+
+export const saveSiteDraftBodyDocumentStoriesItemChaptersItemQuoteMax = 600;
+
+export const saveSiteDraftBodyDocumentStoriesItemChaptersMax = 8;
+
+export const saveSiteDraftBodyDocumentStoriesItemLinkLabelMax = 80;
+
+export const saveSiteDraftBodyDocumentStoriesItemLinkHrefMax = 500;
+
+export const saveSiteDraftBodyDocumentStoriesMax = 20;
+
+export const saveSiteDraftBodyDocumentTrunkCardsItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
+export const saveSiteDraftBodyDocumentTrunkCardsItemTitleMax = 90;
+
+export const saveSiteDraftBodyDocumentTrunkCardsItemCaptionMax = 150;
+
+export const saveSiteDraftBodyDocumentTrunkCardsItemImageMax = 500;
+
+export const saveSiteDraftBodyDocumentTrunkCardsItemImageAltMax = 240;
+
+export const saveSiteDraftBodyDocumentTrunkCardsItemLinkLabelMax = 80;
+
+export const saveSiteDraftBodyDocumentTrunkCardsItemLinkHrefMax = 500;
+
+export const saveSiteDraftBodyDocumentTrunkCardsMax = 3;
+
+export const saveSiteDraftBodyDocumentPagesItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
+export const saveSiteDraftBodyDocumentPagesItemTitleMax = 120;
+
+export const saveSiteDraftBodyDocumentPagesItemDescriptionMax = 300;
+
+export const saveSiteDraftBodyDocumentPagesItemEyebrowMax = 120;
+
+export const saveSiteDraftBodyDocumentPagesItemHeadingMax = 180;
+
+export const saveSiteDraftBodyDocumentPagesItemIntroMax = 1500;
+
+export const saveSiteDraftBodyDocumentPagesItemImageMax = 500;
+
+export const saveSiteDraftBodyDocumentPagesItemImageAltMax = 240;
+
+export const saveSiteDraftBodyDocumentPagesMax = 30;
+
+export const saveSiteDraftBodyDocumentLabelsMaxOne = 500;
+
+export const saveSiteDraftBodyExpectedRevisionMin = 0;
+
+
+
+export const SaveSiteDraftBody = zod.object({
+  "document": zod.object({
+  "brand": zod.object({
+  "name": zod.string().min(1).max(saveSiteDraftBodyDocumentBrandNameMax),
+  "tagline": zod.string().max(saveSiteDraftBodyDocumentBrandTaglineMax),
+  "logo": zod.string().max(saveSiteDraftBodyDocumentBrandLogoMax),
+  "mark": zod.string().max(saveSiteDraftBodyDocumentBrandMarkMax),
+  "announcement": zod.string().max(saveSiteDraftBodyDocumentBrandAnnouncementMax),
+  "footerTitle": zod.string().max(saveSiteDraftBodyDocumentBrandFooterTitleMax),
+  "footerText": zod.string().max(saveSiteDraftBodyDocumentBrandFooterTextMax),
+  "copyright": zod.string().max(saveSiteDraftBodyDocumentBrandCopyrightMax)
+}),
+  "theme": zod.object({
+  "background": zod.string().regex(saveSiteDraftBodyDocumentThemeBackgroundRegExp),
+  "surface": zod.string().regex(saveSiteDraftBodyDocumentThemeSurfaceRegExp),
+  "primary": zod.string().regex(saveSiteDraftBodyDocumentThemePrimaryRegExp),
+  "secondary": zod.string().regex(saveSiteDraftBodyDocumentThemeSecondaryRegExp),
+  "accent": zod.string().regex(saveSiteDraftBodyDocumentThemeAccentRegExp),
+  "ink": zod.string().regex(saveSiteDraftBodyDocumentThemeInkRegExp),
+  "muted": zod.string().regex(saveSiteDraftBodyDocumentThemeMutedRegExp),
+  "headingFont": zod.enum(['garamond', 'cormorant', 'georgia']),
+  "bodyFont": zod.enum(['inter', 'system', 'georgia']),
+  "radius": zod.number().int().min(saveSiteDraftBodyDocumentThemeRadiusMin).max(saveSiteDraftBodyDocumentThemeRadiusMax),
+  "spacing": zod.enum(['compact', 'comfortable', 'generous']),
+  "motion": zod.boolean(),
+  "ornament": zod.boolean()
+}),
+  "navigation": zod.array(zod.object({
+  "label": zod.string().min(1).max(saveSiteDraftBodyDocumentNavigationItemLabelMax),
+  "href": zod.string().min(1).max(saveSiteDraftBodyDocumentNavigationItemHrefMax)
+})).max(saveSiteDraftBodyDocumentNavigationMax),
+  "footerLinks": zod.array(zod.object({
+  "label": zod.string().min(1).max(saveSiteDraftBodyDocumentFooterLinksItemLabelMax),
+  "href": zod.string().min(1).max(saveSiteDraftBodyDocumentFooterLinksItemHrefMax)
+})).max(saveSiteDraftBodyDocumentFooterLinksMax),
+  "sections": zod.array(zod.object({
+  "id": zod.string().regex(saveSiteDraftBodyDocumentSectionsItemIdRegExp),
+  "type": zod.enum(['hero', 'story', 'products', 'maker', 'quiz', 'invitation']),
+  "visible": zod.boolean(),
+  "eyebrow": zod.string().max(saveSiteDraftBodyDocumentSectionsItemEyebrowMax),
+  "title": zod.string().max(saveSiteDraftBodyDocumentSectionsItemTitleMax),
+  "text": zod.string().max(saveSiteDraftBodyDocumentSectionsItemTextMax),
+  "image": zod.string().max(saveSiteDraftBodyDocumentSectionsItemImageMax),
+  "imageAlt": zod.string().max(saveSiteDraftBodyDocumentSectionsItemImageAltMax),
+  "tone": zod.enum(['light', 'dark', 'accent']),
+  "layout": zod.enum(['editorial', 'centred', 'split']),
+  "link": zod.object({
+  "label": zod.string().min(1).max(saveSiteDraftBodyDocumentSectionsItemLinkLabelMax),
+  "href": zod.string().min(1).max(saveSiteDraftBodyDocumentSectionsItemLinkHrefMax)
+}),
+  "storyId": zod.string().max(saveSiteDraftBodyDocumentSectionsItemStoryIdMax),
+  "productIds": zod.array(zod.string().max(saveSiteDraftBodyDocumentSectionsItemProductIdsItemMax)).max(saveSiteDraftBodyDocumentSectionsItemProductIdsMax)
+})).min(1).max(saveSiteDraftBodyDocumentSectionsMax),
+  "stories": zod.array(zod.object({
+  "id": zod.string().regex(saveSiteDraftBodyDocumentStoriesItemIdRegExp),
+  "maker": zod.string().max(saveSiteDraftBodyDocumentStoriesItemMakerMax),
+  "title": zod.string().min(1).max(saveSiteDraftBodyDocumentStoriesItemTitleMax),
+  "intro": zod.string().max(saveSiteDraftBodyDocumentStoriesItemIntroMax),
+  "image": zod.string().max(saveSiteDraftBodyDocumentStoriesItemImageMax),
+  "imageAlt": zod.string().max(saveSiteDraftBodyDocumentStoriesItemImageAltMax),
+  "sponsored": zod.boolean(),
+  "sample": zod.boolean(),
+  "visible": zod.boolean(),
+  "chapters": zod.array(zod.object({
+  "id": zod.string().min(1).max(saveSiteDraftBodyDocumentStoriesItemChaptersItemIdMax),
+  "title": zod.string().min(1).max(saveSiteDraftBodyDocumentStoriesItemChaptersItemTitleMax),
+  "body": zod.string().max(saveSiteDraftBodyDocumentStoriesItemChaptersItemBodyMax),
+  "image": zod.string().max(saveSiteDraftBodyDocumentStoriesItemChaptersItemImageMax),
+  "imageAlt": zod.string().max(saveSiteDraftBodyDocumentStoriesItemChaptersItemImageAltMax),
+  "quote": zod.string().max(saveSiteDraftBodyDocumentStoriesItemChaptersItemQuoteMax)
+})).min(1).max(saveSiteDraftBodyDocumentStoriesItemChaptersMax),
+  "link": zod.object({
+  "label": zod.string().min(1).max(saveSiteDraftBodyDocumentStoriesItemLinkLabelMax),
+  "href": zod.string().min(1).max(saveSiteDraftBodyDocumentStoriesItemLinkHrefMax)
+})
+})).max(saveSiteDraftBodyDocumentStoriesMax),
+  "trunkCards": zod.array(zod.object({
+  "id": zod.string().regex(saveSiteDraftBodyDocumentTrunkCardsItemIdRegExp),
+  "title": zod.string().min(1).max(saveSiteDraftBodyDocumentTrunkCardsItemTitleMax),
+  "caption": zod.string().max(saveSiteDraftBodyDocumentTrunkCardsItemCaptionMax),
+  "image": zod.string().max(saveSiteDraftBodyDocumentTrunkCardsItemImageMax),
+  "imageAlt": zod.string().max(saveSiteDraftBodyDocumentTrunkCardsItemImageAltMax),
+  "sponsored": zod.boolean(),
+  "link": zod.object({
+  "label": zod.string().min(1).max(saveSiteDraftBodyDocumentTrunkCardsItemLinkLabelMax),
+  "href": zod.string().min(1).max(saveSiteDraftBodyDocumentTrunkCardsItemLinkHrefMax)
+})
+})).min(1).max(saveSiteDraftBodyDocumentTrunkCardsMax),
+  "pages": zod.array(zod.object({
+  "id": zod.string().regex(saveSiteDraftBodyDocumentPagesItemIdRegExp),
+  "title": zod.string().max(saveSiteDraftBodyDocumentPagesItemTitleMax),
+  "description": zod.string().max(saveSiteDraftBodyDocumentPagesItemDescriptionMax),
+  "eyebrow": zod.string().max(saveSiteDraftBodyDocumentPagesItemEyebrowMax),
+  "heading": zod.string().max(saveSiteDraftBodyDocumentPagesItemHeadingMax),
+  "intro": zod.string().max(saveSiteDraftBodyDocumentPagesItemIntroMax),
+  "image": zod.string().max(saveSiteDraftBodyDocumentPagesItemImageMax),
+  "imageAlt": zod.string().max(saveSiteDraftBodyDocumentPagesItemImageAltMax)
+})).max(saveSiteDraftBodyDocumentPagesMax),
+  "labels": zod.record(zod.string(), zod.string().max(saveSiteDraftBodyDocumentLabelsMaxOne))
+}),
+  "expectedRevision": zod.number().int().min(saveSiteDraftBodyExpectedRevisionMin)
+})
+
+export const saveSiteDraftResponseDocumentBrandNameMax = 60;
+
+export const saveSiteDraftResponseDocumentBrandTaglineMax = 120;
+
+export const saveSiteDraftResponseDocumentBrandLogoMax = 500;
+
+export const saveSiteDraftResponseDocumentBrandMarkMax = 500;
+
+export const saveSiteDraftResponseDocumentBrandAnnouncementMax = 180;
+
+export const saveSiteDraftResponseDocumentBrandFooterTitleMax = 120;
+
+export const saveSiteDraftResponseDocumentBrandFooterTextMax = 1000;
+
+export const saveSiteDraftResponseDocumentBrandCopyrightMax = 180;
+
+export const saveSiteDraftResponseDocumentThemeBackgroundRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const saveSiteDraftResponseDocumentThemeSurfaceRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const saveSiteDraftResponseDocumentThemePrimaryRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const saveSiteDraftResponseDocumentThemeSecondaryRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const saveSiteDraftResponseDocumentThemeAccentRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const saveSiteDraftResponseDocumentThemeInkRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const saveSiteDraftResponseDocumentThemeMutedRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const saveSiteDraftResponseDocumentThemeRadiusMin = 0;
+export const saveSiteDraftResponseDocumentThemeRadiusMax = 28;
+
+export const saveSiteDraftResponseDocumentNavigationItemLabelMax = 80;
+
+export const saveSiteDraftResponseDocumentNavigationItemHrefMax = 500;
+
+export const saveSiteDraftResponseDocumentNavigationMax = 8;
+
+export const saveSiteDraftResponseDocumentFooterLinksItemLabelMax = 80;
+
+export const saveSiteDraftResponseDocumentFooterLinksItemHrefMax = 500;
+
+export const saveSiteDraftResponseDocumentFooterLinksMax = 16;
+
+export const saveSiteDraftResponseDocumentSectionsItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
+export const saveSiteDraftResponseDocumentSectionsItemEyebrowMax = 120;
+
+export const saveSiteDraftResponseDocumentSectionsItemTitleMax = 180;
+
+export const saveSiteDraftResponseDocumentSectionsItemTextMax = 1500;
+
+export const saveSiteDraftResponseDocumentSectionsItemImageMax = 500;
+
+export const saveSiteDraftResponseDocumentSectionsItemImageAltMax = 240;
+
+export const saveSiteDraftResponseDocumentSectionsItemLinkLabelMax = 80;
+
+export const saveSiteDraftResponseDocumentSectionsItemLinkHrefMax = 500;
+
+export const saveSiteDraftResponseDocumentSectionsItemStoryIdMax = 60;
+
+export const saveSiteDraftResponseDocumentSectionsItemProductIdsItemMax = 100;
+
+export const saveSiteDraftResponseDocumentSectionsItemProductIdsMax = 12;
+
+export const saveSiteDraftResponseDocumentSectionsMax = 20;
+
+export const saveSiteDraftResponseDocumentStoriesItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
+export const saveSiteDraftResponseDocumentStoriesItemMakerMax = 100;
+
+export const saveSiteDraftResponseDocumentStoriesItemTitleMax = 140;
+
+export const saveSiteDraftResponseDocumentStoriesItemIntroMax = 700;
+
+export const saveSiteDraftResponseDocumentStoriesItemImageMax = 500;
+
+export const saveSiteDraftResponseDocumentStoriesItemImageAltMax = 240;
+
+export const saveSiteDraftResponseDocumentStoriesItemChaptersItemIdMax = 60;
+
+export const saveSiteDraftResponseDocumentStoriesItemChaptersItemTitleMax = 140;
+
+export const saveSiteDraftResponseDocumentStoriesItemChaptersItemBodyMax = 2500;
+
+export const saveSiteDraftResponseDocumentStoriesItemChaptersItemImageMax = 500;
+
+export const saveSiteDraftResponseDocumentStoriesItemChaptersItemImageAltMax = 240;
+
+export const saveSiteDraftResponseDocumentStoriesItemChaptersItemQuoteMax = 600;
+
+export const saveSiteDraftResponseDocumentStoriesItemChaptersMax = 8;
+
+export const saveSiteDraftResponseDocumentStoriesItemLinkLabelMax = 80;
+
+export const saveSiteDraftResponseDocumentStoriesItemLinkHrefMax = 500;
+
+export const saveSiteDraftResponseDocumentStoriesMax = 20;
+
+export const saveSiteDraftResponseDocumentTrunkCardsItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
+export const saveSiteDraftResponseDocumentTrunkCardsItemTitleMax = 90;
+
+export const saveSiteDraftResponseDocumentTrunkCardsItemCaptionMax = 150;
+
+export const saveSiteDraftResponseDocumentTrunkCardsItemImageMax = 500;
+
+export const saveSiteDraftResponseDocumentTrunkCardsItemImageAltMax = 240;
+
+export const saveSiteDraftResponseDocumentTrunkCardsItemLinkLabelMax = 80;
+
+export const saveSiteDraftResponseDocumentTrunkCardsItemLinkHrefMax = 500;
+
+export const saveSiteDraftResponseDocumentTrunkCardsMax = 3;
+
+export const saveSiteDraftResponseDocumentPagesItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
+export const saveSiteDraftResponseDocumentPagesItemTitleMax = 120;
+
+export const saveSiteDraftResponseDocumentPagesItemDescriptionMax = 300;
+
+export const saveSiteDraftResponseDocumentPagesItemEyebrowMax = 120;
+
+export const saveSiteDraftResponseDocumentPagesItemHeadingMax = 180;
+
+export const saveSiteDraftResponseDocumentPagesItemIntroMax = 1500;
+
+export const saveSiteDraftResponseDocumentPagesItemImageMax = 500;
+
+export const saveSiteDraftResponseDocumentPagesItemImageAltMax = 240;
+
+export const saveSiteDraftResponseDocumentPagesMax = 30;
+
+export const saveSiteDraftResponseDocumentLabelsMaxOne = 500;
+
+
+
+export const SaveSiteDraftResponse = zod.object({
+  "document": zod.object({
+  "brand": zod.object({
+  "name": zod.string().min(1).max(saveSiteDraftResponseDocumentBrandNameMax),
+  "tagline": zod.string().max(saveSiteDraftResponseDocumentBrandTaglineMax),
+  "logo": zod.string().max(saveSiteDraftResponseDocumentBrandLogoMax),
+  "mark": zod.string().max(saveSiteDraftResponseDocumentBrandMarkMax),
+  "announcement": zod.string().max(saveSiteDraftResponseDocumentBrandAnnouncementMax),
+  "footerTitle": zod.string().max(saveSiteDraftResponseDocumentBrandFooterTitleMax),
+  "footerText": zod.string().max(saveSiteDraftResponseDocumentBrandFooterTextMax),
+  "copyright": zod.string().max(saveSiteDraftResponseDocumentBrandCopyrightMax)
+}),
+  "theme": zod.object({
+  "background": zod.string().regex(saveSiteDraftResponseDocumentThemeBackgroundRegExp),
+  "surface": zod.string().regex(saveSiteDraftResponseDocumentThemeSurfaceRegExp),
+  "primary": zod.string().regex(saveSiteDraftResponseDocumentThemePrimaryRegExp),
+  "secondary": zod.string().regex(saveSiteDraftResponseDocumentThemeSecondaryRegExp),
+  "accent": zod.string().regex(saveSiteDraftResponseDocumentThemeAccentRegExp),
+  "ink": zod.string().regex(saveSiteDraftResponseDocumentThemeInkRegExp),
+  "muted": zod.string().regex(saveSiteDraftResponseDocumentThemeMutedRegExp),
+  "headingFont": zod.enum(['garamond', 'cormorant', 'georgia']),
+  "bodyFont": zod.enum(['inter', 'system', 'georgia']),
+  "radius": zod.number().int().min(saveSiteDraftResponseDocumentThemeRadiusMin).max(saveSiteDraftResponseDocumentThemeRadiusMax),
+  "spacing": zod.enum(['compact', 'comfortable', 'generous']),
+  "motion": zod.boolean(),
+  "ornament": zod.boolean()
+}),
+  "navigation": zod.array(zod.object({
+  "label": zod.string().min(1).max(saveSiteDraftResponseDocumentNavigationItemLabelMax),
+  "href": zod.string().min(1).max(saveSiteDraftResponseDocumentNavigationItemHrefMax)
+})).max(saveSiteDraftResponseDocumentNavigationMax),
+  "footerLinks": zod.array(zod.object({
+  "label": zod.string().min(1).max(saveSiteDraftResponseDocumentFooterLinksItemLabelMax),
+  "href": zod.string().min(1).max(saveSiteDraftResponseDocumentFooterLinksItemHrefMax)
+})).max(saveSiteDraftResponseDocumentFooterLinksMax),
+  "sections": zod.array(zod.object({
+  "id": zod.string().regex(saveSiteDraftResponseDocumentSectionsItemIdRegExp),
+  "type": zod.enum(['hero', 'story', 'products', 'maker', 'quiz', 'invitation']),
+  "visible": zod.boolean(),
+  "eyebrow": zod.string().max(saveSiteDraftResponseDocumentSectionsItemEyebrowMax),
+  "title": zod.string().max(saveSiteDraftResponseDocumentSectionsItemTitleMax),
+  "text": zod.string().max(saveSiteDraftResponseDocumentSectionsItemTextMax),
+  "image": zod.string().max(saveSiteDraftResponseDocumentSectionsItemImageMax),
+  "imageAlt": zod.string().max(saveSiteDraftResponseDocumentSectionsItemImageAltMax),
+  "tone": zod.enum(['light', 'dark', 'accent']),
+  "layout": zod.enum(['editorial', 'centred', 'split']),
+  "link": zod.object({
+  "label": zod.string().min(1).max(saveSiteDraftResponseDocumentSectionsItemLinkLabelMax),
+  "href": zod.string().min(1).max(saveSiteDraftResponseDocumentSectionsItemLinkHrefMax)
+}),
+  "storyId": zod.string().max(saveSiteDraftResponseDocumentSectionsItemStoryIdMax),
+  "productIds": zod.array(zod.string().max(saveSiteDraftResponseDocumentSectionsItemProductIdsItemMax)).max(saveSiteDraftResponseDocumentSectionsItemProductIdsMax)
+})).min(1).max(saveSiteDraftResponseDocumentSectionsMax),
+  "stories": zod.array(zod.object({
+  "id": zod.string().regex(saveSiteDraftResponseDocumentStoriesItemIdRegExp),
+  "maker": zod.string().max(saveSiteDraftResponseDocumentStoriesItemMakerMax),
+  "title": zod.string().min(1).max(saveSiteDraftResponseDocumentStoriesItemTitleMax),
+  "intro": zod.string().max(saveSiteDraftResponseDocumentStoriesItemIntroMax),
+  "image": zod.string().max(saveSiteDraftResponseDocumentStoriesItemImageMax),
+  "imageAlt": zod.string().max(saveSiteDraftResponseDocumentStoriesItemImageAltMax),
+  "sponsored": zod.boolean(),
+  "sample": zod.boolean(),
+  "visible": zod.boolean(),
+  "chapters": zod.array(zod.object({
+  "id": zod.string().min(1).max(saveSiteDraftResponseDocumentStoriesItemChaptersItemIdMax),
+  "title": zod.string().min(1).max(saveSiteDraftResponseDocumentStoriesItemChaptersItemTitleMax),
+  "body": zod.string().max(saveSiteDraftResponseDocumentStoriesItemChaptersItemBodyMax),
+  "image": zod.string().max(saveSiteDraftResponseDocumentStoriesItemChaptersItemImageMax),
+  "imageAlt": zod.string().max(saveSiteDraftResponseDocumentStoriesItemChaptersItemImageAltMax),
+  "quote": zod.string().max(saveSiteDraftResponseDocumentStoriesItemChaptersItemQuoteMax)
+})).min(1).max(saveSiteDraftResponseDocumentStoriesItemChaptersMax),
+  "link": zod.object({
+  "label": zod.string().min(1).max(saveSiteDraftResponseDocumentStoriesItemLinkLabelMax),
+  "href": zod.string().min(1).max(saveSiteDraftResponseDocumentStoriesItemLinkHrefMax)
+})
+})).max(saveSiteDraftResponseDocumentStoriesMax),
+  "trunkCards": zod.array(zod.object({
+  "id": zod.string().regex(saveSiteDraftResponseDocumentTrunkCardsItemIdRegExp),
+  "title": zod.string().min(1).max(saveSiteDraftResponseDocumentTrunkCardsItemTitleMax),
+  "caption": zod.string().max(saveSiteDraftResponseDocumentTrunkCardsItemCaptionMax),
+  "image": zod.string().max(saveSiteDraftResponseDocumentTrunkCardsItemImageMax),
+  "imageAlt": zod.string().max(saveSiteDraftResponseDocumentTrunkCardsItemImageAltMax),
+  "sponsored": zod.boolean(),
+  "link": zod.object({
+  "label": zod.string().min(1).max(saveSiteDraftResponseDocumentTrunkCardsItemLinkLabelMax),
+  "href": zod.string().min(1).max(saveSiteDraftResponseDocumentTrunkCardsItemLinkHrefMax)
+})
+})).min(1).max(saveSiteDraftResponseDocumentTrunkCardsMax),
+  "pages": zod.array(zod.object({
+  "id": zod.string().regex(saveSiteDraftResponseDocumentPagesItemIdRegExp),
+  "title": zod.string().max(saveSiteDraftResponseDocumentPagesItemTitleMax),
+  "description": zod.string().max(saveSiteDraftResponseDocumentPagesItemDescriptionMax),
+  "eyebrow": zod.string().max(saveSiteDraftResponseDocumentPagesItemEyebrowMax),
+  "heading": zod.string().max(saveSiteDraftResponseDocumentPagesItemHeadingMax),
+  "intro": zod.string().max(saveSiteDraftResponseDocumentPagesItemIntroMax),
+  "image": zod.string().max(saveSiteDraftResponseDocumentPagesItemImageMax),
+  "imageAlt": zod.string().max(saveSiteDraftResponseDocumentPagesItemImageAltMax)
+})).max(saveSiteDraftResponseDocumentPagesMax),
+  "labels": zod.record(zod.string(), zod.string().max(saveSiteDraftResponseDocumentLabelsMaxOne))
+}),
+  "revision": zod.number().int(),
+  "publishedRevision": zod.number().int(),
+  "updatedAt": zod.string(),
+  "history": zod.array(zod.object({
+  "id": zod.number().int(),
+  "publishedAt": zod.string()
+}))
+})
+
+
+export const publishSiteBodyExpectedRevisionMin = 0;
+
+
+
+export const PublishSiteBody = zod.object({
+  "expectedRevision": zod.number().int().min(publishSiteBodyExpectedRevisionMin)
+})
+
+export const publishSiteResponseDocumentBrandNameMax = 60;
+
+export const publishSiteResponseDocumentBrandTaglineMax = 120;
+
+export const publishSiteResponseDocumentBrandLogoMax = 500;
+
+export const publishSiteResponseDocumentBrandMarkMax = 500;
+
+export const publishSiteResponseDocumentBrandAnnouncementMax = 180;
+
+export const publishSiteResponseDocumentBrandFooterTitleMax = 120;
+
+export const publishSiteResponseDocumentBrandFooterTextMax = 1000;
+
+export const publishSiteResponseDocumentBrandCopyrightMax = 180;
+
+export const publishSiteResponseDocumentThemeBackgroundRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const publishSiteResponseDocumentThemeSurfaceRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const publishSiteResponseDocumentThemePrimaryRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const publishSiteResponseDocumentThemeSecondaryRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const publishSiteResponseDocumentThemeAccentRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const publishSiteResponseDocumentThemeInkRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const publishSiteResponseDocumentThemeMutedRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const publishSiteResponseDocumentThemeRadiusMin = 0;
+export const publishSiteResponseDocumentThemeRadiusMax = 28;
+
+export const publishSiteResponseDocumentNavigationItemLabelMax = 80;
+
+export const publishSiteResponseDocumentNavigationItemHrefMax = 500;
+
+export const publishSiteResponseDocumentNavigationMax = 8;
+
+export const publishSiteResponseDocumentFooterLinksItemLabelMax = 80;
+
+export const publishSiteResponseDocumentFooterLinksItemHrefMax = 500;
+
+export const publishSiteResponseDocumentFooterLinksMax = 16;
+
+export const publishSiteResponseDocumentSectionsItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
+export const publishSiteResponseDocumentSectionsItemEyebrowMax = 120;
+
+export const publishSiteResponseDocumentSectionsItemTitleMax = 180;
+
+export const publishSiteResponseDocumentSectionsItemTextMax = 1500;
+
+export const publishSiteResponseDocumentSectionsItemImageMax = 500;
+
+export const publishSiteResponseDocumentSectionsItemImageAltMax = 240;
+
+export const publishSiteResponseDocumentSectionsItemLinkLabelMax = 80;
+
+export const publishSiteResponseDocumentSectionsItemLinkHrefMax = 500;
+
+export const publishSiteResponseDocumentSectionsItemStoryIdMax = 60;
+
+export const publishSiteResponseDocumentSectionsItemProductIdsItemMax = 100;
+
+export const publishSiteResponseDocumentSectionsItemProductIdsMax = 12;
+
+export const publishSiteResponseDocumentSectionsMax = 20;
+
+export const publishSiteResponseDocumentStoriesItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
+export const publishSiteResponseDocumentStoriesItemMakerMax = 100;
+
+export const publishSiteResponseDocumentStoriesItemTitleMax = 140;
+
+export const publishSiteResponseDocumentStoriesItemIntroMax = 700;
+
+export const publishSiteResponseDocumentStoriesItemImageMax = 500;
+
+export const publishSiteResponseDocumentStoriesItemImageAltMax = 240;
+
+export const publishSiteResponseDocumentStoriesItemChaptersItemIdMax = 60;
+
+export const publishSiteResponseDocumentStoriesItemChaptersItemTitleMax = 140;
+
+export const publishSiteResponseDocumentStoriesItemChaptersItemBodyMax = 2500;
+
+export const publishSiteResponseDocumentStoriesItemChaptersItemImageMax = 500;
+
+export const publishSiteResponseDocumentStoriesItemChaptersItemImageAltMax = 240;
+
+export const publishSiteResponseDocumentStoriesItemChaptersItemQuoteMax = 600;
+
+export const publishSiteResponseDocumentStoriesItemChaptersMax = 8;
+
+export const publishSiteResponseDocumentStoriesItemLinkLabelMax = 80;
+
+export const publishSiteResponseDocumentStoriesItemLinkHrefMax = 500;
+
+export const publishSiteResponseDocumentStoriesMax = 20;
+
+export const publishSiteResponseDocumentTrunkCardsItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
+export const publishSiteResponseDocumentTrunkCardsItemTitleMax = 90;
+
+export const publishSiteResponseDocumentTrunkCardsItemCaptionMax = 150;
+
+export const publishSiteResponseDocumentTrunkCardsItemImageMax = 500;
+
+export const publishSiteResponseDocumentTrunkCardsItemImageAltMax = 240;
+
+export const publishSiteResponseDocumentTrunkCardsItemLinkLabelMax = 80;
+
+export const publishSiteResponseDocumentTrunkCardsItemLinkHrefMax = 500;
+
+export const publishSiteResponseDocumentTrunkCardsMax = 3;
+
+export const publishSiteResponseDocumentPagesItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
+export const publishSiteResponseDocumentPagesItemTitleMax = 120;
+
+export const publishSiteResponseDocumentPagesItemDescriptionMax = 300;
+
+export const publishSiteResponseDocumentPagesItemEyebrowMax = 120;
+
+export const publishSiteResponseDocumentPagesItemHeadingMax = 180;
+
+export const publishSiteResponseDocumentPagesItemIntroMax = 1500;
+
+export const publishSiteResponseDocumentPagesItemImageMax = 500;
+
+export const publishSiteResponseDocumentPagesItemImageAltMax = 240;
+
+export const publishSiteResponseDocumentPagesMax = 30;
+
+export const publishSiteResponseDocumentLabelsMaxOne = 500;
+
+
+
+export const PublishSiteResponse = zod.object({
+  "document": zod.object({
+  "brand": zod.object({
+  "name": zod.string().min(1).max(publishSiteResponseDocumentBrandNameMax),
+  "tagline": zod.string().max(publishSiteResponseDocumentBrandTaglineMax),
+  "logo": zod.string().max(publishSiteResponseDocumentBrandLogoMax),
+  "mark": zod.string().max(publishSiteResponseDocumentBrandMarkMax),
+  "announcement": zod.string().max(publishSiteResponseDocumentBrandAnnouncementMax),
+  "footerTitle": zod.string().max(publishSiteResponseDocumentBrandFooterTitleMax),
+  "footerText": zod.string().max(publishSiteResponseDocumentBrandFooterTextMax),
+  "copyright": zod.string().max(publishSiteResponseDocumentBrandCopyrightMax)
+}),
+  "theme": zod.object({
+  "background": zod.string().regex(publishSiteResponseDocumentThemeBackgroundRegExp),
+  "surface": zod.string().regex(publishSiteResponseDocumentThemeSurfaceRegExp),
+  "primary": zod.string().regex(publishSiteResponseDocumentThemePrimaryRegExp),
+  "secondary": zod.string().regex(publishSiteResponseDocumentThemeSecondaryRegExp),
+  "accent": zod.string().regex(publishSiteResponseDocumentThemeAccentRegExp),
+  "ink": zod.string().regex(publishSiteResponseDocumentThemeInkRegExp),
+  "muted": zod.string().regex(publishSiteResponseDocumentThemeMutedRegExp),
+  "headingFont": zod.enum(['garamond', 'cormorant', 'georgia']),
+  "bodyFont": zod.enum(['inter', 'system', 'georgia']),
+  "radius": zod.number().int().min(publishSiteResponseDocumentThemeRadiusMin).max(publishSiteResponseDocumentThemeRadiusMax),
+  "spacing": zod.enum(['compact', 'comfortable', 'generous']),
+  "motion": zod.boolean(),
+  "ornament": zod.boolean()
+}),
+  "navigation": zod.array(zod.object({
+  "label": zod.string().min(1).max(publishSiteResponseDocumentNavigationItemLabelMax),
+  "href": zod.string().min(1).max(publishSiteResponseDocumentNavigationItemHrefMax)
+})).max(publishSiteResponseDocumentNavigationMax),
+  "footerLinks": zod.array(zod.object({
+  "label": zod.string().min(1).max(publishSiteResponseDocumentFooterLinksItemLabelMax),
+  "href": zod.string().min(1).max(publishSiteResponseDocumentFooterLinksItemHrefMax)
+})).max(publishSiteResponseDocumentFooterLinksMax),
+  "sections": zod.array(zod.object({
+  "id": zod.string().regex(publishSiteResponseDocumentSectionsItemIdRegExp),
+  "type": zod.enum(['hero', 'story', 'products', 'maker', 'quiz', 'invitation']),
+  "visible": zod.boolean(),
+  "eyebrow": zod.string().max(publishSiteResponseDocumentSectionsItemEyebrowMax),
+  "title": zod.string().max(publishSiteResponseDocumentSectionsItemTitleMax),
+  "text": zod.string().max(publishSiteResponseDocumentSectionsItemTextMax),
+  "image": zod.string().max(publishSiteResponseDocumentSectionsItemImageMax),
+  "imageAlt": zod.string().max(publishSiteResponseDocumentSectionsItemImageAltMax),
+  "tone": zod.enum(['light', 'dark', 'accent']),
+  "layout": zod.enum(['editorial', 'centred', 'split']),
+  "link": zod.object({
+  "label": zod.string().min(1).max(publishSiteResponseDocumentSectionsItemLinkLabelMax),
+  "href": zod.string().min(1).max(publishSiteResponseDocumentSectionsItemLinkHrefMax)
+}),
+  "storyId": zod.string().max(publishSiteResponseDocumentSectionsItemStoryIdMax),
+  "productIds": zod.array(zod.string().max(publishSiteResponseDocumentSectionsItemProductIdsItemMax)).max(publishSiteResponseDocumentSectionsItemProductIdsMax)
+})).min(1).max(publishSiteResponseDocumentSectionsMax),
+  "stories": zod.array(zod.object({
+  "id": zod.string().regex(publishSiteResponseDocumentStoriesItemIdRegExp),
+  "maker": zod.string().max(publishSiteResponseDocumentStoriesItemMakerMax),
+  "title": zod.string().min(1).max(publishSiteResponseDocumentStoriesItemTitleMax),
+  "intro": zod.string().max(publishSiteResponseDocumentStoriesItemIntroMax),
+  "image": zod.string().max(publishSiteResponseDocumentStoriesItemImageMax),
+  "imageAlt": zod.string().max(publishSiteResponseDocumentStoriesItemImageAltMax),
+  "sponsored": zod.boolean(),
+  "sample": zod.boolean(),
+  "visible": zod.boolean(),
+  "chapters": zod.array(zod.object({
+  "id": zod.string().min(1).max(publishSiteResponseDocumentStoriesItemChaptersItemIdMax),
+  "title": zod.string().min(1).max(publishSiteResponseDocumentStoriesItemChaptersItemTitleMax),
+  "body": zod.string().max(publishSiteResponseDocumentStoriesItemChaptersItemBodyMax),
+  "image": zod.string().max(publishSiteResponseDocumentStoriesItemChaptersItemImageMax),
+  "imageAlt": zod.string().max(publishSiteResponseDocumentStoriesItemChaptersItemImageAltMax),
+  "quote": zod.string().max(publishSiteResponseDocumentStoriesItemChaptersItemQuoteMax)
+})).min(1).max(publishSiteResponseDocumentStoriesItemChaptersMax),
+  "link": zod.object({
+  "label": zod.string().min(1).max(publishSiteResponseDocumentStoriesItemLinkLabelMax),
+  "href": zod.string().min(1).max(publishSiteResponseDocumentStoriesItemLinkHrefMax)
+})
+})).max(publishSiteResponseDocumentStoriesMax),
+  "trunkCards": zod.array(zod.object({
+  "id": zod.string().regex(publishSiteResponseDocumentTrunkCardsItemIdRegExp),
+  "title": zod.string().min(1).max(publishSiteResponseDocumentTrunkCardsItemTitleMax),
+  "caption": zod.string().max(publishSiteResponseDocumentTrunkCardsItemCaptionMax),
+  "image": zod.string().max(publishSiteResponseDocumentTrunkCardsItemImageMax),
+  "imageAlt": zod.string().max(publishSiteResponseDocumentTrunkCardsItemImageAltMax),
+  "sponsored": zod.boolean(),
+  "link": zod.object({
+  "label": zod.string().min(1).max(publishSiteResponseDocumentTrunkCardsItemLinkLabelMax),
+  "href": zod.string().min(1).max(publishSiteResponseDocumentTrunkCardsItemLinkHrefMax)
+})
+})).min(1).max(publishSiteResponseDocumentTrunkCardsMax),
+  "pages": zod.array(zod.object({
+  "id": zod.string().regex(publishSiteResponseDocumentPagesItemIdRegExp),
+  "title": zod.string().max(publishSiteResponseDocumentPagesItemTitleMax),
+  "description": zod.string().max(publishSiteResponseDocumentPagesItemDescriptionMax),
+  "eyebrow": zod.string().max(publishSiteResponseDocumentPagesItemEyebrowMax),
+  "heading": zod.string().max(publishSiteResponseDocumentPagesItemHeadingMax),
+  "intro": zod.string().max(publishSiteResponseDocumentPagesItemIntroMax),
+  "image": zod.string().max(publishSiteResponseDocumentPagesItemImageMax),
+  "imageAlt": zod.string().max(publishSiteResponseDocumentPagesItemImageAltMax)
+})).max(publishSiteResponseDocumentPagesMax),
+  "labels": zod.record(zod.string(), zod.string().max(publishSiteResponseDocumentLabelsMaxOne))
+}),
+  "revision": zod.number().int(),
+  "publishedRevision": zod.number().int(),
+  "updatedAt": zod.string(),
+  "history": zod.array(zod.object({
+  "id": zod.number().int(),
+  "publishedAt": zod.string()
+}))
+})
+
+
+export const restoreSiteBodyExpectedRevisionMin = 0;
+
+
+
+
+export const RestoreSiteBody = zod.object({
+  "expectedRevision": zod.number().int().min(restoreSiteBodyExpectedRevisionMin),
+  "versionId": zod.number().int().min(1)
+})
+
+export const restoreSiteResponseDocumentBrandNameMax = 60;
+
+export const restoreSiteResponseDocumentBrandTaglineMax = 120;
+
+export const restoreSiteResponseDocumentBrandLogoMax = 500;
+
+export const restoreSiteResponseDocumentBrandMarkMax = 500;
+
+export const restoreSiteResponseDocumentBrandAnnouncementMax = 180;
+
+export const restoreSiteResponseDocumentBrandFooterTitleMax = 120;
+
+export const restoreSiteResponseDocumentBrandFooterTextMax = 1000;
+
+export const restoreSiteResponseDocumentBrandCopyrightMax = 180;
+
+export const restoreSiteResponseDocumentThemeBackgroundRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const restoreSiteResponseDocumentThemeSurfaceRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const restoreSiteResponseDocumentThemePrimaryRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const restoreSiteResponseDocumentThemeSecondaryRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const restoreSiteResponseDocumentThemeAccentRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const restoreSiteResponseDocumentThemeInkRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const restoreSiteResponseDocumentThemeMutedRegExp = new RegExp('^#[0-9a-fA-F]{6}$');
+export const restoreSiteResponseDocumentThemeRadiusMin = 0;
+export const restoreSiteResponseDocumentThemeRadiusMax = 28;
+
+export const restoreSiteResponseDocumentNavigationItemLabelMax = 80;
+
+export const restoreSiteResponseDocumentNavigationItemHrefMax = 500;
+
+export const restoreSiteResponseDocumentNavigationMax = 8;
+
+export const restoreSiteResponseDocumentFooterLinksItemLabelMax = 80;
+
+export const restoreSiteResponseDocumentFooterLinksItemHrefMax = 500;
+
+export const restoreSiteResponseDocumentFooterLinksMax = 16;
+
+export const restoreSiteResponseDocumentSectionsItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
+export const restoreSiteResponseDocumentSectionsItemEyebrowMax = 120;
+
+export const restoreSiteResponseDocumentSectionsItemTitleMax = 180;
+
+export const restoreSiteResponseDocumentSectionsItemTextMax = 1500;
+
+export const restoreSiteResponseDocumentSectionsItemImageMax = 500;
+
+export const restoreSiteResponseDocumentSectionsItemImageAltMax = 240;
+
+export const restoreSiteResponseDocumentSectionsItemLinkLabelMax = 80;
+
+export const restoreSiteResponseDocumentSectionsItemLinkHrefMax = 500;
+
+export const restoreSiteResponseDocumentSectionsItemStoryIdMax = 60;
+
+export const restoreSiteResponseDocumentSectionsItemProductIdsItemMax = 100;
+
+export const restoreSiteResponseDocumentSectionsItemProductIdsMax = 12;
+
+export const restoreSiteResponseDocumentSectionsMax = 20;
+
+export const restoreSiteResponseDocumentStoriesItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
+export const restoreSiteResponseDocumentStoriesItemMakerMax = 100;
+
+export const restoreSiteResponseDocumentStoriesItemTitleMax = 140;
+
+export const restoreSiteResponseDocumentStoriesItemIntroMax = 700;
+
+export const restoreSiteResponseDocumentStoriesItemImageMax = 500;
+
+export const restoreSiteResponseDocumentStoriesItemImageAltMax = 240;
+
+export const restoreSiteResponseDocumentStoriesItemChaptersItemIdMax = 60;
+
+export const restoreSiteResponseDocumentStoriesItemChaptersItemTitleMax = 140;
+
+export const restoreSiteResponseDocumentStoriesItemChaptersItemBodyMax = 2500;
+
+export const restoreSiteResponseDocumentStoriesItemChaptersItemImageMax = 500;
+
+export const restoreSiteResponseDocumentStoriesItemChaptersItemImageAltMax = 240;
+
+export const restoreSiteResponseDocumentStoriesItemChaptersItemQuoteMax = 600;
+
+export const restoreSiteResponseDocumentStoriesItemChaptersMax = 8;
+
+export const restoreSiteResponseDocumentStoriesItemLinkLabelMax = 80;
+
+export const restoreSiteResponseDocumentStoriesItemLinkHrefMax = 500;
+
+export const restoreSiteResponseDocumentStoriesMax = 20;
+
+export const restoreSiteResponseDocumentTrunkCardsItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
+export const restoreSiteResponseDocumentTrunkCardsItemTitleMax = 90;
+
+export const restoreSiteResponseDocumentTrunkCardsItemCaptionMax = 150;
+
+export const restoreSiteResponseDocumentTrunkCardsItemImageMax = 500;
+
+export const restoreSiteResponseDocumentTrunkCardsItemImageAltMax = 240;
+
+export const restoreSiteResponseDocumentTrunkCardsItemLinkLabelMax = 80;
+
+export const restoreSiteResponseDocumentTrunkCardsItemLinkHrefMax = 500;
+
+export const restoreSiteResponseDocumentTrunkCardsMax = 3;
+
+export const restoreSiteResponseDocumentPagesItemIdRegExp = new RegExp('^[a-z0-9-]{1,60}$');
+export const restoreSiteResponseDocumentPagesItemTitleMax = 120;
+
+export const restoreSiteResponseDocumentPagesItemDescriptionMax = 300;
+
+export const restoreSiteResponseDocumentPagesItemEyebrowMax = 120;
+
+export const restoreSiteResponseDocumentPagesItemHeadingMax = 180;
+
+export const restoreSiteResponseDocumentPagesItemIntroMax = 1500;
+
+export const restoreSiteResponseDocumentPagesItemImageMax = 500;
+
+export const restoreSiteResponseDocumentPagesItemImageAltMax = 240;
+
+export const restoreSiteResponseDocumentPagesMax = 30;
+
+export const restoreSiteResponseDocumentLabelsMaxOne = 500;
+
+
+
+export const RestoreSiteResponse = zod.object({
+  "document": zod.object({
+  "brand": zod.object({
+  "name": zod.string().min(1).max(restoreSiteResponseDocumentBrandNameMax),
+  "tagline": zod.string().max(restoreSiteResponseDocumentBrandTaglineMax),
+  "logo": zod.string().max(restoreSiteResponseDocumentBrandLogoMax),
+  "mark": zod.string().max(restoreSiteResponseDocumentBrandMarkMax),
+  "announcement": zod.string().max(restoreSiteResponseDocumentBrandAnnouncementMax),
+  "footerTitle": zod.string().max(restoreSiteResponseDocumentBrandFooterTitleMax),
+  "footerText": zod.string().max(restoreSiteResponseDocumentBrandFooterTextMax),
+  "copyright": zod.string().max(restoreSiteResponseDocumentBrandCopyrightMax)
+}),
+  "theme": zod.object({
+  "background": zod.string().regex(restoreSiteResponseDocumentThemeBackgroundRegExp),
+  "surface": zod.string().regex(restoreSiteResponseDocumentThemeSurfaceRegExp),
+  "primary": zod.string().regex(restoreSiteResponseDocumentThemePrimaryRegExp),
+  "secondary": zod.string().regex(restoreSiteResponseDocumentThemeSecondaryRegExp),
+  "accent": zod.string().regex(restoreSiteResponseDocumentThemeAccentRegExp),
+  "ink": zod.string().regex(restoreSiteResponseDocumentThemeInkRegExp),
+  "muted": zod.string().regex(restoreSiteResponseDocumentThemeMutedRegExp),
+  "headingFont": zod.enum(['garamond', 'cormorant', 'georgia']),
+  "bodyFont": zod.enum(['inter', 'system', 'georgia']),
+  "radius": zod.number().int().min(restoreSiteResponseDocumentThemeRadiusMin).max(restoreSiteResponseDocumentThemeRadiusMax),
+  "spacing": zod.enum(['compact', 'comfortable', 'generous']),
+  "motion": zod.boolean(),
+  "ornament": zod.boolean()
+}),
+  "navigation": zod.array(zod.object({
+  "label": zod.string().min(1).max(restoreSiteResponseDocumentNavigationItemLabelMax),
+  "href": zod.string().min(1).max(restoreSiteResponseDocumentNavigationItemHrefMax)
+})).max(restoreSiteResponseDocumentNavigationMax),
+  "footerLinks": zod.array(zod.object({
+  "label": zod.string().min(1).max(restoreSiteResponseDocumentFooterLinksItemLabelMax),
+  "href": zod.string().min(1).max(restoreSiteResponseDocumentFooterLinksItemHrefMax)
+})).max(restoreSiteResponseDocumentFooterLinksMax),
+  "sections": zod.array(zod.object({
+  "id": zod.string().regex(restoreSiteResponseDocumentSectionsItemIdRegExp),
+  "type": zod.enum(['hero', 'story', 'products', 'maker', 'quiz', 'invitation']),
+  "visible": zod.boolean(),
+  "eyebrow": zod.string().max(restoreSiteResponseDocumentSectionsItemEyebrowMax),
+  "title": zod.string().max(restoreSiteResponseDocumentSectionsItemTitleMax),
+  "text": zod.string().max(restoreSiteResponseDocumentSectionsItemTextMax),
+  "image": zod.string().max(restoreSiteResponseDocumentSectionsItemImageMax),
+  "imageAlt": zod.string().max(restoreSiteResponseDocumentSectionsItemImageAltMax),
+  "tone": zod.enum(['light', 'dark', 'accent']),
+  "layout": zod.enum(['editorial', 'centred', 'split']),
+  "link": zod.object({
+  "label": zod.string().min(1).max(restoreSiteResponseDocumentSectionsItemLinkLabelMax),
+  "href": zod.string().min(1).max(restoreSiteResponseDocumentSectionsItemLinkHrefMax)
+}),
+  "storyId": zod.string().max(restoreSiteResponseDocumentSectionsItemStoryIdMax),
+  "productIds": zod.array(zod.string().max(restoreSiteResponseDocumentSectionsItemProductIdsItemMax)).max(restoreSiteResponseDocumentSectionsItemProductIdsMax)
+})).min(1).max(restoreSiteResponseDocumentSectionsMax),
+  "stories": zod.array(zod.object({
+  "id": zod.string().regex(restoreSiteResponseDocumentStoriesItemIdRegExp),
+  "maker": zod.string().max(restoreSiteResponseDocumentStoriesItemMakerMax),
+  "title": zod.string().min(1).max(restoreSiteResponseDocumentStoriesItemTitleMax),
+  "intro": zod.string().max(restoreSiteResponseDocumentStoriesItemIntroMax),
+  "image": zod.string().max(restoreSiteResponseDocumentStoriesItemImageMax),
+  "imageAlt": zod.string().max(restoreSiteResponseDocumentStoriesItemImageAltMax),
+  "sponsored": zod.boolean(),
+  "sample": zod.boolean(),
+  "visible": zod.boolean(),
+  "chapters": zod.array(zod.object({
+  "id": zod.string().min(1).max(restoreSiteResponseDocumentStoriesItemChaptersItemIdMax),
+  "title": zod.string().min(1).max(restoreSiteResponseDocumentStoriesItemChaptersItemTitleMax),
+  "body": zod.string().max(restoreSiteResponseDocumentStoriesItemChaptersItemBodyMax),
+  "image": zod.string().max(restoreSiteResponseDocumentStoriesItemChaptersItemImageMax),
+  "imageAlt": zod.string().max(restoreSiteResponseDocumentStoriesItemChaptersItemImageAltMax),
+  "quote": zod.string().max(restoreSiteResponseDocumentStoriesItemChaptersItemQuoteMax)
+})).min(1).max(restoreSiteResponseDocumentStoriesItemChaptersMax),
+  "link": zod.object({
+  "label": zod.string().min(1).max(restoreSiteResponseDocumentStoriesItemLinkLabelMax),
+  "href": zod.string().min(1).max(restoreSiteResponseDocumentStoriesItemLinkHrefMax)
+})
+})).max(restoreSiteResponseDocumentStoriesMax),
+  "trunkCards": zod.array(zod.object({
+  "id": zod.string().regex(restoreSiteResponseDocumentTrunkCardsItemIdRegExp),
+  "title": zod.string().min(1).max(restoreSiteResponseDocumentTrunkCardsItemTitleMax),
+  "caption": zod.string().max(restoreSiteResponseDocumentTrunkCardsItemCaptionMax),
+  "image": zod.string().max(restoreSiteResponseDocumentTrunkCardsItemImageMax),
+  "imageAlt": zod.string().max(restoreSiteResponseDocumentTrunkCardsItemImageAltMax),
+  "sponsored": zod.boolean(),
+  "link": zod.object({
+  "label": zod.string().min(1).max(restoreSiteResponseDocumentTrunkCardsItemLinkLabelMax),
+  "href": zod.string().min(1).max(restoreSiteResponseDocumentTrunkCardsItemLinkHrefMax)
+})
+})).min(1).max(restoreSiteResponseDocumentTrunkCardsMax),
+  "pages": zod.array(zod.object({
+  "id": zod.string().regex(restoreSiteResponseDocumentPagesItemIdRegExp),
+  "title": zod.string().max(restoreSiteResponseDocumentPagesItemTitleMax),
+  "description": zod.string().max(restoreSiteResponseDocumentPagesItemDescriptionMax),
+  "eyebrow": zod.string().max(restoreSiteResponseDocumentPagesItemEyebrowMax),
+  "heading": zod.string().max(restoreSiteResponseDocumentPagesItemHeadingMax),
+  "intro": zod.string().max(restoreSiteResponseDocumentPagesItemIntroMax),
+  "image": zod.string().max(restoreSiteResponseDocumentPagesItemImageMax),
+  "imageAlt": zod.string().max(restoreSiteResponseDocumentPagesItemImageAltMax)
+})).max(restoreSiteResponseDocumentPagesMax),
+  "labels": zod.record(zod.string(), zod.string().max(restoreSiteResponseDocumentLabelsMaxOne))
+}),
+  "revision": zod.number().int(),
+  "publishedRevision": zod.number().int(),
+  "updatedAt": zod.string(),
+  "history": zod.array(zod.object({
+  "id": zod.number().int(),
+  "publishedAt": zod.string()
+}))
+})
+
+
+export const GetOperationsResponse = zod.object({
+  "orders": zod.array(zod.object({
+  "id": zod.string(),
+  "ref": zod.string(),
+  "status": zod.string(),
+  "paymentStatus": zod.string(),
+  "totalPaise": zod.number().int(),
+  "createdAt": zod.string(),
+  "trackingNumber": zod.string(),
+  "carrier": zod.string()
+})),
+  "applications": zod.array(zod.object({
+  "id": zod.string(),
+  "brand": zod.string(),
+  "contactName": zod.string(),
+  "craft": zod.string(),
+  "city": zod.string(),
+  "status": zod.string()
+})),
+  "briefs": zod.array(zod.object({
+  "id": zod.string(),
+  "ref": zod.string(),
+  "purpose": zod.string(),
+  "company": zod.string(),
+  "quantity": zod.number().int(),
+  "budgetPaise": zod.number().int(),
+  "neededBy": zod.string(),
+  "stage": zod.string(),
+  "contactName": zod.string(),
+  "reach": zod.string(),
+  "message": zod.string()
+}))
+})
+
+
+export const ReviewApplicationParams = zod.object({
+  "id": zod.coerce.string().uuid()
+})
+
+export const reviewApplicationBodyNoteMax = 1000;
+
+
+
+export const ReviewApplicationBody = zod.object({
+  "decision": zod.enum(['approved', 'declined', 'call']),
+  "note": zod.string().max(reviewApplicationBodyNoteMax)
+})
+
+export const ReviewApplicationResponse = zod.object({
+  "id": zod.string(),
+  "message": zod.string()
+})
+
+
+export const UpdateBriefParams = zod.object({
+  "id": zod.coerce.string().uuid()
+})
+
+export const UpdateBriefBody = zod.object({
+  "stage": zod.enum(['new', 'contacted', 'proposal', 'won', 'lost'])
+})
+
+export const UpdateBriefResponse = zod.object({
+  "id": zod.string(),
+  "message": zod.string()
+})
+
+
+export const UpdateFulfilmentParams = zod.object({
+  "id": zod.coerce.string().uuid()
+})
+
+export const updateFulfilmentBodyTrackingNumberMax = 120;
+
+export const updateFulfilmentBodyCarrierMax = 100;
+
+export const updateFulfilmentBodyNoteMax = 1000;
+
+
+
+export const UpdateFulfilmentBody = zod.object({
+  "status": zod.enum(['packed', 'dispatched', 'delayed', 'problem']),
+  "trackingNumber": zod.string().max(updateFulfilmentBodyTrackingNumberMax),
+  "carrier": zod.string().max(updateFulfilmentBodyCarrierMax),
+  "note": zod.string().max(updateFulfilmentBodyNoteMax)
+})
+
+export const UpdateFulfilmentResponse = zod.object({
+  "id": zod.string(),
+  "message": zod.string()
+})
+
+
+export const saveMakerBrandBodyTaglineMax = 240;
+
+export const saveMakerBrandBodyStoryMax = 6000;
+
+export const saveMakerBrandBodyHeroImageMax = 500;
+
+
+
+export const SaveMakerBrandBody = zod.object({
+  "tagline": zod.string().min(1).max(saveMakerBrandBodyTaglineMax),
+  "story": zod.string().min(1).max(saveMakerBrandBodyStoryMax),
+  "heroImage": zod.string().max(saveMakerBrandBodyHeroImageMax)
+})
+
+export const SaveMakerBrandResponse = zod.object({
+  "id": zod.string(),
+  "message": zod.string()
+})
+
+
+export const SaveProductImagesParams = zod.object({
+  "id": zod.coerce.string().uuid()
+})
+
+export const saveProductImagesBodyImagesItemMax = 500;
+
+export const saveProductImagesBodyImagesMax = 8;
+
+
+
+export const SaveProductImagesBody = zod.object({
+  "images": zod.array(zod.string().min(1).max(saveProductImagesBodyImagesItemMax)).min(1).max(saveProductImagesBodyImagesMax)
+})
+
+export const SaveProductImagesResponse = zod.object({
+  "id": zod.string(),
+  "message": zod.string()
+})
+
+
 export const GetCatalogResponse = zod.object({
   "sample": zod.boolean(),
   "products": zod.array(zod.object({

@@ -29,13 +29,16 @@ app.use(
 app.disable("x-powered-by");
 app.set("trust proxy", 1);
 app.use(cors({ origin: false }));
-app.use(express.json({ limit: "100kb" }));
+app.use(express.json({ limit: "220kb" }));
 app.use(express.urlencoded({ extended: true, limit: "100kb" }));
 
 app.use("/api", router);
 app.use("/api", (_req, res) => { res.status(404).json({ error: "This action is not available." }); });
 app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
   if (err instanceof HttpError) { res.status(err.status).json({ error: err.message }); return; }
+  if ("type" in err && err.type === "entity.too.large") {
+    res.status(413).json({ error: "This content is too large. Use hosted image URLs instead of embedded image data. Your changes have not been saved." }); return;
+  }
   if (err instanceof SyntaxError && "body" in err) { res.status(400).json({ error: "The submitted data could not be read." }); return; }
   req.log.error({ errorName: err.name }, "API action failed");
   res.status(500).json({ error: "Something went wrong. Please try again; this action has not been confirmed." });

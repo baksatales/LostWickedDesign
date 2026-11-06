@@ -5,6 +5,449 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
+export type EditorialInputPurpose = typeof EditorialInputPurpose[keyof typeof EditorialInputPurpose];
+
+
+export const EditorialInputPurpose = {
+  story: 'story',
+  product: 'product',
+  caption: 'caption',
+} as const;
+
+export type EditorialInputTone = typeof EditorialInputTone[keyof typeof EditorialInputTone];
+
+
+export const EditorialInputTone = {
+  warm: 'warm',
+  celebratory: 'celebratory',
+  editorial: 'editorial',
+} as const;
+
+export interface EditorialInput {
+  purpose: EditorialInputPurpose;
+  /**
+     * @minLength 20
+     * @maxLength 8000
+     */
+  facts: string;
+  tone: EditorialInputTone;
+}
+
+export interface EditorialDraft {
+  text: string;
+  disclosure: string;
+}
+
+export interface SiteLink {
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  label: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  href: string;
+}
+
+export type SiteThemeHeadingFont = typeof SiteThemeHeadingFont[keyof typeof SiteThemeHeadingFont];
+
+
+export const SiteThemeHeadingFont = {
+  garamond: 'garamond',
+  cormorant: 'cormorant',
+  georgia: 'georgia',
+} as const;
+
+export type SiteThemeBodyFont = typeof SiteThemeBodyFont[keyof typeof SiteThemeBodyFont];
+
+
+export const SiteThemeBodyFont = {
+  inter: 'inter',
+  system: 'system',
+  georgia: 'georgia',
+} as const;
+
+export type SiteThemeSpacing = typeof SiteThemeSpacing[keyof typeof SiteThemeSpacing];
+
+
+export const SiteThemeSpacing = {
+  compact: 'compact',
+  comfortable: 'comfortable',
+  generous: 'generous',
+} as const;
+
+export interface SiteTheme {
+  /** @pattern ^#[0-9a-fA-F]{6}$ */
+  background: string;
+  /** @pattern ^#[0-9a-fA-F]{6}$ */
+  surface: string;
+  /** @pattern ^#[0-9a-fA-F]{6}$ */
+  primary: string;
+  /** @pattern ^#[0-9a-fA-F]{6}$ */
+  secondary: string;
+  /** @pattern ^#[0-9a-fA-F]{6}$ */
+  accent: string;
+  /** @pattern ^#[0-9a-fA-F]{6}$ */
+  ink: string;
+  /** @pattern ^#[0-9a-fA-F]{6}$ */
+  muted: string;
+  headingFont: SiteThemeHeadingFont;
+  bodyFont: SiteThemeBodyFont;
+  /**
+     * @minimum 0
+     * @maximum 28
+     */
+  radius: number;
+  spacing: SiteThemeSpacing;
+  motion: boolean;
+  ornament: boolean;
+}
+
+export interface SiteBrand {
+  /**
+     * @minLength 1
+     * @maxLength 60
+     */
+  name: string;
+  /** @maxLength 120 */
+  tagline: string;
+  /** @maxLength 500 */
+  logo: string;
+  /** @maxLength 500 */
+  mark: string;
+  /** @maxLength 180 */
+  announcement: string;
+  /** @maxLength 120 */
+  footerTitle: string;
+  /** @maxLength 1000 */
+  footerText: string;
+  /** @maxLength 180 */
+  copyright: string;
+}
+
+export interface SiteChapter {
+  /**
+     * @minLength 1
+     * @maxLength 60
+     */
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 140
+     */
+  title: string;
+  /** @maxLength 2500 */
+  body: string;
+  /** @maxLength 500 */
+  image: string;
+  /** @maxLength 240 */
+  imageAlt: string;
+  /** @maxLength 600 */
+  quote: string;
+}
+
+export interface SiteStory {
+  /** @pattern ^[a-z0-9-]{1,60}$ */
+  id: string;
+  /** @maxLength 100 */
+  maker: string;
+  /**
+     * @minLength 1
+     * @maxLength 140
+     */
+  title: string;
+  /** @maxLength 700 */
+  intro: string;
+  /** @maxLength 500 */
+  image: string;
+  /** @maxLength 240 */
+  imageAlt: string;
+  sponsored: boolean;
+  sample: boolean;
+  visible: boolean;
+  /**
+     * @minItems 1
+     * @maxItems 8
+     */
+  chapters: SiteChapter[];
+  link: SiteLink;
+}
+
+export type SiteSectionType = typeof SiteSectionType[keyof typeof SiteSectionType];
+
+
+export const SiteSectionType = {
+  hero: 'hero',
+  story: 'story',
+  products: 'products',
+  maker: 'maker',
+  quiz: 'quiz',
+  invitation: 'invitation',
+} as const;
+
+export type SiteSectionTone = typeof SiteSectionTone[keyof typeof SiteSectionTone];
+
+
+export const SiteSectionTone = {
+  light: 'light',
+  dark: 'dark',
+  accent: 'accent',
+} as const;
+
+export type SiteSectionLayout = typeof SiteSectionLayout[keyof typeof SiteSectionLayout];
+
+
+export const SiteSectionLayout = {
+  editorial: 'editorial',
+  centred: 'centred',
+  split: 'split',
+} as const;
+
+export interface SiteSection {
+  /** @pattern ^[a-z0-9-]{1,60}$ */
+  id: string;
+  type: SiteSectionType;
+  visible: boolean;
+  /** @maxLength 120 */
+  eyebrow: string;
+  /** @maxLength 180 */
+  title: string;
+  /** @maxLength 1500 */
+  text: string;
+  /** @maxLength 500 */
+  image: string;
+  /** @maxLength 240 */
+  imageAlt: string;
+  tone: SiteSectionTone;
+  layout: SiteSectionLayout;
+  link: SiteLink;
+  /** @maxLength 60 */
+  storyId: string;
+  /**
+     * @maxItems 12
+     * @items.maxLength 100
+     */
+  productIds: string[];
+}
+
+export interface SiteTrunkCard {
+  /** @pattern ^[a-z0-9-]{1,60}$ */
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 90
+     */
+  title: string;
+  /** @maxLength 150 */
+  caption: string;
+  /** @maxLength 500 */
+  image: string;
+  /** @maxLength 240 */
+  imageAlt: string;
+  sponsored: boolean;
+  link: SiteLink;
+}
+
+export interface SitePage {
+  /** @pattern ^[a-z0-9-]{1,60}$ */
+  id: string;
+  /** @maxLength 120 */
+  title: string;
+  /** @maxLength 300 */
+  description: string;
+  /** @maxLength 120 */
+  eyebrow: string;
+  /** @maxLength 180 */
+  heading: string;
+  /** @maxLength 1500 */
+  intro: string;
+  /** @maxLength 500 */
+  image: string;
+  /** @maxLength 240 */
+  imageAlt: string;
+}
+
+export type SiteDocumentLabels = {[key: string]: string};
+
+export interface SiteDocument {
+  brand: SiteBrand;
+  theme: SiteTheme;
+  /** @maxItems 8 */
+  navigation: SiteLink[];
+  /** @maxItems 16 */
+  footerLinks: SiteLink[];
+  /**
+     * @minItems 1
+     * @maxItems 20
+     */
+  sections: SiteSection[];
+  /** @maxItems 20 */
+  stories: SiteStory[];
+  /**
+     * @minItems 1
+     * @maxItems 3
+     */
+  trunkCards: SiteTrunkCard[];
+  /** @maxItems 30 */
+  pages: SitePage[];
+  labels: SiteDocumentLabels;
+}
+
+export interface SiteState {
+  document: SiteDocument;
+  revision: number;
+  configured: boolean;
+  updatedAt: string;
+}
+
+export interface SiteVersion {
+  id: number;
+  publishedAt: string;
+}
+
+export interface SiteDraft {
+  document: SiteDocument;
+  revision: number;
+  publishedRevision: number;
+  updatedAt: string;
+  history: SiteVersion[];
+}
+
+export interface SiteEdit {
+  document: SiteDocument;
+  /** @minimum 0 */
+  expectedRevision: number;
+}
+
+export interface SiteRevisionInput {
+  /** @minimum 0 */
+  expectedRevision: number;
+}
+
+export interface SiteRestoreInput {
+  /** @minimum 0 */
+  expectedRevision: number;
+  /** @minimum 1 */
+  versionId: number;
+}
+
+export interface OperationOrder {
+  id: string;
+  ref: string;
+  status: string;
+  paymentStatus: string;
+  totalPaise: number;
+  createdAt: string;
+  trackingNumber: string;
+  carrier: string;
+}
+
+export interface OperationApplication {
+  id: string;
+  brand: string;
+  contactName: string;
+  craft: string;
+  city: string;
+  status: string;
+}
+
+export interface OperationBrief {
+  id: string;
+  ref: string;
+  purpose: string;
+  company: string;
+  quantity: number;
+  budgetPaise: number;
+  neededBy: string;
+  stage: string;
+  contactName: string;
+  reach: string;
+  message: string;
+}
+
+export interface Operations {
+  orders: OperationOrder[];
+  applications: OperationApplication[];
+  briefs: OperationBrief[];
+}
+
+export type ApplicationDecisionDecision = typeof ApplicationDecisionDecision[keyof typeof ApplicationDecisionDecision];
+
+
+export const ApplicationDecisionDecision = {
+  approved: 'approved',
+  declined: 'declined',
+  call: 'call',
+} as const;
+
+export interface ApplicationDecision {
+  decision: ApplicationDecisionDecision;
+  /** @maxLength 1000 */
+  note: string;
+}
+
+export type BriefStageInputStage = typeof BriefStageInputStage[keyof typeof BriefStageInputStage];
+
+
+export const BriefStageInputStage = {
+  new: 'new',
+  contacted: 'contacted',
+  proposal: 'proposal',
+  won: 'won',
+  lost: 'lost',
+} as const;
+
+export interface BriefStageInput {
+  stage: BriefStageInputStage;
+}
+
+export type FulfilmentInputStatus = typeof FulfilmentInputStatus[keyof typeof FulfilmentInputStatus];
+
+
+export const FulfilmentInputStatus = {
+  packed: 'packed',
+  dispatched: 'dispatched',
+  delayed: 'delayed',
+  problem: 'problem',
+} as const;
+
+export interface FulfilmentInput {
+  status: FulfilmentInputStatus;
+  /** @maxLength 120 */
+  trackingNumber: string;
+  /** @maxLength 100 */
+  carrier: string;
+  /** @maxLength 1000 */
+  note: string;
+}
+
+export interface MakerBrandInput {
+  /**
+     * @minLength 1
+     * @maxLength 240
+     */
+  tagline: string;
+  /**
+     * @minLength 1
+     * @maxLength 6000
+     */
+  story: string;
+  /** @maxLength 500 */
+  heroImage: string;
+}
+
+export interface ProductImagesInput {
+  /**
+     * @minItems 1
+     * @maxItems 8
+     * @items.minLength 1
+     * @items.maxLength 500
+     */
+  images: string[];
+}
+
 export interface Runtime {
   database: boolean;
   auth: boolean;
