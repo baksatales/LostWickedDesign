@@ -1,1 +1,2 @@
 - [Baksa review boundaries](baksa-review-boundaries.md) — review designs before implementing commerce; preserve supplied identity and distinguish prototypes from live services.
+- [Editorial measurement privacy](editorial-measurement.md) — use positions instead of editable identifiers; do not send quiz answer profiles.

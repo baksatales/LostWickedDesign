@@ -11,6 +11,7 @@ import {
 } from '@workspace/api-client-react';
 import type { Catalog, GiftMatch, Maker, Product, Runtime, Workspace, SiteDocument, SitePage, OperationApplication, OperationBrief, OperationOrder } from '@workspace/api-client-react';
 import SiteStudio, { starterDocument } from './SiteStudio';
+import { commerceDestination, trackEvent } from '../lib/analytics';
 import '../baksa.css';
 import '../editorial-refinements.css';
 
@@ -89,7 +90,7 @@ function ProductGrid({ products, makers, saved, toggle }: { products: Product[];
   if (!products.length) return <div className="bk-empty"><strong style={{font:'27px var(--bk-display)',color:'var(--bk-ink)'}}>Nothing in this edit just yet.</strong><p>Try a different filter or clear your search.</p></div>;
   return <div className="bk-productgrid">{products.map(p => <ProductCard key={p.id} product={p} maker={makers.find(m => m.id === p.makerId)} saved={saved.includes(p.id)} onToggle={() => toggle(p.id)}/>)}</div>;
 }
-function HomePage({ catalog, saved, toggle, catalogError, retryCatalog, document:siteDoc }: { catalog?: Catalog; saved: string[]; toggle: (id:string)=>void;catalogError?:string;retryCatalog:()=>void;document:SiteDocument }) {
+function HomePage({ catalog, saved, toggle, catalogError, retryCatalog, document:siteDoc, measure=true }: { catalog?: Catalog; saved: string[]; toggle: (id:string)=>void;catalogError?:string;retryCatalog:()=>void;document:SiteDocument;measure?:boolean }) {
   const [opened, setOpened] = useState(false);
   const products = catalog?.products || [];
   const page=(id:string)=>siteDoc.pages.find(p=>p.id===id);
@@ -113,7 +114,14 @@ function HomePage({ catalog, saved, toggle, catalogError, retryCatalog, document
     if(section.type==='quiz')return <section key={section.id} className={`bk-section ${toneClass}`}><div className="bk-banner"><div><span className="bk-eyebrow">{section.eyebrow}</span><h2>{section.title}</h2><p>{section.text}</p></div><DocLink className="bk-btn" href="/gift-finder">{section.link.label}<ArrowRight size={16}/></DocLink></div></section>;
     return <section key={section.id} className={`bk-section ${toneClass}`}><div className="bk-banner"><div><span className="bk-eyebrow">{section.eyebrow}</span><h2>{section.title}</h2><p>{section.text}</p></div><DocLink className="bk-btn" href={section.link.href}>{section.link.label}<ArrowRight size={16}/></DocLink></div></section>;
   };
-  return <main className={`bk-home ${siteDoc.theme.motion?'bk-motion':'bk-still'} ${siteDoc.theme.ornament?'bk-ornament':''}`} style={{'--bk-paper':siteDoc.theme.background,'--bk-cream':siteDoc.theme.surface,'--bk-maroon':siteDoc.theme.primary,'--bk-crimson':siteDoc.theme.primary,'--bk-teal':siteDoc.theme.secondary,'--bk-gold':siteDoc.theme.accent,'--bk-ink':siteDoc.theme.ink,'--bk-muted':siteDoc.theme.muted,'--bk-display':siteDoc.theme.headingFont==='georgia'?'Georgia,serif':siteDoc.theme.headingFont==='cormorant'?'Cormorant Garamond,Georgia,serif':"'EB Garamond',Georgia,serif",'--bk-body':siteDoc.theme.bodyFont==='system'?'system-ui,sans-serif':siteDoc.theme.bodyFont==='georgia'?'Georgia,serif':"'Source Sans 3',sans-serif",'--bk-radius':`${siteDoc.theme.radius}px`,'--bk-space':siteDoc.theme.spacing==='compact'?'48px':siteDoc.theme.spacing==='generous'?'94px':'72px'} as CSSProperties}>
+  return <main onClickCapture={e=>{
+    if(!measure||e.defaultPrevented||!(e.target instanceof Element))return;
+    if(e.target.closest('.bk-trunk-toggle')&&!opened)trackEvent('trunk_opened',undefined);
+    const card=e.target.closest('.bk-trunk-card');
+    if(!opened||!card)return;
+    const position=Array.from(card.parentElement?.children||[]).indexOf(card);
+    if(siteDoc.trunkCards[position]?.sponsored)trackEvent('sponsored_card_followed',{card_position:position+1});
+  }} className={`bk-home ${siteDoc.theme.motion?'bk-motion':'bk-still'} ${siteDoc.theme.ornament?'bk-ornament':''}`} style={{'--bk-paper':siteDoc.theme.background,'--bk-cream':siteDoc.theme.surface,'--bk-maroon':siteDoc.theme.primary,'--bk-crimson':siteDoc.theme.primary,'--bk-teal':siteDoc.theme.secondary,'--bk-gold':siteDoc.theme.accent,'--bk-ink':siteDoc.theme.ink,'--bk-muted':siteDoc.theme.muted,'--bk-display':siteDoc.theme.headingFont==='georgia'?'Georgia,serif':siteDoc.theme.headingFont==='cormorant'?'Cormorant Garamond,Georgia,serif':"'EB Garamond',Georgia,serif",'--bk-body':siteDoc.theme.bodyFont==='system'?'system-ui,sans-serif':siteDoc.theme.bodyFont==='georgia'?'Georgia,serif':"'Source Sans 3',sans-serif",'--bk-radius':`${siteDoc.theme.radius}px`,'--bk-space':siteDoc.theme.spacing==='compact'?'48px':siteDoc.theme.spacing==='generous'?'94px':'72px'} as CSSProperties}>
     <Seo title={page('shop')?.title||'Handmade gifts, found with feeling'} description={page('shop')?.description||'Discover meaningful gifts through the makers and stories behind them.'}/>
     {siteDoc.sections.filter(s=>s.visible).map(renderSection)}
   </main>;
@@ -122,13 +130,27 @@ function HomePage({ catalog, saved, toggle, catalogError, retryCatalog, document
 function StorefrontPreview({document:doc,catalog,catalogError,retryCatalog,storyId}:{document:SiteDocument;catalog?:Catalog;catalogError?:string;retryCatalog:()=>void;storyId?:string}){
   const [saved,setSaved]=useState<string[]>([]);const [cart,setCart]=useState<CartItem[]>([]);const [bagOpen,setBagOpen]=useState(false);
   const toggle=(id:string)=>setSaved(items=>items.includes(id)?items.filter(x=>x!==id):[...items,id]);
-  return <div className="bk-preview-no-nav" onClickCapture={e=>{if((e.target as HTMLElement).closest('a'))e.preventDefault();}}><Frame document={doc} bagCount={cart.reduce((n,item)=>n+item.quantity,0)} savedCount={saved.length} onBag={()=>setBagOpen(true)}>{storyId?<StoryPage id={storyId} document={doc}/>:<HomePage catalog={catalog} saved={saved} toggle={toggle} document={doc} catalogError={catalogError} retryCatalog={retryCatalog}/>} {catalog&&<BagDrawer open={bagOpen} close={()=>setBagOpen(false)} catalog={catalog} cart={cart} setCart={setCart}/>}</Frame></div>;
+  return <div className="bk-preview-no-nav" onClickCapture={e=>{if((e.target as HTMLElement).closest('a'))e.preventDefault();}}><Frame document={doc} bagCount={cart.reduce((n,item)=>n+item.quantity,0)} savedCount={saved.length} onBag={()=>setBagOpen(true)}>{storyId?<StoryPage id={storyId} document={doc} measure={false}/>:<HomePage catalog={catalog} saved={saved} toggle={toggle} document={doc} catalogError={catalogError} retryCatalog={retryCatalog} measure={false}/>} {catalog&&<BagDrawer open={bagOpen} close={()=>setBagOpen(false)} catalog={catalog} cart={cart} setCart={setCart}/>}</Frame></div>;
 }
 
-function StoryPage({id,document:siteDoc}:{id:string;document:SiteDocument}){
+function StoryPage({id,document:siteDoc,measure=true}:{id:string;document:SiteDocument;measure?:boolean}){
   const story=siteDoc.stories.find(s=>s.id===id&&s.visible);
+  const openedStory=useRef<string|null>(null);
+  const storyPosition=siteDoc.stories.findIndex(s=>s.id===id)+1;
+  useEffect(()=>{
+    if(!measure||!story||openedStory.current===id)return;
+    openedStory.current=id;
+    trackEvent('story_opened',{story_position:storyPosition,sponsored:story.sponsored,sample:story.sample});
+  },[id,measure,storyPosition,story]);
   if(!story)return <main className="bk-formpage"><Seo title="Story not found" description="This editorial story is not currently available."/><span className="bk-eyebrow">A story not in this edit</span><h1>This chapter is not available.</h1><Link className="bk-btn" href="/makers">Meet the makers</Link></main>;
-  return <main className="bk-story-page"><Seo title={story.title} description={story.intro}/><header className="bk-story-cover"><img src={imageUrl(story.image)} alt={story.imageAlt}/><div><span className="bk-eyebrow">{story.sponsored?'Sponsored placement':story.sample?'Sample catalogue story':'Maker story'}{story.sample?' · sample':''}</span><p className="bk-story-maker">{story.maker}</p><h1>{story.title}</h1><p>{story.intro}</p><Link className="bk-btn secondary" href={siteHref(story.link.href)}>{story.link.label}<ArrowRight size={16}/></Link></div></header>{story.chapters.map((chapter,i)=><article className={`bk-story-chapter ${i%2?'reverse':''}`} key={chapter.id}><div className="bk-story-chapter-copy"><span className="bk-eyebrow">Chapter {String(i+1).padStart(2,'0')}</span><h2>{chapter.title}</h2><p>{chapter.body}</p>{chapter.quote&&<blockquote>“{chapter.quote}”</blockquote>}</div>{chapter.image&&<img src={imageUrl(chapter.image)} alt={chapter.imageAlt}/>}</article>)}<footer className="bk-story-end"><span className="bk-eyebrow">Keep exploring</span><h2>Find another story in the baksa.</h2><Link className="bk-btn" href="/makers">Meet the makers <ArrowRight size={16}/></Link></footer></main>;
+  return <main className="bk-story-page" onClickCapture={e=>{
+    if(!measure||e.defaultPrevented||!(e.target instanceof Element))return;
+    const anchor=e.target.closest('a');
+    if(!anchor)return;
+    // Read the app route, not the rendered href (which can include a preview base).
+    const destination=commerceDestination(anchor.closest('.bk-story-cover')?siteHref(story.link.href):'/makers');
+    if(destination)trackEvent('story_commerce_link_followed',{story_position:storyPosition,sponsored:story.sponsored,sample:story.sample,destination});
+  }}><Seo title={story.title} description={story.intro}/><header className="bk-story-cover"><img src={imageUrl(story.image)} alt={story.imageAlt}/><div><span className="bk-eyebrow">{story.sponsored?'Sponsored placement':story.sample?'Sample catalogue story':'Maker story'}{story.sample?' · sample':''}</span><p className="bk-story-maker">{story.maker}</p><h1>{story.title}</h1><p>{story.intro}</p><Link className="bk-btn secondary" href={siteHref(story.link.href)}>{story.link.label}<ArrowRight size={16}/></Link></div></header>{story.chapters.map((chapter,i)=><article className={`bk-story-chapter ${i%2?'reverse':''}`} key={chapter.id}><div className="bk-story-chapter-copy"><span className="bk-eyebrow">Chapter {String(i+1).padStart(2,'0')}</span><h2>{chapter.title}</h2><p>{chapter.body}</p>{chapter.quote&&<blockquote>“{chapter.quote}”</blockquote>}</div>{chapter.image&&<img src={imageUrl(chapter.image)} alt={chapter.imageAlt}/>}</article>)}<footer className="bk-story-end"><span className="bk-eyebrow">Keep exploring</span><h2>Find another story in the baksa.</h2><Link className="bk-btn" href="/makers">Meet the makers <ArrowRight size={16}/></Link></footer></main>;
 }
 function PageHeading({id,eyebrow,title,intro,description}:{id:string;eyebrow:string;title:string;intro:string;description:string}){
   const content=useSitePage(id);
@@ -172,7 +194,9 @@ function MakerPage({ maker, catalog, saved, toggle }: { maker?: Maker; catalog: 
 function FinderPage() {
   const page=useSitePage('gift-finder');
   const labels=useContext(SiteDocumentContext)?.labels||{};
-  const mutation = useFindGifts();
+  const mutation = useFindGifts({mutation:{onSuccess:result=>{
+    trackEvent('gift_finder_completed',{recommendation_count:result.matches.length,sample:result.sample});
+  }}});
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState(['','','','']);
   const [budgetPaise,setBudget] = useState(300000);
@@ -184,7 +208,13 @@ function FinderPage() {
   ];
   const choose=(option:string) => { const value=option.split('|')[0];setAnswers(a=>a.map((v,i)=>i===step?value:v)); if(step===3)setBudget(Number(value)); };
   const next=() => { if(step<3){setStep(s=>s+1);return;} mutation.mutate({data:{recipient:answers[0],occasion:answers[1],feeling:answers[2],budgetPaise}}); };
-   return <main className="bk-finder-wrap"><Seo title={page?.title||'Gift finder'} description={page?.description||'A guided gift finder with recommendations from the current catalogue.'}/><div className="bk-finder-intro"><span className="bk-eyebrow">{page?.eyebrow||'A thoughtful place to begin'}</span><h1>{page?.heading||'Find a gift with feeling.'}</h1><p>{page?.intro||'Four small questions help us look through the catalogue. Recommendations come from the current catalogue service, not live AI.'}</p><PageArtwork page={page}/></div><div className="bk-finder-card"><aside className="bk-finder-side"><div><span className="bk-eyebrow" style={{color:'#e5c37e'}}>A little guidance</span><h2>Start with what matters.</h2><p>Skip anything you are not sure about. You can go back and change an answer.</p></div><div><strong>Question {Math.min(step+1,4)} of 4</strong><div className="bk-finder-progress">{steps.map((_,i)=><i key={i} className={i<=step?'on':''}/>)}</div></div></aside><section className="bk-finder-content">{mutation.data ? <><span className="bk-eyebrow">Your gift edit</span><h2>A few pieces to consider.</h2><p>{mutation.data.message}</p>{mutation.data.sample&&<p className="bk-status">Recommendations from sample catalogue</p>}{mutation.data.matches.length ? <div className="bk-results">{mutation.data.matches.map(({product,reason}:GiftMatch)=><Link className="bk-resultcard" key={product.id} href={`/products/${product.slug}`}><img src={imageUrl(product.image)} alt=""/><div><strong>{product.name}</strong><small>{reason}</small><b>{money(product.pricePaise)}</b></div></Link>)}</div>:<p className="bk-empty">No matches for this combination. Try a broader budget or another feeling.</p>}<button className="bk-btn secondary" onClick={()=>{mutation.reset();setStep(0)}}>Start again</button></> : <>
+   return <main className="bk-finder-wrap" onClickCapture={e=>{
+     if(e.defaultPrevented||!(e.target instanceof Element)||!mutation.data)return;
+     const card=e.target.closest('.bk-resultcard');
+     if(!card)return;
+     const position=Array.from(card.parentElement?.children||[]).indexOf(card);
+     trackEvent('gift_recommendation_opened',{recommendation_position:position+1,sample:mutation.data.sample});
+   }}><Seo title={page?.title||'Gift finder'} description={page?.description||'A guided gift finder with recommendations from the current catalogue.'}/><div className="bk-finder-intro"><span className="bk-eyebrow">{page?.eyebrow||'A thoughtful place to begin'}</span><h1>{page?.heading||'Find a gift with feeling.'}</h1><p>{page?.intro||'Four small questions help us look through the catalogue. Recommendations come from the current catalogue service, not live AI.'}</p><PageArtwork page={page}/></div><div className="bk-finder-card"><aside className="bk-finder-side"><div><span className="bk-eyebrow" style={{color:'#e5c37e'}}>A little guidance</span><h2>Start with what matters.</h2><p>Skip anything you are not sure about. You can go back and change an answer.</p></div><div><strong>Question {Math.min(step+1,4)} of 4</strong><div className="bk-finder-progress">{steps.map((_,i)=><i key={i} className={i<=step?'on':''}/>)}</div></div></aside><section className="bk-finder-content">{mutation.data ? <><span className="bk-eyebrow">Your gift edit</span><h2>A few pieces to consider.</h2><p>{mutation.data.message}</p>{mutation.data.sample&&<p className="bk-status">Recommendations from sample catalogue</p>}{mutation.data.matches.length ? <div className="bk-results">{mutation.data.matches.map(({product,reason}:GiftMatch)=><Link className="bk-resultcard" key={product.id} href={`/products/${product.slug}`}><img src={imageUrl(product.image)} alt=""/><div><strong>{product.name}</strong><small>{reason}</small><b>{money(product.pricePaise)}</b></div></Link>)}</div>:<p className="bk-empty">No matches for this combination. Try a broader budget or another feeling.</p>}<button className="bk-btn secondary" onClick={()=>{mutation.reset();setStep(0)}}>Start again</button></> : <>
     <span className="bk-eyebrow">{steps[step].key}</span><h2>{steps[step].title}</h2><p>{steps[step].prompt}</p><div className="bk-options">{steps[step].options.map(o=>{const [id,label]=o.split('|');return <button className={`bk-option ${answers[step]===id?'chosen':''}`} onClick={()=>choose(o)} key={o}>{labels[`quiz.${steps[step].key}.${id}`]||label}{answers[step]===id&&<Check size={16}/>}</button>})}</div>{mutation.isError&&<p className="bk-errorbox" role="alert">{errText(mutation.error)}</p>}<div className="bk-finder-controls"><button className="bk-skip" onClick={()=>{if(step>0)setStep(s=>s-1)}} disabled={step===0}>Back</button><div><button className="bk-skip" onClick={()=>{setAnswers(a=>a.map((v,i)=>i===step?'':v));if(step===3)setBudget(10000000);if(step<3)setStep(s=>s+1);else next()}}>Skip</button><button className="bk-btn" disabled={mutation.isPending} onClick={next}>{mutation.isPending?'Finding…':step===3?labels['quiz.results']||'Show my ideas':labels['quiz.next']||'Continue'} <ArrowRight size={15}/></button></div></div></>}</section></div></main>;
 }
 
@@ -392,6 +422,7 @@ export default function BaksaApp(){
   let content:ReactNode;
   const catContent=()=>catalogQuery.isError?<LoadingError retry={()=>catalogQuery.refetch()}/>:<main className="bk-formpage"><div className="bk-skeleton"/></main>;
   if(siteQuery.isError&&!route.startsWith('/admin')&&route!=='/studio-preview') content=<main className="bk-formpage"><h1>The stories are taking a moment.</h1><p className="bk-errorbox">We could not load the published site content. Your stored content has not been changed or replaced.</p><button className="bk-btn" onClick={()=>void siteQuery.refetch()}>Try again</button></main>;
+  else if((route==='/'||route.startsWith('/stories/'))&&!siteQuery.data) content=<main className="bk-formpage" aria-busy="true"><div className="bk-skeleton"/><p>Loading the published stories…</p></main>;
   else if(route==='/') content=<HomePage catalog={catalog} saved={saved} toggle={toggleSave} document={siteDocument} catalogError={catalogQuery.isError?errText(catalogQuery.error):undefined} retryCatalog={()=>void catalogQuery.refetch()}/>;
   else if(route==='/studio-preview') content=<SiteStudio localOnly preview={(doc,storyId)=><StorefrontPreview document={doc} storyId={storyId} catalog={catalog} catalogError={catalogQuery.isError?errText(catalogQuery.error):undefined} retryCatalog={()=>void catalogQuery.refetch()}/>}/>;
   else if(route.startsWith('/stories/')) content=<StoryPage id={decodeURIComponent(route.slice('/stories/'.length))} document={siteDocument}/>;
