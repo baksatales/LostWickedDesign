@@ -1,5 +1,26 @@
 # Verification record
 
+## Repeatable discovery interaction checks
+
+Run `pnpm --filter @workspace/baksa-tales test` for the analytics wrapper
+and React component suites. The local run passed all 26 checks: five wrapper
+checks and 21 component checks, including 13 discovery interaction cases.
+The storefront TypeScript check also passed.
+
+The discovery suite renders `BaksaApp` in StrictMode with a real in-memory
+router, mocked API responses, and a mocked `window.umami.track`. It covers
+trunk open/close and closed-card blocking, disclosed versus unsponsored cards,
+direct story visits and rerenders, both story commerce links, unavailable
+stories, finder failure and zero results, keyboard recommendation activation,
+and the real Site Studio homepage/story previews. Exact captured calls assert
+event counts and payload allowlists; synthetic private editorial text and
+quiz answers must not appear in events. Link destinations and router history
+are checked alongside events.
+
+These tests do not install a tracker, call a published analytics service, or
+verify hosted analytics delivery. Finder requests are mocked at the fetch
+boundary; the generated mutation hook and UI run normally.
+
 ## Current editorial/backend verification
 
 - 46 tests pass: 17 supplied domain, 17 API boundary, six editorial validation,
