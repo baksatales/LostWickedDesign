@@ -1,5 +1,17 @@
 # Baksa Tales — first implementation
 
+## Current handover baseline — 6 November 2026
+
+Read `docs/DEVELOPER_HANDOVER.md` for the current handover and remaining launch
+scope. Development Supabase connectivity and reviewed schema are now connected;
+the owner confirmed verified-account admin access works. The signed-in
+cache/reset loop was fixed and all 32 frontend/analytics checks pass. Payments,
+refunds, payouts and a complete production marketplace remain unfinished.
+
+**Historical record below:** statements about disconnected Supabase/accounts and
+older test totals describe earlier milestones and are superseded by this section.
+Do not interpret them as the current connection state or as production acceptance.
+
 ## Supplied Claude design integration
 
 The newer uploaded Replit package's `designs/` screens now guide the shared

@@ -1,5 +1,22 @@
 # Verification record
 
+## Current handover verification — 6 November 2026
+
+- Development API runtime reports database and authentication ready; payments off.
+- The owner confirmed that account verification and the explicit admin grant work.
+  This is owner-reported acceptance, not a full automated hosted-role browser run.
+- Latest frontend run: 26 React tests plus six analytics checks passed. TypeScript
+  passed, and the sign-in page rendered without runtime errors after restart.
+- New session regression checks exercise real React Query/router state with a
+  mocked auth client and HTTP responses; they do not use an actual owner's session.
+- Isolated SQL checks cover fresh initialization, guarded existing-schema updates
+  and verified first-owner grants. They do not modify hosted data.
+- Application sources were not changed solely for packaging. Archive checks and
+  remaining acceptance are documented in `docs/DEVELOPER_HANDOVER.md`.
+
+**Earlier milestone records follow.** Their disconnected-account statements and
+test totals are historical; they do not override the current summary above.
+
 ## Claude package integration
 
 - Frontend: TypeScript passed; six analytics checks and 24 React tests passed.

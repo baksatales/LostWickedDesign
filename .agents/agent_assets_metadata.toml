@@ -1,0 +1,16 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "yswGtNisGHjZ1YNS68n5x"
+uri = "file://generated-artifacts/handover/baksa-tales-developer-handover.zip"
+type = "unspecified"
+title = "Baksa Tales — Developer Handover"
+description = "5.1 MB source archive with frontend, API, assets, reviewed SQL, tests, 26 HTML design references, setup guide and checksum manifest. Runtime secrets, private workspace files and database records are excluded."
+logical_id = "dadf5168-c1c1-466b-8761-cfc7124db3d1"
+content_hash = "sha256:c405cd1d15ad9a8f93bad40ef0ec92d0c9fadfc384b504162a779aa61e5aa650"
+size = 5349811
+mtime_ms = 1793951241991
+storage_uri = "gcs://replit-rams-assets-pike/rams/assets/repl:d8fdb29b-59c4-4b47-994a-8baf60aec6cd/dadf5168-c1c1-466b-8761-cfc7124db3d1/8d62d700-78e7-4ba1-b9eb-f5e482d853f3"
+storage_version_token = "1793951323017478"
+content_type = "application/octet-stream"
