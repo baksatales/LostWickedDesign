@@ -14,6 +14,7 @@ import { starterDocument } from './starter-document';
 import { SiteDocumentContext, useSitePage, PageArtwork, Seo, imageUrl, money, errText } from './storefront-shared';
 import { RouteContent } from '../components/route-content';
 import { commerceDestination, editorialKey, trackEvent } from '../lib/analytics';
+import { resetAccountQueries } from '../lib/account-query-cache';
 import '../baksa.css';
 import '../editorial-refinements.css';
 import '../storefront-density.css';
@@ -395,8 +396,8 @@ export default function BaksaApp(){
     supabase.auth.getSession().then(({data,error})=>{setUser(error?null:data.session?.user||null);setAuthReady(true);});
     return ()=>{subscription.unsubscribe();setAuthTokenGetter(null)};
   },[supabase]);
-  useEffect(()=>{const id=user?.id||null;if(previousId.current!==undefined&&id!==previousId.current)queryClient.clear();previousId.current=id},[user?.id,queryClient]);
-  const workspaceQuery=useGetWorkspace({query:{queryKey:getGetWorkspaceQueryKey(),enabled:!!user}});
+  useEffect(()=>{const id=user?.id||null;if(previousId.current!==undefined&&id!==previousId.current)void resetAccountQueries(queryClient);previousId.current=id},[user?.id,queryClient]);
+  const workspaceQuery=useGetWorkspace({query:{queryKey:[...getGetWorkspaceQueryKey(),user?.id||null],enabled:authReady&&!!user}});
   const workspace=workspaceQuery.data;
   const totalItems=cart.reduce((sum,x)=>sum+x.quantity,0);
   const toggleSave=(id:string)=>setSaved(s=>s.includes(id)?s.filter(x=>x!==id):[...s,id]);

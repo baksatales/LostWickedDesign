@@ -78,3 +78,21 @@ rights to the first arbitrary signup.
 
 API-key connectivity, successful schema setup and an approved admin account are
 three different checks. Payment processing and external integrations remain off.
+
+### First verified owner
+
+After the owner has signed up and confirmed their email, manually run
+`supabase/manual/first-owner-admin.sql` in the same development project's SQL
+Editor. Replace the email placeholder only in the private SQL Editor copy; never
+put an actual owner's email, password, or confirmation link into the shared repo.
+
+Running this SQL is an explicit grant of full admin privileges to that verified
+account. It does not choose the first signup, accept an unverified address, remove
+buyer/maker roles, or add a different owner when an admin already exists.
+Concurrent first-owner grants serialize, and retrying for the same owner is safe.
+The final result should show `owner_admin_ready = true`.
+
+Then sign out of the site, sign back in and open `/admin`. If an admin already
+exists for a different account, stop and use that administrator to review any
+additional access rather than bypassing the guard. Do not install this manual
+script as a public RPC or automate role assignment.

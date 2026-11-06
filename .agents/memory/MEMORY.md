@@ -1,3 +1,5 @@
 - [Baksa review boundaries](baksa-review-boundaries.md) — review designs before implementing commerce; preserve supplied identity and distinguish prototypes from live services.
 - [Editorial measurement privacy](editorial-measurement.md) — use positions instead of editable identifiers; do not send quiz answer profiles.
 - [Lazy route recovery](lazy-route-recovery.md) — rejected lazy imports are cached; resetting an error boundary alone cannot retry a failed download.
+- [Supabase readiness probes](supabase-readiness-checks.md) — HEAD can report success for absent tables; verify with a zero-row GET before choosing a setup path.
+- [Auth cache boundaries](auth-cache-boundaries.md) — preserve public connection settings during account changes; clearing them causes a signed-in reload loop.

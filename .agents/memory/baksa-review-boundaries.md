@@ -58,6 +58,6 @@ Use a new development Supabase project for the initial connection, not an existi
 
 When setup appears successful, independently verify readiness against the connected project. Existing tables do not prove that reviewed security rules were applied.
 
-**Why:** Supabase onboarding reached a state with accessible Baksa tables but a missing security-readiness function despite the reported SQL success.
+**Why:** Successful-looking table probes during Supabase onboarding did not reliably establish that the app schema existed.
 
-**How to apply:** Use a guarded existing-schema update in that situation, not the empty-project initializer. Never create only a success marker to bypass the missing security changes; preserve saved content and analytics identities.
+**How to apply:** Establish the actual schema before choosing an initializer or an existing-schema update. Never create only a success marker to bypass missing security changes; preserve saved content and analytics identities.
