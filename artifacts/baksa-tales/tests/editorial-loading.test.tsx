@@ -3,7 +3,7 @@ import { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import BaksaApp from '../src/pages/BaksaApp';
-import { starterDocument } from '../src/pages/SiteStudio';
+import { starterDocument } from '../src/pages/starter-document';
 import type { SiteDocument } from '@workspace/api-client-react';
 
 const state=vi.hoisted(()=>({

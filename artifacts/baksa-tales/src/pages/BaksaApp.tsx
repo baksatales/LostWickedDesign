@@ -1,35 +1,28 @@
-import { createContext, useContext, useEffect, useMemo, useRef, useState, type AnchorHTMLAttributes, type CSSProperties, type Dispatch, type FormEvent, type ReactNode, type SetStateAction } from 'react';
+import { lazy, useContext, useEffect, useMemo, useRef, useState, type AnchorHTMLAttributes, type CSSProperties, type Dispatch, type FormEvent, type ReactNode, type SetStateAction } from 'react';
 import { Link, useLocation } from 'wouter';
 import { createClient, type SupabaseClient, type User } from '@supabase/supabase-js';
 import { ArrowLeft, ArrowRight, BookOpen, Check, Heart, Menu, Minus, Package, Plus, Search, ShoppingBag, UserRound, X } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import {
-  getGetCatalogQueryKey, getGetWorkspaceQueryKey, getGetSiteQueryKey, getGetOperationsQueryKey,
+  getGetWorkspaceQueryKey, getGetOperationsQueryKey,
   setAuthTokenGetter, useApplyToSell, useCreateBrief, useFindGifts, useGetCatalog,
-  useGetRuntime, useGetWorkspace, useGetSite, useGetOperations, useReviewProduct, useSaveProduct, useSubmitProduct,
-  useReviewApplication, useUpdateBrief, useUpdateFulfilment, useSaveMakerBrand, useSaveProductImages, useDraftEditorial,
+  useGetRuntime, useGetWorkspace, useGetSite, useGetOperations,
 } from '@workspace/api-client-react';
-import type { Catalog, GiftMatch, Maker, Product, Runtime, Workspace, SiteDocument, SitePage, OperationApplication, OperationBrief, OperationOrder } from '@workspace/api-client-react';
-import SiteStudio, { starterDocument } from './SiteStudio';
+import type { Catalog, GiftMatch, Maker, Product, Runtime, Workspace, SiteDocument } from '@workspace/api-client-react';
+import { starterDocument } from './starter-document';
+import { SiteDocumentContext, useSitePage, PageArtwork, Seo, imageUrl, money, errText } from './storefront-shared';
+import { RouteContent } from '../components/route-content';
 import { commerceDestination, trackEvent } from '../lib/analytics';
 import '../baksa.css';
 import '../editorial-refinements.css';
 
 const base = import.meta.env.BASE_URL;
-const safeImagePath=(value:string)=>/^\/images\/baksa\/[a-zA-Z0-9_.-]+\.(webp|png|jpg|jpeg|avif)$/i.test(value)||/^https:\/\/[a-zA-Z0-9.-]+(?::443)?\/[^\s<>\\]*$/i.test(value);
 const safeSiteHref=(value:string)=>/^\/(?!\/)[a-zA-Z0-9/_?=&%#.,~-]*$/.test(value)||/^https:\/\/[a-zA-Z0-9.-]+(?::443)?(?:\/[^\s<>\\]*)?$/.test(value);
-const imageUrl = (value: string) => {
-  if(/^https:\/\//i.test(value)&&safeImagePath(value))return value;
-  const path=value.startsWith('/')?value:`/images/baksa/${value}`;
-  return safeImagePath(path)?`${base}${path.slice(1)}`:`${base}images/baksa/baksatales-trunk-mark.png`;
-};
 const siteHref=(value:string)=>safeSiteHref(value)?value:'/';
 function DocLink({href,...props}:{href:string}&AnchorHTMLAttributes<HTMLAnchorElement>){const safe=siteHref(href);return /^https:\/\//i.test(safe)?<a href={safe} target="_blank" rel="noopener noreferrer" {...props}/>:<Link href={safe} {...props}/>;}
-const money = (paise: number) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: paise % 100 ? 2 : 0 }).format(paise / 100);
-const errText = (e: unknown) => {
-  const api = e as { data?: { error?: string }; message?: string };
-  return api?.data?.error || api?.message || 'Something could not be completed. Please try again.';
-};
+const SiteStudio = lazy(() => import('./SiteStudio'));
+const MakerArea = lazy(() => import('./MakerArea'));
+const AdminArea = lazy(() => import('./AdminArea'));
 type CartItem = { productId: string; quantity: number };
 type SellValues = { brand:string;contactName:string;phone:string;craft:string;city:string;state:string;gstRegistered:boolean;gstin:string;link:string };
 function readList<T>(key: string, validate: (value: unknown) => value is T, fallback: T[]): T[] {
@@ -37,27 +30,6 @@ function readList<T>(key: string, validate: (value: unknown) => value is T, fall
 }
 const validCart = (v: unknown): v is CartItem => !!v && typeof v === 'object' && typeof (v as CartItem).productId === 'string' && Number.isInteger((v as CartItem).quantity) && (v as CartItem).quantity > 0;
 const validString = (v: unknown): v is string => typeof v === 'string';
-const SiteDocumentContext=createContext<SiteDocument|null>(null);
-function useSitePage(id:string){const document=useContext(SiteDocumentContext);return document?.pages.find(p=>p.id===id);}
-
-function Seo({ title, description }: { title: string; description: string }) {
-  useEffect(() => {
-    document.title = `${title} | Baksa Tales`;
-    let meta = document.querySelector<HTMLMetaElement>('meta[name="description"]');
-    if (!meta) { meta = document.createElement('meta'); meta.name = 'description'; document.head.appendChild(meta); }
-    meta.content = description;
-    let og = document.querySelector<HTMLMetaElement>('meta[property="og:title"]');
-    if (!og) { og = document.createElement('meta'); og.setAttribute('property', 'og:title'); document.head.appendChild(og); }
-    og.content = `${title} | Baksa Tales`;
-    let ogDescription = document.querySelector<HTMLMetaElement>('meta[property="og:description"]');
-    if (!ogDescription) { ogDescription = document.createElement('meta'); ogDescription.setAttribute('property', 'og:description'); document.head.appendChild(ogDescription); }
-    ogDescription.content = description;
-    let ogType = document.querySelector<HTMLMetaElement>('meta[property="og:type"]');
-    if (!ogType) { ogType = document.createElement('meta'); ogType.setAttribute('property', 'og:type'); document.head.appendChild(ogType); }
-    ogType.content = 'website';
-  }, [title, description]);
-  return null;
-}
 function Frame({ children, bagCount, savedCount, onBag, document:siteDoc }: { children: ReactNode; bagCount: number; savedCount: number; onBag: () => void; document:SiteDocument }) {
   const [menu, setMenu] = useState(false);
   const theme=siteDoc.theme;
@@ -156,7 +128,6 @@ function PageHeading({id,eyebrow,title,intro,description}:{id:string;eyebrow:str
   const content=useSitePage(id);
   return <><Seo title={content?.title||title} description={content?.description||description}/><header className="bk-pagehead"><span className="bk-eyebrow">{content?.eyebrow||eyebrow}</span><h1>{content?.heading||title}</h1><p>{content?.intro||intro}</p>{content?.image&&<img className="bk-pagehead-image" src={imageUrl(content.image)} alt={content.imageAlt}/>}</header></>;
 }
-function PageArtwork({page}:{page?:SitePage}){return page?.image?<figure className="bk-page-art"><img src={imageUrl(page.image)} alt={page.imageAlt}/></figure>:null}
 
 function ShopPage({ catalog, saved, toggle, makerOnly }: { catalog: Catalog; saved: string[]; toggle: (id:string)=>void; makerOnly?: string }) {
   const [query, setQuery] = useState('');
@@ -266,114 +237,6 @@ function SignInPage({ runtime, runtimeLoading, client, user, returnTo }: { runti
 function AcademyPage(){const page=useSitePage('academy');return <main className="bk-formpage"><Seo title={page?.title||'Baksa Academy'} description={page?.description||'Information about upcoming Baksa Academy classes.'}/><span className="bk-eyebrow">{page?.eyebrow||'Learn, share, make'}</span><h1>{page?.heading||'Baksa Academy.'}</h1><p>{page?.intro||'A future home for practical learning around craft, small creative businesses and the thoughtful work of making.'}</p><PageArtwork page={page}/><div className="bk-panel"><h2>Classes are not open yet.</h2><p>We are shaping the programme. There are no enrolments or scheduled classes to book at this time.</p><Link className="bk-btn secondary" href="/sell">For maker enquiries <ArrowRight size={16}/></Link></div></main>}
 function BuyerOrderList(){const q=useGetOperations({query:{queryKey:getGetOperationsQueryKey()}});return <div className="bk-panel"><h2>Your orders</h2>{q.isLoading?<div className="bk-skeleton"/>:q.isError?<><p className="bk-errorbox">{errText(q.error)}</p><button className="bk-btn secondary" onClick={()=>void q.refetch()}>Retry</button></>:q.data?.orders.length?<><p>Recent order records available to your account; the feed returns up to 100 recent records per category.</p>{q.data.orders.map(o=><article className="bk-account-order" key={o.id}><div><strong>{o.ref}</strong><small>{new Date(o.createdAt).toLocaleDateString()}</small></div><div><span>{o.status}</span><small>Payment: {o.paymentStatus}</small></div><b>{money(o.totalPaise)}</b>{o.trackingNumber&&<small className="tracking">Tracking · {o.carrier} · {o.trackingNumber}</small>}</article>)}</>:<div className="bk-empty"><strong>No order records yet.</strong><p>Orders appear here when the service returns them. A checkout attempt is not treated as a paid order.</p></div>}</div>}
 
-const makerLinks=[['Overview','/maker'],['Products','/maker/products'],['Orders','/maker/orders'],['Earnings','/maker/earnings'],['Opportunities','/maker/opportunities'],['Growth tools','/maker/growth'],['Brand profile','/maker/brand']];
-function MakerArea({ path, workspace, verifiedUser, aiAvailable }: { path:string;workspace:Workspace|undefined;verifiedUser:boolean;aiAvailable:boolean }) {
-  const page=useSitePage('maker');
-  const products=workspace?.products||[];
-  const orderQuery=useGetOperations({query:{enabled:path==='/maker/orders'||path==='/maker',queryKey:getGetOperationsQueryKey()}});
-  const saveBrand=useSaveMakerBrand();const queryClient=useQueryClient();
-  const [brandDraft,setBrandDraft]=useState({tagline:workspace?.maker?.tagline||'',story:workspace?.maker?.story||'',heroImage:workspace?.maker?.image||''});
-  useEffect(()=>{if(workspace?.maker)setBrandDraft({tagline:workspace.maker.tagline,story:workspace.maker.story,heroImage:workspace.maker.image})},[workspace?.maker?.id]);
-  if(path==='/maker/products/new'||path.startsWith('/maker/products/')&&path!=='/maker/products'){
-    const editingId=path==='/maker/products/new'?undefined:decodeURIComponent(path.split('/').pop()||'');
-    const existing=editingId?products.find(p=>p.id===editingId):undefined;
-    return <ProductWizard existing={existing} productId={editingId}/>;
-  }
-  const active = makerLinks.find(x=>x[1]===path)?.[0]||'Overview';
-  const section=path==='/maker/products'?'products':path==='/maker/orders'?'orders':path==='/maker/earnings'?'earnings':path==='/maker/opportunities'?'opportunities':path==='/maker/growth'?'growth':path==='/maker/brand'?'brand':'overview';
-  return <main className="bk-dashboard"><aside><span className="bk-eyebrow">Maker workspace</span><h2 style={{fontSize:32}}>{workspace?.maker?.brand||'Your studio'}</h2><nav className="bk-dashnav">{makerLinks.map(([label,href])=><Link key={href} href={href} aria-current={active===label?'page':undefined}>{label}</Link>)}</nav></aside><section><span className="bk-eyebrow">{active}</span><h1 style={{fontSize:'clamp(40px,5vw,60px)',margin:'8px 0 20px'}}>{section==='overview'?page?.heading||'Your maker workspace':active}</h1>{section==='overview'&&page?.intro&&<p className="bk-muted">{page.intro}</p>}{section==='overview'&&<PageArtwork page={page}/>}
-    {section==='overview'&&<><p className="bk-muted">A clear view of your work on Baksa Tales.</p><div className="bk-panel"><h2>Products</h2><p>{products.length} products in your workspace. Listing status is shown from the service; draft work is not presented as published.</p><Link className="bk-btn" href="/maker/products/new">Start a product draft <Plus size={16}/></Link></div><div className="bk-panel"><h2>Orders</h2><p>{workspace?.ordersCount ?? 0} orders recorded by the workspace.</p><Link className="bk-textlink" href="/maker/orders">View orders <ArrowRight size={15}/></Link></div></>}
-    {section==='products'&&<><p className="bk-muted">Your workspace products. A draft is not live until submitted and reviewed.</p><Link className="bk-btn" href="/maker/products/new">Create a product draft <Plus size={16}/></Link>{products.length?products.map(p=><div className="bk-panel" key={p.id} style={{display:'flex',gap:16,alignItems:'center'}}><img src={imageUrl(p.image||'baksatales-trunk-mark.png')} alt="" style={{width:76,height:76,objectFit:'cover'}}/><div style={{flex:1}}><h2>{p.name}</h2><p>{money(p.pricePaise)} · {p.material}</p><span className="bk-status">{p.status||'Draft'}</span>{p.reviewNote&&<p>{p.reviewNote}</p>}</div><Link className="bk-btn secondary" href={`/maker/products/${p.id}`}>Edit draft</Link></div>):<div className="bk-empty"><strong style={{font:'26px var(--bk-display)',color:'var(--bk-ink)'}}>No products in your workspace.</strong><p>Start with a draft. Product images cannot be uploaded until storage is connected.</p></div>}</>}
-    {section==='orders'&&<div><div className="bk-panel"><h2>Order desk</h2><p>Only orders returned for your authenticated maker workspace appear here. Payment status is informational; payout data is not available.</p></div>{orderQuery.isLoading?<div className="bk-skeleton"/>:orderQuery.isError?<div className="bk-errorbox"><p>{errText(orderQuery.error)}</p><button className="bk-btn secondary" onClick={()=>void orderQuery.refetch()}>Try again</button></div>:orderQuery.data?.orders.length?orderQuery.data.orders.map(order=><article className="bk-panel bk-operation-row" key={order.id}><div><span className="bk-eyebrow">{order.ref}</span><h2>{money(order.totalPaise)}</h2><p>Placed {new Date(order.createdAt).toLocaleDateString()} · {order.status}</p><span className="bk-status">Payment: {order.paymentStatus}</span>{order.trackingNumber&&<p>Tracking {order.carrier}: {order.trackingNumber}</p>}</div></article>):<div className="bk-empty"><strong>No orders in this workspace.</strong><p>When the service returns a maker order, it will appear here.</p></div>}</div>}
-    {section==='earnings'&&<div className="bk-panel"><h2>Earnings are not connected.</h2><p>There is no payout or earnings data in the workspace response. This space will show actual figures when the payout integration is available.</p></div>}
-    {section==='opportunities'&&<div className="bk-panel"><h2>Opportunities are coming later.</h2><p>No open briefs or placements are exposed in this workspace yet.</p></div>}
-    {section==='growth'&&<><MarginCalculator/><MakerEditorialDraft verifiedUser={verifiedUser} aiAvailable={aiAvailable}/></>}
-    {section==='brand'&&<div className="bk-panel"><h2>{workspace?.maker?.brand||'Brand profile'}</h2>{workspace?.maker?<form className="bk-form" onSubmit={e=>{e.preventDefault();saveBrand.mutate({data:brandDraft},{onSuccess:()=>{void queryClient.invalidateQueries({queryKey:getGetWorkspaceQueryKey()});void queryClient.invalidateQueries({queryKey:getGetCatalogQueryKey()})}})}}><label className="wide">Tagline<input maxLength={240} required value={brandDraft.tagline} onChange={e=>setBrandDraft(x=>({...x,tagline:e.target.value}))}/></label><label className="wide">Maker story<textarea maxLength={6000} required value={brandDraft.story} onChange={e=>setBrandDraft(x=>({...x,story:e.target.value}))}/></label><label className="wide">Hero image path or hosted URL<input maxLength={500} value={brandDraft.heroImage} onChange={e=>setBrandDraft(x=>({...x,heroImage:e.target.value}))} placeholder="/images/baksa/… or https://…"/></label>{saveBrand.isError&&<p className="bk-error">{errText(saveBrand.error)}</p>}{saveBrand.isSuccess&&<p className="bk-success" role="status">Maker profile saved by the service.</p>}<button className="bk-btn" disabled={saveBrand.isPending}>{saveBrand.isPending?'Saving…':'Save profile'}</button></form>:<p>No maker profile was returned for this workspace.</p>}</div>}
-  </section></main>;
-}
-function MakerEditorialDraft({verifiedUser,aiAvailable}:{verifiedUser:boolean;aiAvailable:boolean}){
-  const ai=useDraftEditorial();const [facts,setFacts]=useState('');const [draft,setDraft]=useState('');const [disclosure,setDisclosure]=useState('');
-  return <div className="bk-panel"><span className="bk-eyebrow">Writing bench · human review required</span><h2>Draft from the facts you know.</h2><p>AI usage consumes Replit credits. Enter verified details only. Suggestions are unsaved, do not publish, and require your review before use.</p>{!verifiedUser&&<p className="bk-errorbox">A verified maker account is required to use this assistant.</p>}{!aiAvailable&&<p className="bk-errorbox">The editorial assistant is not enabled by the current service configuration.</p>}<label>Verified product or craft facts<textarea className="bk-input" minLength={20} maxLength={8000} value={facts} onChange={e=>setFacts(e.target.value)} placeholder="Materials, dimensions, listed features, and confirmed background only."/></label><button className="bk-btn" disabled={!verifiedUser||!aiAvailable||facts.trim().length<20||facts.length>8000||ai.isPending} onClick={()=>{setDraft('');ai.mutate({data:{purpose:'product',facts,tone:'warm'}},{onSuccess:r=>{setDraft(r.text);setDisclosure(r.disclosure)}})}}>{ai.isPending?'Preparing…':'Generate an unsaved product draft'}</button>{ai.isError&&<p className="bk-error">{errText(ai.error)}</p>}{draft&&<div className="bk-panel"><label>Review and edit before use<textarea className="bk-input" value={draft} onChange={e=>setDraft(e.target.value)}/></label><p className="bk-muted">{disclosure}</p><button className="bk-btn secondary" onClick={()=>void navigator.clipboard.writeText(draft).catch(()=>{})}>Copy reviewed text</button><p className="bk-muted">Copied text is not submitted or saved. Paste it into a draft only after confirming every detail.</p></div>}</div>;
-}
-function MarginCalculator(){
-  const [price,setPrice]=useState(2500);const [materials,setMaterials]=useState(500);const [labour,setLabour]=useState(750);const [fee,setFee]=useState(12);
-  const estimate=Math.round(price-(price*fee/100)-materials-labour);
-  return <div className="bk-panel"><span className="bk-status">Local estimate only · not a payout forecast</span><h2>Try a price, see the shape.</h2><p>Change the assumptions. Nothing is saved or sent to the marketplace.</p><div className="bk-form"><label>Sale price (₹)<input type="number" min="0" value={price} onChange={e=>setPrice(Number(e.target.value))}/></label><label>Materials (₹)<input type="number" min="0" value={materials} onChange={e=>setMaterials(Number(e.target.value))}/></label><label>Your time (₹)<input type="number" min="0" value={labour} onChange={e=>setLabour(Number(e.target.value))}/></label><label>Estimated platform fee (%)<input type="number" min="0" max="100" step=".5" value={fee} onChange={e=>setFee(Number(e.target.value))}/></label></div><div className="bk-panel" style={{background:'var(--bk-teal)',color:'var(--bk-paper)'}}><small>Illustrative remainder after entered costs and fee</small><h2>{money(estimate*100)}</h2><small>Rates are editable assumptions, not Baksa Tales fee terms.</small></div></div>;
-}
-function ProductWizard({ existing, productId }: { existing?:Product;productId?:string }) {
-  const save=useSaveProduct();const submitProduct=useSubmitProduct();const saveImages=useSaveProductImages();const [,navigate]=useLocation();
-  const queryClient=useQueryClient();
-  const refresh=()=>{void queryClient.invalidateQueries({queryKey:getGetCatalogQueryKey()});void queryClient.invalidateQueries({queryKey:getGetWorkspaceQueryKey()});};
-  const [step,setStep]=useState(0);const [savedId,setSavedId]=useState<string|undefined>(existing?.id);const [formIssue,setFormIssue]=useState('');
-  const [imageText,setImageText]=useState(existing?.image||'');
-  const [v,setV]=useState({name:existing?.name||'',price:String(existing?existing.pricePaise/100:''),stock:String(existing?.stock??''),material:existing?.material||'',description:existing?.description||'',dispatch:String(existing?.dispatchDays??''),confirm:false});
-  const up=(key:keyof typeof v,value:string|boolean)=>setV(old=>({...old,[key]:value}));
-  const steps=['Name your piece','Set a price','Availability','Materials','Describe your work','Dispatch preparation','Confirm the facts'];
-  useEffect(()=>{if(existing)setV({name:existing.name,price:String(existing.pricePaise/100),stock:String(existing.stock),material:existing.material,description:existing.description,dispatch:String(existing.dispatchDays),confirm:false})},[existing?.id]);
-  useEffect(()=>{if(existing?.image)setImageText(existing.image)},[existing?.id]);
-  const current = !productId || !!existing && ['draft','changes','needs_changes'].includes(existing.status||'');
-  const validate=()=>{const invalidStep=!v.name.trim()?0:!Number.isFinite(Number(v.price))||Number(v.price)<=0?1:!v.stock.trim()||!Number.isInteger(Number(v.stock))||Number(v.stock)<0?2:!v.material.trim()?3:!v.description.trim()?4:!Number.isInteger(Number(v.dispatch))||Number(v.dispatch)<1||Number(v.dispatch)>60?5:!v.confirm?6:-1;if(invalidStep>=0){setStep(invalidStep);setFormIssue(invalidStep===6?'Please confirm the accuracy of the listing facts before saving.':'Complete this step with a valid value before saving.');return false}setFormIssue('');return true};
-  const photos=()=>imageText.split(/[\n,]+/).map(x=>x.trim()).filter(Boolean).slice(0,8);
-  const validPhotos=()=>photos().length>0&&photos().every(safeImagePath);
-  const savePhotos=(id:string,done:()=>void)=>{
-    // A summary contains only the cover image. Do not erase other stored photos
-    // when a maker is editing unrelated product fields.
-    if(existing&&imageText.trim()===existing.image){done();return;}
-    saveImages.mutate({id,data:{images:photos()}},{onSuccess:done});
-  };
-  const saveDraft=()=>{if(!validate())return;save.mutate({data:{...(savedId?{id:savedId}:{}),name:v.name,pricePaise:Math.round(Number(v.price)*100),stock:Number(v.stock),material:v.material,description:v.description,dispatchDays:Number(v.dispatch),factualConfirmation:v.confirm}},{onSuccess:r=>{setSavedId(r.id);refresh();if(photos().length)savePhotos(r.id,()=>{refresh();navigate('/maker/products')});else navigate('/maker/products');}});};
-  const saveAndSubmit=()=>{if(!validate())return;if(!validPhotos()){setStep(5);setFormIssue('Add at least one valid /images/baksa/ path or hosted HTTPS image before submitting for review.');return;}save.mutate({data:{...(savedId?{id:savedId}:{}),name:v.name,pricePaise:Math.round(Number(v.price)*100),stock:Number(v.stock),material:v.material,description:v.description,dispatchDays:Number(v.dispatch),factualConfirmation:v.confirm}},{onSuccess:r=>{setSavedId(r.id);refresh();savePhotos(r.id,()=>submitProduct.mutate({id:r.id},{onSuccess:()=>{refresh();navigate('/maker/products')}}));}});};
-  if(!current)return <main className="bk-formpage"><Seo title="Draft not found" description="Draft unavailable."/><h1>That draft is not in your workspace.</h1><p>Only products returned by your account workspace can be edited.</p><Link className="bk-btn" href="/maker/products">Back to products</Link></main>;
-  const showUpload=step===5;
-  return <main className="bk-formpage"><Seo title={existing?'Edit product draft':'New product draft'} description="Build a product draft for maker review."/><span className="bk-eyebrow">Maker workspace · {existing?'Edit draft':'New listing draft'}</span><h1>{existing?`Edit ${existing.name}`:'A new piece, step by step.'}</h1><div className="bk-steps">{steps.map((s,i)=><span key={s} className={`bk-step ${i===step?'active':''}`}>{i+1}. {s}</span>)}</div><div className="bk-panel"><h2>{steps[step]}</h2>
-    {step===0&&<label>Listing name<input className="bk-input" required maxLength={200} value={v.name} onChange={e=>up('name',e.target.value)} placeholder="Name the piece"/></label>}
-    {step===1&&<label>Price in rupees<input className="bk-input" type="number" required min="1" step=".01" value={v.price} onChange={e=>up('price',e.target.value)}/><small>Entered as rupees; the service receives integer paise.</small></label>}
-    {step===2&&<label>Available stock<input className="bk-input" type="number" required min="0" value={v.stock} onChange={e=>up('stock',e.target.value)}/></label>}
-    {step===3&&<label>Materials and components<textarea className="bk-input" required maxLength={500} value={v.material} onChange={e=>up('material',e.target.value)}/></label>}
-    {step===4&&<><label>Factual product description<textarea className="bk-input" required maxLength={5000} value={v.description} onChange={e=>up('description',e.target.value)} placeholder="Describe the piece, its materials, dimensions or process you can verify."/></label><p className="bk-status">AI description assistance is unavailable. Write a factual description manually.</p></>}
-    {showUpload&&<><label>Dispatch preparation days<input className="bk-input" type="number" required min="1" max="60" value={v.dispatch} onChange={e=>up('dispatch',e.target.value)}/></label><label>Product photo paths or hosted HTTPS URLs<textarea className="bk-input" required maxLength={4000} value={imageText} onChange={e=>setImageText(e.target.value)} placeholder="/images/baksa/your-piece.webp&#10;https://your-image-host.example/photo.jpg"/><small>One per line, up to eight. The image URL service must be configured separately for uploaded files.</small></label></>}
-    {step===6&&<><p>Review the listing information you entered before saving a draft.</p><div className="bk-panel"><strong>{v.name || 'Untitled piece'}</strong><p>{v.material}</p><p>{v.description}</p><p>{v.price?`₹${v.price}`:''} · {v.stock||'—'} available · {v.dispatch||'—'} dispatch preparation days</p></div><label className="bk-check"><input type="checkbox" checked={v.confirm} onChange={e=>up('confirm',e.target.checked)}/> I confirm these listing facts are accurate to the best of my knowledge.</label><p className="bk-muted">Saving creates a draft only. It does not publish the product.</p></>}
-    {formIssue&&<p className="bk-error" role="alert">{formIssue}</p>}{(save.isError||submitProduct.isError||saveImages.isError)&&<p className="bk-error" role="alert">{errText(save.error||submitProduct.error||saveImages.error)}</p>}
-    <div style={{display:'flex',justifyContent:'space-between',gap:10,marginTop:24}}><button className="bk-btn secondary" disabled={step===0} onClick={()=>setStep(s=>Math.max(s-1,0))}><ArrowLeft size={15}/> Back</button><div style={{display:'flex',gap:8}}><button className="bk-btn secondary" onClick={saveDraft} disabled={save.isPending||submitProduct.isPending||saveImages.isPending}>Save draft</button>{step<6?<button className="bk-btn" onClick={()=>setStep(s=>Math.min(s+1,6))}>Next <ArrowRight size={15}/></button>:<button className="bk-btn" disabled={!v.confirm||save.isPending||submitProduct.isPending||saveImages.isPending} onClick={saveAndSubmit}>{submitProduct.isPending?'Submitting…':'Save and submit for review'}</button>}</div></div>
-  </div></main>;
-}
-function AdminArea({ path, workspace, catalog: publicCatalog }: { path:string;workspace:Workspace|undefined;catalog:Catalog }) {
-  // Pending listings are private: the public catalogue intentionally excludes them.
-  const catalog = { ...publicCatalog, products: workspace?.products || [] };
-  const page=useSitePage('admin');
-  const review=useReviewProduct();const [,setLocation]=useLocation();const queryClient=useQueryClient();
-  const ops=useGetOperations({query:{queryKey:getGetOperationsQueryKey()}});
-  const reviewApplication=useReviewApplication();const updateBrief=useUpdateBrief();const updateFulfilment=useUpdateFulfilment();
-  const refreshOps=()=>{void queryClient.invalidateQueries({queryKey:getGetOperationsQueryKey()});void queryClient.invalidateQueries({queryKey:getGetWorkspaceQueryKey()})};
-  const links=[['Overview','/admin'],['Reviews','/admin/reviews'],['Applications','/admin/applications'],['Enquiries','/admin/enquiries'],['Orders','/admin/orders'],['Site Studio','/admin/site'],['Payouts','/admin/payouts']];
-  const active=links.find(i=>i[1]===path)?.[0]||'Overview';
-  return <main className="bk-dashboard"><aside><span className="bk-eyebrow">Marketplace operations</span><h2 style={{fontSize:32}}>Admin</h2><nav className="bk-dashnav">{links.map(([t,u])=><Link key={u} href={u}>{t}</Link>)}</nav></aside><section><span className="bk-eyebrow">{active}</span><h1 style={{fontSize:'clamp(40px,5vw,60px)',margin:'8px 0 20px'}}>{path==='/admin'?page?.heading||active:active}</h1>{path==='/admin'&&page?.intro&&<p className="bk-muted">{page.intro}</p>}{path==='/admin'&&<PageArtwork page={page}/>}
-    {ops.isLoading?<div className="bk-skeleton"/>:ops.isError?<div className="bk-errorbox"><h2>Operations data is unavailable.</h2><p>{errText(ops.error)}</p><button className="bk-btn secondary" onClick={()=>void ops.refetch()}>Try again</button></div>:
-      path==='/admin/reviews'?<><p className="bk-muted">Product facts are reviewed against the five checks. Only products marked for review by the actual catalog appear here.</p>{catalog.products.filter(p=>p.status==='pending_review'||p.status==='review').map(p=><ReviewRow key={p.id} product={p} busy={review.isPending} onReview={data=>review.mutate({data},{onSuccess:()=>{void queryClient.invalidateQueries({queryKey:getGetCatalogQueryKey()});void queryClient.invalidateQueries({queryKey:getGetWorkspaceQueryKey()});setLocation('/admin/reviews')}})}/>)}{!catalog.products.some(p=>p.status==='pending_review'||p.status==='review')&&<div className="bk-empty"><strong style={{font:'26px var(--bk-display)',color:'var(--bk-ink)'}}>No review queue was returned.</strong><p>This workspace does not currently expose products awaiting review. No approvals have been fabricated.</p></div>}{review.isError&&<p className="bk-errorbox">{errText(review.error)}</p>}</>:
-      path==='/admin/applications'?<><p className="bk-muted">Maker applications returned by the operations service. A decision is recorded only after the API confirms it.</p>{ops.data?.applications.map(app=><ApplicationOperation key={app.id} app={app} busy={reviewApplication.isPending} onDecide={(decision,note)=>reviewApplication.mutate({id:app.id,data:{decision,note}},{onSuccess:refreshOps})}/>)}{!ops.data?.applications.length&&<div className="bk-empty"><strong>No applications in the operations queue.</strong><p>Nothing has been added beyond records returned by the service.</p></div>}{reviewApplication.isError&&<p className="bk-errorbox">{errText(reviewApplication.error)}</p>}</>:
-      path==='/admin/enquiries'?<><p className="bk-muted">Corporate enquiries and their live workflow stage.</p>{ops.data?.briefs.map(brief=><BriefOperation key={brief.id} brief={brief} busy={updateBrief.isPending} onStage={stage=>updateBrief.mutate({id:brief.id,data:{stage}},{onSuccess:refreshOps})}/>)}{!ops.data?.briefs.length&&<div className="bk-empty"><strong>No briefs have been returned.</strong><p>New enquiries will appear when the service records them.</p></div>}{updateBrief.isError&&<p className="bk-errorbox">{errText(updateBrief.error)}</p>}</>:
-      path==='/admin/orders'?<><p className="bk-muted">Fulfilment tools update the actual order record; they do not mark payments as received.</p>{ops.data?.orders.map(order=><FulfilmentOperation key={order.id} order={order} busy={updateFulfilment.isPending} onSave={data=>updateFulfilment.mutate({id:order.id,data},{onSuccess:refreshOps})}/>)}{!ops.data?.orders.length&&<div className="bk-empty"><strong>No orders in the operations response.</strong><p>Order records are not fabricated for this view.</p></div>}{updateFulfilment.isError&&<p className="bk-errorbox">{errText(updateFulfilment.error)}</p>}</>:
-      path==='/admin/payouts'?<div className="bk-panel"><h2>Payout controls are unavailable.</h2><p>No payment provider or payout data is connected. This workspace will not invent balances, transfer states, or payment success.</p></div>:
-      <><p className="bk-muted">Latest operational records for this authenticated workspace. The service returns up to 100 most recent records per category; these are feed rows, not global totals.</p><div className="bk-panel"><h2>Applications · {ops.data?.applications.length??0} recent rows</h2><Link className="bk-textlink" href="/admin/applications">Review applications <ArrowRight size={15}/></Link></div><div className="bk-panel"><h2>Corporate briefs · {ops.data?.briefs.length??0} recent rows</h2><Link className="bk-textlink" href="/admin/enquiries">Open enquiries <ArrowRight size={15}/></Link></div><div className="bk-panel"><h2>Orders · {ops.data?.orders.length??0} recent rows</h2><Link className="bk-textlink" href="/admin/orders">Manage fulfilment <ArrowRight size={15}/></Link></div><div className="bk-panel"><h2>Editorial storefront</h2><p>Refresh the brand, homepage chapters, and page copy.</p><Link className="bk-btn" href="/admin/site">Open Site Studio <ArrowRight size={15}/></Link></div></>}
-  </section></main>;
-}
-function ApplicationOperation({app,busy,onDecide}:{app:OperationApplication;busy:boolean;onDecide:(decision:'approved'|'declined'|'call',note:string)=>void}){
-  const [note,setNote]=useState('');
-  return <article className="bk-panel"><span className="bk-eyebrow">{app.status}</span><h2>{app.brand}</h2><p>{app.contactName} · {app.craft} · {app.city}</p><label>Decision note<textarea className="bk-input" value={note} maxLength={1000} onChange={e=>setNote(e.target.value)} placeholder="Add a factual note for the record."/></label><div className="bk-operation-actions"><button className="bk-btn" disabled={busy} onClick={()=>onDecide('approved',note)}>Approve</button><button className="bk-btn secondary" disabled={busy} onClick={()=>onDecide('call',note)}>Request a call</button><button className="bk-btn secondary" disabled={busy} onClick={()=>onDecide('declined',note)}>Decline</button></div></article>;
-}
-function BriefOperation({brief,busy,onStage}:{brief:OperationBrief;busy:boolean;onStage:(stage:'new'|'contacted'|'proposal'|'won'|'lost')=>void}){
-  return <article className="bk-panel"><span className="bk-eyebrow">{brief.ref} · {brief.stage}</span><h2>{brief.company}</h2><p>{brief.purpose}</p><p>{brief.quantity} gifts · indicative budget {money(brief.budgetPaise)} · needed by {brief.neededBy}</p><p>{brief.contactName} · {brief.reach}</p>{brief.message&&<p className="bk-muted">{brief.message}</p>}<label>Update stage<select className="bk-select" value={brief.stage} disabled={busy} onChange={e=>onStage(e.target.value as 'new'|'contacted'|'proposal'|'won'|'lost')}><option value="new">New</option><option value="contacted">Contacted</option><option value="proposal">Proposal</option><option value="won">Won</option><option value="lost">Lost</option></select></label></article>;
-}
-function FulfilmentOperation({order,busy,onSave}:{order:OperationOrder;busy:boolean;onSave:(data:{status:'packed'|'dispatched'|'delayed'|'problem';trackingNumber:string;carrier:string;note:string})=>void}){
-  const [status,setStatus]=useState<'packed'|'dispatched'|'delayed'|'problem'>(['packed','dispatched','delayed','problem'].includes(order.status)?order.status as 'packed'|'dispatched'|'delayed'|'problem':'packed');
-  const [trackingNumber,setTracking]=useState(order.trackingNumber);const [carrier,setCarrier]=useState(order.carrier);const [note,setNote]=useState('');
-  return <article className="bk-panel"><span className="bk-eyebrow">{order.ref}</span><h2>{money(order.totalPaise)}</h2><p>Placed {new Date(order.createdAt).toLocaleDateString()} · Payment {order.paymentStatus}</p><div className="bk-form"><label>Fulfilment status<select value={status} onChange={e=>setStatus(e.target.value as typeof status)}><option value="packed">Packed</option><option value="dispatched">Dispatched</option><option value="delayed">Delayed</option><option value="problem">Problem</option></select></label><label>Carrier<input maxLength={100} value={carrier} onChange={e=>setCarrier(e.target.value)}/></label><label>Tracking number<input maxLength={120} value={trackingNumber} onChange={e=>setTracking(e.target.value)}/></label><label>Internal note<input maxLength={1000} value={note} onChange={e=>setNote(e.target.value)}/></label></div><button className="bk-btn" disabled={busy} onClick={()=>onSave({status,trackingNumber,carrier,note})}>{busy?'Updating…':'Save fulfilment'}</button></article>;
-}
-function ReviewRow({product,busy,onReview}:{product:Product;busy:boolean;onReview:(data:{productId:string;decision:'approved'|'changes';handmade:boolean;material:boolean;photos:boolean;price:boolean;story:boolean;note:string})=>void}){
-  const [checks,setChecks]=useState([false,false,false,false,false]);const [note,setNote]=useState('');
-  const labels=['Handmade origin confirmed','Materials match description','Photos represent item','Price reviewed','Story / description factual'];
-  return <article className="bk-panel"><div style={{display:'flex',gap:18,alignItems:'center'}}><img src={imageUrl(product.image)} alt="" style={{width:88,height:88,objectFit:'cover'}}/><div><h2>{product.name}</h2><p>{product.category} · {money(product.pricePaise)}</p><p>{product.reviewNote}</p></div></div><div>{labels.map((l,i)=><label className="bk-check" key={l}><input type="checkbox" checked={checks[i]} onChange={e=>setChecks(c=>c.map((v,j)=>j===i?e.target.checked:v))}/>{l}</label>)}</div><label>Review note<textarea className="bk-input" maxLength={3000} value={note} onChange={e=>setNote(e.target.value)} placeholder="Record what needs attention."/></label><div style={{display:'flex',gap:8,marginTop:12}}><button className="bk-btn" disabled={busy||!checks.every(Boolean)} onClick={()=>onReview({productId:product.id,decision:'approved',handmade:checks[0],material:checks[1],photos:checks[2],price:checks[3],story:checks[4],note})}>Approve after checks</button><button className="bk-btn secondary" disabled={busy} onClick={()=>onReview({productId:product.id,decision:'changes',handmade:checks[0],material:checks[1],photos:checks[2],price:checks[3],story:checks[4],note})}>Request changes</button></div></article>;
-}
 
 function SecureGate({runtime,runtimeLoading,ready,user,workspace,workspaceLoading,workspaceError,retryWorkspace,roles,children}:{runtime?:Runtime;runtimeLoading:boolean;ready:boolean;user:User|null;workspace:Workspace|undefined;workspaceLoading:boolean;workspaceError:unknown;retryWorkspace:()=>void;roles:string[];children:ReactNode}){
   if(runtimeLoading)return <main className="bk-formpage"><div className="bk-skeleton"/></main>;
@@ -442,5 +305,5 @@ export default function BaksaApp(){
   else if(route==='/maker'||route.startsWith('/maker/')) content=<SecureGate runtime={runtime} runtimeLoading={runtimeQuery.isLoading} ready={authReady} user={user} workspace={workspace} workspaceLoading={workspaceQuery.isLoading} workspaceError={workspaceQuery.error} retryWorkspace={()=>void workspaceQuery.refetch()} roles={['maker']}><MakerArea path={route} workspace={workspace} verifiedUser={!!user?.email_confirmed_at} aiAvailable={!!runtime?.ai}/></SecureGate>;
   else if(route==='/admin'||route.startsWith('/admin/')) content=<SecureGate runtime={runtime} runtimeLoading={runtimeQuery.isLoading} ready={authReady} user={user} workspace={workspace} workspaceLoading={workspaceQuery.isLoading} workspaceError={workspaceQuery.error} retryWorkspace={()=>void workspaceQuery.refetch()} roles={['admin']}>{route==='/admin/site'?<SiteStudio verifiedUser={!!user?.email_confirmed_at} aiAvailable={!!runtime?.ai} preview={(doc,storyId)=><StorefrontPreview document={doc} storyId={storyId} catalog={catalog} catalogError={catalogQuery.isError?errText(catalogQuery.error):undefined} retryCatalog={()=>void catalogQuery.refetch()}/>} />:<AdminArea path={route} workspace={workspace} catalog={catalog||{sample:true,products:[],makers:[]}}/>}</SecureGate>;
   else content=<main className="bk-formpage"><Seo title="Page not found" description="This Baksa Tales page does not exist."/><span className="bk-eyebrow">A wrong turn</span><h1>This page is not in the baksa.</h1><p>The address may have changed, or the page has not been made available.</p><Link className="bk-btn" href="/">Back to the beginning</Link></main>;
-  return <Frame bagCount={totalItems} savedCount={saved.length} onBag={()=>setBagOpen(true)} document={siteDocument}>{content}{catalog&&<BagDrawer open={bagOpen} close={()=>setBagOpen(false)} catalog={catalog} cart={cart} setCart={setCart} />}{toast&&<div className="bk-toast" role="status">{toast}</div>}</Frame>;
+  return <Frame bagCount={totalItems} savedCount={saved.length} onBag={()=>setBagOpen(true)} document={siteDocument}><RouteContent>{content}</RouteContent>{catalog&&<BagDrawer open={bagOpen} close={()=>setBagOpen(false)} catalog={catalog} cart={cart} setCart={setCart} />}{toast&&<div className="bk-toast" role="status">{toast}</div>}</Frame>;
 }

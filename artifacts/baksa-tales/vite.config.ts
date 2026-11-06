@@ -61,6 +61,8 @@ export default defineConfig({
   },
   root: path.resolve(import.meta.dirname),
   build: {
+    // Keep the route graph inspectable so the initial public payload can be checked.
+    manifest: true,
     outDir: path.resolve(import.meta.dirname, 'dist/public'),
     emptyOutDir: true,
   },
