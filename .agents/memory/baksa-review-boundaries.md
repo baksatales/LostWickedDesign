@@ -49,3 +49,9 @@ The user wants visual and editorial elements editable so they can change the loo
 **Why:** The user explicitly authorised the end-to-end build and requested owner-controlled refreshes rather than code-dependent content changes.
 
 **How to apply:** Treat owner editing as a core product experience, not a developer-only configuration file. Preserve the agreed identity and clearly separate editable presentation from protected business rules.
+
+Use a new development Supabase project for the initial connection, not an existing or production database.
+
+**Why:** The user explicitly chose “Create a new development project” during connection setup.
+
+**How to apply:** Keep remote schema changes and admin grants explicit. Do not treat providing public connection settings as permission to alter another database or assign an arbitrary account administrative access.
