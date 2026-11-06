@@ -64,7 +64,7 @@ afterEach(async () => {
 test('public browsing and protected setup screens do not request private modules', async () => {
   for (const [path, text] of [
     ['/', 'Open the baksa'],
-    ['/shop', 'The considered edit.'],
+    ['/shop', 'The BT Edit'],
     ['/makers', 'Maker listings are sample catalogue entries.'],
     ['/stories/tathaastu', 'A blue lotus, held in brass'],
     ['/gift-finder', 'Who is the lucky person?'],

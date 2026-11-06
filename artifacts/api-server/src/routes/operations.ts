@@ -34,11 +34,17 @@ router.get("/operations", async (req, res) => {
   if (roles.includes("admin")) {
     const [apps, enquiries] = await Promise.all([
       db.from("vendor_applications").select("id,brand,contact_name,craft,city,status").order("created_at", { ascending: false }).limit(100),
-      db.from("corporate_enquiries").select("id,ref,purpose,company,quantity,budget_per_gift_paise,needed_by,stage,contact_name,reach,message").order("created_at", { ascending: false }).limit(100),
+      db.from("corporate_enquiries").select("id,ref,purpose,company,quantity,budget_per_gift_paise,needed_by,stage,contact_name,reach,message,customisation,delivery_cities,reference_link").order("created_at", { ascending: false }).limit(100),
     ]);
     checkDb(apps.error); checkDb(enquiries.error);
     applications = (apps.data ?? []).map(a => ({ id: a.id, brand: a.brand, contactName: a.contact_name, craft: a.craft, city: a.city, status: a.status }));
-    briefs = (enquiries.data ?? []).map(b => ({ id: b.id, ref: b.ref, purpose: b.purpose, company: b.company, quantity: b.quantity, budgetPaise: b.budget_per_gift_paise, neededBy: b.needed_by, stage: b.stage, contactName: b.contact_name, reach: b.reach, message: b.message ?? "" }));
+    briefs = (enquiries.data ?? []).map(b => ({
+      id: b.id, ref: b.ref, purpose: b.purpose, company: b.company, quantity: b.quantity,
+      budgetPaise: b.budget_per_gift_paise, neededBy: b.needed_by, stage: b.stage,
+      contactName: b.contact_name, reach: b.reach, message: b.message ?? "",
+      customization: Array.isArray(b.customisation) ? b.customisation.join(", ") : "",
+      deliveryCities: b.delivery_cities ?? "", referenceUrl: b.reference_link ?? "",
+    }));
   }
   res.json(GetOperationsResponse.parse({ orders: orders.data ?? [], applications, briefs }));
 });

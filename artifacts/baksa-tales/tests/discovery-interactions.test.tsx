@@ -135,7 +135,7 @@ test.each([0, 1])('card %i preserves navigation and counts only disclosed sponso
   expect(card.getAttribute('href')).toBe(href);
   await click(card.querySelector('strong')!);
   expect(location.history).toEqual(['/', href]);
-  expect(container.textContent).toContain('The considered edit.');
+  expect(container.textContent).toContain('The BT Edit');
   expectEvents(index === 1
     ? [['trunk_opened', undefined], ['sponsored_card_followed', { card_key:'ba23169cfbc640529e81a2d19ebf850c',card_position: 2 }]]
     : [['trunk_opened', undefined]]);

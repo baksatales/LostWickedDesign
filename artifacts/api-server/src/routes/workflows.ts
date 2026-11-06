@@ -7,6 +7,7 @@ import {
 } from "@workspace/api-zod";
 import { identity, safeConnection, HttpError, checkDb } from "../lib/supabase";
 import { mapMaker, mapProduct } from "../lib/catalog";
+import { corporateContact } from "../lib/corporate-brief";
 
 const router: IRouter = Router();
 router.use((_req, res, next) => { res.set("Cache-Control", "no-store"); next(); });
@@ -36,6 +37,7 @@ router.post("/corporate", submissions, async (req, res): Promise<void> => {
   if (!parsed.success) { res.status(400).json({ error: "Check your brief, quantity, budget, date and email address." }); return; }
   const p = parsed.data;
   if (![p.purpose, p.contactName, p.company].every(s => s.trim().length)) throw new HttpError(400, "Required fields cannot be blank.");
+  const contact = corporateContact(p);
   const date = new Date(`${p.neededBy}T00:00:00Z`);
   const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
   if (!Number.isFinite(date.getTime()) || date.toISOString().slice(0, 10) !== p.neededBy || p.neededBy < today) throw new HttpError(400, "Choose a valid date that is not in the past.");
@@ -45,7 +47,9 @@ router.post("/corporate", submissions, async (req, res): Promise<void> => {
   const id = crypto.randomUUID();
   const { error } = await db.from("corporate_enquiries").insert({
     id, ref, purpose: clean(p.purpose), quantity: p.quantity, budget_per_gift_paise: p.budgetPaise,
-    needed_by: p.neededBy, contact_name: clean(p.contactName), company: clean(p.company), reach: p.email.trim(),
+    needed_by: p.neededBy, contact_name: clean(p.contactName), company: clean(p.company), reach: contact.reach,
+    customisation: p.customization?.trim() ? [p.customization.trim()] : [],
+    delivery_cities: p.deliveryCities?.trim() || null, reference_link: contact.referenceUrl || null,
     message: p.message, stage: "new",
   });
   checkDb(error);

@@ -67,6 +67,7 @@ export const SiteThemeBodyFont = {
   inter: 'inter',
   system: 'system',
   georgia: 'georgia',
+  garamond: 'garamond',
 } as const;
 
 export type SiteThemeSpacing = typeof SiteThemeSpacing[keyof typeof SiteThemeSpacing];
@@ -375,6 +376,9 @@ export interface OperationBrief {
   contactName: string;
   reach: string;
   message: string;
+  customization?: string;
+  deliveryCities?: string;
+  referenceUrl?: string;
 }
 
 export interface Operations {
@@ -573,6 +577,7 @@ export interface BriefInput {
      */
   quantity: number;
   /**
+     * Budget per gift in integer paise, not the total brief budget.
      * @minimum 100
      * @maximum 100000000
      */
@@ -590,7 +595,19 @@ export interface BriefInput {
      */
   company: string;
   /** @maxLength 250 */
-  email: string;
+  email?: string;
+  /**
+     * Work email or Indian mobile number. Either reach or the legacy email field is required.
+     * @minLength 1
+     * @maxLength 250
+     */
+  reach?: string;
+  /** @maxLength 1000 */
+  customization?: string;
+  /** @maxLength 1000 */
+  deliveryCities?: string;
+  /** @maxLength 1000 */
+  referenceUrl?: string;
   /** @maxLength 4000 */
   message: string;
 }

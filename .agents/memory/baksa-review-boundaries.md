@@ -14,6 +14,12 @@ Preserve the supplied trunk logo and real product photographs. The proposed dire
 
 **How to apply:** Use the uploaded source materials as references, not proof of verified product claims or production readiness. Do not change the existing site, DNS or live services without explicit authorisation.
 
+The newer Claude package's `designs/` screens are the visual reference for the storefront, maker workspace and admin area, except the existing Baksa icon must remain unchanged.
+
+**Why:** The user explicitly asked to implement most of the supplied frontend and backend designs and said “PLEASE keep the Baksa icon as is and rest can be as per cluades instruction and designs”.
+
+**How to apply:** Preserve the existing icon artwork and opening trunk. Adapt the supplied visual language to functional components, retaining editable content and the previously requested useful screen density. Treat prototype counts and commercial promises as samples, not live facts.
+
 Retain the supplied prototype's opening-and-closing trunk interaction and Today's stories. The user sees both as opportunities to charge brands for featured placements.
 
 **Why:** The user explicitly identified these discovery surfaces as potential monetisation opportunities and requested behavioural/psychological principles to reduce decision fatigue in a luxury environment.

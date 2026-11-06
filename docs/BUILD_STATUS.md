@@ -1,5 +1,28 @@
 # Baksa Tales — first implementation
 
+## Supplied Claude design integration
+
+The newer uploaded Replit package's `designs/` screens now guide the shared
+storefront and existing maker/admin presentation: EB Garamond reading text,
+Arvo interface text, cream/crimson/teal/marigold colours, arched photography,
+rounded surfaces and the scalloped footer. The original Baksa icon asset files
+and opening trunk interaction are retained. This is an adaptation of existing
+functional surfaces, not a claim that all 25 static screens' features are complete.
+
+Corporate enquiries now collect seven required answers with budget **per gift**,
+email or Indian WhatsApp contact, and optional customisation, delivery cities,
+reference link and notes. The API validates these fields, saves them to the
+existing private enquiry columns and returns them only in the admin feed.
+Corporate reference artwork, captions and introductory form copy are editable
+through Site Studio's display-label controls. Preparing another brief creates a
+new enquiry; it does not silently edit a previously saved record.
+
+The existing domain module matches the supplied developer kit. No replacement
+database, demo payment success, automatic remote migration or logo replacement
+was introduced. Supabase/Auth and payments remain disconnected. Academy selling,
+course proposals, payout processing and other unimplemented kit workflows have
+not become live merely because their shared visual styles changed.
+
 ## Editorial Studio and operational expansion
 
 The current build adds a document-backed content/theme API and prepared Supabase
@@ -33,7 +56,9 @@ not complete. This is not a launch-ready marketplace.
 
 ## Scope and source of truth
 
-The supplied `BAKSA_REPLIT_PROMPT` takes priority over the older Lovable kit.
+The latest supplied package's designs govern appearance, with the user's explicit
+exception that the existing Baksa icon remains unchanged. Its developer kit
+informs business rules, subject to the existing reviewed security hardening.
 The React app lives at `artifacts/baksa-tales`; the canvas previews are preserved.
 Supabase remains the sole planned account/database/storage authority. The
 preconfigured Replit database is not used as a substitute. No live site, DNS or

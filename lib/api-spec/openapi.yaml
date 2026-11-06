@@ -328,7 +328,7 @@ components:
         ink: { type: string, pattern: '^#[0-9a-fA-F]{6}$' }
         muted: { type: string, pattern: '^#[0-9a-fA-F]{6}$' }
         headingFont: { type: string, enum: [garamond, cormorant, georgia] }
-        bodyFont: { type: string, enum: [inter, system, georgia] }
+        bodyFont: { type: string, enum: [inter, system, georgia, garamond] }
         radius: { type: integer, minimum: 0, maximum: 28 }
         spacing: { type: string, enum: [compact, comfortable, generous] }
         motion: { type: boolean }
@@ -515,6 +515,9 @@ components:
         contactName: { type: string }
         reach: { type: string }
         message: { type: string }
+        customization: { type: string }
+        deliveryCities: { type: string }
+        referenceUrl: { type: string }
     Operations:
       type: object
       required: [orders, applications, briefs]
@@ -636,15 +639,27 @@ components:
         link: { type: string, maxLength: 400 }
     BriefInput:
       type: object
-      required: [purpose, quantity, budgetPaise, neededBy, contactName, company, email, message]
+      required: [purpose, quantity, budgetPaise, neededBy, contactName, company, message]
       properties:
         purpose: { type: string, minLength: 1, maxLength: 200 }
         quantity: { type: integer, minimum: 1, maximum: 100000 }
-        budgetPaise: { type: integer, minimum: 100, maximum: 100000000 }
+        budgetPaise:
+          type: integer
+          minimum: 100
+          maximum: 100000000
+          description: Budget per gift in integer paise, not the total brief budget.
         neededBy: { type: string, pattern: '^\d{4}-\d{2}-\d{2}$' }
         contactName: { type: string, minLength: 1, maxLength: 150 }
         company: { type: string, minLength: 1, maxLength: 150 }
         email: { type: string, format: email, maxLength: 250 }
+        reach:
+          type: string
+          minLength: 1
+          maxLength: 250
+          description: Work email or Indian mobile number. Either reach or the legacy email field is required.
+        customization: { type: string, maxLength: 1000 }
+        deliveryCities: { type: string, maxLength: 1000 }
+        referenceUrl: { type: string, maxLength: 1000 }
         message: { type: string, maxLength: 4000 }
     ProductInput:
       type: object

@@ -176,7 +176,7 @@ export const GetSiteResponse = zod.object({
   "ink": zod.string().regex(getSiteResponseDocumentThemeInkRegExp),
   "muted": zod.string().regex(getSiteResponseDocumentThemeMutedRegExp),
   "headingFont": zod.enum(['garamond', 'cormorant', 'georgia']),
-  "bodyFont": zod.enum(['inter', 'system', 'georgia']),
+  "bodyFont": zod.enum(['inter', 'system', 'georgia', 'garamond']),
   "radius": zod.number().int().min(getSiteResponseDocumentThemeRadiusMin).max(getSiteResponseDocumentThemeRadiusMax),
   "spacing": zod.enum(['compact', 'comfortable', 'generous']),
   "motion": zod.boolean(),
@@ -414,7 +414,7 @@ export const GetSiteDraftResponse = zod.object({
   "ink": zod.string().regex(getSiteDraftResponseDocumentThemeInkRegExp),
   "muted": zod.string().regex(getSiteDraftResponseDocumentThemeMutedRegExp),
   "headingFont": zod.enum(['garamond', 'cormorant', 'georgia']),
-  "bodyFont": zod.enum(['inter', 'system', 'georgia']),
+  "bodyFont": zod.enum(['inter', 'system', 'georgia', 'garamond']),
   "radius": zod.number().int().min(getSiteDraftResponseDocumentThemeRadiusMin).max(getSiteDraftResponseDocumentThemeRadiusMax),
   "spacing": zod.enum(['compact', 'comfortable', 'generous']),
   "motion": zod.boolean(),
@@ -658,7 +658,7 @@ export const SaveSiteDraftBody = zod.object({
   "ink": zod.string().regex(saveSiteDraftBodyDocumentThemeInkRegExp),
   "muted": zod.string().regex(saveSiteDraftBodyDocumentThemeMutedRegExp),
   "headingFont": zod.enum(['garamond', 'cormorant', 'georgia']),
-  "bodyFont": zod.enum(['inter', 'system', 'georgia']),
+  "bodyFont": zod.enum(['inter', 'system', 'georgia', 'garamond']),
   "radius": zod.number().int().min(saveSiteDraftBodyDocumentThemeRadiusMin).max(saveSiteDraftBodyDocumentThemeRadiusMax),
   "spacing": zod.enum(['compact', 'comfortable', 'generous']),
   "motion": zod.boolean(),
@@ -893,7 +893,7 @@ export const SaveSiteDraftResponse = zod.object({
   "ink": zod.string().regex(saveSiteDraftResponseDocumentThemeInkRegExp),
   "muted": zod.string().regex(saveSiteDraftResponseDocumentThemeMutedRegExp),
   "headingFont": zod.enum(['garamond', 'cormorant', 'georgia']),
-  "bodyFont": zod.enum(['inter', 'system', 'georgia']),
+  "bodyFont": zod.enum(['inter', 'system', 'georgia', 'garamond']),
   "radius": zod.number().int().min(saveSiteDraftResponseDocumentThemeRadiusMin).max(saveSiteDraftResponseDocumentThemeRadiusMax),
   "spacing": zod.enum(['compact', 'comfortable', 'generous']),
   "motion": zod.boolean(),
@@ -1143,7 +1143,7 @@ export const PublishSiteResponse = zod.object({
   "ink": zod.string().regex(publishSiteResponseDocumentThemeInkRegExp),
   "muted": zod.string().regex(publishSiteResponseDocumentThemeMutedRegExp),
   "headingFont": zod.enum(['garamond', 'cormorant', 'georgia']),
-  "bodyFont": zod.enum(['inter', 'system', 'georgia']),
+  "bodyFont": zod.enum(['inter', 'system', 'georgia', 'garamond']),
   "radius": zod.number().int().min(publishSiteResponseDocumentThemeRadiusMin).max(publishSiteResponseDocumentThemeRadiusMax),
   "spacing": zod.enum(['compact', 'comfortable', 'generous']),
   "motion": zod.boolean(),
@@ -1395,7 +1395,7 @@ export const RestoreSiteResponse = zod.object({
   "ink": zod.string().regex(restoreSiteResponseDocumentThemeInkRegExp),
   "muted": zod.string().regex(restoreSiteResponseDocumentThemeMutedRegExp),
   "headingFont": zod.enum(['garamond', 'cormorant', 'georgia']),
-  "bodyFont": zod.enum(['inter', 'system', 'georgia']),
+  "bodyFont": zod.enum(['inter', 'system', 'georgia', 'garamond']),
   "radius": zod.number().int().min(restoreSiteResponseDocumentThemeRadiusMin).max(restoreSiteResponseDocumentThemeRadiusMax),
   "spacing": zod.enum(['compact', 'comfortable', 'generous']),
   "motion": zod.boolean(),
@@ -1516,7 +1516,10 @@ export const GetOperationsResponse = zod.object({
   "stage": zod.string(),
   "contactName": zod.string(),
   "reach": zod.string(),
-  "message": zod.string()
+  "message": zod.string(),
+  "customization": zod.string().optional(),
+  "deliveryCities": zod.string().optional(),
+  "referenceUrl": zod.string().optional()
 }))
 })
 
@@ -1752,6 +1755,14 @@ export const createBriefBodyCompanyMax = 150;
 
 export const createBriefBodyEmailMax = 250;
 
+export const createBriefBodyReachMax = 250;
+
+export const createBriefBodyCustomizationMax = 1000;
+
+export const createBriefBodyDeliveryCitiesMax = 1000;
+
+export const createBriefBodyReferenceUrlMax = 1000;
+
 export const createBriefBodyMessageMax = 4000;
 
 
@@ -1759,11 +1770,15 @@ export const createBriefBodyMessageMax = 4000;
 export const CreateBriefBody = zod.object({
   "purpose": zod.string().min(1).max(createBriefBodyPurposeMax),
   "quantity": zod.number().int().min(1).max(createBriefBodyQuantityMax),
-  "budgetPaise": zod.number().int().min(createBriefBodyBudgetPaiseMin).max(createBriefBodyBudgetPaiseMax),
+  "budgetPaise": zod.number().int().min(createBriefBodyBudgetPaiseMin).max(createBriefBodyBudgetPaiseMax).describe('Budget per gift in integer paise, not the total brief budget.'),
   "neededBy": zod.string().regex(createBriefBodyNeededByRegExp),
   "contactName": zod.string().min(1).max(createBriefBodyContactNameMax),
   "company": zod.string().min(1).max(createBriefBodyCompanyMax),
-  "email": zod.string().email().max(createBriefBodyEmailMax),
+  "email": zod.string().email().max(createBriefBodyEmailMax).optional(),
+  "reach": zod.string().min(1).max(createBriefBodyReachMax).optional().describe('Work email or Indian mobile number. Either reach or the legacy email field is required.'),
+  "customization": zod.string().max(createBriefBodyCustomizationMax).optional(),
+  "deliveryCities": zod.string().max(createBriefBodyDeliveryCitiesMax).optional(),
+  "referenceUrl": zod.string().max(createBriefBodyReferenceUrlMax).optional(),
   "message": zod.string().max(createBriefBodyMessageMax)
 })
 

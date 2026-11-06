@@ -1,4 +1,5 @@
 import { lazy, useContext, useEffect, useMemo, useRef, useState, type AnchorHTMLAttributes, type CSSProperties, type Dispatch, type FormEvent, type ReactNode, type SetStateAction } from 'react';
+import { corporateCopy } from './corporate-copy';
 import { Link, useLocation } from 'wouter';
 import { createClient, type SupabaseClient, type User } from '@supabase/supabase-js';
 import { ArrowRight, BookOpen, Check, Heart, Menu, Minus, Package, Plus, Search, ShoppingBag, UserRound, X } from 'lucide-react';
@@ -16,6 +17,7 @@ import { commerceDestination, editorialKey, trackEvent } from '../lib/analytics'
 import '../baksa.css';
 import '../editorial-refinements.css';
 import '../storefront-density.css';
+import '../baksa-visual-design.css';
 
 const base = import.meta.env.BASE_URL;
 const safeSiteHref=(value:string)=>/^\/(?!\/)[a-zA-Z0-9/_?=&%#.,~-]*$/.test(value)||/^https:\/\/[a-zA-Z0-9.-]+(?::443)?(?:\/[^\s<>\\]*)?$/.test(value);
@@ -34,7 +36,7 @@ const validString = (v: unknown): v is string => typeof v === 'string';
 function Frame({ children, bagCount, savedCount, onBag, document:siteDoc }: { children: ReactNode; bagCount: number; savedCount: number; onBag: () => void; document:SiteDocument }) {
   const [menu, setMenu] = useState(false);
   const theme=siteDoc.theme;
-  const themeStyle={'--bk-paper':theme.background,'--bk-cream':theme.surface,'--bk-maroon':theme.primary,'--bk-crimson':theme.primary,'--bk-teal':theme.secondary,'--bk-gold':theme.accent,'--bk-ink':theme.ink,'--bk-muted':theme.muted,'--bk-line':theme.primary+'30','--bk-display':theme.headingFont==='georgia'?'Georgia,serif':theme.headingFont==='cormorant'?'Cormorant Garamond,Georgia,serif':"'EB Garamond',Georgia,serif",'--bk-body':theme.bodyFont==='system'?'system-ui,sans-serif':theme.bodyFont==='georgia'?'Georgia,serif':"'Source Sans 3',sans-serif",'--bk-radius':`${theme.radius}px`,'--bk-space':theme.spacing==='compact'?'48px':theme.spacing==='generous'?'94px':'72px' } as CSSProperties;
+  const themeStyle={'--bk-paper':theme.background,'--bk-cream':theme.surface,'--bk-maroon':theme.primary,'--bk-crimson':theme.primary,'--bk-teal':theme.secondary,'--bk-gold':theme.accent,'--bk-ink':theme.ink,'--bk-muted':theme.muted,'--bk-line':theme.primary+'30','--bk-display':theme.headingFont==='georgia'?'Georgia,serif':theme.headingFont==='cormorant'?'Cormorant Garamond,Georgia,serif':"'EB Garamond',Georgia,serif",'--bk-body':theme.bodyFont==='garamond'?"'EB Garamond',Georgia,serif":theme.bodyFont==='system'?'system-ui,sans-serif':theme.bodyFont==='georgia'?'Georgia,serif':"'Arvo',Georgia,serif",'--bk-radius':`${theme.radius}px`,'--bk-space':theme.spacing==='compact'?'48px':theme.spacing==='generous'?'94px':'72px' } as CSSProperties;
   return <SiteDocumentContext.Provider value={siteDoc}><div className={`baksa ${theme.motion?'bk-motion':'bk-still'} ${theme.ornament?'bk-ornament':''}`} style={themeStyle}>
     <div className="bk-notice">{siteDoc.brand.announcement}</div>
     <header className="bk-header"><div className="bk-header-main">
@@ -49,7 +51,7 @@ function Frame({ children, bagCount, savedCount, onBag, document:siteDoc }: { ch
     </div>{menu && <nav className="bk-mobile-panel">{siteDoc.navigation.map((item,i)=><DocLink key={`${item.href}-${i}`} href={item.href}>{item.label}</DocLink>)}<Link href="/sell">For makers</Link></nav>}</header>
     {children}
     <footer className="bk-footer"><div className="bk-footgrid">
-      <div><img className="bk-footmark" src={imageUrl(siteDoc.brand.logo)} alt={`${siteDoc.brand.name} — ${siteDoc.brand.tagline}`}/><h3>{siteDoc.brand.footerTitle}</h3><p>{siteDoc.brand.footerText}</p><small>{siteDoc.brand.copyright}</small></div>
+      <div><img className="bk-footmark" src={imageUrl(siteDoc.brand.mark)} alt={`${siteDoc.brand.name} mark`}/><h3>{siteDoc.brand.footerTitle}</h3><p>{siteDoc.brand.footerText}</p><small>{siteDoc.brand.copyright}</small></div>
       <div><h3>Find your way</h3>{siteDoc.footerLinks.slice(0,Math.ceil(siteDoc.footerLinks.length/2)).map((item,i)=><DocLink key={`${item.href}-${i}`} href={item.href}>{item.label}</DocLink>)}</div>
       <div><h3>Make something together</h3>{siteDoc.footerLinks.slice(Math.ceil(siteDoc.footerLinks.length/2)).map((item,i)=><DocLink key={`${item.href}-${i}`} href={item.href}>{item.label}</DocLink>)}{!siteDoc.footerLinks.some(item=>item.href==='/admin/site')&&<Link href="/admin/site">Site Studio</Link>}<Link className="bk-preview-link" href="/studio-preview">Local design playground · unsaved</Link></div>
     </div></footer>
@@ -116,7 +118,7 @@ function HomePage({ catalog, saved, toggle, catalogError, retryCatalog, document
     if(!opened||!card)return;
     const position=Array.from(card.parentElement?.children||[]).indexOf(card);
     if(siteDoc.trunkCards[position]?.sponsored)trackEvent('sponsored_card_followed',{...editorialKey('card',siteDoc.trunkCards[position].analyticsKey),card_position:position+1});
-  }} className={`bk-home ${siteDoc.theme.motion?'bk-motion':'bk-still'} ${siteDoc.theme.ornament?'bk-ornament':''}`} style={{'--bk-paper':siteDoc.theme.background,'--bk-cream':siteDoc.theme.surface,'--bk-maroon':siteDoc.theme.primary,'--bk-crimson':siteDoc.theme.primary,'--bk-teal':siteDoc.theme.secondary,'--bk-gold':siteDoc.theme.accent,'--bk-ink':siteDoc.theme.ink,'--bk-muted':siteDoc.theme.muted,'--bk-display':siteDoc.theme.headingFont==='georgia'?'Georgia,serif':siteDoc.theme.headingFont==='cormorant'?'Cormorant Garamond,Georgia,serif':"'EB Garamond',Georgia,serif",'--bk-body':siteDoc.theme.bodyFont==='system'?'system-ui,sans-serif':siteDoc.theme.bodyFont==='georgia'?'Georgia,serif':"'Source Sans 3',sans-serif",'--bk-radius':`${siteDoc.theme.radius}px`,'--bk-space':siteDoc.theme.spacing==='compact'?'48px':siteDoc.theme.spacing==='generous'?'94px':'72px'} as CSSProperties}>
+  }} className={`bk-home ${siteDoc.theme.motion?'bk-motion':'bk-still'} ${siteDoc.theme.ornament?'bk-ornament':''}`} style={{'--bk-paper':siteDoc.theme.background,'--bk-cream':siteDoc.theme.surface,'--bk-maroon':siteDoc.theme.primary,'--bk-crimson':siteDoc.theme.primary,'--bk-teal':siteDoc.theme.secondary,'--bk-gold':siteDoc.theme.accent,'--bk-ink':siteDoc.theme.ink,'--bk-muted':siteDoc.theme.muted,'--bk-display':siteDoc.theme.headingFont==='georgia'?'Georgia,serif':siteDoc.theme.headingFont==='cormorant'?'Cormorant Garamond,Georgia,serif':"'EB Garamond',Georgia,serif",'--bk-body':siteDoc.theme.bodyFont==='garamond'?"'EB Garamond',Georgia,serif":siteDoc.theme.bodyFont==='system'?'system-ui,sans-serif':siteDoc.theme.bodyFont==='georgia'?'Georgia,serif':"'Arvo',Georgia,serif",'--bk-radius':`${siteDoc.theme.radius}px`,'--bk-space':siteDoc.theme.spacing==='compact'?'48px':siteDoc.theme.spacing==='generous'?'94px':'72px'} as CSSProperties}>
     <Seo title={page('shop')?.title||'Handmade gifts, found with feeling'} description={page('shop')?.description||'Discover meaningful gifts through the makers and stories behind them.'}/>
     {siteDoc.sections.filter(s=>s.visible).map(renderSection)}
   </main>;
@@ -259,15 +261,63 @@ function FinderPage() {
     <span className="bk-eyebrow">{steps[step].key}</span><h2>{steps[step].title}</h2><p>{steps[step].prompt}</p><div className="bk-options">{steps[step].options.map(o=>{const [id,label]=o.split('|');return <button className={`bk-option ${answers[step]===id?'chosen':''}`} onClick={()=>choose(o)} key={o}>{labels[`quiz.${steps[step].key}.${id}`]||label}{answers[step]===id&&<Check size={16}/>}</button>})}</div>{mutation.isError&&<p className="bk-errorbox" role="alert">{errText(mutation.error)}</p>}<div className="bk-finder-controls"><button className="bk-skip" onClick={()=>{if(step>0)setStep(s=>s-1)}} disabled={step===0}>Back</button><div><button className="bk-skip" onClick={()=>{setAnswers(a=>a.map((v,i)=>i===step?'':v));if(step===3)setBudget(10000000);if(step<3)setStep(s=>s+1);else next()}}>Skip</button><button className="bk-btn" disabled={mutation.isPending} onClick={next}>{mutation.isPending?'Finding…':step===3?labels['quiz.results']||'Show my ideas':labels['quiz.next']||'Continue'} <ArrowRight size={15}/></button></div></div></>}</section></div></main>;
 }
 
+const corporatePurposes=['Client appreciation','Employee gifting','Hospitality','A wedding','Something else'];
+function todayInIndia(){
+  const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Kolkata',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+  const part=(type:string)=>parts.find(item=>item.type===type)?.value||'';
+  return `${part('year')}-${part('month')}-${part('day')}`;
+}
 function CorporatePage() {
   const page=useSitePage('corporate');
+  const document=useContext(SiteDocumentContext);
+  const copy=(key:keyof typeof corporateCopy)=>document?.labels[key]??corporateCopy[key];
   const create = useCreateBrief();
   const [done,setDone]=useState<{id:string;message:string}|null>(null);
-  const [values,setValues]=useState({purpose:'',quantity:'',budget:'',neededBy:'',contactName:'',company:'',email:'',message:''});
+  const [values,setValues]=useState({purpose:'',quantity:'',budget:'',neededBy:'',contactName:'',company:'',reach:'',customization:'',deliveryCities:'',referenceUrl:'',message:''});
   const update=(key:keyof typeof values,value:string)=>setValues(v=>({...v,[key]:value}));
-  const submit=(e:FormEvent)=>{e.preventDefault();create.mutate({data:{purpose:values.purpose,quantity:Number(values.quantity),budgetPaise:Math.round(Number(values.budget)*100),neededBy:values.neededBy,contactName:values.contactName,company:values.company,email:values.email,message:values.message}},{onSuccess:r=>setDone(r)});};
-  return <main className="bk-formpage bk-corporate"><Seo title={page?.title||'Corporate gifting'} description={page?.description||'Share a brief for thoughtful corporate gifting from independent makers.'}/><div className="bk-corporate-intro"><span className="bk-eyebrow">{page?.eyebrow||'For teams and gatherings'}</span><h1>{page?.heading||'Gifts that say something.'}</h1><p>{page?.intro||'Tell us what you are planning. A brief is only considered received when the service confirms it below; this form does not guarantee availability or delivery timing.'}</p><PageArtwork page={page}/></div><div className="bk-corporate-content">{done ? <div className="bk-success" role="status"><h2>Brief received</h2><p>{done.message}</p><small>Reference {done.id}</small></div> : <form className="bk-form" onSubmit={submit}>
-    <label>Purpose<input required value={values.purpose} onChange={e=>update('purpose',e.target.value)} maxLength={200} placeholder="A gathering, welcome, thank you…"/></label><label>Quantity<input type="number" min="1" max="100000" required value={values.quantity} onChange={e=>update('quantity',e.target.value)}/></label><label>Approximate total budget (₹)<input type="number" min="1" step="1" required value={values.budget} onChange={e=>update('budget',e.target.value)}/></label><label>Needed by<input type="date" required value={values.neededBy} onChange={e=>update('neededBy',e.target.value)}/></label><label>Your name<input required value={values.contactName} onChange={e=>update('contactName',e.target.value)}/></label><label>Company or organisation<input required value={values.company} onChange={e=>update('company',e.target.value)}/></label><label>Email<input type="email" required value={values.email} onChange={e=>update('email',e.target.value)}/></label><label className="wide">Notes<textarea value={values.message} onChange={e=>update('message',e.target.value)} maxLength={4000} placeholder="Tell us about the occasion, preferences or questions."/></label>{create.isError&&<p className="bk-error" role="alert">{errText(create.error)}</p>}<button className="bk-btn" disabled={create.isPending}>{create.isPending?'Sending brief…':'Send a brief'} <ArrowRight size={16}/></button></form>}</div></main>;
+  const submit=(e:FormEvent)=>{
+    e.preventDefault();
+    if(create.isPending)return;
+    setDone(null);
+    const payload={
+      purpose:values.purpose.trim(),quantity:Number(values.quantity),budgetPaise:Math.round(Number(values.budget)*100),
+      neededBy:values.neededBy,contactName:values.contactName.trim(),company:values.company.trim(),
+      ...(values.reach.includes('@')?{email:values.reach.trim()}:{}),reach:values.reach.trim(),
+      ...(values.customization.trim()?{customization:values.customization.trim()}:{}),
+      ...(values.deliveryCities.trim()?{deliveryCities:values.deliveryCities.trim()}:{}),
+      ...(values.referenceUrl.trim()?{referenceUrl:values.referenceUrl.trim()}:{}),message:values.message.trim(),
+    };
+    create.mutate({data:payload},{onSuccess:r=>{if(r.id&&r.message)setDone(r)}});
+  };
+  return <main className="bk-formpage bk-corporate">
+    <Seo title={page?.title||'Corporate gifting'} description={page?.description||'Share a brief for thoughtful corporate gifting from independent makers.'}/>
+    <div className="bk-corporate-intro"><span className="bk-eyebrow">{page?.eyebrow||'Corporate gifting'}</span><h1>{page?.heading||'Gifts with a person inside.'}</h1><p>{page?.intro||'For employees, clients, guests and weddings. Share a few details and our team can explore a thoughtful fit with independent makers.'}</p>
+      <div className="bk-corporate-visuals">{([1,2] as const).map(n=>copy(`corporate.reference.image${n}`)&&<figure key={n}><img src={imageUrl(copy(`corporate.reference.image${n}`))} alt={copy(`corporate.reference.alt${n}`)}/><figcaption>{copy(`corporate.reference.caption${n}`)}</figcaption></figure>)}<small>{copy('corporate.reference.note')}</small></div>
+      <PageArtwork page={page}/>
+    </div>
+    <div className="bk-corporate-content">
+      {done ? <div className="bk-success bk-brief-success" role="status"><span className="bk-eyebrow">Your note is with us</span><h2>Brief received</h2><p>{done.message}</p><p>The gifting team can review the details and follow up using the contact you provided. This is not an availability or delivery confirmation.</p><small>Reference {done.id}</small>{Number(values.quantity)>=200&&<p className="bk-muted">For 200 gifts or more, the team may discuss sharing the work across several makers; this depends on the brief and maker availability.</p>}<button className="bk-btn secondary" type="button" onClick={()=>setDone(null)}>Prepare another brief</button></div> : <form className="bk-form" onSubmit={submit}>
+        <div className="bk-brief-intro"><span className="bk-eyebrow">{copy('corporate.form.eyebrow')}</span><h2>{copy('corporate.form.title')}</h2><p>{copy('corporate.form.intro')}</p></div>
+        <fieldset className="bk-purpose-field"><legend>What are the gifts for?</legend><div className="bk-purpose-picks">{corporatePurposes.map(purpose=><button className={`bk-purpose-chip ${values.purpose===purpose?'selected':''}`} type="button" key={purpose} aria-pressed={values.purpose===purpose} onClick={()=>update('purpose',purpose)}>{purpose}</button>)}</div><label className="wide">A few words about the occasion<input required value={values.purpose} onChange={e=>update('purpose',e.target.value)} maxLength={200} placeholder="For example, a year-end thank you"/></label></fieldset>
+        <label>How many gifts?<input type="number" min="1" max="100000" required value={values.quantity} onChange={e=>update('quantity',e.target.value)} placeholder="Number of gifts"/></label>
+        <label>Budget per gift (₹)<input type="number" min="1" max="1000000" step="1" required value={values.budget} onChange={e=>update('budget',e.target.value)} placeholder="Approximate amount per gift"/><small>Enter an approximate amount for each gift, not the total.</small></label>
+        <label>Needed by<input type="date" required min={todayInIndia()} value={values.neededBy} onChange={e=>update('neededBy',e.target.value)}/><small>We’ll discuss what may be possible after reviewing the brief.</small></label>
+        <label>Your name<input required maxLength={150} value={values.contactName} onChange={e=>update('contactName',e.target.value)} autoComplete="name"/></label>
+        <label>Company or organisation<input required maxLength={150} value={values.company} onChange={e=>update('company',e.target.value)} autoComplete="organization"/></label>
+        <label className="wide">Work email or Indian mobile number<input type="text" required maxLength={150} value={values.reach} onChange={e=>update('reach',e.target.value)} placeholder="name@company.in or +91 98765 43210" autoComplete="email"/><small>Use a work email or a 10-digit Indian mobile number, with or without +91.</small></label>
+        <details className="bk-brief-more wide"><summary>Add more detail (optional)</summary><div className="bk-form bk-brief-extra">
+          <label className="wide">Customisation<textarea maxLength={1000} value={values.customization} onChange={e=>update('customization',e.target.value)} placeholder="Logo, personal notes, packaging preferences…"/></label>
+          <label>Delivery cities<textarea maxLength={1000} value={values.deliveryCities} onChange={e=>update('deliveryCities',e.target.value)} placeholder="Cities or regions"/></label>
+          <label>Reference link<input type="url" maxLength={500} value={values.referenceUrl} onChange={e=>update('referenceUrl',e.target.value)} placeholder="https://"/></label>
+          <label className="wide">Anything else<textarea maxLength={4000} value={values.message} onChange={e=>update('message',e.target.value)} placeholder="Preferences, context or questions."/></label>
+          <p className="bk-muted wide">Links are saved with your brief. File attachments are not available in this form.</p>
+        </div></details>
+        <p className="bk-brief-truth wide">Sending a brief is a first conversation, not a promise of stock, a maker match, a quote or a delivery date. Orders of 200+ may involve several makers; we can discuss this once we know more.</p>
+        {create.isError&&<p className="bk-error wide" role="alert">{errText(create.error)}</p>}
+        <button className="bk-btn bk-brief-submit" disabled={create.isPending}>{create.isPending?'Sending brief…':'Send my brief'} <ArrowRight size={16}/></button>
+      </form>}
+    </div>
+  </main>;
 }
 function SellPage({user,v,setV,onSignIn}:{user:User|null;v:SellValues;setV:Dispatch<SetStateAction<SellValues>>;onSignIn:()=>void}) {
   const page=useSitePage('sell');

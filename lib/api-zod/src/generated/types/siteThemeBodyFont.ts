@@ -13,4 +13,5 @@ export const SiteThemeBodyFont = {
   inter: 'inter',
   system: 'system',
   georgia: 'georgia',
+  garamond: 'garamond',
 } as const;

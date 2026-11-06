@@ -1,5 +1,24 @@
 # Verification record
 
+## Claude package integration
+
+- Frontend: TypeScript passed; six analytics checks and 24 React tests passed.
+  Corporate tests verify the outgoing per-gift paise budget and optional fields,
+  confirmed reference handling and preserving inputs on a failed submission.
+- Backend: TypeScript passed; 66 API/domain/editorial/contact checks and three
+  isolated corporate persistence tests passed. Persistence tests use mocked
+  storage, while the editorial database suite uses isolated PostgreSQL/WASM.
+  None of these tests connect or modify a remote Supabase project.
+- The production frontend builds successfully. Existing sourcemap reporting and
+  large-entry-chunk advisories remain nonblocking.
+- Desktop homepage/catalogue and phone homepage screenshots were reviewed.
+  The initial corporate screenshot exposed an inherited form-width cap; the
+  corporate layout now overrides that cap. Product sample labels sit below the
+  arched image edge so their text is not clipped.
+- Git confirms the existing logo-full and logo-mark assets are unchanged.
+- Real authenticated maker/admin operations, hosted persistence, payment
+  processing and external integrations remain unverified and disconnected.
+
 ## Repeatable discovery interaction checks
 
 Run `pnpm --filter @workspace/baksa-tales test` for the analytics wrapper

@@ -118,6 +118,24 @@ describe("mutation boundaries without external setup", () => {
     expect(response.status).toBe(503);
     expect((await response.json()).error).toContain("No changes were saved");
   });
+  it("accepts the new contact/optional-detail contract but never fakes saving it", async () => {
+    const response = await post("/corporate", {
+      purpose: "Client appreciation", quantity: 500, budgetPaise: 250000,
+      neededBy: "2030-12-12", contactName: "Test", company: "Test company",
+      reach: "+91 98765 43210", customization: "A branded note", deliveryCities: "Delhi, Mumbai",
+      referenceUrl: "https://example.invalid/brief", message: "",
+    });
+    expect(response.status).toBe(503);
+    expect((await response.json()).error).toContain("No changes were saved");
+  });
+  it("rejects a corporate brief with no usable contact before accessing storage", async () => {
+    const response = await post("/corporate", {
+      purpose: "Client appreciation", quantity: 50, budgetPaise: 250000,
+      neededBy: "2030-12-12", contactName: "Test", company: "Test company",
+      reach: "not a contact", message: "",
+    });
+    expect(response.status).toBe(400);
+  });
   it("requires a real account for maker applications", async () => {
     const response = await post("/applications", {
       brand: "Test craft", contactName: "Test", phone: "9876543210", craft: "Candles",

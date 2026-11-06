@@ -18,4 +18,7 @@ export interface OperationBrief {
   contactName: string;
   reach: string;
   message: string;
+  customization?: string;
+  deliveryCities?: string;
+  referenceUrl?: string;
 }

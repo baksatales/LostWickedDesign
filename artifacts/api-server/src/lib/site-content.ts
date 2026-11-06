@@ -23,9 +23,9 @@ export const defaultSite = siteDocumentSchema.parse({
     copyright: "Baksa Tales · Dil Se Duniya Tak",
   },
   theme: {
-    background: "#F6F3DF", surface: "#FFF8EC", primary: "#611811", secondary: "#3E0F0B",
+    background: "#F6F3DF", surface: "#FFF8EC", primary: "#611811", secondary: "#34514B",
     accent: "#EBA937", ink: "#2B1712", muted: "#5C463C", headingFont: "garamond",
-    bodyFont: "inter", radius: 4, spacing: "generous", motion: true, ornament: true,
+    bodyFont: "garamond", radius: 18, spacing: "compact", motion: true, ornament: true,
   },
   navigation: [
     link("The BT Edit", "/shop"), link("Our makers", "/makers"),
