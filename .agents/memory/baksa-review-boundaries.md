@@ -25,3 +25,9 @@ Luxury must remain story-led and fun, not merely restrained typography and conve
 **Why:** The user described the first implementation as looking like any other site and said it lacked storytelling and a fun vibe.
 
 **How to apply:** Discuss narrative, imagery, discovery and playful interactions before another visual rewrite. Keep functional, responsive and user-friendly shopping alongside the editorial experience.
+
+Use the quiz as the single guided-discovery route; omit the separate “Start with a feeling” section. Storytelling should feel royal, fun, Indian and ready for a global audience.
+
+**Why:** The user explicitly requested fewer discovery choices and named these qualities for the storytelling design.
+
+**How to apply:** Consolidate guided-discovery calls to action around the same quiz. Preserve straightforward shopping and editorial reading without adding competing mood finders or discovery tools. Discuss the design before implementing it.
