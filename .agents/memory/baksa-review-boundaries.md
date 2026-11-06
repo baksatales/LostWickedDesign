@@ -55,3 +55,9 @@ Use a new development Supabase project for the initial connection, not an existi
 **Why:** The user explicitly chose “Create a new development project” during connection setup.
 
 **How to apply:** Keep remote schema changes and admin grants explicit. Do not treat providing public connection settings as permission to alter another database or assign an arbitrary account administrative access.
+
+When setup appears successful, independently verify readiness against the connected project. Existing tables do not prove that reviewed security rules were applied.
+
+**Why:** Supabase onboarding reached a state with accessible Baksa tables but a missing security-readiness function despite the reported SQL success.
+
+**How to apply:** Use a guarded existing-schema update in that situation, not the empty-project initializer. Never create only a success marker to bypass the missing security changes; preserve saved content and analytics identities.

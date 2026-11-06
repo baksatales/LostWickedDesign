@@ -39,6 +39,36 @@ defaults; financial/tax rates still need approval before launch.
 Do not rerun this initialization script after a successful setup. Use reviewed
 additive migrations for later changes.
 
+## Existing tables, but security function is missing
+
+Do not rerun the empty-project setup, delete tables, or create the readiness
+function on its own. A marker without the security changes would be misleading.
+
+Generate the reviewed existing-schema update instead:
+
+```sh
+node scripts/src/prepare-supabase-repair.mjs
+```
+
+The output is `generated-artifacts/supabase/baksa-development-update.sql`.
+Run its entire contents manually in the same development project's SQL Editor.
+It restores recognized Baksa access policies, triggers and functions and applies
+the reviewed hardening together in one transaction. Unexpected custom policies
+or an incompatible base schema abort the update instead of silently changing it.
+It never drops tables or catalogue/order rows, replaces financial settings,
+assigns admin rights, or activates payments.
+
+Existing editorial revisions and analytics identities remain unchanged when the
+analytics registry already exists. If absent, the reviewed one-time identity
+backfill adds technical keys without changing editorial text or publishing.
+The local repair tests cover preserved data/settings, an already-configured
+editorial registry, repeat execution, custom-policy refusal and rollback on
+incompatible schemas. They are not proof of a successful remote update.
+
+After success, verify the same three final readiness results listed above, then
+check the app's runtime status. Stop and review any SQL error rather than
+weakening guards to force the update through.
+
 ## Authentication and owner access
 
 After the schema is ready, enable verified email sign-in in Supabase Auth and
