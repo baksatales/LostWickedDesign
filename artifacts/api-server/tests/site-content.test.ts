@@ -2,6 +2,29 @@ import { describe, expect, it } from "vitest";
 import { defaultSite, validateSiteDocument, contrast, isSafeImage, isSafeLink } from "../src/lib/site-content";
 
 describe("editable editorial safety", () => {
+  it("validates editable homepage image, destination and product-pick fields", () => {
+    const draft = structuredClone(defaultSite);
+    draft.labels["h5.image.trunk"] = "/images/baksa/homev5-trunk.svg";
+    draft.labels["h5.image.maker"] = "/approved/images/t-message.webp";
+    draft.labels["h5.link.edit"] = "/shop?feel=heart";
+    draft.labels["h5.picks.heart"] = "t-message,t-marigold,sv-divya";
+    expect(validateSiteDocument(draft).labels).toEqual(draft.labels);
+    draft.labels["h5.image.trunk"] = "data:image/svg+xml,<svg/>";
+    expect(() => validateSiteDocument(draft)).toThrow(/Homepage images/);
+  });
+  it("does not let homepage labels bypass safe-link and product-ID checks", () => {
+    for (const [key, value] of [
+      ["h5.link.listen", "javascript:alert(1)"],
+      ["h5.image.maker", "https://name:password@example.com/photo.jpg"],
+      ["h5.picks.popular", "t-message,<script>"],
+      ["h5.picks.popular", "a,b,c,d,e"],
+    ]) {
+      const draft = structuredClone(defaultSite);
+      draft.labels[key!] = value!;
+      expect(() => validateSiteDocument(draft)).toThrow();
+    }
+    expect(isSafeImage("/images/baksa/unreviewed.svg")).toBe(false);
+  });
   it("accepts the supplied default document and readable palette", () => {
     expect(validateSiteDocument(structuredClone(defaultSite)).brand.name).toBe("Baksa Tales");
     expect(contrast(defaultSite.theme.ink, defaultSite.theme.background)).toBeGreaterThan(4.5);

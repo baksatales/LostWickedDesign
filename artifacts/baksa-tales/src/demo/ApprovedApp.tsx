@@ -3,12 +3,16 @@ import { useLocation, useSearch } from 'wouter';
 import { type Ctx } from './dom';
 import { type TemplateName, prepareTemplate, rawTemplate } from './templates';
 import { hydrateChrome } from './chrome';
-import { bagLines, bagTotals, formatINR, getState, imgUrl, isBagOpen, resetDemo, setBagOpen, setBagQty, subscribe, subscribeBag, update } from './store';
+import { bagLines, bagTotals, formatINR, getState, imgUrl, isBagOpen, setBagOpen, setBagQty, subscribe, subscribeBag, update } from './store';
 import { hydrateAcademy, hydrateCorporate, hydrateFinder, hydrateMain, hydrateMakerStory, hydrateProduct, hydrateResults, hydrateShop } from './pages/storefront';
 import { hydrateCheckout } from './pages/checkout';
 import { hydrateMakerAddProduct, hydrateMakerEarnings, hydrateMakerGrowth, hydrateMakerHome, hydrateMakerOpportunities, hydrateMakerOrders, hydrateMakerProducts } from './pages/maker';
 import { hydrateAdminAcademy, hydrateAdminEnquiries, hydrateAdminOrders, hydrateAdminOverview, hydrateAdminReviews } from './pages/admin';
 import InformationDialog, { openDemoInformation } from './InformationDialog';
+import HomepageRoute from '../home-v5/HomepageRoute';
+import HomeV5 from '../home-v5/HomeV5';
+import StudioRoute from '../home-studio/StudioRoute';
+import SampleNote from './SampleNote';
 
 type Kind = 'store' | 'maker' | 'admin' | 'none';
 interface RouteDef { tpl: TemplateName; kind: Kind; hydrate?: (c: Ctx) => void; params?: Record<string, string> }
@@ -186,24 +190,18 @@ function BagDrawer() {
   );
 }
 
-function SampleNote() {
-  return (
-    <div className="bt-sample" data-testid="sample-note">
-      <span>Sample data. Nothing is sent or charged.</span>
-      <button type="button" data-testid="button-reset-demo" onClick={() => { if (window.confirm('Reset the sample data to how it started?')) { resetDemo(); try { sessionStorage.clear(); } catch { /* ignore */ } window.location.reload(); } }}>Reset demo data</button>
-    </div>
-  );
-}
-
 export default function ApprovedApp() {
   const [location] = useLocation();
   const search = useSearch();
   return (
     <>
-      <TemplatePage key={location} path={location} search={search} />
+      {location === '/' ? <HomepageRoute /> :
+        location === '/admin/site' || location === '/studio-preview'
+          ? <StudioRoute localOnly={location === '/studio-preview'} preview={document => <HomeV5 document={document} />} />
+          : <TemplatePage key={location} path={location} search={search} />}
       <BagDrawer />
       <InformationDialog />
-      <SampleNote />
+      {!['/', '/studio-preview', '/admin/site'].includes(location) && <SampleNote />}
     </>
   );
 }

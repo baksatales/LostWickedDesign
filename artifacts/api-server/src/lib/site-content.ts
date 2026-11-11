@@ -147,6 +147,8 @@ defaultSite.trunkCards.forEach((card, i) => {
 export function isSafeImage(value: string) {
   if (!value) return true;
   return /^\/images\/baksa\/[a-zA-Z0-9_.-]+\.(webp|png|jpg|jpeg|avif)$/i.test(value)
+    || /^\/images\/baksa\/homev5-(trunk|explorer|heart|showstopper|soother|thoughtful)\.svg$/.test(value)
+    || /^\/approved\/images\/[a-zA-Z0-9_.-]+\.(webp|png|jpg|jpeg|avif)$/i.test(value)
     || /^https:\/\/[a-zA-Z0-9.-]+(?::443)?\/[^\s<>\\]*$/i.test(value);
 }
 export function isSafeLink(value: string) {
@@ -190,6 +192,11 @@ export function validateSiteDocument(value: unknown): EditorialDocument {
   }
   walk(d);
   if (Object.keys(d.labels).length > 200) throw new HttpError(400, "Keep the label dictionary to 200 entries.");
+  for (const [key, value] of Object.entries(d.labels)) {
+    if (key.startsWith("h5.image.") && !isSafeImage(value)) throw new HttpError(400, "Homepage images must use supplied assets or a full https image address.");
+    if (key.startsWith("h5.link.") && value && !isSafeLink(value)) throw new HttpError(400, "Homepage destinations must be local pages or full https addresses.");
+    if (key.startsWith("h5.picks.") && value && !/^[a-zA-Z0-9_-]+(?:\s*,\s*[a-zA-Z0-9_-]+){0,3}$/.test(value)) throw new HttpError(400, "Choose up to four catalogue product IDs, separated by commas.");
+  }
   const t = d.theme;
   for (const background of [t.background, t.surface]) {
     for (const foreground of [t.ink, t.muted, t.primary]) {

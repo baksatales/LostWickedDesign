@@ -5,6 +5,14 @@ and warm editorial luxury.
 
 ## Approved frontend demonstration
 
+- `/` now follows the owner’s “Homepage v5 (compartment baksa)” brief, superseding
+  the ZIP’s `Main.html` only. Its five Gifting Moods™ sit alongside the full quiz;
+  this explicitly replaces the earlier rule against homepage mood discovery.
+  Keep “Thoughtful One” as the registered mood name. All other approved pages
+  remain unchanged apart from small navigation fixes.
+- The concept PNG and v5 canvas component were not present when implementation
+  began. Keep temporary trunk/object artwork separately replaceable, retain real
+  editable text, and do not claim exact comparison with an unavailable reference.
 - The active frontend reproduces `reference/approved/baksa-tales-replit/designs/`,
   extracted from the user's approved ZIP. Do not redesign it or use the older
   storefront as the visual reference.

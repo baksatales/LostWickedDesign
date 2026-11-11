@@ -14,11 +14,17 @@ Preserve the supplied trunk logo and real product photographs. The proposed dire
 
 **How to apply:** Use the uploaded source materials as references, not proof of verified product claims or production readiness. Do not change the existing site, DNS or live services without explicit authorisation.
 
-The approved ZIP's `designs/` screens are the final visual source of truth for the storefront, maker workspace and admin area, including their supplied images and wording. Reproduce them, do not redesign them.
+The approved ZIP's `designs/` screens remain the visual source of truth except for `/`, which the owner replaced with “Homepage v5 (compartment baksa)”. Reproduce the approved references rather than redesigning them.
 
 **Why:** The user explicitly instructed: “Preserve the layouts, colours, typography, spacing, images, content and navigation. Do not redesign it.” They clarified that the existing storefront is not the reference where it differs from the ZIP.
 
 **How to apply:** Compare implementation against the ZIP's final HTML screens at desktop and 390px. Earlier aesthetic preferences in this document do not override the approved screens. Keep placeholders unchanged and label prototype counts and figures as sample data.
+
+Homepage v5 includes five mood compartments alongside the full quiz, and all buyer-facing homepage text, images and product picks must be editable through Site Studio. Use exactly “Thoughtful One”, not “Thoughtful Planner”.
+
+**Why:** The owner explicitly approved the compartment-baksa homepage and superseded the earlier instruction to omit “Start with a feeling” for this homepage element.
+
+**How to apply:** Limit this replacement to `/` and small link-wiring fixes. Preserve other pages and the current header/cart/wishlist/quiz. Keep the trunk and five objects independently replaceable; use labelled temporary SVG artwork until the supplied concept illustration arrives. Do not publish or touch the live domain without permission.
 
 The owner reiterated: “make sure that the entire website design is as per Claude's design” and “not Replit.” Do not substitute template components, fonts, colours, icons or sections, or “improve” the approved design.
 
@@ -56,11 +62,11 @@ Premium presentation must use screen space purposefully, without oversized headi
 
 **How to apply:** Prefer balanced desktop compositions and shorter vertical transitions so the trunk, stories, products and forms appear sooner. Keep mobile content readable and controls comfortably usable; do not equate luxury with excessive whitespace.
 
-Use the quiz as the single guided-discovery route; omit the separate “Start with a feeling” section. Storytelling should feel royal, fun, Indian and ready for a global audience.
+Use the quiz as the full guided-discovery route; the approved Homepage v5 compartment baksa is now an explicit exception permitting mood-based discovery alongside it. Storytelling should feel royal, fun, Indian and ready for a global audience.
 
 **Why:** The user explicitly requested fewer discovery choices and named these qualities for the storytelling design.
 
-**How to apply:** Consolidate guided-discovery calls to action around the same quiz. Preserve straightforward shopping and editorial reading without adding competing mood finders or discovery tools.
+**How to apply:** Preserve the full quiz and the approved five-compartment homepage element, without adding other competing mood finders or discovery tools.
 
 The user wants visual and editorial elements editable so they can change the look and feel and keep refreshing the website; the supplied Claude-generated buyer, maker and admin designs are inspiration.
 

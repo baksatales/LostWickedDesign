@@ -88,6 +88,9 @@ export function hydrateShop(ctx: Ctx) {
   emptyBox.setAttribute('style', 'grid-column: 1 / -1; background: #FFFDF4; border-radius: 28px; padding: 36px; text-align: center; font-size: 20px; color: #5C463C');
 
   const f: ShopFilters = { feel: 'all', price: 'any', maker: 'all', fast: false, sort: 'editor', q: ctx.search.get('q') ?? '', wishlistOnly: ctx.search.get('wishlist') === '1' };
+  const requestedFeel = ctx.search.get('feel');
+  const matchingFeel = SHOP_FEELS.find(option => option.feel === requestedFeel);
+  if (matchingFeel) f.feel = matchingFeel.feel;
   let showAll = false;
 
   const buildCard = (p: DemoProduct) => {
