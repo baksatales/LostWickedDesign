@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Baksa Tales — frontend delivery report</title>
+<style>
+body{margin:0;background:#f6f3df;color:#2b1712;font:18px/1.5 Georgia,serif}
+main{max-width:1060px;margin:auto;padding:32px 20px 64px}
+h1,h2{font-weight:500;line-height:1.15}h1{font-size:40px;color:#611811}h2{font-size:28px;margin-top:36px}
+p,li{max-width:88ch}a{color:#611811}code{font-size:13px}
+.note{background:#fbE3b2;border-radius:18px;padding:18px}.scroll{overflow:auto;background:#fffdf4;border-radius:18px}
+table{border-collapse:collapse;width:100%;min-width:680px;font-size:16px}td,th{padding:11px 14px;border-bottom:1px solid #dccab0;text-align:left;vertical-align:top}th{color:#611811}
+.pass{color:#34514b;font-weight:bold}small{color:#5c463c}
+@media print{body{background:white}main{padding:0}h1{font-size:30px}table{font-size:12px;min-width:0}tr{break-inside:avoid}}
+</style>
+</head>
+<body><main>
+<h1>Baksa Tales: frontend delivery report</h1>
+<p>Implemented the approved ZIP’s HTML screens in the existing website, using their original markup, inline styling, fonts, logos, product photographs and wording. Added working browser-only sample interactions rather than connecting live services.</p>
+<p class="note"><strong>Demo only.</strong> A visible “Sample data” notice and Reset demo data control are available throughout. Nothing is charged or submitted to a live business service. Browser storage is not a production database.</p>
+<h2>Page-by-page comparison</h2>
+<p>Compared all 25 approved screens side by side at <strong>1440px desktop</strong> and <strong>390px phone</strong>. “Preserved” means the approved visual structure and styles were retained; it is not a claim of automated pixel-perfect equality. On phones, menus collapse, grids stack and tables scroll inside their containers. These are required responsive adjustments, not alternative designs.</p>
+<div class="scroll"><table>
+<thead><tr><th>Approved screen</th><th>Route</th><th>Match status / necessary differences</th></tr></thead><tbody>
+<tr><td>Main — Home</td><td><code>/</code></td><td>Preserved; menu and bag/wishlist counts activated.</td></tr>
+<tr><td>Shop — The BT Edit</td><td><code>/shop</code></td><td>Preserved; displayed cards/counts respond to filters and sorting.</td></tr>
+<tr><td>Product — Blue Lotus Pond</td><td><code>/product/blue-lotus-pond</code></td><td>Preserved; photos, quantities, total and wishlist respond to actions.</td></tr>
+<tr><td>Finder</td><td><code>/finder</code></td><td>Preserved; four questions replace the first-question snapshot as the user advances.</td></tr>
+<tr><td>Results</td><td><code>/results</code></td><td>Layout preserved; domain-ranked results can differ from the four static example picks and wording.</td></tr>
+<tr><td>Checkout</td><td><code>/checkout</code></td><td>Address layout preserved. Starts at sample Sign in, then Address, Payment and Thank you; the source snapshot shows Address.</td></tr>
+<tr><td>Maker — Tathaastu</td><td><code>/makers/tathaastu</code></td><td>Preserved.</td></tr>
+<tr><td>Corporate gifting</td><td><code>/corporate</code></td><td>Preserved; form validation and sample confirmation added.</td></tr>
+<tr><td>Academy</td><td><code>/academy</code></td><td>Preserved; recorded/live tabs filter the classes.</td></tr>
+<tr><td>MakerHome</td><td><code>/maker</code></td><td>Preserved; attention items and totals reflect sample state.</td></tr>
+<tr><td>MakerOrders</td><td><code>/maker/orders</code></td><td>Preserved cards; All includes delivered sample orders in addition to the three active source examples.</td></tr>
+<tr><td>MakerProducts</td><td><code>/maker/products</code></td><td>Preserved; stock edits persist in this browser.</td></tr>
+<tr><td>MakerAddProduct</td><td><code>/maker/products/new</code></td><td>Preserved price-step layout; opens on step 5 as supplied. Other form steps support the demo submission.</td></tr>
+<tr><td>MakerEarnings</td><td><code>/maker/earnings</code></td><td>Preserved; splits and payout dates recalculate from the supplied business rules.</td></tr>
+<tr><td>MakerGrowth</td><td><code>/maker/growth</code></td><td>Preserved; domain maths yields −₹8,245 at 20 sales rather than the static −₹8,240 example.</td></tr>
+<tr><td>MakerOpportunities</td><td><code>/maker/opportunities</code></td><td>Preserved; responses and course proposals are sample interactions.</td></tr>
+<tr><td>AdminOverview</td><td><code>/admin</code></td><td>Preserved; sample-state counts update after actions.</td></tr>
+<tr><td>AdminReviews</td><td><code>/admin/reviews</code></td><td>Preserved two-column desktop layout and photo placeholder; Approve requires all five checks.</td></tr>
+<tr><td>AdminOrders</td><td><code>/admin/orders</code></td><td>Preserved; table uses supplied prototype sample orders, with calculated payout rows and persistent Paid states.</td></tr>
+<tr><td>AdminEnquiries</td><td><code>/admin/enquiries</code></td><td>Preserved; matching, stages and quote actions update sample state.</td></tr>
+<tr><td>AdminAcademy</td><td><code>/admin/academy</code></td><td>Preserved; live course reporting/imports and maker administration still need services.</td></tr>
+<tr><td>Header</td><td><code>/design/header</code></td><td>Shared source retained; mobile menu and live demo counts added.</td></tr>
+<tr><td>Footer</td><td><code>/design/footer</code></td><td>Shared source retained; mobile touch areas enlarged. Unprovided policy/contact destinations disclose their unavailable status.</td></tr>
+<tr><td>MakerNav</td><td><code>/design/maker-nav</code></td><td>Shared source retained; collapses to a menu on phones.</td></tr>
+<tr><td>AdminNav</td><td><code>/design/admin-nav</code></td><td>Shared source retained; collapses to a menu on phones.</td></tr>
+</tbody></table></div>
+<p><strong>Additional navigation:</strong> <code>/maker/courses</code> reuses the approved MakerOpportunities screen, which contains “My courses”; no separate course-dashboard screen was supplied. <code>/design</code> is the supplied screen index. <code>/product</code> is an alias for Blue Lotus Pond.</p>
+<h2>Verification</h2>
+<ul>
+<li class="pass">TypeScript check passed.</li>
+<li class="pass">68 frontend regression checks passed: 62 Vitest tests and 6 existing analytics tests. This includes 36 new approved-demo/domain/admin tests.</li>
+<li class="pass">18 real Chromium browser checks passed: header/mobile/sidebar navigation; product photos, quantities and wishlist; bag persistence; four-question finder, Back and Skip; checkout validation and completion; shop filters/sort; review checks; stock edits; Academy tabs; tracking and delivery; corporate brief; persistent paid payouts; maker matching and quote; Growth Studio; footer disclosures; reset; browser error checks.</li>
+<li class="pass">50 screenshot views checked: 25 approved screens × two widths, with full-page originals, full-page app captures and side-by-side previews. No document-level horizontal overflow, broken product images or browser/hydration errors in the captured views.</li>
+</ul>
+<p>Comparison fixes included the clipped mobile bag button, missing home-header behavior, review initialization failure, lost review-column layout, duplicate checkout summary rows and lost flex/grid styles when showing filtered content.</p>
+<p><small>Reproduce from the project root:</small><br>
+<code>pnpm --filter @workspace/baksa-tales run typecheck</code><br>
+<code>pnpm --filter @workspace/baksa-tales test</code><br>
+<code>pnpm --filter @workspace/baksa-tales test:browser</code><br>
+<code>pnpm --filter @workspace/baksa-tales test:visual</code></p>
+<p><small>Screenshot evidence is saved in <code>generated-artifacts/approved-comparison/index.html</code>; generated images are excluded from Git and deployment. The screenshots are side-by-side comparisons, not pixel-difference tests.</small></p>
+<h2>Still requires real services before launch</h2>
+<ul>
+<li><strong>Supabase:</strong> production data, accounts, sign-in, roles, listing permissions, orders, inventory, payouts, enquiries and reliable cross-device persistence. Existing backend files remain, but this demo does not call them.</li>
+<li><strong>Authentication and SMS:</strong> phone verification, actual SMS codes, sessions, abuse protection and account recovery. The demo accepts any 10 digits and any four-digit code.</li>
+<li><strong>Payment gateway:</strong> checkout, webhooks, refunds, tax/fee confirmation, reconciliation and actual bank payouts. “Pay” and “Mark as paid” are simulations.</li>
+<li><strong>PIN code lookup:</strong> real city/state and delivery serviceability. The supplied rough PIN helper is prototype-only.</li>
+<li><strong>Couriers:</strong> booking, labels, tracking events, delivery confirmation and return handling. Courier/tracking input is required before the sample Packed order becomes On the way.</li>
+<li><strong>Zoho CRM:</strong> corporate brief sync, assignments, maker outreach and quote delivery.</li>
+<li><strong>WhatsApp and contact services:</strong> opt-in, message delivery, approved contact/social destinations and support. Share opens WhatsApp’s composer; it does not send automatically.</li>
+<li><strong>TagMango:</strong> real live bookings, seats, recorded-course purchases/access and reporting. Demo bookings, proposals and CSV checks are not live integrations.</li>
+<li><strong>Analytics consent:</strong> consent controls and production measurement; the demo does not wire the old app’s analytics to these new screens.</li>
+<li><strong>Confirmed business content:</strong> shipping/returns/support policies and any existing placeholders, unverified prices or delivery statements must be confirmed before launch. No new commercial promises were added.</li>
+</ul>
+<p>No production database, DNS, live website or payment account was changed. The site has not been published.</p>
+</main></body></html>

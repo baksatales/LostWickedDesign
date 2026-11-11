@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Arvo:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Noto+Serif+Devanagari:wght@500;600&display=swap');
+
+/* Approved designs: the page markup carries its own inline styles. This file only adds what a live app needs. */
+html, body { margin: 0; }
+img { max-width: 100%; }
+button, input, select, textarea { min-height: 44px; }
+button { min-width: 44px; }
+input[type="checkbox"], input[type="radio"] { min-height: 0; }
+[data-bt-scroll] { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+[data-bt-scroll] table { min-width: 640px; }
+.bt-information { box-sizing: border-box; width: min(520px, calc(100% - 36px)); border: 1.5px solid #DCCAB0; border-radius: 28px; padding: 28px; background: #FFFDF4; color: #2B1712; font-family: 'EB Garamond', Georgia, serif; font-size: 20px; }
+.bt-information::backdrop { background: rgba(43, 23, 18, .4); }
+.bt-information h2 { margin: 0; font-size: 34px; font-weight: 500; }
+.bt-information-note { font: 12px Arvo, Georgia, serif; color: #5C463C; }
+
+/* Sample note */
+.bt-sample { position: fixed; left: 12px; bottom: 12px; z-index: 60; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  background: #2B1712; color: #FFF8EC; border-radius: 999px; padding: 6px 6px 6px 16px; font-family: Arvo, Georgia, serif; font-size: 11px; max-width: calc(100vw - 24px); }
+.bt-sample button { min-height: 44px; height: 44px; border-radius: 999px; border: 1.5px solid #EBA937; background: transparent; color: #EBA937; padding: 0 12px; font-family: inherit; font-size: 11px; cursor: pointer; }
+
+/* Bag drawer */
+.bt-drawer-scrim { position: fixed; inset: 0; z-index: 70; background: rgba(43, 23, 18, .4); display: flex; justify-content: flex-end; animation: bt-fade .18s ease; }
+.bt-drawer { width: min(440px, 100vw); height: 100dvh; background: #FFFDF4; color: #2B1712; font-family: 'EB Garamond', Georgia, serif; display: flex; flex-direction: column; animation: bt-slide .24s ease; box-sizing: border-box; }
+.bt-drawer-head { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1.5px solid #ECE6CC; }
+.bt-drawer-head h2 { margin: 0; font-size: 34px; font-weight: 500; }
+.bt-drawer-head em { color: #C23A36; }
+.bt-icon-btn { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid #DCCAB0; background: transparent; font-size: 24px; color: #2B1712; cursor: pointer; }
+.bt-drawer-list { list-style: none; margin: 0; padding: 8px 24px; overflow-y: auto; flex: 1; }
+.bt-drawer-list li { display: grid; grid-template-columns: 64px 1fr auto; gap: 12px; padding: 14px 0; border-bottom: 1.5px solid #ECE6CC; align-items: start; }
+.bt-drawer-list img { width: 64px; height: 64px; border-radius: 16px; object-fit: cover; }
+.bt-name { margin: 0; font-size: 19px; line-height: 1.15; }
+.bt-maker { margin: 2px 0 0; font-size: 15px; color: #5C463C; }
+.bt-qty { margin-top: 8px; display: inline-flex; align-items: center; border: 1.5px solid #DCCAB0; border-radius: 999px; }
+.bt-qty button { width: 44px; height: 44px; border: 0; background: transparent; font-size: 20px; color: #2B1712; cursor: pointer; }
+.bt-qty span { min-width: 24px; text-align: center; font-family: Arvo, Georgia, serif; font-size: 14px; }
+.bt-line-end { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; font-family: Arvo, Georgia, serif; font-size: 14px; }
+.bt-link { border: 0; background: none; color: #611811; text-decoration: underline; font-family: Arvo, Georgia, serif; font-size: 12px; cursor: pointer; }
+.bt-drawer-foot { padding: 18px 24px 24px; border-top: 1.5px solid #ECE6CC; display: flex; flex-direction: column; gap: 8px; font-size: 18px; }
+.bt-drawer-foot > div { display: flex; justify-content: space-between; }
+.bt-total { font-family: Arvo, Georgia, serif; font-weight: 700; font-size: 17px; border-top: 1.5px solid #ECE6CC; padding-top: 10px; }
+.bt-btn { margin-top: 10px; height: 54px; border-radius: 999px; border: 0; background: #611811; color: #FFF8EC; font-family: Arvo, Georgia, serif; font-size: 14px; cursor: pointer; }
+.bt-btn-outline { height: 50px; padding: 0 22px; border-radius: 999px; border: 1.5px solid #611811; background: transparent; color: #611811; font-family: Arvo, Georgia, serif; font-size: 13px; cursor: pointer; }
+.bt-drawer-empty { padding: 32px 24px; font-size: 20px; }
+@keyframes bt-fade { from { opacity: 0; } }
+@keyframes bt-slide { from { transform: translateX(40px); opacity: 0; } }
+
+/* Mobile */
+@media (max-width: 767px) {
+  [data-bt-page] [style*="grid-column: span 2"] { grid-column: auto !important; }
+  [data-bt-header] [data-bt-menu-btn] { display: inline-flex !important; }
+  [data-bt-header] > div:last-child { width: 100%; min-width: 0; }
+  [data-bt-header] input[type="search"] { flex: 1 1 90px; width: 90px !important; min-width: 0; }
+  [data-bt-header] > div:last-child > a { flex-shrink: 0; white-space: nowrap; }
+  [data-bt-header] nav[aria-label="Main"] { display: none !important; }
+  [data-bt-header][data-menu-open] nav[aria-label="Main"] { display: flex !important; flex-direction: column; align-items: flex-start; width: 100%; order: 10; gap: 4px; }
+  [data-bt-header][data-menu-open] nav[aria-label="Main"] a { min-height: 44px; display: flex; align-items: center; }
+  [data-bt-sidebar] { position: static !important; width: 100% !important; height: auto !important; flex: 1 1 100% !important; }
+  [data-bt-sidebar] [data-bt-menu-btn] { display: inline-flex !important; }
+  [data-bt-sidebar]:not([data-menu-open]) nav { display: none !important; }
+  [data-bt-sidebar] nav a { min-height: 44px; }
+  .bt-sample { font-size: 10px; }
+  footer a { min-height: 44px; display: inline-flex !important; align-items: center; }
+  label:has(input[type="checkbox"]), label:has(input[type="radio"]) { min-height: 44px; }
+  .bt-line-end .bt-link { min-height: 44px; }
+}

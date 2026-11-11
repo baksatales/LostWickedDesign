@@ -3,6 +3,21 @@
 An Indian handmade marketplace focused on maker stories, meaningful gifting,
 and warm editorial luxury.
 
+## Approved frontend demonstration
+
+- The active frontend reproduces `reference/approved/baksa-tales-replit/designs/`,
+  extracted from the user's approved ZIP. Do not redesign it or use the older
+  storefront as the visual reference.
+- The active frontend intentionally uses labelled browser-only sample state,
+  including simulated sign-in and payment. It does not call the retained API or
+  Supabase implementation. Never mistake demo actions for live transactions.
+- Report: `/approved-report.html`. Source templates and demo interaction code:
+  `artifacts/baksa-tales/src/demo/`. The previous app remains in its original files.
+- `pnpm --filter @workspace/baksa-tales test` — all frontend regression tests.
+- `pnpm --filter @workspace/baksa-tales test:browser` — Chromium interaction tests.
+- `pnpm --filter @workspace/baksa-tales test:visual` — approved source/app captures
+  at 1440px and 390px; generated evidence is excluded from Git and publishing.
+
 ## Run & Operate
 
 - Managed workflow `artifacts/api-server: API Server` — shared API

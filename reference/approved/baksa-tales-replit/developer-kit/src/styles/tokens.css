@@ -1,0 +1,38 @@
+/* Baksa Tales design tokens. Import once in the app's global CSS.
+   Fonts: add this to index.html <head>:
+   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Arvo:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Serif+Devanagari:wght@500;600&display=swap" rel="stylesheet"> */
+:root {
+  --bt-ground: #F6F3DF;      /* page background: matches the logo's cream */
+  --bt-paper: #FFFDF4;       /* cards, panels, inputs */
+  --bt-sunk: #ECE6CC;        /* recessed areas, chips */
+  --bt-ink: #2B1712;         /* body text */
+  --bt-soft: #5C463C;        /* secondary text */
+  --bt-line: #DCCAB0;        /* borders */
+  --bt-accent: #611811;      /* Crimson: primary buttons, links */
+  --bt-accent-ink: #611811;
+  --bt-on-accent: #FFF8EC;
+  --bt-maroon: #68142F;      /* Deep Maroon: event bands */
+  --bt-teal: #34514B;        /* Brand Teal: highlights, success, the gift finder band */
+  --bt-teal-ink: #2C4640;
+  --bt-teal-soft: #DCE6E1;
+  --bt-gold: #A9781F;        /* Amber/Gold accents: decorative only, not body text */
+  --bt-gold-ink: #7A5517;
+  --bt-coral: #E14B49;       /* the logo's red: logo and story rings only */
+  --bt-ok: #2F5E46; --bt-warn: #7E5200; --bt-bad: #9B2318; --bt-info: #2E3F5C;
+  --bt-serif: "EB Garamond", "Iowan Old Style", Georgia, serif;          /* headings and reading text */
+  --bt-slab: "Arvo", "Rockwell", "Roboto Slab", Georgia, serif;          /* buttons, labels, numbers, navigation */
+  --bt-deva: "Noto Serif Devanagari", "Kohinoor Devanagari", "Mangal", serif; /* दिल से दुनिया तक */
+  --bt-radius: 4px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bt-ground: #1B1311; --bt-paper: #251A17; --bt-sunk: #2F2220; --bt-ink: #F2E7D5; --bt-soft: #CDBBA8; --bt-line: #4A3630;
+    --bt-accent: #A33A2C; --bt-accent-ink: #F0A493; --bt-on-accent: #FFF6EA; --bt-maroon: #4A1A26;
+    --bt-teal: #2B4641; --bt-teal-ink: #93C4B7; --bt-teal-soft: #24413B; --bt-gold: #D3A548; --bt-gold-ink: #E2BC6A;
+    --bt-ok: #7DC7A0; --bt-warn: #E8B85A; --bt-bad: #F08A7E; --bt-info: #9FB6E0; color-scheme: dark;
+  }
+}
+body { background: var(--bt-ground); color: var(--bt-ink); font-family: var(--bt-serif); font-size: 18px; line-height: 1.55; }
+:focus-visible { outline: 3px solid var(--bt-gold); outline-offset: 2px; }

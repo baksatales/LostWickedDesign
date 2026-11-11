@@ -14,3 +14,31 @@ mtime_ms = 1793951241991
 storage_uri = "gcs://replit-rams-assets-pike/rams/assets/repl:d8fdb29b-59c4-4b47-994a-8baf60aec6cd/dadf5168-c1c1-466b-8761-cfc7124db3d1/8d62d700-78e7-4ba1-b9eb-f5e482d853f3"
 storage_version_token = "1793951323017478"
 content_type = "application/octet-stream"
+
+[[outputs]]
+id = "nQ3KTZbnZf32f4BHjl1VR"
+uri = "file://artifacts/baksa-tales/public/approved-report.html"
+type = "html"
+title = "Baksa Tales frontend delivery report"
+description = "Page-by-page match status, passing tests, demo differences and remaining live integrations."
+logical_id = "5ba6eb8b-7352-4682-a493-1b88585dd339"
+content_hash = "sha256:00006d8a2c5f8ddabd388baceb85b37fc41a6321f999fcd934c15fb5bee4a176"
+size = 9992
+mtime_ms = 1794410462425
+storage_uri = "gcs://replit-rams-assets-pike/rams/assets/repl:50283157-642e-4218-9596-8438d958e3b1/5ba6eb8b-7352-4682-a493-1b88585dd339/8a1eba10-fe00-4e90-8b33-17b9aa766c02"
+storage_version_token = "1794410660799449"
+content_type = "text/html"
+
+[[outputs]]
+id = "eM52EQRdcWa4Js7coMt3H"
+uri = "file://generated-artifacts/baksa-tales-design-comparison.html"
+type = "html"
+title = "Approved design screenshot comparisons"
+description = "All 25 screens compared side by side at 1440px desktop and 390px phone. Source is on the left; frontend is on the right."
+logical_id = "8a65d07e-f3f1-42ce-a8c2-0e2afac34611"
+content_hash = "sha256:14448fd1b0849fdbc2f281081666835fd4d3bd5c27d1ba37a0ad9696d2419d36"
+size = 9289574
+mtime_ms = 1794410717109
+storage_uri = "gcs://replit-rams-assets-pike/rams/assets/repl:50283157-642e-4218-9596-8438d958e3b1/8a65d07e-f3f1-42ce-a8c2-0e2afac34611/796c3b1e-947d-4323-809c-52454f55e18e"
+storage_version_token = "1794410739896935"
+content_type = "text/html"

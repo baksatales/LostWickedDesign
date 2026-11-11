@@ -14,11 +14,23 @@ Preserve the supplied trunk logo and real product photographs. The proposed dire
 
 **How to apply:** Use the uploaded source materials as references, not proof of verified product claims or production readiness. Do not change the existing site, DNS or live services without explicit authorisation.
 
-The newer Claude package's `designs/` screens are the visual reference for the storefront, maker workspace and admin area, except the existing Baksa icon must remain unchanged.
+The approved ZIP's `designs/` screens are the final visual source of truth for the storefront, maker workspace and admin area, including their supplied images and wording. Reproduce them, do not redesign them.
 
-**Why:** The user explicitly asked to implement most of the supplied frontend and backend designs and said “PLEASE keep the Baksa icon as is and rest can be as per cluades instruction and designs”.
+**Why:** The user explicitly instructed: “Preserve the layouts, colours, typography, spacing, images, content and navigation. Do not redesign it.” They clarified that the existing storefront is not the reference where it differs from the ZIP.
 
-**How to apply:** Preserve the existing icon artwork and opening trunk. Adapt the supplied visual language to functional components, retaining editable content and the previously requested useful screen density. Treat prototype counts and commercial promises as samples, not live facts.
+**How to apply:** Compare implementation against the ZIP's final HTML screens at desktop and 390px. Earlier aesthetic preferences in this document do not override the approved screens. Keep placeholders unchanged and label prototype counts and figures as sample data.
+
+The owner reiterated: “make sure that the entire website design is as per Claude's design” and “not Replit.” Do not substitute template components, fonts, colours, icons or sections, or “improve” the approved design.
+
+**Why:** The owner repeated this as a firm instruction after the first frontend delivery.
+
+**How to apply:** Retain each matching HTML file's own markup, including page-specific header, footer and sidebar details. Shared behavior is acceptable; replacing screen-specific visuals with a generic shared version is not.
+
+For the approved frontend demonstration, persist sample interactions in the browser only and provide Reset demo data. Do not require live sign-in, payments or database readiness for those demo flows.
+
+**Why:** The user explicitly requested “First build the frontend” and “Persist sample state in the browser only for the demo.”
+
+**How to apply:** Keep the demonstration clearly labelled and separate from real accounts and transactions. This is an explicit demo exception to the rule against authoritative business data in browser storage, not permission to use browser state for live commerce.
 
 Retain the supplied prototype's opening-and-closing trunk interaction and Today's stories. The user sees both as opportunities to charge brands for featured placements.
 
