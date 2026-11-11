@@ -32,6 +32,12 @@ For the approved frontend demonstration, persist sample interactions in the brow
 
 **How to apply:** Keep the demonstration clearly labelled and separate from real accounts and transactions. This is an explicit demo exception to the rule against authoritative business data in browser storage, not permission to use browser state for live commerce.
 
+For the backend dashboard phase, all money, payout dates, stock, approvals and order-status changes must be decided on the server, never in the browser. Buyers see only their own data, makers only their own shop, and admins everything; makers must never see corporate company names.
+
+**Why:** The owner explicitly required these authority and privacy boundaries for the maker, admin and shopper dashboards.
+
+**How to apply:** Preserve the approved dashboard designs and use the supplied Supabase schema/security/functions and domain rules as the starting point. When live setup is unavailable, use clearly labelled sample data without relaxing server authority. Never apply schema changes to a live or unknown database; require authorisation for the identified development project.
+
 Retain the supplied prototype's opening-and-closing trunk interaction and Today's stories. The user sees both as opportunities to charge brands for featured placements.
 
 **Why:** The user explicitly identified these discovery surfaces as potential monetisation opportunities and requested behavioural/psychological principles to reduce decision fatigue in a luxury environment.
