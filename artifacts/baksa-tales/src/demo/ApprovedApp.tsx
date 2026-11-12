@@ -5,8 +5,7 @@ import { useGetSite, type SiteDocument } from '@workspace/api-client-react';
 import { $$, type Ctx } from './dom';
 import { type TemplateName, prepareTemplate, rawTemplate } from './templates';
 import { hydrateChrome } from './chrome';
-import { bagCount, bagLines, bagTotals, formatINR, getState, imgUrl, isBagOpen, liveProducts, makerById, normalisePhone, setBagOpen, setBagQty, subscribe, subscribeBag, toggleWishlist, update } from './store';
-import HomepageV5 from './HomepageV5';
+import { bagCount, bagLines, bagTotals, formatINR, getState, imgUrl, isBagOpen, normalisePhone, setBagOpen, setBagQty, subscribe, subscribeBag, update } from './store';
 import { hydrateAcademy, hydrateCorporate, hydrateFinder, hydrateMain, hydrateMakerStory, hydrateProduct, hydrateResults, hydrateShop } from './pages/storefront';
 import { hydrateCheckout } from './pages/checkout';
 import { hydrateMakerAddProduct, hydrateMakerEarnings, hydrateMakerGrowth, hydrateMakerHome, hydrateMakerOpportunities, hydrateMakerOrders, hydrateMakerProducts, hydrateMakerSettings } from './pages/maker';
@@ -347,7 +346,12 @@ function TemplatePage({ path, search, siteDocument, siteSettingsActive }: { path
     const root = ref.current;
     if (!root || !route) return;
     const documentForPage = siteSettingsActive ? siteDocument : STARTER_SITE_DOCUMENT;
-    const applyStyle = (source: string) => styleTemplateWithDocument(source, documentForPage);
+    // Unedited approved screens must keep their own palette. The starter site's
+    // theme is not an override: applying it here recolours ivory dashboard
+    // cards and semantic accents even when no editor has changed anything.
+    const applyStyle = (source: string) => siteSettingsActive
+      ? styleTemplateWithDocument(source, documentForPage)
+      : source;
     root.querySelectorAll<HTMLElement>('[style]').forEach(element => {
       const original = element.getAttribute('data-bt-site-original-style') ?? element.getAttribute('style') ?? '';
       if (!element.hasAttribute('data-bt-site-original-style')) element.setAttribute('data-bt-site-original-style', original);
@@ -478,58 +482,6 @@ function BagDrawer() {
     </div>
   );
 }
-const HOMEPAGE_IMAGE_BY_PRODUCT: Record<string, string> = {
-  't-bluelotus': 'a894439b60a2b182f2541d8c4a4fb291',
-  'sv-divya': '000b6de55ad26de40d6a0a285401e191',
-  'mu-box': 'da50df6a56a8e6237a40d5a1ad8a054b',
-  'an-range': '227a4597034c44808ed4c82e2809abbd',
-  't-message': '8a7a809f0f8f3f6776bd68422dba0d91',
-  't-marigold': '214260d74176e52c372a97ef83168430',
-  't-teapot': '6dbc7cf37999d0995b48875cf8a44123',
-  't-lotuspond': 'eee7bce16bd2dd1ab05098be9f6ae27c',
-};
-const HOMEPAGE_PRODUCT_ORDER = ['t-bluelotus', 'mu-box', 'sv-divya', 'an-range', 't-message', 't-marigold', 't-teapot', 't-lotuspond'];
-
-function HomepageV5Page({ navigate, siteDocument, siteSettingsActive }: { navigate: (path: string) => void; siteDocument: SiteDocument; siteSettingsActive: boolean }) {
-  const state = useDemo();
-  const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-  const publishedProducts = liveProducts(state);
-  const products = HOMEPAGE_PRODUCT_ORDER.flatMap(id => {
-    const product = publishedProducts.find(candidate => candidate.id === id);
-    return product ? [{
-      id: product.id,
-      slug: product.slug,
-      name: product.name,
-      maker: makerById(state, product.makerId)?.brand ?? '',
-      priceLabel: formatINR(product.pricePaise),
-      imageUrl: `${base}/homepage-v5/${HOMEPAGE_IMAGE_BY_PRODUCT[product.id]}.webp`,
-    }] : [];
-  });
-
-  const go = (path: string) => {
-    navigate(path);
-    if (!path.startsWith('#')) window.scrollTo({ top: 0 });
-  };
-
-  return (
-    <HomepageV5
-      products={products}
-      bagCount={bagCount(state)}
-      wishlistIds={state.wishlist}
-      onNavigate={go}
-      onOpenBag={() => setBagOpen(true)}
-      onToggleWishlist={id => update(current => toggleWishlist(current, id))}
-      onSearch={query => go(query ? `/shop?q=${encodeURIComponent(query)}` : '/shop')}
-      onSelectMood={feel => go(`/shop?feel=${encodeURIComponent(feel)}`)}
-      onJoinList={() => openDemoInformation('contact', 'Join the Baksa circle')}
-      onOpenBea={() => window.dispatchEvent(new CustomEvent('bt:open-bea'))}
-      onShowInfo={openDemoInformation}
-      siteDocument={siteDocument}
-      siteSettingsActive={siteSettingsActive}
-    />
-  );
-}
-
 export default function ApprovedApp() {
   const [location] = useLocation();
   if (location === '/admin/site' || location === '/maker/sahayak') return <BaksaApp />;
@@ -628,13 +580,13 @@ function ApprovedRoutes() {
   return (
     <div className="bt-site-theme" style={publicTheme} {...siteThemeAttributes(siteDocument, siteSettingsActive)}>
       {pageLocation === '/'
-        ? <HomepageV5Page navigate={navigate} siteDocument={siteDocument} siteSettingsActive={siteSettingsActive} />
+        ? <HomeV5 document={remoteSiteActive ? siteQuery.data?.document : undefined} />
         : <TemplatePage key={pageLocation} path={pageLocation} search={directBea ? '' : search} siteDocument={siteDocument} siteSettingsActive={siteSettingsActive} />}
       <BagDrawer />
       <BeaWidget autoOpenKey={autoOpenKey} autoOpenDetail={autoOpenDetail} />
       <InformationDialog />
-      <SampleNote inline />
-      {!pageLocation.startsWith('/design') && <PublicFooter navigate={navigate} siteDocument={siteDocument} siteSettingsActive={siteSettingsActive} />}
+      {pageLocation !== '/' && <SampleNote inline />}
+      {pageLocation !== '/' && !pageLocation.startsWith('/design') && <PublicFooter navigate={navigate} siteDocument={siteDocument} siteSettingsActive={siteSettingsActive} />}
     </div>
   );
 }

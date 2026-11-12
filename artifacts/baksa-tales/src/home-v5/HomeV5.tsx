@@ -1,14 +1,22 @@
 import { useCallback, useEffect, useState } from 'react';
 import type { SiteDocument } from '@workspace/api-client-react';
-import { DEFAULT_MOOD, homeValue, type MoodId } from './content';
-import SourceHeader from './SourceHeader';
+import { DEFAULT_MOOD, emphasis, homeValue, type MoodId } from './content';
+import HomeHeader, { brandAnnouncement } from './HomeHeader';
 import { MoodTrunk } from './MoodTrunk';
 import { Tales } from './Tales';
 import { BaksaWay, Footer, Kala, MakerSection, MostGifted, PromiseRow } from './Sections';
-import { AppLink, Band, Em } from './ui';
+import { Band } from './ui';
 import './home-v5.css';
 
-const FONTS = 'https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Noto+Serif+Devanagari:wght@400;600&display=swap';
+const FONTS = 'https://fonts.googleapis.com/css2?family=Arvo:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Noto+Serif+Devanagari:wght@400;500;600&display=swap';
+
+function HeroTitle({ text }: { text: string }) {
+  return <>{emphasis(text).map((s, i) => i % 2 ? (
+    <span key={i} style={{ position: 'relative', display: 'inline-block', fontStyle: 'italic', color: '#C23A36' }}>{s}
+      <svg viewBox="0 0 220 24" preserveAspectRatio="none" aria-hidden="true" style={{ position: 'absolute', left: '2%', bottom: -8, width: '96%', height: 14 }}><path d="M4 16 C 40 4, 70 22, 110 12 S 180 4, 216 14" fill="none" stroke="#EBA937" strokeWidth="7" strokeLinecap="round" /></svg>
+    </span>
+  ) : <span key={i}>{s}</span>)}</>;
+}
 
 export default function HomeV5({ document: doc }: { document?: SiteDocument }) {
   const v = useCallback((key: string) => homeValue(doc, key), [doc]);
@@ -36,18 +44,21 @@ export default function HomeV5({ document: doc }: { document?: SiteDocument }) {
 
   return (
     <div className="h5" data-bt-page="store" data-testid="page-home-v5">
-      <p className="h5-announce" data-testid="text-announcement">{v('h5.copy.announce')}</p>
-      <SourceHeader />
+      <div data-testid="text-announcement" style={{ background: '#EBA937', color: '#2B1712', fontFamily: 'Arvo, Georgia, serif', fontSize: 13, textAlign: 'center', padding: '11px 20px' }}>{brandAnnouncement(doc) || v('h5.copy.announce')}</div>
+      <HomeHeader document={doc} />
       <Band />
       <main>
-        <section className="h5-hero" aria-labelledby="h5-hero-title">
-          <p className="h5-caps h5-hero-eyebrow">{v('h5.copy.hero.eyebrow')}</p>
-          <h1 id="h5-hero-title" className="h5-h1">
-            <Em text={v('h5.copy.hero.title')} />
+        <section id="top" aria-labelledby="h5-hero-title" style={{ position: 'relative', maxWidth: 1280, margin: '0 auto', padding: '44px 32px 40px' }}>
+          <p style={{ margin: 0, textAlign: 'center', fontFamily: 'Arvo, Georgia, serif', fontSize: 12, letterSpacing: '.2em', color: '#4A1020', textTransform: 'uppercase' }}>{v('h5.copy.hero.eyebrow')}</p>
+          <h1 id="h5-hero-title" style={{ margin: '16px 0 0', textAlign: 'center', fontSize: 'clamp(48px, 5.6vw, 82px)', lineHeight: 1, fontWeight: 500, letterSpacing: '-.02em', color: '#4A1020' }}>
+            <HeroTitle text={v('h5.copy.hero.title')} />
           </h1>
-          <p className="h5-ruled h5-hero-tag"><span>{v('h5.copy.hero.tagline')}</span></p>
+          <div style={{ margin: '22px auto 0', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 22, maxWidth: 760 }}>
+            <span style={{ flex: 1, height: 1, background: '#CDB79A' }} />
+            <p style={{ margin: 0, fontSize: 23, fontStyle: 'italic', color: '#5C463C', textAlign: 'center' }}>{v('h5.copy.hero.tagline')}</p>
+            <span style={{ flex: 1, height: 1, background: '#CDB79A' }} />
+          </div>
           <MoodTrunk v={v} mood={mood} setMood={setMood} />
-          <AppLink href={v('h5.link.hero.quiz')} className="h5-quizlink" testId="link-hero-finder">{v('h5.copy.hero.quiz')}</AppLink>
         </section>
         <Tales v={v} doc={doc} />
         <MostGifted v={v} />

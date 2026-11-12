@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Baksa Tales homepage v5</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Arvo:wght@400;700&amp;family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=Noto+Serif+Devanagari:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style><style>
+body{margin:0;background:#F6F3DF}
+a{color:#611811}a:hover{color:#3E0F0B}
+.nav a{color:#2B1712;text-decoration:none}.nav a:hover{color:#611811}
+.chip{transition:transform .2s ease,background .2s ease}
+.chip:hover{transform:translateY(-2px) rotate(-1deg);background:#FFFDF4}
+.card:hover .pname{color:#611811}
+.reel{transition:transform .3s ease}.reel:hover{transform:translateY(-6px) rotate(-.6deg)}
+.btn:hover,.pill:hover{background:#3E0F0B}
+.flink{color:#F6EBD3;text-decoration:none}.flink:hover{color:#EBA937}
+input:focus,a:focus-visible,button:focus-visible{outline:3px solid #EBA937;outline-offset:2px}
+/* the compartment baksa */
+.trunk5{position:relative;aspect-ratio:1122/354;max-width:1180px;margin:0 auto}
+.trunk5 .bg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.tile5{position:absolute;top:13.6%;height:64%;width:16.93%;box-sizing:border-box;border:1px solid rgba(97,24,17,.18);border-radius:5px;background:#F5E5C8;padding:4% 1% 3%;display:flex;flex-direction:column;align-items:center;text-align:center;cursor:pointer;font-family:'EB Garamond',Georgia,serif;color:#2B1712;box-shadow:inset 0 2px 8px rgba(120,70,30,.12);transition:transform .35s cubic-bezier(.3,1.4,.5,1),box-shadow .35s ease,border-color .2s ease}
+.tile5:hover{transform:translateY(-5px)}
+.tile5.on{border:3px solid #68142F;transform:translateY(-8px);box-shadow:0 0 0 5px rgba(235,169,55,.35),0 22px 34px -18px rgba(104,20,47,.7)}
+.tile5 .ow{display:block;width:100%;height:56%;margin:5% 0 2%;animation:pop .7s cubic-bezier(.3,1.4,.5,1) both}
+.tile5 img{width:100%;height:100%;object-fit:contain;display:block;-webkit-mask-image:radial-gradient(ellipse 72% 70% at 50% 52%,#000 62%,transparent 100%);mask-image:radial-gradient(ellipse 72% 70% at 50% 52%,#000 62%,transparent 100%);transition:transform .4s cubic-bezier(.3,1.4,.5,1)}
+.tile5:hover img,.tile5.on img{transform:scale(1.07) translateY(-3%)}
+.t1 .ow{animation-delay:.25s}.t2 .ow{animation-delay:.4s}.t3 .ow{animation-delay:.55s}.t4 .ow{animation-delay:.7s}.t5 .ow{animation-delay:.85s}
+@keyframes pop{from{opacity:0;transform:translateY(16%) scale(.9)}}
+.hint{animation:hintin .8s ease 1.4s both}
+@keyframes hintin{from{opacity:0;transform:translateY(8px) rotate(-8deg)}}
+.panel5{animation:panelin .45s ease both}
+@keyframes panelin{from{opacity:0;transform:translateY(10px)}}
+.mswipe{display:none}
+.mcard{flex:0 0 150px;border:1.5px solid #DCCAB0;border-radius:16px;background:#F5E5C8;padding:12px;text-align:center;font-family:'EB Garamond',Georgia,serif;color:#2B1712}
+.mcard.on{border:3px solid #68142F;background:#FFF6E6}
+@media (max-width: 720px){.trunk5wrap{display:none}.mswipe{display:flex}}
+@media (prefers-reduced-motion: reduce){.tile5 .ow,.hint,.panel5{animation:none}.tile5,.tile5 img{transition:none}}
+</style>
+</helmet>
+
+<div style="position: relative; font-family: 'EB Garamond', Georgia, serif; color: #2B1712; background: #FBF4EA; min-width: 0; overflow: hidden">
+
+<!-- announcement: reciprocity first (something given), then the goal -->
+<div style="background: {{sun}}; color: #2B1712; font-family: Arvo, Georgia, serif; font-size: 13px; text-align: center; padding: 11px 20px">A handwritten-style gift note is on us. Free delivery over ₹2,500.</div>
+
+<!-- header -->
+<header style="position: relative; max-width: 1280px; margin: 0 auto; padding: 18px 32px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 32px">
+<a href="#top" style="display: flex; align-items: center; gap: 12px; text-decoration: none">
+<img src="./assets/b4bbee1f68f49a8578e3c48caf417f09.webp" alt="" style="height: 40px; width: auto">
+<span style="font-size: 30px; font-weight: 600; color: #611811">Baksa Tales</span>
+</a>
+<nav class="nav" aria-label="Main" style="display: flex; flex-wrap: wrap; gap: 6px 32px; font-family: Arvo, Georgia, serif; font-size: 14px">
+<a href="#shop">Shop gifts</a>
+<a href="#finder">Gift finder</a>
+<a href="#makers">Our makers</a>
+<a href="#corporate">For teams</a>
+</nav>
+<div style="display: flex; align-items: center; gap: 2px">
+<a href="#search" aria-label="Search" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #2B1712"><svg width="21" height="21" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.7"></circle><path d="M16 16l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path></svg></a>
+<a href="#wishlist" aria-label="Wishlist" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #2B1712"><svg width="21" height="21" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="none" stroke="currentColor" stroke-width="1.7"></path></svg></a>
+<a href="#bag" aria-label="Bag, 2 items" style="margin-left: 6px; position: relative; width: 44px; height: 44px; border-radius: 50%; background: #611811; display: flex; align-items: center; justify-content: center; color: #FFF8EC"><svg width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8zM9 8V6a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="1.7"></path></svg><span style="position: absolute; top: -3px; right: -3px; min-width: 19px; height: 19px; border-radius: 10px; background: {{sun}}; color: #2B1712; font-family: Arvo, Georgia, serif; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center">2</span></a>
+</div>
+</header>
+<svg aria-hidden="true" style="position: relative; display: block; width: 100%; height: 26px"><defs><pattern id="bandTop" width="26" height="26" patternUnits="userSpaceOnUse"><path d="M13 5 L21 13 L13 21 L5 13 Z" fill="none" stroke="{{motif}}" stroke-width="1.4"></path><circle cx="13" cy="13" r="2.2" fill="{{motif}}"></circle><circle cx="0" cy="13" r="1.4" fill="{{motif}}"></circle><circle cx="26" cy="13" r="1.4" fill="{{motif}}"></circle></pattern></defs><line x1="0" y1="1.5" x2="100%" y2="1.5" stroke="{{motif}}" stroke-width="1.5"></line><rect x="0" y="2" width="100%" height="22" fill="url(#bandTop)"></rect><line x1="0" y1="24.5" x2="100%" y2="24.5" stroke="{{motif}}" stroke-width="1.5"></line></svg>
+
+<!-- hero: the compartment baksa. Closed doors make people curious; one tap rewards them -->
+<section id="top" style="position: relative; max-width: 1280px; margin: 0 auto; padding: 44px 32px 40px">
+<p style="margin: 0; text-align: center; font-family: Arvo, Georgia, serif; font-size: 12px; letter-spacing: .2em; color: #4A1020">HANDMADE GIFTS FROM INDEPENDENT INDIAN MAKERS</p>
+<h1 style="margin: 16px 0 0; text-align: center; font-size: clamp(48px, 5.6vw, 82px); line-height: 1; font-weight: 500; letter-spacing: -.02em; color: #4A1020">Every gift has <span style="position: relative; display: inline-block; font-style: italic; color: {{accent}}">something<svg viewBox="0 0 220 24" preserveAspectRatio="none" aria-hidden="true" style="position: absolute; left: 2%; bottom: -8px; width: 96%; height: 14px"><path d="M4 16 C 40 4, 70 22, 110 12 S 180 4, 216 14" fill="none" stroke="#EBA937" stroke-width="7" stroke-linecap="round"></path></svg></span> to say.</h1>
+<div style="margin: 22px auto 0; display: flex; align-items: center; justify-content: center; gap: 22px; max-width: 760px"><span style="flex: 1; height: 1px; background: #CDB79A"></span><p style="margin: 0; font-size: 23px; font-style: italic; color: #5C463C; text-align: center">Open a compartment. See what comes to mind.</p><span style="flex: 1; height: 1px; background: #CDB79A"></span></div>
+
+<div class="trunk5wrap" style="position: relative; margin-top: 72px">
+<div class="trunk5">
+<img class="bg" src="./assets/dac6e5697f9ceaeb06594857b6f34c50.webp" alt="">
+<button type="button" class="tile5 t1 {{c_ex}}" onClick="{{pick_ex}}" aria-pressed="{{a_ex}}" style="left: 6.95%">
+<span style="font-size: clamp(14px, 1.75vw, 25px); font-style: italic; line-height: 1">Explorer</span>
+<span class="ow"><img src="./assets/49450dce0879ea60ea523e1bd34f8e42.webp" alt="Compass and map"></span>
+<span style="font-size: clamp(11px, 1.05vw, 15px); line-height: 1.15; color: #5C463C; font-style: italic">something they’ve never seen</span>
+<span style="margin-top: auto; font-size: clamp(11px, 1.1vw, 16px); font-style: italic; color: #68142F">Open ↗</span>
+</button>
+<button type="button" class="tile5 t2 {{c_he}}" onClick="{{pick_he}}" aria-pressed="{{a_he}}" style="left: 24.42%">
+<span style="font-size: clamp(14px, 1.75vw, 25px); font-style: italic; line-height: 1">Heart-Giver</span>
+<span class="ow"><img src="./assets/33255644773ec0a0ba4d250b1b1b6549.webp" alt="Gift wrapped in printed cloth"></span>
+<span style="font-size: clamp(11px, 1.05vw, 15px); line-height: 1.15; color: #5C463C; font-style: italic">they remember little things</span>
+<span style="margin-top: auto; font-size: clamp(11px, 1.1vw, 16px); font-style: italic; color: #68142F">Open ↗</span>
+</button>
+<button type="button" class="tile5 t3 {{c_sh}}" onClick="{{pick_sh}}" aria-pressed="{{a_sh}}" style="left: 41.89%">
+<span style="font-size: clamp(14px, 1.75vw, 25px); font-style: italic; line-height: 1">Showstopper</span>
+<span class="ow"><img src="./assets/171f7435b9e9e68d6190276d8640aee3.webp" alt="Golden painted dome"></span>
+<span style="font-size: clamp(11px, 1.05vw, 15px); line-height: 1.15; color: #5C463C; font-style: italic">when it should get a gasp</span>
+<span style="margin-top: auto; font-size: clamp(11px, 1.1vw, 16px); font-style: italic; color: #68142F">Open ↗</span>
+</button>
+<button type="button" class="tile5 t4 {{c_so}}" onClick="{{pick_so}}" aria-pressed="{{a_so}}" style="left: 59.36%">
+<span style="font-size: clamp(14px, 1.75vw, 25px); font-style: italic; line-height: 1">Soul Soother</span>
+<span class="ow"><img src="./assets/d5ff2b799d9cee62a9df821661524a86.webp" alt="Tea cup on a book"></span>
+<span style="font-size: clamp(11px, 1.05vw, 15px); line-height: 1.15; color: #5C463C; font-style: italic">for a slow, quiet evening</span>
+<span style="margin-top: auto; font-size: clamp(11px, 1.1vw, 16px); font-style: italic; color: #68142F">Open ↗</span>
+</button>
+<button type="button" class="tile5 t5 {{c_th}}" onClick="{{pick_th}}" aria-pressed="{{a_th}}" style="left: 76.83%">
+<span style="font-size: clamp(14px, 1.75vw, 25px); font-style: italic; line-height: 1">Thoughtful One</span>
+<span class="ow"><img src="./assets/87cf078b829c7dbb9801f1d172305c0c.webp" alt="Leather journal and pen"></span>
+<span style="font-size: clamp(11px, 1.05vw, 15px); line-height: 1.15; color: #5C463C; font-style: italic">useful, and lovely</span>
+<span style="margin-top: auto; font-size: clamp(11px, 1.1vw, 16px); font-style: italic; color: #68142F">Open ↗</span>
+</button>
+<sc-if value="{{showHint}}" hint-placeholder-val="{{ true }}">
+<span class="hint" aria-hidden="true" style="position: absolute; left: 25%; top: -20%; display: flex; align-items: flex-end; gap: 4px; pointer-events: none"><span style="font-size: clamp(18px, 2vw, 28px); font-style: italic; color: {{motif}}; transform: rotate(-8deg); display: inline-block">This one?</span><svg viewBox="0 0 40 60" style="width: 30px; height: 46px; margin-bottom: -26px"><path d="M8 4 C 30 10, 34 30, 22 52" fill="none" stroke="#4A1020" stroke-width="2" stroke-linecap="round"></path><path d="M14 46 L 22 54 L 28 44" fill="none" stroke="#4A1020" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+</sc-if>
+</div>
+</div>
+
+<!-- phones: the same five doors as a swipe row -->
+<div class="mswipe" style="gap: 12px; overflow-x: auto; padding: 24px 2px 12px">
+<button type="button" class="mcard {{c_ex}}" onClick="{{pick_ex}}" aria-pressed="{{a_ex}}"><span style="display: block; font-size: 20px; font-style: italic">Explorer</span><img src="./assets/49450dce0879ea60ea523e1bd34f8e42.webp" alt="" style="display: block; width: 100%; height: 96px; object-fit: contain; margin: 8px 0"><span style="display: block; font-size: 15px; color: #5C463C; font-style: italic">something they’ve never seen</span></button>
+<button type="button" class="mcard {{c_he}}" onClick="{{pick_he}}" aria-pressed="{{a_he}}"><span style="display: block; font-size: 20px; font-style: italic">Heart-Giver</span><img src="./assets/33255644773ec0a0ba4d250b1b1b6549.webp" alt="" style="display: block; width: 100%; height: 96px; object-fit: contain; margin: 8px 0"><span style="display: block; font-size: 15px; color: #5C463C; font-style: italic">they remember little things</span></button>
+<button type="button" class="mcard {{c_sh}}" onClick="{{pick_sh}}" aria-pressed="{{a_sh}}"><span style="display: block; font-size: 20px; font-style: italic">Showstopper</span><img src="./assets/171f7435b9e9e68d6190276d8640aee3.webp" alt="" style="display: block; width: 100%; height: 96px; object-fit: contain; margin: 8px 0"><span style="display: block; font-size: 15px; color: #5C463C; font-style: italic">when it should get a gasp</span></button>
+<button type="button" class="mcard {{c_so}}" onClick="{{pick_so}}" aria-pressed="{{a_so}}"><span style="display: block; font-size: 20px; font-style: italic">Soul Soother</span><img src="./assets/d5ff2b799d9cee62a9df821661524a86.webp" alt="" style="display: block; width: 100%; height: 96px; object-fit: contain; margin: 8px 0"><span style="display: block; font-size: 15px; color: #5C463C; font-style: italic">for a slow, quiet evening</span></button>
+<button type="button" class="mcard {{c_th}}" onClick="{{pick_th}}" aria-pressed="{{a_th}}"><span style="display: block; font-size: 20px; font-style: italic">Thoughtful One</span><img src="./assets/87cf078b829c7dbb9801f1d172305c0c.webp" alt="" style="display: block; width: 100%; height: 96px; object-fit: contain; margin: 8px 0"><span style="display: block; font-size: 15px; color: #5C463C; font-style: italic">useful, and lovely</span></button>
+</div>
+
+<div style="margin: 30px 0 34px; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 40px; font-size: 21px">
+<a href="#shop-all" style="color: #4A1020">Browse all gifts ↗</a>
+<a href="#self" style="color: #4A1020">Something for yourself ↗</a>
+</div>
+
+<div style="max-width: 1180px; margin: 0 auto">
+<sc-if value="{{is_ex}}" hint-placeholder-val="{{ false }}">
+<div class="panel5" style="position: relative; border: 1.5px solid #68142F; border-radius: 20px; background: #FFFBF0; padding: 34px 36px 28px">
+<span class="notch" style="position: absolute; top: -10px; left: calc(15.4% - 9px); width: 18px; height: 18px; background: #FFFBF0; border-left: 1.5px solid #68142F; border-top: 1.5px solid #68142F; transform: rotate(45deg)"></span>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 24px 22px; align-items: start">
+<div style="padding-right: 12px">
+<p style="margin: 0; font-family: Arvo, Georgia, serif; font-size: 12px; letter-spacing: .14em; color: #68142F">THE EXPLORER EDIT</p>
+<h2 style="margin: 14px 0 0; font-size: clamp(36px, 3.6vw, 52px); font-weight: 500; line-height: 1; color: #4A1020">Wait, what <em>is</em> this?</h2>
+<p style="margin: 14px 0 0; font-size: 19px; line-height: 1.45; color: #5C463C">For the one who’s always first to try something new.</p>
+</div>
+<a href="#product" class="card" style="display: block; text-decoration: none; color: #2B1712"><span style="display: block; aspect-ratio: 1; border-radius: 14px; overflow: hidden; background: #E9DFF0"><img src="./assets/000b6de55ad26de40d6a0a285401e191.webp" alt="Svara Divya" style="width: 100%; height: 100%; object-fit: cover; display: block"></span><span style="display: block; margin-top: 10px; font-family: Arvo, Georgia, serif; font-size: 11px; color: #34514B">Svara</span><span class="pname" style="display: block; font-size: 21px; line-height: 1.15">Svara Divya</span><span style="display: block; margin-top: 2px; font-family: Arvo, Georgia, serif; font-size: 13px">₹1,800</span></a>
+<a href="#product" class="card" style="display: block; text-decoration: none; color: #2B1712"><span style="display: block; aspect-ratio: 1; border-radius: 14px; overflow: hidden; background: #F7D9CF"><img src="./assets/fdd8be909c459f769b976b8c045c744d.webp" alt="Mithila keepsake box" style="width: 100%; height: 100%; object-fit: cover; display: block"></span><span style="display: block; margin-top: 10px; font-family: Arvo, Georgia, serif; font-size: 11px; color: #34514B">Pop Bani</span><span class="pname" style="display: block; font-size: 21px; line-height: 1.15">Mithila keepsake box</span><span style="display: block; margin-top: 2px; font-family: Arvo, Georgia, serif; font-size: 13px">[₹ price]</span></a>
+<a href="#product" class="card" style="display: block; text-decoration: none; color: #2B1712"><span style="display: block; aspect-ratio: 1; border-radius: 14px; overflow: hidden; background: #D5E6DE"><img src="./assets/a894439b60a2b182f2541d8c4a4fb291.webp" alt="Blue Lotus Pond" style="width: 100%; height: 100%; object-fit: cover; display: block"></span><span style="display: block; margin-top: 10px; font-family: Arvo, Georgia, serif; font-size: 11px; color: #34514B">Tathaastu</span><span class="pname" style="display: block; font-size: 21px; line-height: 1.15">Blue Lotus Pond</span><span style="display: block; margin-top: 2px; font-family: Arvo, Georgia, serif; font-size: 13px">₹2,400</span></a>
+</div>
+<div style="margin-top: 26px; display: flex; align-items: center; gap: 20px"><span style="flex: 1; height: 1px; background: #DCCAB0"></span><a href="#edit-ex" style="font-size: 21px; color: #4A1020">Explore the Explorer edit ↗</a><span style="flex: 1; height: 1px; background: #DCCAB0"></span></div>
+</div>
+</sc-if>
+<sc-if value="{{is_he}}" hint-placeholder-val="{{ true }}">
+<div class="panel5" style="position: relative; border: 1.5px solid #68142F; border-radius: 20px; background: #FFFBF0; padding: 34px 36px 28px">
+<span class="notch" style="position: absolute; top: -10px; left: calc(32.9% - 9px); width: 18px; height: 18px; background: #FFFBF0; border-left: 1.5px solid #68142F; border-top: 1.5px solid #68142F; transform: rotate(45deg)"></span>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 24px 22px; align-items: start">
+<div style="padding-right: 12px">
+<p style="margin: 0; font-family: Arvo, Georgia, serif; font-size: 12px; letter-spacing: .14em; color: #68142F">THE HEART-GIVER EDIT</p>
+<h2 style="margin: 14px 0 0; font-size: clamp(36px, 3.6vw, 52px); font-weight: 500; line-height: 1; color: #4A1020">Of course <em>I remembered.</em></h2>
+<p style="margin: 14px 0 0; font-size: 19px; line-height: 1.45; color: #5C463C">For the person who remembers the little things.</p>
+</div>
+<a href="#product" class="card" style="display: block; text-decoration: none; color: #2B1712"><span style="display: block; aspect-ratio: 1; border-radius: 14px; overflow: hidden; background: #F7D9CF"><img src="./assets/8a7a809f0f8f3f6776bd68422dba0d91.webp" alt="Bouquet with a Message" style="width: 100%; height: 100%; object-fit: cover; display: block"></span><span style="display: block; margin-top: 10px; font-family: Arvo, Georgia, serif; font-size: 11px; color: #34514B">Tathaastu</span><span class="pname" style="display: block; font-size: 21px; line-height: 1.15">Bouquet with a Message</span><span style="display: block; margin-top: 2px; font-family: Arvo, Georgia, serif; font-size: 13px">₹2,200</span></a>
+<a href="#product" class="card" style="display: block; text-decoration: none; color: #2B1712"><span style="display: block; aspect-ratio: 1; border-radius: 14px; overflow: hidden; background: #FBE3B2"><img src="./assets/214260d74176e52c372a97ef83168430.webp" alt="Marigold Urli" style="width: 100%; height: 100%; object-fit: cover; display: block"></span><span style="display: block; margin-top: 10px; font-family: Arvo, Georgia, serif; font-size: 11px; color: #34514B">Tathaastu</span><span class="pname" style="display: block; font-size: 21px; line-height: 1.15">Marigold Urli</span><span style="display: block; margin-top: 2px; font-family: Arvo, Georgia, serif; font-size: 13px">₹1,200</span></a>
+<a href="#product" class="card" style="display: block; text-decoration: none; color: #2B1712"><span style="display: block; aspect-ratio: 1; border-radius: 14px; overflow: hidden; background: #E9DFF0"><img src="./assets/000b6de55ad26de40d6a0a285401e191.webp" alt="Svara Divya" style="width: 100%; height: 100%; object-fit: cover; display: block"></span><span style="display: block; margin-top: 10px; font-family: Arvo, Georgia, serif; font-size: 11px; color: #34514B">Svara</span><span class="pname" style="display: block; font-size: 21px; line-height: 1.15">Svara Divya</span><span style="display: block; margin-top: 2px; font-family: Arvo, Georgia, serif; font-size: 13px">₹1,800</span></a>
+</div>
+<div style="margin-top: 26px; display: flex; align-items: center; gap: 20px"><span style="flex: 1; height: 1px; background: #DCCAB0"></span><a href="#edit-he" style="font-size: 21px; color: #4A1020">Explore the Heart-Giver edit ↗</a><span style="flex: 1; height: 1px; background: #DCCAB0"></span></div>
+</div>
+</sc-if>
+<sc-if value="{{is_sh}}" hint-placeholder-val="{{ false }}">
+<div class="panel5" style="position: relative; border: 1.5px solid #68142F; border-radius: 20px; background: #FFFBF0; padding: 34px 36px 28px">
+<span class="notch" style="position: absolute; top: -10px; left: calc(50.4% - 9px); width: 18px; height: 18px; background: #FFFBF0; border-left: 1.5px solid #68142F; border-top: 1.5px solid #68142F; transform: rotate(45deg)"></span>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 24px 22px; align-items: start">
+<div style="padding-right: 12px">
+<p style="margin: 0; font-family: Arvo, Georgia, serif; font-size: 12px; letter-spacing: .14em; color: #68142F">THE SHOWSTOPPER EDIT</p>
+<h2 style="margin: 14px 0 0; font-size: clamp(36px, 3.6vw, 52px); font-weight: 500; line-height: 1; color: #4A1020">Make them <em>gasp.</em></h2>
+<p style="margin: 14px 0 0; font-size: 19px; line-height: 1.45; color: #5C463C">For the gift that gets opened in front of everyone.</p>
+</div>
+<a href="#product" class="card" style="display: block; text-decoration: none; color: #2B1712"><span style="display: block; aspect-ratio: 1; border-radius: 14px; overflow: hidden; background: #F7D9CF"><img src="./assets/6dbc7cf37999d0995b48875cf8a44123.webp" alt="Large Teapot Bouquet" style="width: 100%; height: 100%; object-fit: cover; display: block"></span><span style="display: block; margin-top: 10px; font-family: Arvo, Georgia, serif; font-size: 11px; color: #34514B">Tathaastu</span><span class="pname" style="display: block; font-size: 21px; line-height: 1.15">Large Teapot Bouquet</span><span style="display: block; margin-top: 2px; font-family: Arvo, Georgia, serif; font-size: 13px">₹3,200</span></a>
+<a href="#product" class="card" style="display: block; text-decoration: none; color: #2B1712"><span style="display: block; aspect-ratio: 1; border-radius: 14px; overflow: hidden; background: #D5E6DE"><img src="./assets/a894439b60a2b182f2541d8c4a4fb291.webp" alt="Blue Lotus Pond" style="width: 100%; height: 100%; object-fit: cover; display: block"></span><span style="display: block; margin-top: 10px; font-family: Arvo, Georgia, serif; font-size: 11px; color: #34514B">Tathaastu</span><span class="pname" style="display: block; font-size: 21px; line-height: 1.15">Blue Lotus Pond</span><span style="display: block; margin-top: 2px; font-family: Arvo, Georgia, serif; font-size: 13px">₹2,400</span></a>
+<a href="#product" class="card" style="display: block; text-decoration: none; color: #2B1712"><span style="display: block; aspect-ratio: 1; border-radius: 14px; overflow: hidden; background: #D5E6DE"><img src="./assets/eee7bce16bd2dd1ab05098be9f6ae27c.webp" alt="Lotus Pond Candle Set" style="width: 100%; height: 100%; object-fit: cover; display: block"></span><span style="display: block; margin-top: 10px; font-family: Arvo, Georgia, serif; font-size: 11px; color: #34514B">Tathaastu</span><span class="pname" style="display: block; font-size: 21px; line-height: 1.15">Lotus Pond Candle Set</span><span style="display: block; margin-top: 2px; font-family: Arvo, Georgia, serif; font-size: 13px">₹2,400</span></a>
+</div>
+<div style="margin-top: 26px; display: flex; align-items: center; gap: 20px"><span style="flex: 1; height: 1px; background: #DCCAB0"></span><a href="#edit-sh" style="font-size: 21px; color: #4A1020">Explore the Showstopper edit ↗</a><span style="flex: 1; height: 1px; background: #DCCAB0"></span></div>
+</div>
+</sc-if>
+<sc-if value="{{is_so}}" hint-placeholder-val="{{ false }}">
+<div class="panel5" style="position: relative; border: 1.5px solid #68142F; border-radius: 20px; background: #FFFBF0; padding: 34px 36px 28px">
+<span class="notch" style="position: absolute; top: -10px; left: calc(67.8% - 9px); width: 18px; height: 18px; background: #FFFBF0; border-left: 1.5px solid #68142F; border-top: 1.5px solid #68142F; transform: rotate(45deg)"></span>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 24px 22px; align-items: start">
+<div style="padding-right: 12px">
+<p style="margin: 0; font-family: Arvo, Georgia, serif; font-size: 12px; letter-spacing: .14em; color: #68142F">THE SOUL SOOTHER EDIT</p>
+<h2 style="margin: 14px 0 0; font-size: clamp(36px, 3.6vw, 52px); font-weight: 500; line-height: 1; color: #4A1020">Breathe out. <em>Slowly.</em></h2>
+<p style="margin: 14px 0 0; font-size: 19px; line-height: 1.45; color: #5C463C">For someone who needs a quiet evening to themselves.</p>
+</div>
+<a href="#product" class="card" style="display: block; text-decoration: none; color: #2B1712"><span style="display: block; aspect-ratio: 1; border-radius: 14px; overflow: hidden; background: #E9DFF0"><img src="./assets/227a4597034c44808ed4c82e2809abbd.webp" alt="The Anirveda Ritual Set" style="width: 100%; height: 100%; object-fit: cover; display: block"></span><span style="display: block; margin-top: 10px; font-family: Arvo, Georgia, serif; font-size: 11px; color: #34514B">Anirveda</span><span class="pname" style="display: block; font-size: 21px; line-height: 1.15">The Anirveda Ritual Set</span><span style="display: block; margin-top: 2px; font-family: Arvo, Georgia, serif; font-size: 13px">₹3,500</span></a>
+<a href="#product" class="card" style="display: block; text-decoration: none; color: #2B1712"><span style="display: block; aspect-ratio: 1; border-radius: 14px; overflow: hidden; background: #FBE3B2"><img src="./assets/da50df6a56a8e6237a40d5a1ad8a054b.webp" alt="The Mushhk Essential Box" style="width: 100%; height: 100%; object-fit: cover; display: block"></span><span style="display: block; margin-top: 10px; font-family: Arvo, Georgia, serif; font-size: 11px; color: #34514B">Mushhk</span><span class="pname" style="display: block; font-size: 21px; line-height: 1.15">The Mushhk Essential Box</span><span style="display: block; margin-top: 2px; font-family: Arvo, Georgia, serif; font-size: 13px">₹3,200</span></a>
+<a href="#product" class="card" style="display: block; text-decoration: none; color: #2B1712"><span style="display: block; aspect-ratio: 1; border-radius: 14px; overflow: hidden; background: #E9DFF0"><img src="./assets/000b6de55ad26de40d6a0a285401e191.webp" alt="Svara Divya" style="width: 100%; height: 100%; object-fit: cover; display: block"></span><span style="display: block; margin-top: 10px; font-family: Arvo, Georgia, serif; font-size: 11px; color: #34514B">Svara</span><span class="pname" style="display: block; font-size: 21px; line-height: 1.15">Svara Divya</span><span style="display: block; margin-top: 2px; font-family: Arvo, Georgia, serif; font-size: 13px">₹1,800</span></a>
+</div>
+<div style="margin-top: 26px; display: flex; align-items: center; gap: 20px"><span style="flex: 1; height: 1px; background: #DCCAB0"></span><a href="#edit-so" style="font-size: 21px; color: #4A1020">Explore the Soul Soother edit ↗</a><span style="flex: 1; height: 1px; background: #DCCAB0"></span></div>
+</div>
+</sc-if>
+<sc-if value="{{is_th}}" hint-placeholder-val="{{ false }}">
+<div class="panel5" style="position: relative; border: 1.5px solid #68142F; border-radius: 20px; background: #FFFBF0; padding: 34px 36px 28px">
+<span class="notch" style="position: absolute; top: -10px; left: calc(85.3% - 9px); width: 18px; height: 18px; background: #FFFBF0; border-left: 1.5px solid #68142F; border-top: 1.5px solid #68142F; transform: rotate(45deg)"></span>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 24px 22px; align-items: start">
+<div style="padding-right: 12px">
+<p style="margin: 0; font-family: Arvo, Georgia, serif; font-size: 12px; letter-spacing: .14em; color: #68142F">THE THOUGHTFUL ONE EDIT</p>
+<h2 style="margin: 14px 0 0; font-size: clamp(36px, 3.6vw, 52px); font-weight: 500; line-height: 1; color: #4A1020">Useful, <em>and lovely.</em></h2>
+<p style="margin: 14px 0 0; font-size: 19px; line-height: 1.45; color: #5C463C">For the practical one who still loves pretty things.</p>
+</div>
+<a href="#product" class="card" style="display: block; text-decoration: none; color: #2B1712"><span style="display: block; aspect-ratio: 1; border-radius: 14px; overflow: hidden; background: #FBE3B2"><img src="./assets/da50df6a56a8e6237a40d5a1ad8a054b.webp" alt="The Mushhk Essential Box" style="width: 100%; height: 100%; object-fit: cover; display: block"></span><span style="display: block; margin-top: 10px; font-family: Arvo, Georgia, serif; font-size: 11px; color: #34514B">Mushhk</span><span class="pname" style="display: block; font-size: 21px; line-height: 1.15">The Mushhk Essential Box</span><span style="display: block; margin-top: 2px; font-family: Arvo, Georgia, serif; font-size: 13px">₹3,200</span></a>
+<a href="#product" class="card" style="display: block; text-decoration: none; color: #2B1712"><span style="display: block; aspect-ratio: 1; border-radius: 14px; overflow: hidden; background: #E9DFF0"><img src="./assets/227a4597034c44808ed4c82e2809abbd.webp" alt="The Anirveda Ritual Set" style="width: 100%; height: 100%; object-fit: cover; display: block"></span><span style="display: block; margin-top: 10px; font-family: Arvo, Georgia, serif; font-size: 11px; color: #34514B">Anirveda</span><span class="pname" style="display: block; font-size: 21px; line-height: 1.15">The Anirveda Ritual Set</span><span style="display: block; margin-top: 2px; font-family: Arvo, Georgia, serif; font-size: 13px">₹3,500</span></a>
+<a href="#product" class="card" style="display: block; text-decoration: none; color: #2B1712"><span style="display: block; aspect-ratio: 1; border-radius: 14px; overflow: hidden; background: #FBE3B2"><img src="./assets/214260d74176e52c372a97ef83168430.webp" alt="Marigold Urli" style="width: 100%; height: 100%; object-fit: cover; display: block"></span><span style="display: block; margin-top: 10px; font-family: Arvo, Georgia, serif; font-size: 11px; color: #34514B">Tathaastu</span><span class="pname" style="display: block; font-size: 21px; line-height: 1.15">Marigold Urli</span><span style="display: block; margin-top: 2px; font-family: Arvo, Georgia, serif; font-size: 13px">₹1,200</span></a>
+</div>
+<div style="margin-top: 26px; display: flex; align-items: center; gap: 20px"><span style="flex: 1; height: 1px; background: #DCCAB0"></span><a href="#edit-th" style="font-size: 21px; color: #4A1020">Explore the Thoughtful One edit ↗</a><span style="flex: 1; height: 1px; background: #DCCAB0"></span></div>
+</div>
+</sc-if>
+</div>
+</section>
+
+<!-- today's tales: reels pull the eye, rings left unwatched pull people back -->
+<section id="tales" style="position: relative; max-width: 1280px; margin: 0 auto; padding: 64px 32px 24px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 28px">
+<div>
+<p style="margin: 0; display: inline-flex; align-items: center; gap: 8px; font-family: Arvo, Georgia, serif; font-size: 12px; color: #611811"><span style="width: 8px; height: 8px; border-radius: 50%; background: {{motif}}"></span>NEW THIS WEEK</p>
+<h2 style="margin: 8px 0 0; font-size: clamp(40px, 4.4vw, 60px); font-weight: 500; line-height: 1">Today’s <em style="color: {{accent}}">tales</em></h2>
+<p style="margin: 8px 0 0; font-size: 19px; color: #5C463C">Step into the workshops. Under a minute each.</p>
+</div>
+<a href="#tales-all" style="font-family: Arvo, Georgia, serif; font-size: 14px">All tales →</a>
+</div>
+<div style="display: flex; gap: 18px; overflow-x: auto; padding: 8px 4px 24px">
+<a href="#story-tathaastu" class="reel" style="position: relative; flex: 0 0 214px; aspect-ratio: 9 / 16; border-radius: 22px; overflow: hidden; text-decoration: none; color: #FFF8EC; background: #2B1712; box-shadow: 0 20px 36px -22px rgba(43,23,18,.6)">
+<img src="./assets/eee7bce16bd2dd1ab05098be9f6ae27c.webp" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+<span style="position: absolute; left: 0; right: 0; top: 0; height: 34%; background: linear-gradient(rgba(27,19,17,.55), rgba(27,19,17,0))"></span>
+<span style="position: absolute; left: 0; right: 0; bottom: 0; height: 48%; background: linear-gradient(rgba(27,19,17,0), rgba(27,19,17,.85))"></span>
+<span style="position: absolute; left: 12px; right: 12px; top: 12px; display: flex; gap: 4px"><span style="flex: 1; height: 3px; border-radius: 2px; background: rgba(255,248,236,.4)"></span><span style="flex: 1; height: 3px; border-radius: 2px; background: rgba(255,248,236,.4)"></span><span style="flex: 1; height: 3px; border-radius: 2px; background: rgba(255,248,236,.4)"></span></span>
+<span style="position: absolute; left: 12px; top: 26px; display: flex; align-items: center; gap: 8px; font-family: Arvo, Georgia, serif; font-size: 12px"><span style="width: 32px; height: 32px; border-radius: 50%; border: 2.5px solid {{motif}}; padding: 2px; box-sizing: border-box; background: #F6F3DF"><img src="./assets/eee7bce16bd2dd1ab05098be9f6ae27c.webp" alt="" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block"></span>Tathaastu</span>
+<span style="position: absolute; left: 50%; top: 46%; width: 54px; height: 54px; margin: -27px 0 0 -27px; border-radius: 50%; background: rgba(255,253,244,.92); display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l11 7-11 7z" fill="#611811"></path></svg></span>
+<span style="position: absolute; left: 14px; right: 14px; bottom: 16px; font-size: 21px; line-height: 1.15">Watch a lotus come alive, petal by petal</span>
+</a>
+<a href="#story-anirveda" class="reel" style="position: relative; flex: 0 0 214px; aspect-ratio: 9 / 16; border-radius: 22px; overflow: hidden; text-decoration: none; color: #FFF8EC; background: #2B1712; box-shadow: 0 20px 36px -22px rgba(43,23,18,.6)">
+<img src="./assets/227a4597034c44808ed4c82e2809abbd.webp" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+<span style="position: absolute; left: 0; right: 0; top: 0; height: 34%; background: linear-gradient(rgba(27,19,17,.55), rgba(27,19,17,0))"></span>
+<span style="position: absolute; left: 0; right: 0; bottom: 0; height: 48%; background: linear-gradient(rgba(27,19,17,0), rgba(27,19,17,.85))"></span>
+<span style="position: absolute; left: 12px; right: 12px; top: 12px; display: flex; gap: 4px"><span style="flex: 1; height: 3px; border-radius: 2px; background: rgba(255,248,236,.4)"></span><span style="flex: 1; height: 3px; border-radius: 2px; background: rgba(255,248,236,.4)"></span><span style="flex: 1; height: 3px; border-radius: 2px; background: rgba(255,248,236,.4)"></span></span>
+<span style="position: absolute; left: 12px; top: 26px; display: flex; align-items: center; gap: 8px; font-family: Arvo, Georgia, serif; font-size: 12px"><span style="width: 32px; height: 32px; border-radius: 50%; border: 2.5px solid {{motif}}; padding: 2px; box-sizing: border-box; background: #F6F3DF"><img src="./assets/227a4597034c44808ed4c82e2809abbd.webp" alt="" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block"></span>Anirveda</span>
+<span style="position: absolute; left: 50%; top: 46%; width: 54px; height: 54px; margin: -27px 0 0 -27px; border-radius: 50%; background: rgba(255,253,244,.92); display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l11 7-11 7z" fill="#611811"></path></svg></span>
+<span style="position: absolute; left: 14px; right: 14px; bottom: 16px; font-size: 21px; line-height: 1.15">Inside a slow Ayurvedic bath ritual</span>
+</a>
+<a href="#story-svara" class="reel" style="position: relative; flex: 0 0 214px; aspect-ratio: 9 / 16; border-radius: 22px; overflow: hidden; text-decoration: none; color: #FFF8EC; background: #2B1712; box-shadow: 0 20px 36px -22px rgba(43,23,18,.6)">
+<img src="./assets/000b6de55ad26de40d6a0a285401e191.webp" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+<span style="position: absolute; left: 0; right: 0; top: 0; height: 34%; background: linear-gradient(rgba(27,19,17,.55), rgba(27,19,17,0))"></span>
+<span style="position: absolute; left: 0; right: 0; bottom: 0; height: 48%; background: linear-gradient(rgba(27,19,17,0), rgba(27,19,17,.85))"></span>
+<span style="position: absolute; left: 12px; right: 12px; top: 12px; display: flex; gap: 4px"><span style="flex: 1; height: 3px; border-radius: 2px; background: rgba(255,248,236,.4)"></span><span style="flex: 1; height: 3px; border-radius: 2px; background: rgba(255,248,236,.4)"></span><span style="flex: 1; height: 3px; border-radius: 2px; background: rgba(255,248,236,.4)"></span></span>
+<span style="position: absolute; left: 12px; top: 26px; display: flex; align-items: center; gap: 8px; font-family: Arvo, Georgia, serif; font-size: 12px"><span style="width: 32px; height: 32px; border-radius: 50%; border: 2.5px solid {{motif}}; padding: 2px; box-sizing: border-box; background: #F6F3DF"><img src="./assets/000b6de55ad26de40d6a0a285401e191.webp" alt="" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block"></span>Svara</span>
+<span style="position: absolute; left: 50%; top: 46%; width: 54px; height: 54px; margin: -27px 0 0 -27px; border-radius: 50%; background: rgba(255,253,244,.92); display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l11 7-11 7z" fill="#611811"></path></svg></span>
+<span style="position: absolute; left: 14px; right: 14px; bottom: 16px; font-size: 21px; line-height: 1.15">Why their fragrance has no alcohol</span>
+</a>
+<a href="#story-popbani" class="reel" style="position: relative; flex: 0 0 214px; aspect-ratio: 9 / 16; border-radius: 22px; overflow: hidden; text-decoration: none; color: #FFF8EC; background: #2B1712; box-shadow: 0 20px 36px -22px rgba(43,23,18,.6)">
+<img src="./assets/fdd8be909c459f769b976b8c045c744d.webp" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+<span style="position: absolute; left: 0; right: 0; top: 0; height: 34%; background: linear-gradient(rgba(27,19,17,.55), rgba(27,19,17,0))"></span>
+<span style="position: absolute; left: 0; right: 0; bottom: 0; height: 48%; background: linear-gradient(rgba(27,19,17,0), rgba(27,19,17,.85))"></span>
+<span style="position: absolute; left: 12px; right: 12px; top: 12px; display: flex; gap: 4px"><span style="flex: 1; height: 3px; border-radius: 2px; background: rgba(255,248,236,.4)"></span><span style="flex: 1; height: 3px; border-radius: 2px; background: rgba(255,248,236,.4)"></span><span style="flex: 1; height: 3px; border-radius: 2px; background: rgba(255,248,236,.4)"></span></span>
+<span style="position: absolute; left: 12px; top: 26px; display: flex; align-items: center; gap: 8px; font-family: Arvo, Georgia, serif; font-size: 12px"><span style="width: 32px; height: 32px; border-radius: 50%; border: 2.5px solid {{motif}}; padding: 2px; box-sizing: border-box; background: #F6F3DF"><img src="./assets/fdd8be909c459f769b976b8c045c744d.webp" alt="" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block"></span>Pop Bani</span>
+<span style="position: absolute; left: 50%; top: 46%; width: 54px; height: 54px; margin: -27px 0 0 -27px; border-radius: 50%; background: rgba(255,253,244,.92); display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l11 7-11 7z" fill="#611811"></path></svg></span>
+<span style="position: absolute; left: 14px; right: 14px; bottom: 16px; font-size: 21px; line-height: 1.15">A box you’ll never throw away</span>
+</a>
+<a href="#story-mushhk" class="reel" style="position: relative; flex: 0 0 214px; aspect-ratio: 9 / 16; border-radius: 22px; overflow: hidden; text-decoration: none; color: #FFF8EC; background: #2B1712; box-shadow: 0 20px 36px -22px rgba(43,23,18,.6)">
+<img src="./assets/da50df6a56a8e6237a40d5a1ad8a054b.webp" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+<span style="position: absolute; left: 0; right: 0; top: 0; height: 34%; background: linear-gradient(rgba(27,19,17,.55), rgba(27,19,17,0))"></span>
+<span style="position: absolute; left: 0; right: 0; bottom: 0; height: 48%; background: linear-gradient(rgba(27,19,17,0), rgba(27,19,17,.85))"></span>
+<span style="position: absolute; left: 12px; right: 12px; top: 12px; display: flex; gap: 4px"><span style="flex: 1; height: 3px; border-radius: 2px; background: #FFF8EC"></span><span style="flex: 1; height: 3px; border-radius: 2px; background: #FFF8EC"></span><span style="flex: 1; height: 3px; border-radius: 2px; background: #FFF8EC"></span></span>
+<span style="position: absolute; left: 12px; top: 26px; display: flex; align-items: center; gap: 8px; font-family: Arvo, Georgia, serif; font-size: 12px"><span style="width: 32px; height: 32px; border-radius: 50%; border: 2.5px solid #B7A890; padding: 2px; box-sizing: border-box; background: #F6F3DF"><img src="./assets/da50df6a56a8e6237a40d5a1ad8a054b.webp" alt="" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block"></span>Mushhk · Seen</span>
+<span style="position: absolute; left: 50%; top: 46%; width: 54px; height: 54px; margin: -27px 0 0 -27px; border-radius: 50%; background: rgba(255,253,244,.92); display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l11 7-11 7z" fill="#611811"></path></svg></span>
+<span style="position: absolute; left: 14px; right: 14px; bottom: 16px; font-size: 21px; line-height: 1.15">Oils, pressed slowly</span>
+</a>
+</div>
+</section>
+
+<!-- most gifted: the shop window -->
+<section id="shop" style="position: relative; max-width: 1280px; margin: 0 auto; padding: 96px 32px 24px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 34px">
+<div><h2 style="margin: 0; font-size: clamp(40px, 4.4vw, 60px); font-weight: 500; line-height: 1">Most gifted <em style="color: {{accent}}">this week</em></h2><p style="margin: 8px 0 0; font-size: 19px; color: #5C463C">The pieces gifters keep coming back for.</p></div>
+<a href="#shop-all" style="font-family: Arvo, Georgia, serif; font-size: 14px">See all gifts →</a>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 36px 24px">
+<div class="card">
+<div style="position: relative; aspect-ratio: 1; border-radius: 24px; overflow: hidden; background: #D5E6DE"><img src="./assets/a894439b60a2b182f2541d8c4a4fb291.webp" alt="Blue Lotus Pond" style="width: 100%; height: 100%; object-fit: cover; display: block">
+<button type="button" aria-label="Save Blue Lotus Pond to wishlist" style="position: absolute; top: 12px; right: 12px; width: 44px; height: 44px; border-radius: 50%; border: 0; background: #FFFDF4; color: #611811; display: flex; align-items: center; justify-content: center"><svg width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="none" stroke="currentColor" stroke-width="1.8"></path></svg></button></div>
+<p style="margin: 14px 0 0; font-family: Arvo, Georgia, serif; font-size: 12px; color: #34514B">Tathaastu</p>
+<a href="#product" class="pname" style="display: block; font-size: 24px; color: #2B1712; text-decoration: none">Blue Lotus Pond</a>
+<p style="margin: 2px 0 0; font-family: Arvo, Georgia, serif; font-size: 14px">₹2,400</p>
+</div>
+<div class="card">
+<div style="position: relative; aspect-ratio: 1; border-radius: 24px; overflow: hidden; background: #FBE3B2"><img src="./assets/da50df6a56a8e6237a40d5a1ad8a054b.webp" alt="The Mushhk Essential Box" style="width: 100%; height: 100%; object-fit: cover; display: block">
+<span style="position: absolute; left: 12px; bottom: 12px; background: #FFFDF4; border-radius: 999px; padding: 6px 12px; font-family: Arvo, Georgia, serif; font-size: 11px; color: #611811">Small batch</span>
+<button type="button" aria-label="Save The Mushhk Essential Box to wishlist" style="position: absolute; top: 12px; right: 12px; width: 44px; height: 44px; border-radius: 50%; border: 0; background: #FFFDF4; color: #611811; display: flex; align-items: center; justify-content: center"><svg width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="none" stroke="currentColor" stroke-width="1.8"></path></svg></button></div>
+<p style="margin: 14px 0 0; font-family: Arvo, Georgia, serif; font-size: 12px; color: #34514B">Mushhk</p>
+<a href="#product" class="pname" style="display: block; font-size: 24px; color: #2B1712; text-decoration: none">The Mushhk Essential Box</a>
+<p style="margin: 2px 0 0; font-family: Arvo, Georgia, serif; font-size: 14px">₹3,200</p>
+</div>
+<div class="card">
+<div style="position: relative; aspect-ratio: 1; border-radius: 24px; overflow: hidden; background: #F7D9CF"><img src="./assets/000b6de55ad26de40d6a0a285401e191.webp" alt="Svara Divya" style="width: 100%; height: 100%; object-fit: cover; display: block">
+<span style="position: absolute; left: 12px; bottom: 12px; background: #FFFDF4; border-radius: 999px; padding: 6px 12px; font-family: Arvo, Georgia, serif; font-size: 11px; color: #611811">Under ₹2,000</span>
+<button type="button" aria-label="Save Svara Divya to wishlist" style="position: absolute; top: 12px; right: 12px; width: 44px; height: 44px; border-radius: 50%; border: 0; background: #FFFDF4; color: #611811; display: flex; align-items: center; justify-content: center"><svg width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="none" stroke="currentColor" stroke-width="1.8"></path></svg></button></div>
+<p style="margin: 14px 0 0; font-family: Arvo, Georgia, serif; font-size: 12px; color: #34514B">Svara</p>
+<a href="#product" class="pname" style="display: block; font-size: 24px; color: #2B1712; text-decoration: none">Svara Divya</a>
+<p style="margin: 2px 0 0; font-family: Arvo, Georgia, serif; font-size: 14px">₹1,800</p>
+</div>
+<div class="card">
+<div style="position: relative; aspect-ratio: 1; border-radius: 24px; overflow: hidden; background: #E9DFF0"><img src="./assets/227a4597034c44808ed4c82e2809abbd.webp" alt="The Anirveda Ritual Set" style="width: 100%; height: 100%; object-fit: cover; display: block">
+<button type="button" aria-label="Save The Anirveda Ritual Set to wishlist" style="position: absolute; top: 12px; right: 12px; width: 44px; height: 44px; border-radius: 50%; border: 0; background: #FFFDF4; color: #611811; display: flex; align-items: center; justify-content: center"><svg width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="none" stroke="currentColor" stroke-width="1.8"></path></svg></button></div>
+<p style="margin: 14px 0 0; font-family: Arvo, Georgia, serif; font-size: 12px; color: #34514B">Anirveda</p>
+<a href="#product" class="pname" style="display: block; font-size: 24px; color: #2B1712; text-decoration: none">The Anirveda Ritual Set</a>
+<p style="margin: 2px 0 0; font-family: Arvo, Georgia, serif; font-size: 14px">₹3,500</p>
+</div>
+</div>
+</section>
+
+<!-- one maker story, framed like a block print -->
+<section id="makers" style="position: relative; max-width: 1280px; margin: 0 auto; padding: 104px 32px 104px">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px 88px; align-items: center">
+<div style="position: relative; max-width: 520px; width: 100%; justify-self: center; aspect-ratio: 1">
+<svg viewBox="0 0 200 200" aria-hidden="true" style="position: absolute; inset: -6%; width: 112%; height: 112%"><g fill="#F7D9CF" stroke="{{motif}}" stroke-width="1.2"><circle cx="192.0" cy="100.0" r="4.2"></circle>
+<circle cx="191.2" cy="112.0" r="4.2"></circle>
+<circle cx="188.9" cy="123.8" r="4.2"></circle>
+<circle cx="185.0" cy="135.2" r="4.2"></circle>
+<circle cx="179.7" cy="146.0" r="4.2"></circle>
+<circle cx="173.0" cy="156.0" r="4.2"></circle>
+<circle cx="165.1" cy="165.1" r="4.2"></circle>
+<circle cx="156.0" cy="173.0" r="4.2"></circle>
+<circle cx="146.0" cy="179.7" r="4.2"></circle>
+<circle cx="135.2" cy="185.0" r="4.2"></circle>
+<circle cx="123.8" cy="188.9" r="4.2"></circle>
+<circle cx="112.0" cy="191.2" r="4.2"></circle>
+<circle cx="100.0" cy="192.0" r="4.2"></circle>
+<circle cx="88.0" cy="191.2" r="4.2"></circle>
+<circle cx="76.2" cy="188.9" r="4.2"></circle>
+<circle cx="64.8" cy="185.0" r="4.2"></circle>
+<circle cx="54.0" cy="179.7" r="4.2"></circle>
+<circle cx="44.0" cy="173.0" r="4.2"></circle>
+<circle cx="34.9" cy="165.1" r="4.2"></circle>
+<circle cx="27.0" cy="156.0" r="4.2"></circle>
+<circle cx="20.3" cy="146.0" r="4.2"></circle>
+<circle cx="15.0" cy="135.2" r="4.2"></circle>
+<circle cx="11.1" cy="123.8" r="4.2"></circle>
+<circle cx="8.8" cy="112.0" r="4.2"></circle>
+<circle cx="8.0" cy="100.0" r="4.2"></circle>
+<circle cx="8.8" cy="88.0" r="4.2"></circle>
+<circle cx="11.1" cy="76.2" r="4.2"></circle>
+<circle cx="15.0" cy="64.8" r="4.2"></circle>
+<circle cx="20.3" cy="54.0" r="4.2"></circle>
+<circle cx="27.0" cy="44.0" r="4.2"></circle>
+<circle cx="34.9" cy="34.9" r="4.2"></circle>
+<circle cx="44.0" cy="27.0" r="4.2"></circle>
+<circle cx="54.0" cy="20.3" r="4.2"></circle>
+<circle cx="64.8" cy="15.0" r="4.2"></circle>
+<circle cx="76.2" cy="11.1" r="4.2"></circle>
+<circle cx="88.0" cy="8.8" r="4.2"></circle>
+<circle cx="100.0" cy="8.0" r="4.2"></circle>
+<circle cx="112.0" cy="8.8" r="4.2"></circle>
+<circle cx="123.8" cy="11.1" r="4.2"></circle>
+<circle cx="135.2" cy="15.0" r="4.2"></circle>
+<circle cx="146.0" cy="20.3" r="4.2"></circle>
+<circle cx="156.0" cy="27.0" r="4.2"></circle>
+<circle cx="165.1" cy="34.9" r="4.2"></circle>
+<circle cx="173.0" cy="44.0" r="4.2"></circle>
+<circle cx="179.7" cy="54.0" r="4.2"></circle>
+<circle cx="185.0" cy="64.8" r="4.2"></circle>
+<circle cx="188.9" cy="76.2" r="4.2"></circle>
+<circle cx="191.2" cy="88.0" r="4.2"></circle></g><circle cx="100" cy="100" r="86" fill="none" stroke="{{motif}}" stroke-width="1.4"></circle></svg>
+<div style="position: absolute; inset: 7%; border-radius: 50%; overflow: hidden; background: #F7D9CF"><img src="./assets/8a7a809f0f8f3f6776bd68422dba0d91.webp" alt="Bouquet with a Message by Tathaastu" style="width: 100%; height: 100%; object-fit: cover; display: block"></div>
+<span style="position: absolute; right: 0; bottom: 8%; background: #FFFDF4; border: 1.5px solid #DCCAB0; border-radius: 999px; padding: 10px 18px; font-family: Arvo, Georgia, serif; font-size: 12px; color: #34514B; transform: rotate(-4deg)">An Olive Green maker</span>
+</div>
+<div>
+<p style="margin: 0; font-family: Arvo, Georgia, serif; font-size: 13px; color: #34514B">Meet the maker</p>
+<h2 style="margin: 10px 0 0; font-size: clamp(42px, 4.8vw, 66px); font-weight: 500; line-height: 1">Petal by petal, <em style="color: {{accent}}">a new beginning.</em></h2>
+<p style="margin: 24px 0 0; font-size: 21px; line-height: 1.6; color: #5C463C; max-width: 28em">Tathaastu shapes soy wax into lotuses, peonies and marigolds, one petal at a time. Every piece supports war widows and army wives as they rebuild their lives.</p>
+<p style="margin: 22px 0 0; font-size: 18px; color: #2B1712"><em>When you gift a Tathaastu piece, the card inside tells this story.</em></p>
+<div style="margin-top: 30px; display: flex; flex-wrap: wrap; gap: 14px 26px; align-items: center">
+<a href="#story" class="btn" style="display: inline-flex; align-items: center; height: 54px; padding: 0 28px; border-radius: 999px; background: #611811; color: #FFF8EC; text-decoration: none; font-family: Arvo, Georgia, serif; font-size: 14px">Read their story</a>
+<a href="#maker" style="font-family: Arvo, Georgia, serif; font-size: 14px">Shop Tathaastu →</a>
+</div>
+</div>
+</div>
+</section>
+
+<!-- the baksa way to give: reciprocity and service, with teams given their own door -->
+<section id="corporate" style="position: relative; max-width: 1280px; margin: 0 auto; padding: 24px 32px 104px">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px 80px; align-items: center">
+<div style="position: relative">
+<div style="aspect-ratio: 4 / 4.4; border-radius: 999px 999px 24px 24px; overflow: hidden; background: #F7D9CF"><img src="./assets/fdd8be909c459f769b976b8c045c744d.webp" alt="Pop Bani keepsake box with Mithila art, a design mock-up" style="width: 100%; height: 100%; object-fit: cover; display: block"></div>
+<span style="position: absolute; left: -12px; bottom: 30px; background: #FFFDF4; border: 1.5px solid #DCCAB0; border-radius: 999px; padding: 10px 18px; font-family: Arvo, Georgia, serif; font-size: 12px; color: #611811; transform: rotate(-4deg)">Baksa Tales × Pop Bani</span>
+</div>
+<div>
+<p style="margin: 0; font-family: Arvo, Georgia, serif; font-size: 13px; color: #34514B">The Baksa way to give</p>
+<h2 style="margin: 10px 0 0; font-size: clamp(42px, 4.8vw, 66px); font-weight: 500; line-height: 1">Wrapped in <em style="color: {{accent}}">a story.</em></h2>
+<div style="margin-top: 30px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: grid; grid-template-columns: 56px 1fr; gap: 16px; align-items: center; background: #FFFDF4; border: 1px solid #E8D9BE; border-radius: 18px; padding: 16px 18px">
+<span style="width: 52px; height: 52px; border-radius: 50%; background: #F7D9CF; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="12" width="32" height="24" rx="2" fill="none" stroke="#611811" stroke-width="2.4"></rect><path d="M8 14l16 12 16-12" fill="none" stroke="#611811" stroke-width="2.4"></path></svg></span>
+<div><p style="margin: 0; font-size: 23px">A gift note, on us</p><p style="margin: 2px 0 0; font-size: 17px; color: #5C463C">Your words at checkout, plus the maker’s story card.</p></div>
+</div>
+<div style="display: grid; grid-template-columns: 56px 1fr; gap: 16px; align-items: center; background: #FFFDF4; border: 1px solid #E8D9BE; border-radius: 18px; padding: 16px 18px">
+<span style="width: 52px; height: 52px; border-radius: 50%; background: #FBE3B2; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 48 48" aria-hidden="true"><rect x="9" y="19" width="30" height="20" rx="2" fill="none" stroke="#611811" stroke-width="2.4"></rect><path d="M7 14h34v6H7zM24 14v25M24 14c-3-6-11-6-9 0M24 14c3-6 11-6 9 0" fill="none" stroke="#611811" stroke-width="2.4" stroke-linejoin="round"></path></svg></span>
+<div><p style="margin: 0; font-size: 23px">Keepsake boxes with Mithila art</p><p style="margin: 2px 0 0; font-size: 17px; color: #5C463C">Made with Pop Bani. Too lovely to throw away.</p></div>
+</div>
+<div style="display: grid; grid-template-columns: 56px 1fr auto; gap: 16px; align-items: center; background: #34514B; color: #F6EBD3; border-radius: 18px; padding: 16px 18px">
+<span style="width: 52px; height: 52px; border-radius: 50%; background: rgba(246,235,211,.14); display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="16" width="32" height="22" rx="2" fill="none" stroke="#F6EBD3" stroke-width="2.4"></rect><path d="M18 16v-4h12v4M8 26h32" fill="none" stroke="#F6EBD3" stroke-width="2.4"></path></svg></span>
+<div><p style="margin: 0; font-size: 23px">Gifting for teams and clients</p><p style="margin: 2px 0 0; font-size: 17px; color: rgba(246,235,211,.85)">Your logo on the box, a maker’s story inside.</p></div>
+<a href="#brief" style="display: inline-flex; align-items: center; height: 46px; padding: 0 18px; border-radius: 999px; background: #EBA937; color: #2B1712; text-decoration: none; font-family: Arvo, Georgia, serif; font-size: 13px; white-space: nowrap">Start a brief</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- kala samagam + DSDT: the shop you can walk into, the stories you can hear -->
+<section id="kala" style="position: relative; background: #34514B; color: #F6EBD3; overflow: hidden">
+<p lang="hi" aria-hidden="true" style="position: absolute; right: -30px; top: 30px; margin: 0; font-family: 'Noto Serif Devanagari', serif; font-size: 200px; line-height: 1; color: rgba(235,169,55,.12); white-space: nowrap">कला समागम</p>
+<div style="position: relative; max-width: 1280px; margin: 0 auto; padding: 96px 32px 80px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px 72px; align-items: center">
+<div>
+<p style="margin: 0; font-family: Arvo, Georgia, serif; font-size: 13px; color: #EBA937">Meet us in person</p>
+<h2 style="margin: 10px 0 0; font-size: clamp(46px, 5.4vw, 80px); font-weight: 500; line-height: 1">Kala Samāgam</h2>
+<p style="margin: 20px 0 0; font-size: 22px; line-height: 1.55; max-width: 26em; color: rgba(246,235,211,.92)">Our curated craft carnival in Delhi NCR. Hold the work, meet the hands behind it, hear the stories over chai.</p>
+</div>
+<div style="display: flex; background: #F6F3DF; color: #2B1712; border-radius: 20px; overflow: hidden; transform: rotate(1.5deg); box-shadow: 0 30px 50px -28px rgba(0,0,0,.6)">
+<div style="flex: 1 1 auto; padding: 28px 28px 26px">
+<p style="margin: 0; font-family: Arvo, Georgia, serif; font-size: 11px; letter-spacing: .14em; color: #34514B">ADMIT ONE CURIOUS GIFTER</p>
+<p style="margin: 10px 0 0; font-size: 30px; line-height: 1.1">Next edition</p>
+<p style="margin: 6px 0 0; font-size: 21px; color: #5C463C">[Dates to be announced] · [venue], Delhi NCR</p>
+<a href="#notify" class="btn" style="margin-top: 20px; display: inline-flex; align-items: center; height: 50px; padding: 0 24px; border-radius: 999px; background: #611811; color: #FFF8EC; text-decoration: none; font-family: Arvo, Georgia, serif; font-size: 13px">Tell me when tickets open</a>
+</div>
+<div style="flex: 0 0 92px; border-left: 3px dotted #CDB79A; display: flex; align-items: center; justify-content: center; background: #FBE3B2"><img src="./assets/b4bbee1f68f49a8578e3c48caf417f09.webp" alt="" style="width: 56px; height: auto; transform: rotate(-90deg)"></div>
+</div>
+</div>
+<div style="position: relative; max-width: 1280px; margin: 0 auto; padding: 0 32px 88px">
+<a href="#dsdt" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 12px 32px; align-items: center; padding: 24px 30px; border: 1px solid rgba(246,235,211,.3); border-radius: 20px; text-decoration: none; color: #F6EBD3">
+<span><span lang="hi" style="display: block; font-family: 'Noto Serif Devanagari', serif; font-size: 28px; color: #EBA937; line-height: 1.3">दिल से दुनिया तक</span><span style="display: block; font-family: Arvo, Georgia, serif; font-size: 12px; margin-top: 2px">Founder conversations</span></span>
+<span style="font-size: 20px; line-height: 1.45; color: rgba(246,235,211,.9)">The people behind the pieces, in their own words. Latest: <em>[episode title]</em></span>
+<span style="justify-self: end; font-family: Arvo, Georgia, serif; font-size: 13px; color: #EBA937">Watch and listen →</span>
+</a>
+</div>
+</section>
+
+<!-- promises: remove the last doubts before the footer -->
+<section style="position: relative; padding: 52px 0 68px">
+<div style="max-width: 1280px; margin: 0 auto; padding: 0 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 24px 32px">
+<div style="display: flex; gap: 14px; align-items: flex-start"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><circle cx="12" cy="12" r="9" fill="none" stroke="#34514B" stroke-width="1.5"></circle><path d="M8 12.5l2.6 2.5L16 9.5" fill="none" stroke="#34514B" stroke-width="1.5"></path></svg><div><p style="margin: 0; font-size: 21px">Every maker, met</p><p style="margin: 2px 0 0; font-size: 16px; color: #5C463C">BT Verified, in person, before they join.</p></div></div>
+<div style="display: flex; gap: 14px; align-items: flex-start"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><path d="M12 3c3 4 6 6 6 10a6 6 0 0 1-12 0c0-4 3-6 6-10z" fill="none" stroke="#34514B" stroke-width="1.5"></path></svg><div><p style="margin: 0; font-size: 21px">Handmade in India</p><p style="margin: 2px 0 0; font-size: 16px; color: #5C463C">Small batches, made to last.</p></div></div>
+<div style="display: flex; gap: 14px; align-items: flex-start"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><path d="M3 7h12v9H3zM15 10h4l2 3v3h-6" fill="none" stroke="#34514B" stroke-width="1.5" stroke-linejoin="round"></path><circle cx="7" cy="17.5" r="1.6" fill="none" stroke="#34514B" stroke-width="1.5"></circle><circle cx="17" cy="17.5" r="1.6" fill="none" stroke="#34514B" stroke-width="1.5"></circle></svg><div><p style="margin: 0; font-size: 21px">Free delivery over ₹2,500</p><p style="margin: 2px 0 0; font-size: 16px; color: #5C463C">Anywhere in India.</p></div></div>
+<div style="display: flex; gap: 14px; align-items: flex-start"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><path d="M5 19l1.2-3.6A7.5 7.5 0 1 1 9 18.3z" fill="none" stroke="#34514B" stroke-width="1.5" stroke-linejoin="round"></path></svg><div><p style="margin: 0; font-size: 21px">A person on WhatsApp</p><p style="margin: 2px 0 0; font-size: 16px; color: #5C463C">Gifting help from our team, [hours].</p></div></div>
+</div>
+</section>
+
+<!-- footer: the peak-end moment -->
+<footer style="position: relative; margin-top: 40px; background: {{footerBg}}; color: #F6EBD3">
+<svg viewBox="0 0 1440 40" preserveAspectRatio="none" aria-hidden="true" style="position: absolute; left: 0; top: -39px; width: 100%; height: 40px; display: block"><path d="M0 40 Q 30 0 60 40 Q 90 0 120 40 Q 150 0 180 40 Q 210 0 240 40 Q 270 0 300 40 Q 330 0 360 40 Q 390 0 420 40 Q 450 0 480 40 Q 510 0 540 40 Q 570 0 600 40 Q 630 0 660 40 Q 690 0 720 40 Q 750 0 780 40 Q 810 0 840 40 Q 870 0 900 40 Q 930 0 960 40 Q 990 0 1020 40 Q 1050 0 1080 40 Q 1110 0 1140 40 Q 1170 0 1200 40 Q 1230 0 1260 40 Q 1290 0 1320 40 Q 1350 0 1380 40 Q 1410 0 1440 40 Z" fill="{{footerBg}}"></path></svg>
+<div style="max-width: 1280px; margin: 0 auto; padding: 80px 32px 56px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px 72px; align-items: center">
+<div>
+<p lang="hi" style="margin: 0; font-family: 'Noto Serif Devanagari', serif; font-size: 24px; color: #EBA937">दिल से दुनिया तक</p>
+<h2 style="margin: 10px 0 0; font-size: clamp(50px, 5.6vw, 84px); font-weight: 500; line-height: .98; color: #FFF8EC">Come say <em style="color: #EBA937">namaste.</em></h2>
+<p style="margin: 20px 0 0; font-size: 21px; line-height: 1.55; color: rgba(246,235,211,.9); max-width: 26em">New maker tales, first looks at limited drops, and invites to Kala Samāgam, our craft carnival in Delhi NCR. One WhatsApp a week, at most.</p>
+</div>
+<!-- postcard -->
+<div style="position: relative; background: #FFFDF4; color: #2B1712; border-radius: 18px; padding: 34px; transform: rotate(-1.5deg); box-shadow: 0 30px 60px -28px rgba(0,0,0,.6); max-width: 560px; width: 100%; justify-self: center; box-sizing: border-box">
+<div style="position: absolute; top: 22px; right: 22px; width: 92px; height: 108px; border: 3px dotted #E14B49; border-radius: 6px; background: #F6F3DF; display: flex; align-items: center; justify-content: center; transform: rotate(4deg)">
+<img src="./assets/b4bbee1f68f49a8578e3c48caf417f09.webp" alt="" style="width: 72px; height: auto">
+</div>
+<svg viewBox="0 0 120 120" aria-hidden="true" style="position: absolute; top: 70px; right: 92px; width: 96px; height: 96px; opacity: .55"><circle cx="60" cy="60" r="50" fill="none" stroke="#611811" stroke-width="2"></circle><circle cx="60" cy="60" r="40" fill="none" stroke="#611811" stroke-width="1"></circle><path d="M14 54 Q 60 40 106 54 M14 66 Q 60 52 106 66" fill="none" stroke="#611811" stroke-width="1.5"></path></svg>
+<p style="margin: 0; font-family: Arvo, Georgia, serif; font-size: 12px; color: #611811">Join the Baksa circle</p>
+<p style="margin: 10px 0 0; font-size: 30px; line-height: 1.12; max-width: 9.5em; font-style: italic">Dear friend, we’d love to write to you.</p>
+<div style="margin-top: 26px; border-top: 1.5px solid #DCCAB0; padding-top: 22px">
+<label for="wa" style="display: block; font-family: Arvo, Georgia, serif; font-size: 12px; color: #5C463C">Your WhatsApp number</label>
+<div style="margin-top: 8px; display: flex; flex-wrap: wrap; gap: 10px">
+<span style="display: flex; align-items: center; padding: 0 14px; height: 52px; border-radius: 14px; background: #ECE6CC; font-family: Arvo, Georgia, serif; font-size: 14px">+91</span>
+<input id="wa" type="tel" inputmode="numeric" placeholder="98765 43210" style="flex: 1 1 180px; height: 52px; border-radius: 14px; border: 1.5px solid #DCCAB0; background: #FFFFFF; padding: 0 16px; font-family: 'EB Garamond', Georgia, serif; font-size: 19px; color: #2B1712; box-sizing: border-box; min-width: 0">
+<button type="button" class="pill" style="height: 52px; padding: 0 24px; border-radius: 14px; border: 0; background: #611811; color: #FFF8EC; font-family: Arvo, Georgia, serif; font-size: 14px; cursor: pointer">Count me in</button>
+</div>
+<p style="margin: 12px 0 0; font-size: 15px; color: #5C463C">No spam. Leave any time by replying STOP.</p>
+</div>
+</div>
+</div>
+
+<div style="max-width: 1280px; margin: 0 auto; padding: 44px 32px; border-top: 1px solid rgba(246,235,211,.25); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 32px">
+<div style="display: flex; flex-direction: column; gap: 10px; font-size: 19px"><a class="flink" href="#shop">Shop gifts</a><a class="flink" href="#finder">Gift finder</a><a class="flink" href="#makers">Our makers</a></div>
+<div style="display: flex; flex-direction: column; gap: 10px; font-size: 19px"><a class="flink" href="#corporate">Gifting for teams</a><a class="flink" href="#boxes">Keepsake boxes</a><a class="flink" href="#kala">Kala Samāgam</a></div>
+<div style="display: flex; flex-direction: column; gap: 10px; font-size: 19px"><a class="flink" href="#dsdt">Dil Se Duniya Tak</a><a class="flink" href="#sell">Sell with Baksa</a><a class="flink" href="#academy">Makers’ Academy</a></div>
+<div style="display: flex; flex-direction: column; gap: 10px; font-size: 19px"><a class="flink" href="#orders">Track my order</a><a class="flink" href="#returns">Shipping and returns</a><a class="flink" href="#whatsapp">Talk to us</a></div>
+</div>
+
+<div style="max-width: 1280px; margin: 0 auto; padding: 24px 32px 40px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
+<span lang="hi" style="font-family: 'Noto Serif Devanagari', serif; font-size: 22px; color: #EBA937">दिल से दुनिया तक</span>
+<span style="font-family: Arvo, Georgia, serif; font-size: 12px; color: rgba(246,235,211,.8)">© 2026 Baksa Tales, made with love in Delhi NCR</span>
+</div>
+
+<div style="max-width: 1280px; margin: 0 auto; padding: 24px 32px 28px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
+<span style="font-family: Arvo, Georgia, serif; font-size: 12px; color: rgba(246,235,211,.8)">UPI, cards, net banking and cash on delivery</span>
+<span style="font-family: Arvo, Georgia, serif; font-size: 12px; color: rgba(246,235,211,.8)">© 2026 Baksa Tales, made with love in Delhi NCR</span>
+</div>
+<svg aria-hidden="true" style="position: relative; display: block; width: 100%; height: 26px"><defs><pattern id="bandFoot" width="26" height="26" patternUnits="userSpaceOnUse"><path d="M13 5 L21 13 L13 21 L5 13 Z" fill="none" stroke="#EBA937" stroke-width="1.4"></path><circle cx="13" cy="13" r="2.2" fill="#EBA937"></circle><circle cx="0" cy="13" r="1.4" fill="#EBA937"></circle><circle cx="26" cy="13" r="1.4" fill="#EBA937"></circle></pattern></defs><line x1="0" y1="1.5" x2="100%" y2="1.5" stroke="#EBA937" stroke-width="1.5"></line><rect x="0" y="2" width="100%" height="22" fill="url(#bandFoot)"></rect><line x1="0" y1="24.5" x2="100%" y2="24.5" stroke="#EBA937" stroke-width="1.5"></line></svg>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#C23A36","options":["#C23A36","#611811","#68142F"]},"motif":{"editor":"color","default":"#C23A36","options":["#C23A36","#611811","#34514B"]},"sun":{"editor":"color","default":"#EBA937","options":["#EBA937","#F7D9CF","#D5E6DE"]},"footerBg":{"editor":"color","default":"#611811","options":["#611811","#68142F","#2B1712"]},"$preview":{"width":1440,"height":7000}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { mood: 'he', touched: false }; }
+  renderVals() {
+    const m = this.state.mood;
+    return {
+      accent: this.props.accent ?? '#C23A36',
+      motif: this.props.motif ?? '#C23A36',
+      sun: this.props.sun ?? '#EBA937',
+      footerBg: this.props.footerBg ?? '#611811',
+      showHint: !this.state.touched,
+      c_ex: m === 'ex' ? 'on' : '', a_ex: m === 'ex' ? 'true' : 'false', is_ex: m === 'ex', pick_ex: () => this.setState({ mood: 'ex', touched: true }),
+      c_he: m === 'he' ? 'on' : '', a_he: m === 'he' ? 'true' : 'false', is_he: m === 'he', pick_he: () => this.setState({ mood: 'he', touched: true }),
+      c_sh: m === 'sh' ? 'on' : '', a_sh: m === 'sh' ? 'true' : 'false', is_sh: m === 'sh', pick_sh: () => this.setState({ mood: 'sh', touched: true }),
+      c_so: m === 'so' ? 'on' : '', a_so: m === 'so' ? 'true' : 'false', is_so: m === 'so', pick_so: () => this.setState({ mood: 'so', touched: true }),
+      c_th: m === 'th' ? 'on' : '', a_th: m === 'th' ? 'true' : 'false', is_th: m === 'th', pick_th: () => this.setState({ mood: 'th', touched: true })
+    };
+  }
+}
+</script>
+</body>
+</html>

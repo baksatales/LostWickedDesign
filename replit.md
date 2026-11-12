@@ -30,9 +30,9 @@ and warm editorial luxury.
   accounts, sample checkout, coupons and blog publishing use isolated API-backed
   sample data. Sample identities do not authenticate against Supabase. Never
   mistake these flows for live records or transactions.
-- The older React storefront and its Site Studio are retained but are not the
-  active approved frontend. Their settings do not currently edit the approved
-  storefront.
+- The older React storefront is retained but is not the active approved frontend.
+  Protected Site Studio edits the active V5 homepage via its `h5.*` fields; its
+  local playground is preview-only and must not alter published `/` content.
 - Report: `/approved-report.html`. Source templates and demo interaction code:
   `artifacts/baksa-tales/src/demo/`. The previous app remains in its original files.
 - `pnpm --filter @workspace/baksa-tales test` — all frontend regression tests.

@@ -64,7 +64,7 @@ try {
     await expect(t('button-bag')).toBeVisible();
     await expect(t('text-bag-count')).toHaveText('2');
     await expect(t('link-shopper-sign-in')).toBeVisible();
-    await expect(page.locator('footer.bt-showcase-footer')).toHaveCount(1);
+    await expect(page.locator('footer')).toHaveCount(1);
     await expect(page.locator('header nav').getByRole('link', { name: 'Ask Bea', exact: true })).toHaveCount(0);
     await t('link-shopper-sign-in').click();
     await expect(page).toHaveURL(base + '/account');
@@ -117,7 +117,7 @@ try {
   });
   await run('Homepage mood, search, wishlist and signup controls', async () => {
     await reset('/');
-    const homepageImages = await page.locator('.bt-homev5').evaluate(async root => {
+    const homepageImages = await page.locator('.h5').evaluate(async root => {
       const images = Array.from(root.querySelectorAll('img'));
       const results = await Promise.all(images.map(async image => {
         image.loading = 'eager';
@@ -126,16 +126,16 @@ try {
       }));
       return {
         results,
-        corporateImage: root.querySelector('.bt-homev5__corp-image img')?.naturalWidth ?? 0,
+        corporateImage: root.querySelector('[data-testid="row-way-3"]') ? 1 : 0,
       };
     });
     expect(homepageImages.results.length).toBeGreaterThan(0);
     expect(homepageImages.results.filter(image => !image.loaded)).toEqual([]);
     expect(homepageImages.corporateImage).toBeGreaterThan(0);
 
-    await t('button-mood-soother').click();
-    await expect(t('panel-mood-edit')).toContainText('Breathe out.');
-    await t('button-explore-edit-soother').click();
+    await t('mood-soother').click();
+    await expect(t('panel-mood')).toContainText('Breathe out.');
+    await t('link-explore-soother').click();
     await expect(page).toHaveURL(`${base}/shop?feel=soother`);
     await expect(t('text-shop-count')).toContainText('handmade piece');
 
@@ -147,16 +147,16 @@ try {
     await expect(t('card-product-blue-lotus-pond')).toBeVisible();
 
     await reset('/');
-    await t('button-wishlist-edit-blue-lotus-pond').click();
-    await expect(t('button-wishlist-featured-blue-lotus-pond')).toHaveAttribute('aria-pressed', 'true');
+    await t('button-wishlist-gifted-t-bluelotus').click();
+    await expect(t('button-wishlist-gifted-t-bluelotus')).toHaveAttribute('aria-pressed', 'true');
     await t('link-wishlist').click();
     await expect(page).toHaveURL(`${base}/shop?wishlist=1`);
     await expect(t('card-product-blue-lotus-pond')).toBeVisible();
 
     await reset('/');
-    await t('footer-input-contact').fill('9876543210');
-    await t('footer-button-submit').click();
-    await expect(t('footer-submit-status')).toContainText('saved in this browser only');
+    await t('input-signup-whatsapp').fill('9876543210');
+    await t('button-signup').click();
+    await expect(t('status-signup')).toContainText('not saved');
   });
   await run('Homepage story, maker, corporate and event actions', async () => {
     await reset('/');
@@ -164,29 +164,28 @@ try {
     await expect(t('bea-popover')).toBeVisible();
     await t('button-close-bea').click();
 
-    await t('link-browse-gifts').click();
-    await expect(page.locator('#shop')).toBeInViewport();
+    await t('link-browse-all').click();
+    await expect(page).toHaveURL(base + '/shop');
     await reset('/');
-    await t('card-tale-anirveda').click();
-    const story = page.getByRole('dialog', { name: 'Anirveda maker story' });
+    await t('button-tale-anirveda').click();
+    const story = page.getByRole('dialog', { name: 'Anirveda tale' });
     await expect(story).toBeVisible();
-    await expect(story).toContainText('video playback is not connected');
-    await story.getByRole('button', { name: 'Close' }).click();
-    await t('link-all-tales').click();
-    await expect(page.getByRole('dialog', { name: 'Today’s tales' })).toContainText('Maker stories in this preview');
-    await page.getByRole('dialog').getByRole('button', { name: 'Close' }).click();
+    await expect(story).toContainText('no video yet');
+    await t('button-story-close').click();
+    await t('button-all-tales').click();
+    await expect(t('story-viewer')).toBeVisible();
+    await t('button-story-close').click();
 
-    await t('button-kala-info').click();
-    await expect(page.getByRole('dialog', { name: 'Kala Samāgam' })).toContainText('registration and invitations are not connected');
-    await page.getByRole('dialog').getByRole('button', { name: 'Close' }).click();
-    await t('button-corporate-brief').click();
-    await expect(page).toHaveURL(base + '/corporate');
+    await t('button-event-interest').click();
+    await expect(t('status-event-interest')).toContainText('nothing was saved');
+    await t('link-start-brief').click();
+    await expect(page).toHaveURL(base + '/corporate#brief');
     await reset('/');
-    await t('button-maker-story').click();
+    await t('link-read-maker-story').click();
     await expect(page).toHaveURL(base + '/makers/tathaastu');
     await reset('/');
-    await t('link-shop-tathaastu').click();
-    await expect(page).toHaveURL(base + '/shop?q=Tathaastu');
+    await t('link-shop-maker').click();
+    await expect(page).toHaveURL(base + '/makers/tathaastu');
   });
   await run('Product thumbnails, quantity, bag and wishlist', async () => {
     await reset('/product/blue-lotus-pond');

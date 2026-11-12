@@ -1,21 +1,33 @@
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useId, useRef, type CSSProperties, type ReactNode } from 'react';
 import { Link } from 'wouter';
 import { emphasis } from './content';
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 export const asset = (path: string) => (path.startsWith('/') ? `${BASE}${path}` : path);
 
-export function Em({ text }: { text: string }) {
-  return <>{emphasis(text).map((s, i) => (i % 2 ? <em key={i}>{s}</em> : <span key={i}>{s}</span>))}</>;
+export function Em({ text, color }: { text: string; color?: string }) {
+  return <>{emphasis(text).map((s, i) => (i % 2 ? <em key={i} style={color ? { color } : undefined}>{s}</em> : <span key={i}>{s}</span>))}</>;
 }
 
-export function AppLink({ href, className, children, testId, onClick }: { href: string; className?: string; children: ReactNode; testId?: string; onClick?: () => void }) {
-  if (href.startsWith('https://')) return <a href={href} className={className} data-testid={testId} onClick={onClick} rel="noopener noreferrer">{children}</a>;
-  return <Link href={href} className={className} data-testid={testId} onClick={() => { onClick?.(); window.scrollTo({ top: 0 }); }}>{children}</Link>;
+export function AppLink({ href, className, children, testId, onClick, style }: { href: string; className?: string; children: ReactNode; testId?: string; onClick?: () => void; style?: CSSProperties }) {
+  if (href.startsWith('https://')) return <a href={href} className={className} style={style} data-testid={testId} onClick={onClick} rel="noopener noreferrer">{children}</a>;
+  return <Link href={href} className={className} style={style} data-testid={testId} onClick={() => { onClick?.(); window.scrollTo({ top: 0 }); }}>{children}</Link>;
 }
 
-export function Band({ tone = 'coral' }: { tone?: 'coral' | 'gold' }) {
-  return <div className={`h5-band h5-band--${tone}`} aria-hidden="true" />;
+/** Block-print band exactly as the source SVG pattern. */
+export function Band({ color = '#C23A36' }: { color?: string }) {
+  const id = `h5band${useId().replace(/:/g, '')}`;
+  return (
+    <svg aria-hidden="true" style={{ position: 'relative', display: 'block', width: '100%', height: 26 }}>
+      <defs><pattern id={id} width="26" height="26" patternUnits="userSpaceOnUse">
+        <path d="M13 5 L21 13 L13 21 L5 13 Z" fill="none" stroke={color} strokeWidth="1.4" />
+        <circle cx="13" cy="13" r="2.2" fill={color} /><circle cx="0" cy="13" r="1.4" fill={color} /><circle cx="26" cy="13" r="1.4" fill={color} />
+      </pattern></defs>
+      <line x1="0" y1="1.5" x2="100%" y2="1.5" stroke={color} strokeWidth="1.5" />
+      <rect x="0" y="2" width="100%" height="22" fill={`url(#${id})`} />
+      <line x1="0" y1="24.5" x2="100%" y2="24.5" stroke={color} strokeWidth="1.5" />
+    </svg>
+  );
 }
 
 export function Modal({ open, onClose, label, children, className, testId }: { open: boolean; onClose: () => void; label: string; children: ReactNode; className?: string; testId?: string }) {

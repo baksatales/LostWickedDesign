@@ -1,16 +1,80 @@
-# Baksa Tales — first implementation
+# Baksa Tales — current build status
 
-## Current handover baseline — 6 November 2026
+## Current handover — 12 November 2026
 
-Read `docs/DEVELOPER_HANDOVER.md` for the current handover and remaining launch
-scope. Development Supabase connectivity and reviewed schema are now connected;
-the owner confirmed verified-account admin access works. The signed-in
-cache/reset loop was fixed and all 32 frontend/analytics checks pass. Payments,
-refunds, payouts and a complete production marketplace remain unfinished.
+### Completed in the visual alignment pass
 
-**Historical record below:** statements about disconnected Supabase/accounts and
-older test totals describe earlier milestones and are superseded by this section.
-Do not interpret them as the current connection state or as production acceptance.
+- `/` now uses the approved V5 export's actual embroidered trunk, five separate
+  object layers, editable text and section composition. No temporary-art labels.
+- Hero selection, keyboard controls, mobile swipe row, stories, wishlist, existing
+  header/bag/Bea, corporate/maker links and honest unavailable-service actions work.
+- Site Studio previews the same homepage; public `/` cannot read local playground
+  drafts. Only one discreet sample note and one footer appear on the homepage.
+- Approved maker/admin source markup remains intact. Corrected an unintended
+  starter-theme recolouring of approved dashboard cards.
+- Compared source/app at 1440px and 390px. See `docs/VISUAL_MATCH_REPORT.md` for every
+  route, deliberate functional differences and missing shopper/supporting frames.
+
+### What works today, and where the data lives
+
+The merged dashboard foundation provides role-scoped **server sample** accounts
+and mutations, rather than browser authority for stock, order transitions,
+listing approvals, financial calculations or sample payouts. Maker/admin screens,
+seven-step product drafts, shopper orders/classes/addresses/wishlist, coupons and
+sample Journal workflows were exercised by the retained 39-scenario browser suite.
+These are **not live marketplace orders, genuine phone verification, card charges
+or bank transfers**. Sample identities cannot enter the real Site Studio or
+Sahayak services. Browser bag/wishlist demo state remains separate from real
+commerce.
+
+There are also retained Supabase-backed services and verified-account gates.
+An earlier owner-confirmed development connection/admin setup is recorded in
+`docs/DEVELOPER_HANDOVER.md`; this visual-only pass did not reapply migrations,
+grant admin or exercise a real signed-in admin mutation. Do not mistake successful
+sample tests for proof that a particular hosted project is launch-ready.
+
+### Still required / already queued
+
+- Premium dashboard-completion work: distinct brand/courses/applications/makers/
+  settings/audience/issues surfaces, mobile maker bottom tabs/admin drawer,
+  packing slips, onboarding/away mode, tale submissions and buyer occasions.
+  These are not marked delivered by this visual pass.
+- Confirm the **owner-authorised development** Supabase project and review its
+  actual schema/security readiness. Apply any missing reviewed migrations only
+  with explicit authorisation. Never migrate an unknown or production project.
+- Confirm the first admin is the owner's verified account; no automatic admin
+  assignment or new grant was performed here.
+- Connect payment gateway and provider-hosted maker payout onboarding before
+  charges, refunds or transfers. Do not collect raw bank credentials in the app.
+- Live phone codes need SMS/phone-auth setup; event and WhatsApp audience delivery
+  need consent-aware persistence/provider wiring. Current homepage forms save
+  nothing and say so.
+- Couriers, PIN lookup, Zoho CRM, WhatsApp, TagMango live bookings and consented
+  analytics remain integration-dependent. Do not fabricate bookings or messages.
+
+### Verification
+
+- Frontend TypeScript and production build passed (existing non-blocking build
+  warnings remain).
+- Final frontend suite: **73 Vitest + 6 analytics checks passed**, including the
+  9/9 homepage-content group and byte-identical original-art checks.
+- Retained frontend/dashboard browser suite: **39/39 passed**.
+- Homepage browser pass: **12/13 initially**; the sole failure was a reference
+  capture waiting for the hidden desktop trunk to be visible on a phone.
+  Corrected capture and new public/local-draft isolation tests passed **2/2**.
+- Forty dashboard/account captures plus homepage source/app pairs at both widths
+  had no overflow, broken images or browser exceptions.
+
+No publishing, live-domain changes, database migrations, admin grants or real
+payments occurred in this pass.
+
+---
+
+## Historical implementation notes
+
+The following sections describe earlier milestones, not current acceptance.
+Connection statements and older totals below are superseded by the current
+handover above; they must not be used as evidence of live readiness.
 
 ## Supplied Claude design integration
 

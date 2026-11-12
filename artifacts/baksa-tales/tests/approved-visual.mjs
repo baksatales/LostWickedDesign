@@ -26,6 +26,7 @@ const browser = await chromium.launch({ executablePath: '/repl/tools/bin/chromiu
 const sourceDir = resolve('reference/approved/baksa-tales-replit/designs');
 const base = process.env.APP_URL || 'http://localhost:80';
 const results = [];
+const dashboardOnly = process.env.VISUAL_SCOPE === 'dashboards';
 const sampleTokens = new Map();
 async function sampleToken(identity) {
   if (sampleTokens.has(identity)) return sampleTokens.get(identity);
@@ -55,6 +56,7 @@ async function waitForImages(page) {
 }
 try {
   for (const [name, route] of screens) {
+    if (dashboardOnly && !/^\/(maker|admin)(\/|$)/.test(route)) continue;
     for (const width of [1440, 390]) {
       const context = await browser.newContext({ viewport: { width, height: 900 }, deviceScaleFactor: 1 });
       const source = await context.newPage();
@@ -69,6 +71,7 @@ try {
         await app.evaluate(value => localStorage.setItem('baksa-sample-account-session', value), token);
       }
       await app.goto(base + route);
+      await app.waitForSelector(`[data-testid="page-${name}"]`);
       await Promise.all([source.evaluate(() => document.fonts.ready), app.evaluate(() => document.fonts.ready)]);
       await Promise.all([waitForImages(source), waitForImages(app)]);
       const sourceImage = await source.screenshot({ type: 'jpeg', quality: 80, fullPage: true });
@@ -128,12 +131,15 @@ try {
     }
   }
   const customScreens = [
-    ['HomepageV5', '/', null, 'homepage-v5'],
+    ['HomepageV5', '/', null, 'page-home-v5'],
+    ['MakerCourses', '/maker/courses', await sampleToken('maker'), 'page-MakerOpportunities'],
+    ['MakerSettings', '/maker/settings', await sampleToken('maker'), 'page-MakerSettings'],
     ['AdminCoupons', '/admin/coupons', adminToken, 'admin-coupons-page'],
     ['AdminBlog', '/admin/blog', adminToken, 'admin-blog-page'],
     ['Journal', '/blog', null, 'blog-page'],
   ];
   for (const [name, route, token, selector] of customScreens) {
+    if (dashboardOnly && !/^\/(admin|maker)(\/|$)/.test(route)) continue;
     for (const width of [1440, 390]) {
       const context = await browser.newContext({ viewport: { width, height: 900 }, deviceScaleFactor: 1 });
       const app = await context.newPage();

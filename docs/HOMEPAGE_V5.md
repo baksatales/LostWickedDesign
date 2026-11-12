@@ -1,91 +1,91 @@
-# Homepage v5 — compartment baksa
+# Homepage V5 — approved-source alignment
 
-## Approved reference and scope
+## Reference and scope
 
-The owner's Homepage v5 brief supersedes the ZIP's `Main.html` for `/` only.
-The v5 canvas component and the concept illustration
-`Baksa_Tales__Five_compartments_of_thoughtful_gifts.png` were not available in
-this workspace during implementation. The detailed supplied brief was therefore
-the reference; an exact image-to-image match with the unavailable design cannot
-be claimed.
+The approved reference for `/` is the owner's export:
+`attached_assets/0_Homepage_v5_(compartment_baksa)-html_1794473724431.zip`.
+The extracted reference is `reference/homepage-v5/HomeV5.dc.html`.
+It supersedes the older `Main.html` for the homepage only.
 
-The existing homepage header, cart, wishlist, finder, shop, product, maker and
-corporate experiences are retained. The shop now reads `?feel=` so links from
-the homepage open the corresponding existing feeling filter. The old `Main.html`
-is retained unmodified as a historical reference, not the current homepage.
+The six actual artwork layers from that export are now the defaults: the shallow
+embroidered trunk, compass, cloth-wrapped gift, painted dome, tea/books and journal.
+They are separate WebPs under `public/images/baksa/homev5-*.webp`. Names, captions
+and mood-panel text remain real, editable text. A regression test checks these
+six files byte-for-byte against the export, preventing substituted drawings.
+Legacy SVGs remain available for earlier saved editor documents, but are not the
+approved defaults. There are no temporary-art labels on the rebuilt homepage.
 
-## Working features
+## What is aligned and working
 
-- Five independently selectable mood compartments, Heart-Giver selected by
-  default, first-click hint, moving edit-panel notch, real catalogue picks and
-  links, hover/selection feedback and staggered object entrance.
-- Arrow keys, Home/End and normal button activation; `aria-pressed` selection.
-  Reduced motion removes pop-in/lift animations.
-- A horizontal swipe row below 720px, initially centred on Heart-Giver.
-- Five tall tale cards with progress indicators, photo avatars, a chapter viewer,
-  watched-state persistence and explicit sample/sponsorship labels.
-- Most-gifted cards connected to the existing wishlist and header count.
-- Maker, packaging, corporate brief, event, founder-conversation, promise and
-  postcard/footer sections. The sample/reset notice sits in the homepage footer
-  rather than covering buyer controls.
-- All product prices remain clearly labelled samples. Pop Bani's missing
-  catalogue listing links to the shop without an invented price.
+All required sections use the export's composition and style values:
+
+| Section | Current match and behavior |
+|---|---|
+| Announcement and block-print bands | Export text, amber strip, coral/gold patterns |
+| Hero and compartment baksa | Real art, source proportions, editable text, Heart-Giver default |
+| Mood edit | Copy beside three catalogue cards, source spacing, moving notch |
+| Today's tales | Source reels, photos, progress segments and watched rings; chapter viewer retained |
+| Most gifted | Four catalogue picks, source photos and functional guest wishlist hearts |
+| Maker story | Circular photo, dotted ring, source wording and real maker links |
+| Baksa way | Arched Pop Bani image, three rows and working corporate-brief link |
+| Kala Samāgam and DSDT | Teal band, source ticket and Devanagari treatments; honest unconfigured actions |
+| Promises | Source four-item composition and wording |
+| Footer | Scalloped top, stamped postcard, source link groups and bottom print band |
+
+Compartment selection works by pointer, keyboard arrows, Home/End and normal
+button activation. `aria-pressed` follows the selection; the hint disappears on
+first interaction. Below 720px the desktop trunk becomes the source's horizontal
+card row. Reduced motion disables entrance animations, lift and image scaling.
+Only one small sample disclosure is rendered, in the footer. There is only one
+homepage footer; the older shared footer is not appended to `/`.
+
+The current functional header was deliberately retained, including mobile menu,
+search, shopper sign-in/menu, wishlist, bag and Bea. It is not replaced with the
+export's static header. Other storefront routes and dashboard access gates remain.
 
 ## Site Studio
 
-- `/admin/site` uses the retained Supabase session and server-verified admin
-  permissions; it does not grant roles. Existing draft/save/revision/publish
-  safeguards remain in place.
-- `/studio-preview` is an explicitly local, browser-only design playground.
-  It cannot save or publish marketplace content. Its preview uses the actual
-  Homepage v5 component.
-- The Homepage v5 tab exposes copy, mood details, product picks, product-image
-  overrides, tale hooks/images, event dates/venue, episode copy/link, footer
-  columns and separate trunk/object layers. Product prices and stock are not
-  editable editorial fields.
-- Headline emphasis uses `*words*`; multi-part fields document their separators.
-  Selected additional catalogue products expose additional photo controls.
-- Public `/` reads published content only, not drafts or the local playground.
-  Absent fields use approved defaults; failed editorial loading is disclosed.
-- Existing limits remain: at most 200 label entries, 500 characters per value,
-  safe internal/HTTPS destinations and safe hosted/supplied image paths.
-  Only the six trusted placeholder SVG paths are accepted, not arbitrary SVG
-  markup, active schemes, embedded data or credential-bearing image URLs.
+The protected `/admin/site` and local `/studio-preview` render the same HomeV5
+component. `h5.*` fields expose homepage copy, trunk/object layers, product images,
+per-mood picks, reels/hooks, event dates, episode link and footer content.
+Safe URLs, text limits, editorial revisions and protected financial data are
+unchanged. Prices and stock cannot be invented through editorial fields.
 
-## Artwork and integrations still required
+The public homepage uses **published** content only. A local playground draft must
+not change `/`; a browser regression explicitly verifies this boundary. Draft
+save/publish to an actual admin account was not exercised during this visual pass.
 
-- Attach the concept PNG to cut the empty trunk and five objects into separate
-  layers. The six current SVG placeholders are independently replaceable; names
-  and compartment lines remain real editable text.
-- The catalogue, prices, bag and wishlist still use the existing sample frontend
-  data. No sample product has been promoted to a live listing.
-- WhatsApp signup validates a number, then explicitly says it was not saved.
-  Ticket alerts likewise disclose that interest capture is not connected.
-  No success, subscription or outbound message is fabricated.
-- Founder conversations disclose unavailable content until an HTTPS episode
-  destination is entered. Stories do not claim that real videos exist.
-- Real admin save/publish needs the existing authorised Supabase setup and an
-  existing verified admin session. Signed-in admin save/publish was not exercised
-  in this run; the unauthenticated editorial API was checked to return 401.
-- WhatsApp/SMS delivery, event-interest storage, live commerce/payment and courier
-  services remain integration-dependent. Binary media upload is not connected;
-  Site Studio accepts safe existing paths and hosted images.
+## Comparison results and known differences
+
+Source/app captures exist at **1440px and 390px**:
+`generated-artifacts/homepage-v5/{source,home,compare}-{width}.jpg`.
+Both rendered widths equal their viewports, with no broken homepage images.
+
+The visual review found no remaining material composition or artwork difference.
+This is not a claim of pixel-identical output:
+
+- The retained functional header differs from the static source header.
+- Real catalogue names/prices and accessible working controls replace inert mockup
+  behavior. Pop Bani's unavailable price remains `[₹ price]`, not an invented price.
+- A single footer sample disclosure replaces the source's repeated copyright.
+- The public page is slightly taller: 28px at desktop and 60px at phone in the
+  reviewed captures, largely from retained functional/disclosure treatment.
+- WhatsApp and ticket-interest actions validate/disclose that they save nothing.
+  DSDT opens an unavailable-content explanation until an approved link is supplied.
+  Tales have sample chapters, not claimed live video playback.
 
 ## Verification
 
-- Frontend typecheck and API-server typecheck passed.
-- Frontend regression suite: 78 checks (72 Vitest plus 6 analytics checks).
-- Editorial server validation: 8 checks, including homepage assets, links and picks.
-- Homepage browser suite: 13 scenarios covering mood switching, first-click hint,
-  keyboard use, mood-filter navigation, wishlist persistence, watched tales,
-  honest signup/event/episode states, real Studio preview edits, mobile swipe,
-  reduced motion, images/overflow and browser exceptions.
-- Existing frontend browser suite: 18 scenarios covering navigation, bag,
-  checkout, finder, corporate, maker/admin sample flows and reset.
-- Production frontend build passed with the workflow's required `PORT` and
-  `BASE_PATH` supplied. Vite reports a non-blocking bundle-size warning.
-- Captures at 1440px and 390px are retained under the ignored
-  `generated-artifacts/homepage-v5/` directory. Layout was reviewed against the
-  written v5 brief, not an unavailable canvas/source image.
+- Frontend TypeScript: passed after refreshing merged shared-client declarations.
+- Frontend production build: passed; existing sourcemap/chunk warnings remain.
+- Final frontend unit/analytics suite: **73 Vitest + 6 analytics checks passed**,
+  including all 9 homepage-content checks and the original-art guard.
+- Retained frontend/dashboard browser suite: **39/39 passed**.
+- Homepage browser pass: **12/13 passed initially**; the only failure was the capture
+  harness waiting for a desktop-only reference element to be visible at 390px.
+  It now waits for attachment. The corrected capture plus new local-draft isolation
+  regression passed **2/2 targeted checks**. The full suite was not rerun needlessly.
+- Dashboard comparisons and source gaps are listed in `docs/VISUAL_MATCH_REPORT.md`.
 
-No database migrations, live domain changes or publishing were performed.
+No production publishing, live-domain changes, database migrations, admin grants,
+payment requests or outbound messages were performed.

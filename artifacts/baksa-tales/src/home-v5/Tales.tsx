@@ -33,29 +33,34 @@ export function Tales({ v, doc }: { v: V; doc?: SiteDocument }) {
   const markSeen = (id: string) => setSeen(prev => { if (prev.includes(id)) return prev; const n = [...prev, id]; writeSeen(n); return n; });
   const openAt = (i: number) => { setOpen(i); markSeen(tales[i].id); };
 
+  const [seenLabel, , sponsoredLabel, sampleSponsorLabel] = triple(v('h5.copy.reels.status'));
+  const grad = (top: boolean) => ({ position: 'absolute' as const, left: 0, right: 0, [top ? 'top' : 'bottom']: 0, height: top ? '34%' : '48%', background: top ? 'linear-gradient(rgba(27,19,17,.55), rgba(27,19,17,0))' : 'linear-gradient(rgba(27,19,17,0), rgba(27,19,17,.85))' });
   return (
-    <section className="h5-section h5-tales" id="tales" aria-labelledby="h5-tales-title">
-      <div className="h5-head-row">
+    <section id="tales" aria-labelledby="h5-tales-title" style={{ position: 'relative', maxWidth: 1280, margin: '0 auto', padding: '64px 32px 24px' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'end', gap: 16, marginBottom: 28 }}>
         <div>
-          <p className="h5-new"><span className="h5-dot" aria-hidden="true" />{v('h5.copy.reels.label')}</p>
-          <h2 id="h5-tales-title" className="h5-h2"><Em text={v('h5.copy.reels.title')} /></h2>
-          <p className="h5-sub">{v('h5.copy.reels.sub')}</p>
+          <p style={{ margin: 0, display: 'inline-flex', alignItems: 'center', gap: 8, fontFamily: 'Arvo, Georgia, serif', fontSize: 12, color: '#611811', textTransform: 'uppercase' }}><span style={{ width: 8, height: 8, borderRadius: '50%', background: '#C23A36' }} />{v('h5.copy.reels.label')}</p>
+          <h2 id="h5-tales-title" style={{ margin: '8px 0 0', fontSize: 'clamp(40px, 4.4vw, 60px)', fontWeight: 500, lineHeight: 1 }}><Em text={v('h5.copy.reels.title')} color="#C23A36" /></h2>
+          <p style={{ margin: '8px 0 0', fontSize: 19, color: '#5C463C' }}>{v('h5.copy.reels.sub')}</p>
         </div>
-        <button type="button" className="h5-textlink" data-testid="button-all-tales" onClick={() => openAt(0)}>{v('h5.copy.reels.all')}</button>
+        <button type="button" data-testid="button-all-tales" onClick={() => openAt(0)} style={{ background: 'none', border: 0, padding: 0, cursor: 'pointer', fontFamily: 'Arvo, Georgia, serif', fontSize: 14, color: '#611811', textDecoration: 'underline' }}>{v('h5.copy.reels.all')}</button>
       </div>
-      <div className="h5-reels" data-testid="row-tales">
+      <div data-testid="row-tales" style={{ display: 'flex', gap: 18, overflowX: 'auto', padding: '8px 4px 24px' }}>
         {tales.map((t, i) => {
           const isSeen = seen.includes(t.id);
-          const [seenLabel, sampleLabel, sponsoredLabel, sampleSponsorLabel] = triple(v('h5.copy.reels.status'));
           return (
-            <button key={t.id} type="button" className={`h5-reel${isSeen ? ' is-seen' : ''}`} data-testid={`button-tale-${t.id}`}
-              aria-label={`${t.maker}: ${t.hook}${isSeen ? ' (seen)' : ''}`} onClick={() => openAt(i)}>
-              <img src={asset(t.image)} alt="" loading="lazy" />
-              <span className="h5-reel-bars" aria-hidden="true">{[0, 1, 2].map(b => <i key={b} />)}</span>
-              <span className="h5-reel-who"><span className="h5-avatar"><img src={asset(t.image)} alt="" /></span>{t.maker}{isSeen && <small>{seenLabel}</small>}</span>
-              <span className="h5-play" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5l11 7-11 7z" fill="#611811" /></svg></span>
-              <span className="h5-reel-hook">{t.hook}</span>
-              {t.sponsored ? <span className="h5-reel-flag">{t.sample ? sampleSponsorLabel || `${sampleLabel} · ${sponsoredLabel}` : sponsoredLabel}</span> : t.sample ? <span className="h5-reel-flag">{sampleLabel}</span> : null}
+            <button key={t.id} type="button" className="reel" data-testid={`button-tale-${t.id}`} aria-label={`${t.maker}: ${t.hook}${isSeen ? ` (${seenLabel})` : ''}`} onClick={() => openAt(i)}
+              style={{ position: 'relative', flex: '0 0 214px', aspectRatio: '9 / 16', borderRadius: 22, overflow: 'hidden', border: 0, padding: 0, cursor: 'pointer', textAlign: 'left', color: '#FFF8EC', background: '#2B1712', boxShadow: '0 20px 36px -22px rgba(43,23,18,.6)' }}>
+              <img src={asset(t.image)} alt="" loading="lazy" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+              <span style={grad(true)} /><span style={grad(false)} />
+              <span aria-hidden="true" style={{ position: 'absolute', left: 12, right: 12, top: 12, display: 'flex', gap: 4 }}>{[0, 1, 2].map(b => <span key={b} style={{ flex: 1, height: 3, borderRadius: 2, background: isSeen ? '#FFF8EC' : 'rgba(255,248,236,.4)' }} />)}</span>
+              <span style={{ position: 'absolute', left: 12, top: 26, display: 'flex', alignItems: 'center', gap: 8, fontFamily: 'Arvo, Georgia, serif', fontSize: 12 }}>
+                <span style={{ width: 32, height: 32, borderRadius: '50%', border: `2.5px solid ${isSeen ? '#B7A890' : '#C23A36'}`, padding: 2, boxSizing: 'border-box', background: '#F6F3DF' }}><img src={asset(t.image)} alt="" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover', display: 'block' }} /></span>
+                {t.maker}{isSeen ? ` · ${seenLabel}` : ''}
+              </span>
+              {t.sponsored ? <span style={{ position: 'absolute', left: 12, top: 66, fontFamily: 'Arvo, Georgia, serif', fontSize: 10, background: 'rgba(255,248,236,.9)', color: '#5C463C', padding: '2px 8px', borderRadius: 999 }}>{t.sample ? sampleSponsorLabel : sponsoredLabel}</span> : null}
+              <span aria-hidden="true" style={{ position: 'absolute', left: '50%', top: '46%', width: 54, height: 54, margin: '-27px 0 0 -27px', borderRadius: '50%', background: 'rgba(255,253,244,.92)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5l11 7-11 7z" fill="#611811" /></svg></span>
+              <span style={{ position: 'absolute', left: 14, right: 14, bottom: 16, fontSize: 21, lineHeight: 1.15 }}>{t.hook}</span>
             </button>
           );
         })}
