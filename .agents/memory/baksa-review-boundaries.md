@@ -26,6 +26,12 @@ Homepage v5 includes five mood compartments alongside the full quiz, and all buy
 
 **How to apply:** Keep homepage-specific content on `/`, retain the existing header/cart/wishlist/quiz, and preserve other page behavior. Keep the trunk and five objects independently replaceable. The owner rejected the drawn SVG replacement: “why did you change the box bro? please stick to the claude version”. Use the actual artwork from the Claude artifact; do not substitute another drawing. Do not publish or touch the live domain without permission.
 
+The owner supplied a direct visual comparison: `attached_assets/image_1794475997860.png` is the correct Claude V5 appearance; `attached_assets/image_1794475945449.png` shows the rejected substitute.
+
+**Why:** The owner reiterated that Claude V5 has a different image and wants a fully functional website and flows, not a redesigned visual approximation.
+
+**How to apply:** Match the correct screenshot's shallow embroidered trunk, brass fittings, painted objects, compact compartment proportions and horizontal edit-panel composition. The screenshot is visual evidence, not a replacement for independently editable artwork layers and real text.
+
 The owner reiterated: “make sure that the entire website design is as per Claude's design” and “not Replit.” Do not substitute template components, fonts, colours, icons or sections, or “improve” the approved design.
 
 **Why:** The owner repeated this as a firm instruction after the first frontend delivery.
