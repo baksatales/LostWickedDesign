@@ -10,9 +10,18 @@ and warm editorial luxury.
   this explicitly replaces the earlier rule against homepage mood discovery.
   Keep “Thoughtful One” as the registered mood name. All other approved pages
   remain unchanged apart from small navigation fixes.
-- The concept PNG and v5 canvas component were not present when implementation
-  began. Keep temporary trunk/object artwork separately replaceable, retain real
-  editable text, and do not claim exact comparison with an unavailable reference.
+- The exact V5 source is now attached in
+  `attached_assets/0_Homepage_v5_(compartment_baksa)-html_1794473724431.zip`.
+  Use its HTML values and original trunk/object assets, not the temporary SVGs.
+  Check source versus app at 1440px and 390px, retaining real editable text.
+  The homepage must remain faithful to that export, with only one discreet sample
+  note in the footer area: no temporary-art labels or extra demo badges/banners.
+- The owner has explicitly authorised a calmer, more complete dashboard design,
+  rather than an unchanged copy of the older dashboard screens: #FBF4EA pages,
+  ivory cards, #E8D9BE borders, #4A1020 EB Garamond headings, Arvo labels/numbers,
+  one meaningful accent per card and one thin coral block-print band at the top.
+  Maker phones use Today/Orders/Products/Earnings/More bottom tabs; admin phones
+  use a slide-out menu. This dashboard exception does not permit redesigning `/`.
 - The active frontend reproduces `reference/approved/baksa-tales-replit/designs/`,
   extracted from the user's approved ZIP. Do not redesign it or use the older
   storefront as the visual reference.

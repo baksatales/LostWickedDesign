@@ -32,6 +32,12 @@ The owner supplied a direct visual comparison: `attached_assets/image_1794475997
 
 **How to apply:** Match the correct screenshot's shallow embroidered trunk, brass fittings, painted objects, compact compartment proportions and horizontal edit-panel composition. The screenshot is visual evidence, not a replacement for independently editable artwork layers and real text.
 
+The homepage must match the exact V5 export; the owner now explicitly authorises calmer dashboard layouts and additional operational/account flows rather than copying the older dashboard layouts unchanged.
+
+**Why:** The owner separated exact “HOMEPAGE v5 FIDELITY” from “DASHBOARDS: PREMIUM, CLEAN AND COMPLETE” and supplied dashboard-specific visual and mobile-navigation requirements.
+
+**How to apply:** Follow the current dashboard guidance in `replit.md` for that explicit exception. Keep homepage fidelity strict, preserve security and business-rule authority, and do not treat the dashboard redesign permission as permission to restyle unrelated storefront pages.
+
 The owner reiterated: “make sure that the entire website design is as per Claude's design” and “not Replit.” Do not substitute template components, fonts, colours, icons or sections, or “improve” the approved design.
 
 **Why:** The owner repeated this as a firm instruction after the first frontend delivery.
