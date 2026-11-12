@@ -24,7 +24,7 @@ Homepage v5 includes five mood compartments alongside the full quiz, and all buy
 
 **Why:** The owner explicitly approved the compartment-baksa homepage and superseded the earlier instruction to omit “Start with a feeling” for this homepage element.
 
-**How to apply:** Limit this replacement to `/` and small link-wiring fixes. Preserve other pages and the current header/cart/wishlist/quiz. Keep the trunk and five objects independently replaceable; use labelled temporary SVG artwork until the supplied concept illustration arrives. Do not publish or touch the live domain without permission.
+**How to apply:** Limit this replacement to `/` and small link-wiring fixes. Preserve other pages and the current header/cart/wishlist/quiz. Keep the trunk and five objects independently replaceable. The owner subsequently rejected the drawn SVG replacement: “why did you change the box bro? please stick to the claude version”. Use Claude's actual approved box; if its source is missing, ask for it rather than inventing another substitute. Do not publish or touch the live domain without permission.
 
 The owner reiterated: “make sure that the entire website design is as per Claude's design” and “not Replit.” Do not substitute template components, fonts, colours, icons or sections, or “improve” the approved design.
 
