@@ -14,17 +14,17 @@ Preserve the supplied trunk logo and real product photographs. The proposed dire
 
 **How to apply:** Use the uploaded source materials as references, not proof of verified product claims or production readiness. Do not change the existing site, DNS or live services without explicit authorisation.
 
-The approved ZIP's `designs/` screens remain the visual source of truth except for `/`, which the owner replaced with “Homepage v5 (compartment baksa)”. Reproduce the approved references rather than redesigning them.
+The owner's shared Claude artifact is the visual source of truth for the Homepage v5 and dashboard design work: https://claude.ai/artifact/VbAHvA8pdxTeL6jFS2VboY#page-d47805f2a521. Use its matching page frames rather than substituting the ZIP's older storefront designs when they differ.
 
-**Why:** The user explicitly instructed: “Preserve the layouts, colours, typography, spacing, images, content and navigation. Do not redesign it.” They clarified that the existing storefront is not the reference where it differs from the ZIP.
+**Why:** The owner clarified that the pages are all from the same Claude Figma and explicitly said not to alter them to match Replit's look.
 
-**How to apply:** Compare implementation against the ZIP's final HTML screens at desktop and 390px. Earlier aesthetic preferences in this document do not override the approved screens. Keep placeholders unchanged and label prototype counts and figures as sample data.
+**How to apply:** Compare each implementation with its corresponding Claude frame at desktop and phone widths. Preserve exact page-specific layouts, colours, typography, spacing, imagery, wording and navigation. Do not replace an unavailable frame with a newly invented design; report the source gap instead.
 
 Homepage v5 includes five mood compartments alongside the full quiz, and all buyer-facing homepage text, images and product picks must be editable through Site Studio. Use exactly “Thoughtful One”, not “Thoughtful Planner”.
 
 **Why:** The owner explicitly approved the compartment-baksa homepage and superseded the earlier instruction to omit “Start with a feeling” for this homepage element.
 
-**How to apply:** Limit this replacement to `/` and small link-wiring fixes. Preserve other pages and the current header/cart/wishlist/quiz. Keep the trunk and five objects independently replaceable. The owner subsequently rejected the drawn SVG replacement: “why did you change the box bro? please stick to the claude version”. Use Claude's actual approved box; if its source is missing, ask for it rather than inventing another substitute. Do not publish or touch the live domain without permission.
+**How to apply:** Keep homepage-specific content on `/`, retain the existing header/cart/wishlist/quiz, and preserve other page behavior. Keep the trunk and five objects independently replaceable. The owner rejected the drawn SVG replacement: “why did you change the box bro? please stick to the claude version”. Use the actual artwork from the Claude artifact; do not substitute another drawing. Do not publish or touch the live domain without permission.
 
 The owner reiterated: “make sure that the entire website design is as per Claude's design” and “not Replit.” Do not substitute template components, fonts, colours, icons or sections, or “improve” the approved design.
 
