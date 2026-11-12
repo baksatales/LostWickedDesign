@@ -54,6 +54,7 @@ Thumbs.db
 .cache/
 .local/
 /generated-artifacts/
+/artifacts/baksa-tales/generated-artifacts/
 
 # Local credentials must never be committed.
 .env
