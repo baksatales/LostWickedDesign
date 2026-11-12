@@ -7,6 +7,7 @@
     "test": "node --test tests/analytics.test.mjs && vitest run",
     "test:browser": "cd ../.. && node artifacts/baksa-tales/tests/approved-browser.mjs",
     "test:visual": "cd ../.. && node artifacts/baksa-tales/tests/approved-visual.mjs",
+    "test:sales": "cd ../.. && node artifacts/baksa-tales/tests/sales-browser.mjs",
     "dev": "vite --config vite.config.ts --host 0.0.0.0",
     "build": "vite build --config vite.config.ts",
     "serve": "vite preview --config vite.config.ts --host 0.0.0.0",

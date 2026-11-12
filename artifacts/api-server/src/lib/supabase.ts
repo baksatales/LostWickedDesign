@@ -22,6 +22,14 @@ export function connectionConfigurationStatus() {
   const { keyValid, urlValid } = configuredValues();
   return { keyValid, urlValid };
 }
+/** A connection key is not migration authorization. Bind opt-in to the exact
+ * development project so changing SUPABASE_URL cannot silently authorize another. */
+export function salesDevelopmentAuthorized() {
+  const { url, keyValid, urlValid } = configuredValues();
+  const ref = process.env.BAKSA_AUTHORIZED_DEV_PROJECT_REF?.trim();
+  if (process.env.BAKSA_SALES_ENVIRONMENT !== "development" || !ref || !keyValid || !urlValid) return false;
+  try { return new URL(url).hostname === `${ref}.supabase.co`; } catch { return false; }
+}
 export function publicConfig() {
   const { url, anon, keyValid, urlValid } = configuredValues();
   if (!keyValid || !urlValid) return { url: "", anon: "" };

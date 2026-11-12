@@ -6,6 +6,7 @@ import siteRouter from "./site";
 import operationsRouter from "./operations";
 import editorialAssistRouter from "./editorial-assist";
 import sampleAccountsRouter from "./sample-accounts";
+import salesRouter from "./sales";
 
 const router: IRouter = Router();
 
@@ -16,5 +17,6 @@ router.use(siteRouter);
 router.use(operationsRouter);
 router.use(editorialAssistRouter);
 router.use(sampleAccountsRouter);
+router.use(salesRouter);
 
 export default router;

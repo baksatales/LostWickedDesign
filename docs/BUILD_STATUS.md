@@ -2,6 +2,43 @@
 
 ## Current handover — 12 November 2026
 
+### Sales MVP increment — still in progress, not ready for real sales
+
+- Prepared `008_sales_mvp.sql`, **not applied remotely**: explicit real-listing
+  approvals, authoritative quotes, atomic/repeat-safe inventory reservations,
+  cancellation/expiry handling and immutable order address/financial snapshots.
+- Added conservative sales-readiness and gated development sales APIs. Existing
+  Supabase keys do not authorize a project: the development opt-in must match the
+  exact project reference. No opt-in was configured here.
+- Added real-account `/admin/launch` and `/admin/operations`, with order search,
+  recipient/gift-note display and manual packing/tracking/delivery updates.
+  They reject sample sessions and require the verified admin role. Payment and
+  refund statuses remain read-only; no courier, refund or payout is initiated.
+- The active storefront **still uses the isolated sample catalog and checkout**.
+  The real catalog/identity/address/payment UI bridge is not finished.
+  Sample confirmation copy now explicitly says nothing will be shipped.
+- No payment provider is connected. The real checkout endpoint stays disabled
+  and does not create a reservation/order or charge.
+- New local tests: **12 PostgreSQL transaction tests + 8 API tests + 1 exact-project
+  configuration test passed**. The full backend run passed all 110 pre-existing
+  tests; one new disabled-checkout response test initially failed, was fixed,
+  and the affected 9-test API/config group passed on rerun.
+- Frontend: **73 Vitest + 6 analytics checks passed**, retained **39/39 browser
+  checks passed**, and **6/6 new sales browser checks passed**. The first sales
+  browser pass found a status-label accessibility issue and mobile overflow;
+  both were corrected. New operator browser tests use isolated Auth/API fixtures,
+  not real hosted accounts.
+- Owner/developer prerequisites: authorize the specific development project and
+  reviewed migration, confirm the verified operator and real launch catalog,
+  configure shipping, select a payment provider, finish real checkout wiring,
+  verify hosted RLS/concurrency and provider sandbox notifications/refunds.
+  See `docs/SALES_MVP_HANDOVER.md` for the exact remaining boundary.
+
+No production data, publishing, live-domain changes, remote migrations, role
+grants or real payments were performed in this increment. The two-week release
+is conditional on setup and acceptance; the full premium-dashboard backlog and
+nonessential integrations are outside its critical path.
+
 ### Completed in the visual alignment pass
 
 - `/` now uses the approved V5 export's actual embroidered trunk, five separate

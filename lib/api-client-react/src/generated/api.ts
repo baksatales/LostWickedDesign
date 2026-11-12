@@ -43,6 +43,12 @@ import type {
   Receipt,
   ReviewInput,
   Runtime,
+  SalesFulfilmentInput,
+  SalesOrders,
+  SalesQuote,
+  SalesQuoteInput,
+  SalesReadiness,
+  SalesUnavailable,
   SampleAddressInput,
   SampleAdminAcademyCsvInput,
   SampleAdminAcademyImportResponse,
@@ -135,6 +141,443 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   }
   return result;
 };
+
+export const getGetSalesReadinessUrl = () => {
+
+
+
+
+  return `/api/sales/readiness`
+}
+
+export const getSalesReadiness = async ( options?: Parameters<typeof customFetch>[1]): Promise<SalesReadiness> => {
+
+  return customFetch<SalesReadiness>(getGetSalesReadinessUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSalesReadinessQueryKey = () => {
+    return [
+    `/api/sales/readiness`
+    ] as const;
+    }
+
+
+export const getGetSalesReadinessQueryOptions = <TData = Awaited<ReturnType<typeof getSalesReadiness>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSalesReadiness>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSalesReadinessQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSalesReadiness>>> = ({ signal }) => getSalesReadiness({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSalesReadiness>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSalesReadinessQueryResult = NonNullable<Awaited<ReturnType<typeof getSalesReadiness>>>
+export type GetSalesReadinessQueryError = ErrorType<unknown>
+
+
+export function useGetSalesReadiness<TData = Awaited<ReturnType<typeof getSalesReadiness>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSalesReadiness>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSalesReadiness>>,
+          TError,
+          Awaited<ReturnType<typeof getSalesReadiness>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSalesReadiness<TData = Awaited<ReturnType<typeof getSalesReadiness>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSalesReadiness>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSalesReadiness>>,
+          TError,
+          Awaited<ReturnType<typeof getSalesReadiness>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSalesReadiness<TData = Awaited<ReturnType<typeof getSalesReadiness>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSalesReadiness>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetSalesReadiness<TData = Awaited<ReturnType<typeof getSalesReadiness>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSalesReadiness>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSalesReadinessQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getQuoteSalesOrderUrl = () => {
+
+
+
+
+  return `/api/sales/quote`
+}
+
+export const quoteSalesOrder = async (salesQuoteInput: SalesQuoteInput, options?: Parameters<typeof customFetch>[1]): Promise<SalesQuote> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<SalesQuote>(getQuoteSalesOrderUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(salesQuoteInput)
+  }
+);}
+
+
+
+
+
+export const getQuoteSalesOrderMutationKey = () => ['quoteSalesOrder'] as const;
+
+export const getQuoteSalesOrderMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof quoteSalesOrder>>, TError,QuoteSalesOrderMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof quoteSalesOrder>>, TError,QuoteSalesOrderMutationVariables, TContext> => {
+
+const mutationKey = getQuoteSalesOrderMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof quoteSalesOrder>>, QuoteSalesOrderMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  quoteSalesOrder(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type QuoteSalesOrderMutationResult = NonNullable<Awaited<ReturnType<typeof quoteSalesOrder>>>
+    export type QuoteSalesOrderMutationBody = BodyType<SalesQuoteInput>
+    export type QuoteSalesOrderMutationError = ErrorType<unknown>
+    export type QuoteSalesOrderMutationVariables = {data: BodyType<SalesQuoteInput>}
+
+    export const useQuoteSalesOrder = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof quoteSalesOrder>>, TError,QuoteSalesOrderMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof quoteSalesOrder>>,
+        TError,
+        QuoteSalesOrderMutationVariables,
+        TContext
+      > => {
+      return useMutation(getQuoteSalesOrderMutationOptions(options), queryClient);
+    }
+
+export const getStartSalesCheckoutUrl = () => {
+
+
+
+
+  return `/api/sales/checkouts`
+}
+
+export const startSalesCheckout = async (salesQuoteInput: SalesQuoteInput, options?: Parameters<typeof customFetch>[1]): Promise<unknown> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<unknown>(getStartSalesCheckoutUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(salesQuoteInput)
+  }
+);}
+
+
+
+
+
+export const getStartSalesCheckoutMutationKey = () => ['startSalesCheckout'] as const;
+
+export const getStartSalesCheckoutMutationOptions = <TError = ErrorType<SalesUnavailable>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof startSalesCheckout>>, TError,StartSalesCheckoutMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof startSalesCheckout>>, TError,StartSalesCheckoutMutationVariables, TContext> => {
+
+const mutationKey = getStartSalesCheckoutMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof startSalesCheckout>>, StartSalesCheckoutMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  startSalesCheckout(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type StartSalesCheckoutMutationResult = NonNullable<Awaited<ReturnType<typeof startSalesCheckout>>>
+    export type StartSalesCheckoutMutationBody = BodyType<SalesQuoteInput>
+    export type StartSalesCheckoutMutationError = ErrorType<SalesUnavailable>
+    export type StartSalesCheckoutMutationVariables = {data: BodyType<SalesQuoteInput>}
+
+    export const useStartSalesCheckout = <TError = ErrorType<SalesUnavailable>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof startSalesCheckout>>, TError,StartSalesCheckoutMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof startSalesCheckout>>,
+        TError,
+        StartSalesCheckoutMutationVariables,
+        TContext
+      > => {
+      return useMutation(getStartSalesCheckoutMutationOptions(options), queryClient);
+    }
+
+export const getGetSalesOrdersUrl = () => {
+
+
+
+
+  return `/api/sales/operator/orders`
+}
+
+export const getSalesOrders = async ( options?: Parameters<typeof customFetch>[1]): Promise<SalesOrders> => {
+
+  return customFetch<SalesOrders>(getGetSalesOrdersUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSalesOrdersQueryKey = () => {
+    return [
+    `/api/sales/operator/orders`
+    ] as const;
+    }
+
+
+export const getGetSalesOrdersQueryOptions = <TData = Awaited<ReturnType<typeof getSalesOrders>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSalesOrders>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSalesOrdersQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSalesOrders>>> = ({ signal }) => getSalesOrders({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSalesOrders>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSalesOrdersQueryResult = NonNullable<Awaited<ReturnType<typeof getSalesOrders>>>
+export type GetSalesOrdersQueryError = ErrorType<unknown>
+
+
+export function useGetSalesOrders<TData = Awaited<ReturnType<typeof getSalesOrders>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSalesOrders>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSalesOrders>>,
+          TError,
+          Awaited<ReturnType<typeof getSalesOrders>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSalesOrders<TData = Awaited<ReturnType<typeof getSalesOrders>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSalesOrders>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSalesOrders>>,
+          TError,
+          Awaited<ReturnType<typeof getSalesOrders>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSalesOrders<TData = Awaited<ReturnType<typeof getSalesOrders>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSalesOrders>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetSalesOrders<TData = Awaited<ReturnType<typeof getSalesOrders>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSalesOrders>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSalesOrdersQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateSalesOrderUrl = (id: string,) => {
+
+
+
+
+  return `/api/sales/operator/orders/${id}`
+}
+
+export const updateSalesOrder = async (id: string,
+    salesFulfilmentInput: SalesFulfilmentInput, options?: Parameters<typeof customFetch>[1]): Promise<Receipt> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<Receipt>(getUpdateSalesOrderUrl(id),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(salesFulfilmentInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateSalesOrderMutationKey = () => ['updateSalesOrder'] as const;
+
+export const getUpdateSalesOrderMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateSalesOrder>>, TError,UpdateSalesOrderMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateSalesOrder>>, TError,UpdateSalesOrderMutationVariables, TContext> => {
+
+const mutationKey = getUpdateSalesOrderMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateSalesOrder>>, UpdateSalesOrderMutationVariables> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateSalesOrder(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateSalesOrderMutationResult = NonNullable<Awaited<ReturnType<typeof updateSalesOrder>>>
+    export type UpdateSalesOrderMutationBody = BodyType<SalesFulfilmentInput>
+    export type UpdateSalesOrderMutationError = ErrorType<unknown>
+    export type UpdateSalesOrderMutationVariables = {id: string;data: BodyType<SalesFulfilmentInput>}
+
+    export const useUpdateSalesOrder = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateSalesOrder>>, TError,UpdateSalesOrderMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof updateSalesOrder>>,
+        TError,
+        UpdateSalesOrderMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateSalesOrderMutationOptions(options), queryClient);
+    }
 
 export const getDraftEditorialUrl = () => {
 

@@ -125,7 +125,7 @@ export function hydrateCheckout(ctx: Ctx) {
     if (step === 'address') {
       panel.innerHTML = addressHTML;
       const a = s.checkout.address;
-      const p = $(panel, 'p'); if (p) p.textContent = `Signed in as ${formatPhone(s.checkout.phone!)}. We’ll send delivery updates here.`;
+       const p = $(panel, 'p'); if (p) p.textContent = `Sample number: ${formatPhone(s.checkout.phone!)}. No SMS, delivery updates or real account sign-in.`;
       const ids: [keyof Address, string][] = [['pin', 'c1'], ['house', 'c2'], ['road', 'c3'], ['name', 'c4'], ['phone', 'c5']];
       ids.forEach(([k, id]) => { const el = $<HTMLInputElement>(panel, `#${id}`)!; el.value = String(a[k]); tid(el, `input-address-${k}`); });
       const [def, gift] = $$<HTMLInputElement>(panel, 'input[type="checkbox"]');
@@ -233,7 +233,7 @@ export function hydrateCheckout(ctx: Ctx) {
     const o = s.checkout.lastOrder!;
     panel.innerHTML = `<h1 style="${S.h1}">Thank you, <em style="color: #C23A36">${esc(o.address.name.split(' ')[0])}.</em></h1>
       <p style="${S.p}" data-testid="text-order-ref">Sample order ${o.ref} was saved. No payment was collected. This is not a real purchase. The sample account can show its order history.${o.couponCode ? ` Coupon ${o.couponCode} saved you ${formatINR(o.discountPaise)}.` : ''}</p>
-    <div style="${S.card}"><p style="grid-column: 1 / -1; margin: 0; font-size: 19px">Each maker packs their piece by hand and adds tracking when it leaves the workshop.</p>
+    <div style="${S.card}"><p style="grid-column: 1 / -1; margin: 0; font-size: 19px">This sample walkthrough ends here. No maker received a real order and nothing will be shipped.</p>
     <p style="grid-column: 1 / -1; margin: 0; font-size: 17px; color: #5C463C">Delivering to ${esc(o.address.name)}, ${esc(o.address.house)}, ${esc(o.address.road)}, ${esc(stateFromPincode(o.address.pin) ?? '')} ${esc(o.address.pin)}.</p></div>
     <a href="#shop" data-testid="button-keep-shopping" style="${S.btn}; display: inline-flex; align-items: center; text-decoration: none">Keep browsing the Edit</a>`;
     $(panel, 'a')!.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); update(st => ({ ...st, checkout: { ...st.checkout, step: 'address', lastOrder: null } })); ctx.navigate('/shop'); });

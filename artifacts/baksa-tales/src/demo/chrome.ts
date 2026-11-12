@@ -52,6 +52,16 @@ export function hydrateChrome(ctx: Ctx, kind: 'store' | 'maker' | 'admin' | 'non
     sidebarActive(root, ctx.path);
     const aside = $(root, 'aside');
     const nav = aside && $(aside, 'nav');
+    if (kind === 'admin' && nav && !nav.querySelector('[data-route="/admin/launch"]')) {
+      const templateLink = nav.querySelector('a');
+      if (templateLink) {
+        const link = templateLink.cloneNode(true) as HTMLAnchorElement;
+        link.textContent = 'Launch checks · real account';
+        link.setAttribute('href', routeHref('/admin/launch'));
+        link.setAttribute('data-route', '/admin/launch');
+        nav.appendChild(link);
+      }
+    }
     if (kind === 'admin' && nav && !$$<HTMLAnchorElement>(nav, 'a').some(link => norm(link.textContent) === 'Coupons')) {
       const templateLink = $$<HTMLAnchorElement>(nav, 'a').find(link => norm(link.textContent) === 'Academy')
         ?? $$<HTMLAnchorElement>(nav, 'a').at(-1);

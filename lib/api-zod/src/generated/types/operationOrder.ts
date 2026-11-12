@@ -15,4 +15,11 @@ export interface OperationOrder {
   createdAt: string;
   trackingNumber: string;
   carrier: string;
+  giftNote?: string;
+  productName?: string;
+  quantity?: number;
+  deliveryName?: string;
+  deliveryAddress?: string;
+  deliveryPhone?: string;
+  issueNote?: string;
 }

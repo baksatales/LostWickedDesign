@@ -8,6 +8,121 @@
 import * as zod from 'zod';
 
 
+export const getSalesReadinessResponseApprovedProductsMin = 0;
+
+
+
+export const GetSalesReadinessResponse = zod.object({
+  "checkoutEnabled": zod.boolean(),
+  "developmentAuthorized": zod.boolean(),
+  "schemaReady": zod.boolean(),
+  "approvedProducts": zod.number().int().min(getSalesReadinessResponseApprovedProductsMin),
+  "provider": zod.enum(['not_connected']),
+  "blockers": zod.array(zod.string())
+})
+
+
+export const quoteSalesOrderBodyLinesItemQuantityMax = 50;
+
+export const quoteSalesOrderBodyLinesMax = 50;
+
+
+
+export const QuoteSalesOrderBody = zod.object({
+  "addressId": zod.string().uuid(),
+  "lines": zod.array(zod.object({
+  "productId": zod.string().uuid(),
+  "quantity": zod.number().int().min(1).max(quoteSalesOrderBodyLinesItemQuantityMax)
+})).min(1).max(quoteSalesOrderBodyLinesMax)
+})
+
+export const quoteSalesOrderResponseItemsPaiseMin = 0;
+
+export const quoteSalesOrderResponseShippingPaiseMin = 0;
+
+export const quoteSalesOrderResponseTotalPaiseMin = 0;
+
+
+
+export const QuoteSalesOrderResponse = zod.object({
+  "itemsPaise": zod.number().int().min(quoteSalesOrderResponseItemsPaiseMin),
+  "shippingPaise": zod.number().int().min(quoteSalesOrderResponseShippingPaiseMin),
+  "totalPaise": zod.number().int().min(quoteSalesOrderResponseTotalPaiseMin),
+  "lines": zod.array(zod.object({
+  "productId": zod.string(),
+  "makerId": zod.string(),
+  "name": zod.string(),
+  "quantity": zod.number().int(),
+  "unitPricePaise": zod.number().int(),
+  "amountPaise": zod.number().int()
+}))
+})
+
+
+export const startSalesCheckoutBodyLinesItemQuantityMax = 50;
+
+export const startSalesCheckoutBodyLinesMax = 50;
+
+
+
+export const StartSalesCheckoutBody = zod.object({
+  "addressId": zod.string().uuid(),
+  "lines": zod.array(zod.object({
+  "productId": zod.string().uuid(),
+  "quantity": zod.number().int().min(1).max(startSalesCheckoutBodyLinesItemQuantityMax)
+})).min(1).max(startSalesCheckoutBodyLinesMax)
+})
+
+export const StartSalesCheckoutResponse = zod.void()
+
+
+export const GetSalesOrdersResponse = zod.object({
+  "environment": zod.enum(['development']),
+  "orders": zod.array(zod.object({
+  "id": zod.string(),
+  "ref": zod.string(),
+  "status": zod.string(),
+  "paymentStatus": zod.string(),
+  "totalPaise": zod.number().int(),
+  "createdAt": zod.string(),
+  "trackingNumber": zod.string(),
+  "carrier": zod.string(),
+  "giftNote": zod.string().optional(),
+  "productName": zod.string().optional(),
+  "quantity": zod.number().int().optional(),
+  "deliveryName": zod.string().optional(),
+  "deliveryAddress": zod.string().optional(),
+  "deliveryPhone": zod.string().optional(),
+  "issueNote": zod.string().optional()
+}))
+})
+
+
+export const UpdateSalesOrderParams = zod.object({
+  "id": zod.coerce.string().uuid()
+})
+
+export const updateSalesOrderBodyTrackingNumberMax = 120;
+
+export const updateSalesOrderBodyCarrierMax = 100;
+
+export const updateSalesOrderBodyNoteMax = 1000;
+
+
+
+export const UpdateSalesOrderBody = zod.object({
+  "status": zod.enum(['packed', 'dispatched', 'delivered', 'delayed', 'problem']),
+  "trackingNumber": zod.string().max(updateSalesOrderBodyTrackingNumberMax),
+  "carrier": zod.string().max(updateSalesOrderBodyCarrierMax),
+  "note": zod.string().max(updateSalesOrderBodyNoteMax)
+})
+
+export const UpdateSalesOrderResponse = zod.object({
+  "id": zod.string(),
+  "message": zod.string()
+})
+
+
 export const draftEditorialBodyTaskDefault = `draft`;
 export const draftEditorialBodyFactsMin = 20;
 export const draftEditorialBodyFactsMax = 8000;
@@ -1500,7 +1615,14 @@ export const GetOperationsResponse = zod.object({
   "totalPaise": zod.number().int(),
   "createdAt": zod.string(),
   "trackingNumber": zod.string(),
-  "carrier": zod.string()
+  "carrier": zod.string(),
+  "giftNote": zod.string().optional(),
+  "productName": zod.string().optional(),
+  "quantity": zod.number().int().optional(),
+  "deliveryName": zod.string().optional(),
+  "deliveryAddress": zod.string().optional(),
+  "deliveryPhone": zod.string().optional(),
+  "issueNote": zod.string().optional()
 })),
   "applications": zod.array(zod.object({
   "id": zod.string(),

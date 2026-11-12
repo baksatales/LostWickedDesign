@@ -1,0 +1,17 @@
+/* Scope layout fixes to launch operations; never restyle the approved storefront. */
+.bk-dashboard:has([data-testid="sales-order-operations"]) > aside,
+.bk-dashboard:has([data-testid="sales-launch-checks"]) > aside,
+.bk-dashboard:has([data-testid="sales-order-operations"]) > section,
+.bk-dashboard:has([data-testid="sales-launch-checks"]) > section {
+  min-width: 0;
+}
+[data-testid="sales-order-operations"],
+[data-testid="sales-launch-checks"] {
+  overflow-wrap: anywhere;
+}
+[data-testid="sales-order-operations"] input,
+[data-testid="sales-order-operations"] textarea,
+[data-testid="sales-order-operations"] select {
+  min-width: 0;
+  max-width: 100%;
+}

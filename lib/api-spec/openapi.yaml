@@ -11,6 +11,68 @@ tags:
   - name: health
     description: Health operations
 paths:
+  /sales/readiness:
+    get:
+      operationId: getSalesReadiness
+      responses:
+        "200":
+          description: Conservative launch checks, never a payment authorization.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SalesReadiness" }
+  /sales/quote:
+    post:
+      operationId: quoteSalesOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SalesQuoteInput" }
+      responses:
+        "200":
+          description: Server-priced development quote. No order, reservation or charge.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SalesQuote" }
+  /sales/checkouts:
+    post:
+      operationId: startSalesCheckout
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SalesQuoteInput" }
+      responses:
+        "503":
+          description: Payment provider not selected; no order or charge created.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SalesUnavailable" }
+  /sales/operator/orders:
+    get:
+      operationId: getSalesOrders
+      responses:
+        "200":
+          description: Authenticated admin order feed in the authorized development project.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SalesOrders" }
+  /sales/operator/orders/{id}:
+    patch:
+      operationId: updateSalesOrder
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SalesFulfilmentInput" }
+      responses:
+        "200":
+          description: Fulfilment event recorded; no payment, refund or courier action.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Receipt" }
   /editorial/assist:
     post:
       operationId: draftEditorial
@@ -931,6 +993,71 @@ paths:
                 $ref: "#/components/schemas/HealthStatus"
 components:
   schemas:
+    SalesReadiness:
+      type: object
+      required: [checkoutEnabled, developmentAuthorized, schemaReady, approvedProducts, provider, blockers]
+      properties:
+        checkoutEnabled: { type: boolean }
+        developmentAuthorized: { type: boolean }
+        schemaReady: { type: boolean }
+        approvedProducts: { type: integer, minimum: 0 }
+        provider: { type: string, enum: [not_connected] }
+        blockers: { type: array, items: { type: string } }
+    SalesQuoteInput:
+      type: object
+      required: [addressId, lines]
+      additionalProperties: false
+      properties:
+        addressId: { type: string, format: uuid }
+        lines:
+          type: array
+          minItems: 1
+          maxItems: 50
+          items: { $ref: "#/components/schemas/SalesLineInput" }
+    SalesLineInput:
+      type: object
+      required: [productId, quantity]
+      additionalProperties: false
+      properties:
+        productId: { type: string, format: uuid }
+        quantity: { type: integer, minimum: 1, maximum: 50 }
+    SalesQuote:
+      type: object
+      required: [itemsPaise, shippingPaise, totalPaise, lines]
+      properties:
+        itemsPaise: { type: integer, minimum: 0 }
+        shippingPaise: { type: integer, minimum: 0 }
+        totalPaise: { type: integer, minimum: 0 }
+        lines: { type: array, items: { $ref: "#/components/schemas/SalesQuoteLine" } }
+    SalesQuoteLine:
+      type: object
+      required: [productId, makerId, name, quantity, unitPricePaise, amountPaise]
+      properties:
+        productId: { type: string }
+        makerId: { type: string }
+        name: { type: string }
+        quantity: { type: integer }
+        unitPricePaise: { type: integer }
+        amountPaise: { type: integer }
+    SalesUnavailable:
+      type: object
+      required: [error]
+      properties:
+        error: { type: string }
+    SalesOrders:
+      type: object
+      required: [environment, orders]
+      properties:
+        environment: { type: string, enum: [development] }
+        orders: { type: array, items: { $ref: "#/components/schemas/OperationOrder" } }
+    SalesFulfilmentInput:
+      type: object
+      required: [status, trackingNumber, carrier, note]
+      properties:
+        status: { type: string, enum: [packed, dispatched, delivered, delayed, problem] }
+        trackingNumber: { type: string, maxLength: 120 }
+        carrier: { type: string, maxLength: 100 }
+        note: { type: string, maxLength: 1000 }
     EditorialInput:
       type: object
       additionalProperties: false
@@ -1129,6 +1256,13 @@ components:
         createdAt: { type: string }
         trackingNumber: { type: string }
         carrier: { type: string }
+        giftNote: { type: string }
+        productName: { type: string }
+        quantity: { type: integer }
+        deliveryName: { type: string }
+        deliveryAddress: { type: string }
+        deliveryPhone: { type: string }
+        issueNote: { type: string }
     OperationApplication:
       type: object
       required: [id, brand, contactName, craft, city, status]

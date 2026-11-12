@@ -109,3 +109,9 @@ Makers should enter payout account details through provider-hosted onboarding; t
 **Why:** The owner chose bank payouts with provider-hosted onboarding, then said makers would add their details themselves.
 
 **How to apply:** Do not add raw account-number or IFSC fields to browser storage or the marketplace database, and do not initiate transfers until the provider is selected and configured.
+
+For the first sales release, prioritize the safe purchase path and minimal manual order operations; defer the broad premium-dashboard backlog and nonessential integrations.
+
+**Why:** The owner explicitly chose “Two-week sales MVP” instead of keeping every dashboard feature in the launch scope.
+
+**How to apply:** Preserve the approved V5 storefront. Treat two weeks as a conditional target, not a guarantee or permission to publish. Require real approved catalog data, authorized database setup and verified payment behavior before enabling actual purchases.

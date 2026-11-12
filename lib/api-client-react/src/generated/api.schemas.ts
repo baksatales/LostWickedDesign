@@ -5,6 +5,115 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
+export type SalesReadinessProvider = typeof SalesReadinessProvider[keyof typeof SalesReadinessProvider];
+
+
+export const SalesReadinessProvider = {
+  not_connected: 'not_connected',
+} as const;
+
+export interface SalesReadiness {
+  checkoutEnabled: boolean;
+  developmentAuthorized: boolean;
+  schemaReady: boolean;
+  /** @minimum 0 */
+  approvedProducts: number;
+  provider: SalesReadinessProvider;
+  blockers: string[];
+}
+
+export interface SalesLineInput {
+  productId: string;
+  /**
+     * @minimum 1
+     * @maximum 50
+     */
+  quantity: number;
+}
+
+export interface SalesQuoteInput {
+  addressId: string;
+  /**
+     * @minItems 1
+     * @maxItems 50
+     */
+  lines: SalesLineInput[];
+}
+
+export interface SalesQuoteLine {
+  productId: string;
+  makerId: string;
+  name: string;
+  quantity: number;
+  unitPricePaise: number;
+  amountPaise: number;
+}
+
+export interface SalesQuote {
+  /** @minimum 0 */
+  itemsPaise: number;
+  /** @minimum 0 */
+  shippingPaise: number;
+  /** @minimum 0 */
+  totalPaise: number;
+  lines: SalesQuoteLine[];
+}
+
+export interface SalesUnavailable {
+  error: string;
+}
+
+export type SalesOrdersEnvironment = typeof SalesOrdersEnvironment[keyof typeof SalesOrdersEnvironment];
+
+
+export const SalesOrdersEnvironment = {
+  development: 'development',
+} as const;
+
+export interface OperationOrder {
+  id: string;
+  ref: string;
+  status: string;
+  paymentStatus: string;
+  totalPaise: number;
+  createdAt: string;
+  trackingNumber: string;
+  carrier: string;
+  giftNote?: string;
+  productName?: string;
+  quantity?: number;
+  deliveryName?: string;
+  deliveryAddress?: string;
+  deliveryPhone?: string;
+  issueNote?: string;
+}
+
+export interface SalesOrders {
+  environment: SalesOrdersEnvironment;
+  orders: OperationOrder[];
+}
+
+export type SalesFulfilmentInputStatus = typeof SalesFulfilmentInputStatus[keyof typeof SalesFulfilmentInputStatus];
+
+
+export const SalesFulfilmentInputStatus = {
+  packed: 'packed',
+  dispatched: 'dispatched',
+  delivered: 'delivered',
+  delayed: 'delayed',
+  problem: 'problem',
+} as const;
+
+export interface SalesFulfilmentInput {
+  status: SalesFulfilmentInputStatus;
+  /** @maxLength 120 */
+  trackingNumber: string;
+  /** @maxLength 100 */
+  carrier: string;
+  /** @maxLength 1000 */
+  note: string;
+}
+
 export type EditorialInputTask = typeof EditorialInputTask[keyof typeof EditorialInputTask];
 
 
@@ -353,17 +462,6 @@ export interface SiteRestoreInput {
   expectedRevision: number;
   /** @minimum 1 */
   versionId: number;
-}
-
-export interface OperationOrder {
-  id: string;
-  ref: string;
-  status: string;
-  paymentStatus: string;
-  totalPaise: number;
-  createdAt: string;
-  trackingNumber: string;
-  carrier: string;
 }
 
 export interface OperationApplication {
