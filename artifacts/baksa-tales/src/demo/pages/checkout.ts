@@ -1,9 +1,14 @@
 import { $, $$, type Ctx, esc, fieldError, setStyle, styleOf, tid } from '../dom';
 import {
-  PAYMENT_LABEL, bagLines, bagTotals, formatINR, formatPhone, getState, imgUrl, normalisePhone, placeOrder, setBagQty, signIn,
+  PAYMENT_LABEL, bagLines, bagTotals, formatINR, formatPhone, getState, imgUrl, normalisePhone, setBagQty, signIn,
   subscribe, update, validateAddress, validateCode, validatePhone, type Address, type DemoState,
 } from '../store';
 import { stateFromPincode } from '../domain';
+import { SAMPLE_SESSION_KEY } from '../SampleAccount';
+
+interface SampleSessionResponse { token: string; role: string; displayName: string }
+interface SampleCheckoutResponse { sample: true; orderId: string; reference: string; itemsPaise: number; discountPaise: number; couponCode: string | null; shippingPaise: number; totalPaise: number; message: string }
+const CHECKOUT_KEY = 'baksa-sample-checkout-idempotency';
 
 export function hydrateCheckout(ctx: Ctx) {
   const { root } = ctx;
@@ -26,6 +31,7 @@ export function hydrateCheckout(ctx: Ctx) {
   Array.from(aside.children).slice(1, -1).forEach(row => row.remove());
   tid(aside, 'checkout-summary');
   let codeSentFor: string | null = null;
+  let couponCodeDraft = '';
 
   const paintSteps = (idx: number) => steps.forEach((li, i) => {
     const sp = li.firstElementChild as HTMLElement;
@@ -59,11 +65,19 @@ export function hydrateCheckout(ctx: Ctx) {
       r.innerHTML = 'Your bag is empty. <a href="#shop">Browse the Edit</a>';
       totals.insertAdjacentElement('beforebegin', r);
     }
+    totals.querySelector('[data-coupon-row]')?.remove();
     const vals = $$(totals, ':scope > div > span:last-child');
     vals[0].textContent = formatINR(t.itemsPaise);
     vals[1].textContent = t.shippingPaise ? formatINR(t.shippingPaise) : 'Free';
     vals[1].style.color = t.shippingPaise ? '#2B1712' : '#2C4640';
     vals[2].textContent = formatINR(t.totalPaise);
+    if (done && s.checkout.lastOrder!.discountPaise > 0) {
+      const row = document.createElement('div');
+      row.setAttribute('data-coupon-row', '');
+      row.setAttribute('style', 'display:flex;justify-content:space-between;color:#2C4640');
+      row.innerHTML = `<span>Coupon ${esc(s.checkout.lastOrder!.couponCode ?? '')}</span><span data-testid="text-coupon-discount">-${formatINR(s.checkout.lastOrder!.discountPaise)}</span>`;
+      vals[1].parentElement?.insertAdjacentElement('beforebegin', row);
+    }
     tid(vals[0], 'text-items-total'); tid(vals[1], 'text-delivery-fee'); tid(vals[2], 'text-to-pay');
   };
 
@@ -75,9 +89,9 @@ export function hydrateCheckout(ctx: Ctx) {
 
     if (step === 'signin') {
       const sent = codeSentFor !== null;
-      panel.innerHTML = `<h1 style="${S.h1}">Sign in to check out</h1><p style="${S.p}">No password. We’ll text a 4-digit code to your phone. Sample: any 10-digit number and any 4 digits work.</p>
+      panel.innerHTML = `<h1 style="${S.h1}">Sign in to check out</h1><p style="${S.p}">This is a sample-only simulation. No SMS is sent and no real account is signed in. Use any valid 10-digit number and the fixed sample code 246810.</p>
       <div style="${S.card}">${field('phone', 'Mobile number', codeSentFor ?? '', 'type="tel" inputmode="numeric" autocomplete="tel"')}
-      ${sent ? field('code', '4-digit code', '', 'type="text" inputmode="numeric" maxlength="4" autocomplete="one-time-code"') : ''}</div>
+      ${sent ? field('code', '6-digit sample code', '', 'type="text" inputmode="numeric" maxlength="6" autocomplete="one-time-code"') : ''}</div>
       <button type="button" data-testid="${sent ? 'button-verify-code' : 'button-send-code'}" style="${S.btn}">${sent ? 'Verify and continue' : 'Send code'}</button>`;
       const phone = $<HTMLInputElement>(panel, '#phone')!; const code = $<HTMLInputElement>(panel, '#code');
       const go = () => {
@@ -85,7 +99,23 @@ export function hydrateCheckout(ctx: Ctx) {
         if (!sent) { codeSentFor = phone.value; render(); $<HTMLInputElement>(panel, '#code')?.focus(); return; }
         const ce = validateCode(code!.value); fieldError(code, ce, 'error-code'); if (ce) return;
         const r = signIn(getState(), phone.value, code!.value);
-        if (r.ok) { codeSentFor = null; const n = r.state; n.checkout.address.phone = n.checkout.address.phone || normalisePhone(phone.value); update(() => n); }
+        if (!r.ok) { fieldError(code, r.error, 'error-code'); return; }
+        const button = $(panel, 'button') as HTMLButtonElement;
+        button.disabled = true; button.textContent = 'Checking sample code…';
+        void fetch('/api/sample/session', {
+          method: 'POST', cache: 'no-store', headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ identity: 'shopper', mobileNumber: normalisePhone(phone.value), simulationCode: code!.value.trim() }),
+        }).then(async response => {
+          const data = await response.json() as SampleSessionResponse & { error?: string };
+          if (!response.ok) throw new Error(data.error || 'Sample sign-in was not completed.');
+          if (data.role !== 'shopper' || !data.token) throw new Error('The sample service did not return a shopper identity.');
+          localStorage.setItem(SAMPLE_SESSION_KEY, data.token);
+          codeSentFor = null;
+          const n = r.state; n.checkout.address.phone = n.checkout.address.phone || normalisePhone(phone.value); update(() => n);
+        }).catch(error => {
+          button.disabled = false; button.textContent = 'Verify and continue';
+          fieldError(code, error instanceof Error ? error.message : 'Sample sign-in was not completed.', 'error-code');
+        });
       };
       $(panel, 'button')!.addEventListener('click', go);
       [phone, code].forEach(i => i?.addEventListener('keydown', e => { if (e.key === 'Enter') go(); }));
@@ -128,22 +158,81 @@ export function hydrateCheckout(ctx: Ctx) {
       const t = bagTotals(s); const a = s.checkout.address;
       const opts = (Object.keys(PAYMENT_LABEL) as (keyof typeof PAYMENT_LABEL)[]).map(k =>
         `<label style="grid-column: 1 / -1; display: flex; gap: 12px; align-items: center; min-height: 52px; padding: 0 16px; border-radius: 16px; border: 1.5px solid ${s.checkout.payment === k ? '#611811' : '#DCCAB0'}; background: #FFFFFF; font-size: 19px; cursor: pointer"><input type="radio" name="pay" value="${k}" data-testid="radio-pay-${k}" ${s.checkout.payment === k ? 'checked' : ''} style="width: 20px; height: 20px; accent-color: #611811">${PAYMENT_LABEL[k]}</label>`).join('');
-      panel.innerHTML = `<h1 style="${S.h1}">How would you like to pay?</h1><p style="${S.p}">Delivering to ${esc(a.name)}, ${esc(a.house)}, ${esc(a.road)}, ${esc(stateFromPincode(a.pin) ?? '')} ${esc(a.pin)}. <a href="#address" data-testid="link-change-address">Change</a></p>
-      <div style="${S.card}">${opts}<p style="grid-column: 1 / -1; margin: 0; font-size: 16px; color: #5C463C">Sample checkout: no money moves.</p></div>
-      <button type="button" data-testid="button-pay" style="${S.btn}">Pay ${formatINR(t.totalPaise)}</button>`;
+        panel.innerHTML = `<h1 style="${S.h1}">How would you like to pay?</h1><p style="${S.p}">Delivering to ${esc(a.name)}, ${esc(a.house)}, ${esc(a.road)}, ${esc(stateFromPincode(a.pin) ?? '')} ${esc(a.pin)}. <a href="#address" data-testid="link-change-address">Change</a></p>
+       <div style="${S.card}">${opts}<label for="sample-coupon" style="${S.label}">Coupon code</label><input id="sample-coupon" data-testid="input-sample-coupon" maxlength="40" autocomplete="off" value="${esc(couponCodeDraft)}" placeholder="Try WELCOME10" style="${S.input}"><p style="grid-column: 1 / -1; margin: 0; font-size: 16px; color: #5C463C">Sample checkout: no money moves. Coupons are checked by the sample service.</p></div>
+       <button type="button" data-testid="button-pay" style="${S.btn}">Place sample order · no charge</button>`;
+       const couponInput = $<HTMLInputElement>(panel, '#sample-coupon')!;
+       couponInput.addEventListener('input', () => { couponCodeDraft = couponInput.value; });
       $$<HTMLInputElement>(panel, 'input[name="pay"]').forEach(r => r.addEventListener('change', () => update(st => ({ ...st, checkout: { ...st.checkout, payment: r.value as keyof typeof PAYMENT_LABEL } }))));
       $(panel, 'a[href="#address"]')!.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); update(st => ({ ...st, checkout: { ...st.checkout, step: 'address' } })); });
-      $(panel, 'button')!.addEventListener('click', () => {
-        const r = placeOrder(getState());
-        if (!r.ok) { fieldError($(panel, 'button'), r.error, 'error-pay'); return; }
-        update(() => r.state); window.scrollTo({ top: 0 });
-      });
+       $(panel, 'button')!.addEventListener('click', () => {
+         const button = $(panel, 'button') as HTMLButtonElement;
+         const current = getState();
+         const lines = bagLines(current);
+         if (!lines.length) { fieldError(button, 'Your bag is empty. Add something first.', 'error-pay'); return; }
+         if (lines.some(line => line.kind !== 'product')) { fieldError(button, 'The sample checkout currently supports physical sample products only.', 'error-pay'); return; }
+         const token = localStorage.getItem(SAMPLE_SESSION_KEY);
+         if (!token) { fieldError(button, 'Your sample session expired. Sign in again before placing this sample order.', 'error-pay'); return; }
+         const address = current.checkout.address;
+         const deliveryAddress = {
+           name: address.name.trim(), phone: normalisePhone(address.phone),
+           line1: `${address.house.trim()}, ${address.road.trim()}`,
+           line2: '', state: stateFromPincode(address.pin) ?? '', pin: address.pin,
+         };
+         const payload = {
+           lines: lines.map(line => ({ productId: line.id, quantity: line.qty })),
+           deliveryAddress,
+            ...(couponCodeDraft.trim() ? { couponCode: couponCodeDraft.trim() } : {}),
+         };
+         const digest = JSON.stringify(payload);
+         let idempotencyKey = '';
+         try {
+           const stored = JSON.parse(sessionStorage.getItem(CHECKOUT_KEY) ?? 'null') as { digest?: string; key?: string } | null;
+           if (stored?.digest === digest && stored.key) idempotencyKey = stored.key;
+         } catch { /* use a fresh key if this tab's saved value is unreadable */ }
+         if (!idempotencyKey) {
+           idempotencyKey = crypto.randomUUID();
+           try { sessionStorage.setItem(CHECKOUT_KEY, JSON.stringify({ digest, key: idempotencyKey })); } catch { /* request can still proceed once */ }
+         }
+         button.disabled = true; button.textContent = 'Saving sample order…';
+         void fetch('/api/sample/shopper/checkout', {
+           method: 'POST', cache: 'no-store',
+           headers: { authorization: `Bearer ${token}`, 'content-type': 'application/json' },
+           body: JSON.stringify({ ...payload, idempotencyKey }),
+         }).then(async response => {
+           const result = await response.json() as SampleCheckoutResponse & { error?: string };
+           if (!response.ok) throw new Error(result.error || 'The sample order was not saved.');
+           if (!result.sample || !result.orderId || !result.reference) throw new Error('The sample service returned an incomplete order record.');
+           const next = JSON.parse(JSON.stringify(current)) as DemoState;
+           next.products = next.products.map(product => {
+             const line = lines.find(item => item.id === product.id);
+             return line ? { ...product, stock: Math.max(0, product.stock - line.qty) } : product;
+           });
+           next.bag = [];
+           next.checkout.step = 'done';
+           next.checkout.lastOrder = {
+             ref: result.reference,
+             lines: lines.map(line => {
+               const product = current.products.find(item => item.id === line.id)!;
+               return { name: product.name, maker: current.makers.find(item => item.id === product.makerId)?.brand ?? '', img: product.img, qty: line.qty, linePaise: product.pricePaise * line.qty };
+             }),
+             itemsPaise: result.itemsPaise, shippingPaise: result.shippingPaise, totalPaise: result.totalPaise,
+              discountPaise: result.discountPaise, couponCode: result.couponCode,
+             address: { ...address }, payment: 'Sample only · no payment collected',
+           };
+           try { sessionStorage.removeItem(CHECKOUT_KEY); } catch { /* stale keys are harmless */ }
+           update(() => next); window.scrollTo({ top: 0 });
+         }).catch(error => {
+           button.disabled = false; button.textContent = 'Place sample order · no charge';
+           fieldError(button, error instanceof Error ? error.message : 'The sample order was not saved.', 'error-pay');
+         });
+       });
       return;
     }
 
     const o = s.checkout.lastOrder!;
     panel.innerHTML = `<h1 style="${S.h1}">Thank you, <em style="color: #C23A36">${esc(o.address.name.split(' ')[0])}.</em></h1>
-    <p style="${S.p}" data-testid="text-order-ref">Order ${o.ref} is placed. Paid by ${o.payment}. We’ll send updates to ${formatPhone(s.checkout.phone ?? o.address.phone)}.</p>
+      <p style="${S.p}" data-testid="text-order-ref">Sample order ${o.ref} was saved. No payment was collected. This is not a real purchase. The sample account can show its order history.${o.couponCode ? ` Coupon ${o.couponCode} saved you ${formatINR(o.discountPaise)}.` : ''}</p>
     <div style="${S.card}"><p style="grid-column: 1 / -1; margin: 0; font-size: 19px">Each maker packs their piece by hand and adds tracking when it leaves the workshop.</p>
     <p style="grid-column: 1 / -1; margin: 0; font-size: 17px; color: #5C463C">Delivering to ${esc(o.address.name)}, ${esc(o.address.house)}, ${esc(o.address.road)}, ${esc(stateFromPincode(o.address.pin) ?? '')} ${esc(o.address.pin)}.</p></div>
     <a href="#shop" data-testid="button-keep-shopping" style="${S.btn}; display: inline-flex; align-items: center; text-decoration: none">Keep browsing the Edit</a>`;

@@ -3,13 +3,23 @@ import { GetCatalogResponse, FindGiftsBody, FindGiftsResponse, GetRuntimeRespons
 import { sampleCatalog, sampleDomainProducts, sampleDomainMakers, mapMaker, mapProduct } from "../lib/catalog";
 import { connection, publicConfig, securityReady, checkDb } from "../lib/supabase";
 import { recommend, type BudgetBand, type GiftFeel, type Occasion, type Recipient, type Product as RuleProduct, type Maker as RuleMaker } from "../lib/domain";
+import { sampleProductStock } from "../lib/sample-accounts";
+import { sampleSubmittedCatalogProducts } from "../lib/sample-maker";
 
 const router: IRouter = Router();
 const publicProductFields = "id,slug,maker_id,name,price_paise,stock,made_to_order,dispatch_days,material,story,status,gst_pct,feels,occasions,recipients,product_images(url,sort)";
 const publicMakerFields = "id,brand,craft,tagline,story,bio,hero_image_url,gst_registered,state,published";
 
 async function catalogData() {
-  if (!(await securityReady())) return { catalog: sampleCatalog, rules: sampleDomainProducts, makers: sampleDomainMakers };
+  if (!(await securityReady())) {
+    const sampleProducts = [...sampleCatalog.products, ...sampleSubmittedCatalogProducts()];
+    const catalog = GetCatalogResponse.parse({
+      ...sampleCatalog,
+      products: sampleProducts.map(product => ({ ...product, stock: sampleProductStock(product.id) })),
+    });
+    const rules = sampleDomainProducts.map(product => ({ ...product, stock: sampleProductStock(product.id) }));
+    return { catalog, rules, makers: sampleDomainMakers };
+  }
   const db = connection();
   const [makers, products] = await Promise.all([
     db.from("makers").select(publicMakerFields).eq("published", true),

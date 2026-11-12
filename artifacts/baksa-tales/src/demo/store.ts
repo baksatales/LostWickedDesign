@@ -22,7 +22,7 @@ export interface Address { pin: string; house: string; road: string; name: strin
 export interface CheckoutState {
   step: 'signin' | 'address' | 'payment' | 'done';
   phone: string | null; codeSent: boolean; address: Address; payment: 'upi' | 'card' | 'netbanking' | 'cod';
-  lastOrder: { ref: string; lines: { name: string; maker: string; img: string; qty: number; linePaise: number }[]; itemsPaise: number; shippingPaise: number; totalPaise: number; address: Address; payment: string } | null;
+  lastOrder: { ref: string; lines: { name: string; maker: string; img: string; qty: number; linePaise: number }[]; itemsPaise: number; discountPaise: number; couponCode: string | null; shippingPaise: number; totalPaise: number; address: Address; payment: string } | null;
 }
 export interface ReviewState { checks: boolean[]; note: string }
 export interface Proposal { title: string; type: string; length: string; pricePaise: number; about: string; status: 'sent' | 'approved' | 'changes' }
@@ -43,7 +43,7 @@ export interface DemoState {
   reviews: Record<string, ReviewState>;
   costs: Record<string, number>;
   checkout: CheckoutState;
-  finder: { answers: Partial<FinderAnswers>; needBy: NeedBy; done: boolean };
+  finder: { answers: Partial<FinderAnswers>; needBy: NeedBy; done: boolean; query: string };
   proposals: Proposal[];
   registrations: string[];
   newsletter: string[];
@@ -73,7 +73,7 @@ export function createSeedState(): DemoState {
       address: { pin: '110010', house: 'A-12', road: 'Sector 9, Rohini', name: 'Preeti G', phone: '98765 43210', isDefault: true, gift: false },
       payment: 'upi', lastOrder: null,
     },
-    finder: { answers: {}, needBy: 'any', done: false },
+    finder: { answers: {}, needBy: 'any', done: false, query: '' },
     proposals: [], registrations: [], newsletter: [], briefs: [], updates: [], paidPayouts: [],
   };
 }
@@ -201,8 +201,9 @@ export function finderSummary(a: Partial<FinderAnswers>): string {
 
 /* ---------------- checkout ---------------- */
 export const normalisePhone = (v: string) => v.replace(/\D/g, '').replace(/^91(?=\d{10}$)/, '');
-export const validatePhone = (v: string) => /^\d{10}$/.test(normalisePhone(v)) ? null : 'Enter a 10-digit mobile number.';
-export const validateCode = (v: string) => /^\d{4}$/.test(v.trim()) ? null : 'Enter the 4-digit code.';
+export const validatePhone = (v: string) => /^[6-9]\d{9}$/.test(normalisePhone(v)) ? null : 'Enter a valid 10-digit Indian mobile number.';
+export const SAMPLE_CHECKOUT_CODE = '246810';
+export const validateCode = (v: string) => v.trim() === SAMPLE_CHECKOUT_CODE ? null : 'For this simulation, enter the sample code 246810.';
 export const formatPhone = (v: string) => { const d = normalisePhone(v); return `+91 ${d.slice(0, 5)} ${d.slice(5)}`; };
 export function validateAddress(a: Address): Partial<Record<keyof Address, string>> {
   const e: Partial<Record<keyof Address, string>> = {};
@@ -236,7 +237,7 @@ export function placeOrder(s: DemoState): { ok: boolean; error?: string; ref?: s
     n.orders.unshift({ id: lines.length > 1 ? `${ref}-${i + 1}` : ref, productId: p.id, makerId: p.makerId, qty: l.qty, amountPaise: l.linePaise, customer: n.checkout.address.name, city, date: TODAY, status: 'new', deliveredOn: null, settled: false });
   });
   n.seq += 1;
-  n.checkout.lastOrder = { ref, lines: lines.map(l => ({ name: l.name, maker: l.maker, img: l.img, qty: l.qty, linePaise: l.linePaise })), itemsPaise: t.itemsPaise, shippingPaise: t.shippingPaise, totalPaise: t.totalPaise, address: clone(n.checkout.address), payment: PAYMENT_LABEL[n.checkout.payment] };
+  n.checkout.lastOrder = { ref, lines: lines.map(l => ({ name: l.name, maker: l.maker, img: l.img, qty: l.qty, linePaise: l.linePaise })), itemsPaise: t.itemsPaise, discountPaise: 0, couponCode: null, shippingPaise: t.shippingPaise, totalPaise: t.totalPaise, address: clone(n.checkout.address), payment: PAYMENT_LABEL[n.checkout.payment] };
   n.checkout.step = 'done';
   n.bag = [];
   return { ok: true, ref, state: n };

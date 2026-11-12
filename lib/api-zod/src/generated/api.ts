@@ -8,14 +8,19 @@
 import * as zod from 'zod';
 
 
+export const draftEditorialBodyTaskDefault = `draft`;
 export const draftEditorialBodyFactsMin = 20;
 export const draftEditorialBodyFactsMax = 8000;
+
+export const draftEditorialBodyCurrentTextMax = 8000;
 
 
 
 export const DraftEditorialBody = zod.object({
+  "task": zod.enum(['draft', 'rewrite']).default(draftEditorialBodyTaskDefault),
   "purpose": zod.enum(['story', 'product', 'caption']),
   "facts": zod.string().min(draftEditorialBodyFactsMin).max(draftEditorialBodyFactsMax),
+  "currentText": zod.string().max(draftEditorialBodyCurrentTextMax).optional(),
   "tone": zod.enum(['warm', 'celebratory', 'editorial'])
 })
 
@@ -1820,6 +1825,1878 @@ export const GetWorkspaceResponse = zod.object({
   "ordersCount": zod.number().int(),
   "applicationsCount": zod.number().int(),
   "briefsCount": zod.number().int()
+})
+
+
+export const createSampleSessionBodyMobileNumberRegExp = new RegExp('^[6-9][0-9]{9}$');
+export const createSampleSessionBodySimulationCodeRegExp = new RegExp('^246810$');
+
+
+export const CreateSampleSessionBody = zod.object({
+  "identity": zod.enum(['shopper', 'shopper-other', 'maker', 'maker-other', 'admin']),
+  "mobileNumber": zod.string().regex(createSampleSessionBodyMobileNumberRegExp),
+  "simulationCode": zod.string().regex(createSampleSessionBodySimulationCodeRegExp)
+})
+
+export const CreateSampleSessionResponse = zod.object({
+  "sample": zod.literal(true),
+  "identity": zod.string(),
+  "role": zod.enum(['shopper', 'maker', 'admin']),
+  "userId": zod.string(),
+  "displayName": zod.string()
+}).and(zod.object({
+  "token": zod.string(),
+  "expiresAt": zod.string()
+}))
+
+
+export const GetSampleSessionResponse = zod.object({
+  "sample": zod.literal(true),
+  "identity": zod.string(),
+  "role": zod.enum(['shopper', 'maker', 'admin']),
+  "userId": zod.string(),
+  "displayName": zod.string()
+})
+
+
+export const EndSampleSessionResponse = zod.object({
+  "id": zod.string(),
+  "message": zod.string()
+})
+
+
+export const getSampleShopperAccountResponseOrdersItemDiscountPaiseMin = 0;
+
+export const getSampleShopperAccountResponseAddressesItemNameMax = 120;
+
+export const getSampleShopperAccountResponseAddressesItemPhoneMax = 15;
+
+export const getSampleShopperAccountResponseAddressesItemLine1Max = 200;
+
+export const getSampleShopperAccountResponseAddressesItemLine2Max = 200;
+
+export const getSampleShopperAccountResponseAddressesItemCityMax = 100;
+
+export const getSampleShopperAccountResponseAddressesItemStateMax = 100;
+
+export const getSampleShopperAccountResponseAddressesItemPinRegExp = new RegExp('^[1-9][0-9]{5}$');
+
+
+export const GetSampleShopperAccountResponse = zod.object({
+  "sample": zod.literal(true),
+  "displayName": zod.string(),
+  "orders": zod.array(zod.object({
+  "id": zod.string(),
+  "reference": zod.string(),
+  "status": zod.enum(['placed', 'packed', 'on_the_way', 'delivered', 'delayed']),
+  "placedOn": zod.string(),
+  "totalPaise": zod.number().int(),
+  "discountPaise": zod.number().int().min(getSampleShopperAccountResponseOrdersItemDiscountPaiseMin),
+  "couponCode": zod.string().nullable(),
+  "items": zod.array(zod.string()),
+  "trackingNumber": zod.string(),
+  "carrier": zod.string(),
+  "delayNote": zod.string()
+})),
+  "classes": zod.array(zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "teacher": zod.string(),
+  "access": zod.enum(['recorded', 'live']),
+  "schedule": zod.string()
+})),
+  "addresses": zod.array(zod.object({
+  "id": zod.string(),
+  "name": zod.string().max(getSampleShopperAccountResponseAddressesItemNameMax),
+  "phone": zod.string().max(getSampleShopperAccountResponseAddressesItemPhoneMax),
+  "line1": zod.string().max(getSampleShopperAccountResponseAddressesItemLine1Max),
+  "line2": zod.string().max(getSampleShopperAccountResponseAddressesItemLine2Max),
+  "city": zod.string().max(getSampleShopperAccountResponseAddressesItemCityMax),
+  "state": zod.string().max(getSampleShopperAccountResponseAddressesItemStateMax),
+  "pin": zod.string().regex(getSampleShopperAccountResponseAddressesItemPinRegExp),
+  "isDefault": zod.boolean()
+})),
+  "wishlist": zod.array(zod.string())
+})
+
+
+export const getSampleMakerStocksResponseProductsItemStockMin = 0;
+export const getSampleMakerStocksResponseProductsItemStockMax = 10000;
+
+
+
+export const GetSampleMakerStocksResponse = zod.object({
+  "sample": zod.literal(true),
+  "products": zod.array(zod.object({
+  "id": zod.string(),
+  "stock": zod.number().int().min(getSampleMakerStocksResponseProductsItemStockMin).max(getSampleMakerStocksResponseProductsItemStockMax)
+}))
+})
+
+
+export const updateSampleMakerStockPathProductIdMax = 100;
+
+
+
+export const UpdateSampleMakerStockParams = zod.object({
+  "productId": zod.coerce.string().min(1).max(updateSampleMakerStockPathProductIdMax)
+})
+
+export const updateSampleMakerStockBodyStockMin = 0;
+export const updateSampleMakerStockBodyStockMax = 10000;
+
+
+
+export const UpdateSampleMakerStockBody = zod.object({
+  "stock": zod.number().int().min(updateSampleMakerStockBodyStockMin).max(updateSampleMakerStockBodyStockMax)
+})
+
+export const updateSampleMakerStockResponseStockMin = 0;
+export const updateSampleMakerStockResponseStockMax = 10000;
+
+
+
+export const UpdateSampleMakerStockResponse = zod.object({
+  "id": zod.string(),
+  "stock": zod.number().int().min(updateSampleMakerStockResponseStockMin).max(updateSampleMakerStockResponseStockMax)
+})
+
+
+
+export const getSampleMakerOrdersResponseOrdersItemAmountPaiseMin = 0;
+
+
+
+export const GetSampleMakerOrdersResponse = zod.object({
+  "sample": zod.literal(true),
+  "orders": zod.array(zod.object({
+  "id": zod.string(),
+  "productId": zod.string(),
+  "productName": zod.string(),
+  "makerId": zod.string(),
+  "makerBrand": zod.string(),
+  "qty": zod.number().int().min(1),
+  "amountPaise": zod.number().int().min(getSampleMakerOrdersResponseOrdersItemAmountPaiseMin),
+  "customer": zod.string(),
+  "city": zod.string(),
+  "date": zod.coerce.date(),
+  "status": zod.enum(['new', 'packed', 'dispatched', 'delivered', 'problem', 'delayed', 'refunded']),
+  "courier": zod.string(),
+  "tracking": zod.string(),
+  "deliveredOn": zod.coerce.date().nullable(),
+  "settled": zod.boolean(),
+  "issue": zod.string()
+}))
+})
+
+
+
+export const getSampleAdminOrdersResponseOrdersItemAmountPaiseMin = 0;
+
+
+
+export const GetSampleAdminOrdersResponse = zod.object({
+  "sample": zod.literal(true),
+  "orders": zod.array(zod.object({
+  "id": zod.string(),
+  "productId": zod.string(),
+  "productName": zod.string(),
+  "makerId": zod.string(),
+  "makerBrand": zod.string(),
+  "qty": zod.number().int().min(1),
+  "amountPaise": zod.number().int().min(getSampleAdminOrdersResponseOrdersItemAmountPaiseMin),
+  "customer": zod.string(),
+  "city": zod.string(),
+  "date": zod.coerce.date(),
+  "status": zod.enum(['new', 'packed', 'dispatched', 'delivered', 'problem', 'delayed', 'refunded']),
+  "courier": zod.string(),
+  "tracking": zod.string(),
+  "deliveredOn": zod.coerce.date().nullable(),
+  "settled": zod.boolean(),
+  "issue": zod.string()
+}))
+})
+
+
+export const updateSampleOrderFulfilmentPathIdMax = 100;
+
+
+
+export const UpdateSampleOrderFulfilmentParams = zod.object({
+  "id": zod.coerce.string().min(1).max(updateSampleOrderFulfilmentPathIdMax)
+})
+
+export const updateSampleOrderFulfilmentBodyCourierMax = 120;
+
+export const updateSampleOrderFulfilmentBodyTrackingMax = 160;
+
+export const updateSampleOrderFulfilmentBodyNoteMax = 2000;
+
+
+
+export const UpdateSampleOrderFulfilmentBody = zod.object({
+  "status": zod.enum(['packed', 'dispatched', 'delivered', 'problem']),
+  "courier": zod.string().max(updateSampleOrderFulfilmentBodyCourierMax),
+  "tracking": zod.string().max(updateSampleOrderFulfilmentBodyTrackingMax),
+  "note": zod.string().max(updateSampleOrderFulfilmentBodyNoteMax)
+})
+
+
+export const updateSampleOrderFulfilmentResponseAmountPaiseMin = 0;
+
+
+
+export const UpdateSampleOrderFulfilmentResponse = zod.object({
+  "id": zod.string(),
+  "productId": zod.string(),
+  "productName": zod.string(),
+  "makerId": zod.string(),
+  "makerBrand": zod.string(),
+  "qty": zod.number().int().min(1),
+  "amountPaise": zod.number().int().min(updateSampleOrderFulfilmentResponseAmountPaiseMin),
+  "customer": zod.string(),
+  "city": zod.string(),
+  "date": zod.coerce.date(),
+  "status": zod.enum(['new', 'packed', 'dispatched', 'delivered', 'problem', 'delayed', 'refunded']),
+  "courier": zod.string(),
+  "tracking": zod.string(),
+  "deliveredOn": zod.coerce.date().nullable(),
+  "settled": zod.boolean(),
+  "issue": zod.string()
+})
+
+
+export const updateSampleAdminOrderStatusPathIdMax = 100;
+
+
+
+export const UpdateSampleAdminOrderStatusParams = zod.object({
+  "id": zod.coerce.string().min(1).max(updateSampleAdminOrderStatusPathIdMax)
+})
+
+export const updateSampleAdminOrderStatusBodyNoteMin = 3;
+export const updateSampleAdminOrderStatusBodyNoteMax = 2000;
+
+
+
+export const UpdateSampleAdminOrderStatusBody = zod.object({
+  "status": zod.enum(['delayed', 'refunded']),
+  "note": zod.string().min(updateSampleAdminOrderStatusBodyNoteMin).max(updateSampleAdminOrderStatusBodyNoteMax)
+})
+
+
+export const updateSampleAdminOrderStatusResponseAmountPaiseMin = 0;
+
+
+
+export const UpdateSampleAdminOrderStatusResponse = zod.object({
+  "id": zod.string(),
+  "productId": zod.string(),
+  "productName": zod.string(),
+  "makerId": zod.string(),
+  "makerBrand": zod.string(),
+  "qty": zod.number().int().min(1),
+  "amountPaise": zod.number().int().min(updateSampleAdminOrderStatusResponseAmountPaiseMin),
+  "customer": zod.string(),
+  "city": zod.string(),
+  "date": zod.coerce.date(),
+  "status": zod.enum(['new', 'packed', 'dispatched', 'delivered', 'problem', 'delayed', 'refunded']),
+  "courier": zod.string(),
+  "tracking": zod.string(),
+  "deliveredOn": zod.coerce.date().nullable(),
+  "settled": zod.boolean(),
+  "issue": zod.string()
+})
+
+
+export const getSampleMakerEarningsResponseDeliveredCountMin = 0;
+
+export const getSampleMakerEarningsResponseSplitGrossPaiseMin = 0;
+
+export const getSampleMakerEarningsResponseSplitGstPaiseMin = 0;
+
+export const getSampleMakerEarningsResponseSplitTaxablePaiseMin = 0;
+
+export const getSampleMakerEarningsResponseSplitCommissionPaiseMin = 0;
+
+export const getSampleMakerEarningsResponseSplitCommissionGstPaiseMin = 0;
+
+export const getSampleMakerEarningsResponseSplitTcsPaiseMin = 0;
+
+export const getSampleMakerEarningsResponseSplitPaymentFeePaiseMin = 0;
+
+export const getSampleMakerEarningsResponseSplitDeductionsPaiseMin = 0;
+
+export const getSampleMakerEarningsResponseSplitPayoutPaiseMin = 0;
+
+export const getSampleMakerEarningsResponseRunsItemSplitGrossPaiseMin = 0;
+
+export const getSampleMakerEarningsResponseRunsItemSplitGstPaiseMin = 0;
+
+export const getSampleMakerEarningsResponseRunsItemSplitTaxablePaiseMin = 0;
+
+export const getSampleMakerEarningsResponseRunsItemSplitCommissionPaiseMin = 0;
+
+export const getSampleMakerEarningsResponseRunsItemSplitCommissionGstPaiseMin = 0;
+
+export const getSampleMakerEarningsResponseRunsItemSplitTcsPaiseMin = 0;
+
+export const getSampleMakerEarningsResponseRunsItemSplitPaymentFeePaiseMin = 0;
+
+export const getSampleMakerEarningsResponseRunsItemSplitDeductionsPaiseMin = 0;
+
+export const getSampleMakerEarningsResponseRunsItemSplitPayoutPaiseMin = 0;
+
+export const getSampleMakerEarningsResponseNextPayoutPaiseMin = 0;
+
+export const getSampleMakerEarningsResponsePendingCountMin = 0;
+
+export const getSampleMakerEarningsResponsePendingPaiseMin = 0;
+
+
+
+export const GetSampleMakerEarningsResponse = zod.object({
+  "sample": zod.literal(true),
+  "makerId": zod.string(),
+  "makerBrand": zod.string(),
+  "deliveredCount": zod.number().int().min(getSampleMakerEarningsResponseDeliveredCountMin),
+  "split": zod.object({
+  "grossPaise": zod.number().int().min(getSampleMakerEarningsResponseSplitGrossPaiseMin),
+  "gstPaise": zod.number().int().min(getSampleMakerEarningsResponseSplitGstPaiseMin),
+  "taxablePaise": zod.number().int().min(getSampleMakerEarningsResponseSplitTaxablePaiseMin),
+  "commissionPaise": zod.number().int().min(getSampleMakerEarningsResponseSplitCommissionPaiseMin),
+  "commissionGstPaise": zod.number().int().min(getSampleMakerEarningsResponseSplitCommissionGstPaiseMin),
+  "tcsPaise": zod.number().int().min(getSampleMakerEarningsResponseSplitTcsPaiseMin),
+  "paymentFeePaise": zod.number().int().min(getSampleMakerEarningsResponseSplitPaymentFeePaiseMin),
+  "deductionsPaise": zod.number().int().min(getSampleMakerEarningsResponseSplitDeductionsPaiseMin),
+  "payoutPaise": zod.number().int().min(getSampleMakerEarningsResponseSplitPayoutPaiseMin),
+  "netAfterGstPaise": zod.number().int()
+}),
+  "runs": zod.array(zod.object({
+  "makerId": zod.string(),
+  "makerBrand": zod.string(),
+  "date": zod.coerce.date(),
+  "orderIds": zod.array(zod.string()),
+  "split": zod.object({
+  "grossPaise": zod.number().int().min(getSampleMakerEarningsResponseRunsItemSplitGrossPaiseMin),
+  "gstPaise": zod.number().int().min(getSampleMakerEarningsResponseRunsItemSplitGstPaiseMin),
+  "taxablePaise": zod.number().int().min(getSampleMakerEarningsResponseRunsItemSplitTaxablePaiseMin),
+  "commissionPaise": zod.number().int().min(getSampleMakerEarningsResponseRunsItemSplitCommissionPaiseMin),
+  "commissionGstPaise": zod.number().int().min(getSampleMakerEarningsResponseRunsItemSplitCommissionGstPaiseMin),
+  "tcsPaise": zod.number().int().min(getSampleMakerEarningsResponseRunsItemSplitTcsPaiseMin),
+  "paymentFeePaise": zod.number().int().min(getSampleMakerEarningsResponseRunsItemSplitPaymentFeePaiseMin),
+  "deductionsPaise": zod.number().int().min(getSampleMakerEarningsResponseRunsItemSplitDeductionsPaiseMin),
+  "payoutPaise": zod.number().int().min(getSampleMakerEarningsResponseRunsItemSplitPayoutPaiseMin),
+  "netAfterGstPaise": zod.number().int()
+})
+})),
+  "nextRunDate": zod.coerce.date(),
+  "nextPayoutPaise": zod.number().int().min(getSampleMakerEarningsResponseNextPayoutPaiseMin),
+  "nextPayoutDate": zod.coerce.date(),
+  "pendingCount": zod.number().int().min(getSampleMakerEarningsResponsePendingCountMin),
+  "pendingPaise": zod.number().int().min(getSampleMakerEarningsResponsePendingPaiseMin)
+})
+
+
+export const getSampleMakerProfitsResponseProductsItemPricePaiseMin = 0;
+
+export const getSampleMakerProfitsResponseProductsItemCostPaiseMin = 0;
+
+export const getSampleMakerProfitsResponseProductsItemSplitGrossPaiseMin = 0;
+
+export const getSampleMakerProfitsResponseProductsItemSplitGstPaiseMin = 0;
+
+export const getSampleMakerProfitsResponseProductsItemSplitTaxablePaiseMin = 0;
+
+export const getSampleMakerProfitsResponseProductsItemSplitCommissionPaiseMin = 0;
+
+export const getSampleMakerProfitsResponseProductsItemSplitCommissionGstPaiseMin = 0;
+
+export const getSampleMakerProfitsResponseProductsItemSplitTcsPaiseMin = 0;
+
+export const getSampleMakerProfitsResponseProductsItemSplitPaymentFeePaiseMin = 0;
+
+export const getSampleMakerProfitsResponseProductsItemSplitDeductionsPaiseMin = 0;
+
+export const getSampleMakerProfitsResponseProductsItemSplitPayoutPaiseMin = 0;
+
+export const getSampleMakerProfitsResponseProductsItemCostsPaiseMin = 0;
+
+
+
+export const GetSampleMakerProfitsResponse = zod.object({
+  "sample": zod.literal(true),
+  "products": zod.array(zod.object({
+  "productId": zod.string(),
+  "name": zod.string(),
+  "pricePaise": zod.number().int().min(getSampleMakerProfitsResponseProductsItemPricePaiseMin),
+  "costPaise": zod.number().int().min(getSampleMakerProfitsResponseProductsItemCostPaiseMin).nullable(),
+  "split": zod.object({
+  "grossPaise": zod.number().int().min(getSampleMakerProfitsResponseProductsItemSplitGrossPaiseMin),
+  "gstPaise": zod.number().int().min(getSampleMakerProfitsResponseProductsItemSplitGstPaiseMin),
+  "taxablePaise": zod.number().int().min(getSampleMakerProfitsResponseProductsItemSplitTaxablePaiseMin),
+  "commissionPaise": zod.number().int().min(getSampleMakerProfitsResponseProductsItemSplitCommissionPaiseMin),
+  "commissionGstPaise": zod.number().int().min(getSampleMakerProfitsResponseProductsItemSplitCommissionGstPaiseMin),
+  "tcsPaise": zod.number().int().min(getSampleMakerProfitsResponseProductsItemSplitTcsPaiseMin),
+  "paymentFeePaise": zod.number().int().min(getSampleMakerProfitsResponseProductsItemSplitPaymentFeePaiseMin),
+  "deductionsPaise": zod.number().int().min(getSampleMakerProfitsResponseProductsItemSplitDeductionsPaiseMin),
+  "payoutPaise": zod.number().int().min(getSampleMakerProfitsResponseProductsItemSplitPayoutPaiseMin),
+  "netAfterGstPaise": zod.number().int()
+}),
+  "costsPaise": zod.number().int().min(getSampleMakerProfitsResponseProductsItemCostsPaiseMin),
+  "leftPerSalePaise": zod.number().int(),
+  "marginPct": zod.number(),
+  "health": zod.enum(['too_thin', 'tight', 'healthy'])
+}))
+})
+
+
+export const getSampleMakerSettingsResponseApprovedCountMin = 0;
+
+
+
+export const GetSampleMakerSettingsResponse = zod.object({
+  "sample": zod.literal(true),
+  "makerId": zod.string(),
+  "brand": zod.string(),
+  "trusted": zod.boolean(),
+  "approvedCount": zod.number().int().min(getSampleMakerSettingsResponseApprovedCountMin),
+  "gstRegistered": zod.boolean(),
+  "state": zod.string(),
+  "payoutOnboarding": zod.enum(['not_configured']),
+  "message": zod.string()
+})
+
+
+export const saveSampleMakerSettingsBodyStateMin = 2;
+export const saveSampleMakerSettingsBodyStateMax = 80;
+
+
+
+export const SaveSampleMakerSettingsBody = zod.object({
+  "gstRegistered": zod.boolean(),
+  "state": zod.string().min(saveSampleMakerSettingsBodyStateMin).max(saveSampleMakerSettingsBodyStateMax)
+})
+
+export const saveSampleMakerSettingsResponseApprovedCountMin = 0;
+
+
+
+export const SaveSampleMakerSettingsResponse = zod.object({
+  "sample": zod.literal(true),
+  "makerId": zod.string(),
+  "brand": zod.string(),
+  "trusted": zod.boolean(),
+  "approvedCount": zod.number().int().min(saveSampleMakerSettingsResponseApprovedCountMin),
+  "gstRegistered": zod.boolean(),
+  "state": zod.string(),
+  "payoutOnboarding": zod.enum(['not_configured']),
+  "message": zod.string()
+})
+
+
+export const GetSampleMakerOpportunitiesResponse = zod.object({
+  "sample": zod.literal(true),
+  "opportunities": zod.array(zod.object({
+  "id": zod.string(),
+  "type": zod.enum(['corporate', 'event']),
+  "title": zod.string(),
+  "detail": zod.string(),
+  "status": zod.enum(['open', 'yes', 'no'])
+}))
+})
+
+
+export const respondSampleMakerOpportunityPathIdMax = 100;
+
+
+
+export const RespondSampleMakerOpportunityParams = zod.object({
+  "id": zod.coerce.string().min(1).max(respondSampleMakerOpportunityPathIdMax)
+})
+
+export const RespondSampleMakerOpportunityBody = zod.object({
+  "decision": zod.enum(['yes', 'no'])
+})
+
+export const RespondSampleMakerOpportunityResponse = zod.object({
+  "id": zod.string(),
+  "type": zod.enum(['corporate', 'event']),
+  "title": zod.string(),
+  "detail": zod.string(),
+  "status": zod.enum(['open', 'yes', 'no'])
+})
+
+
+export const createSampleMakerMasterclassProposalBodyTitleMin = 5;
+export const createSampleMakerMasterclassProposalBodyTitleMax = 160;
+
+export const createSampleMakerMasterclassProposalBodyDurationMin = 2;
+export const createSampleMakerMasterclassProposalBodyDurationMax = 120;
+
+export const createSampleMakerMasterclassProposalBodyPricePaiseMin = 0;
+export const createSampleMakerMasterclassProposalBodyPricePaiseMax = 100000000;
+
+export const createSampleMakerMasterclassProposalBodyAboutMin = 20;
+export const createSampleMakerMasterclassProposalBodyAboutMax = 2000;
+
+
+
+export const CreateSampleMakerMasterclassProposalBody = zod.object({
+  "title": zod.string().min(createSampleMakerMasterclassProposalBodyTitleMin).max(createSampleMakerMasterclassProposalBodyTitleMax),
+  "type": zod.enum(['Live workshop', 'Recorded class']),
+  "duration": zod.string().min(createSampleMakerMasterclassProposalBodyDurationMin).max(createSampleMakerMasterclassProposalBodyDurationMax),
+  "pricePaise": zod.number().int().min(createSampleMakerMasterclassProposalBodyPricePaiseMin).max(createSampleMakerMasterclassProposalBodyPricePaiseMax),
+  "about": zod.string().min(createSampleMakerMasterclassProposalBodyAboutMin).max(createSampleMakerMasterclassProposalBodyAboutMax)
+})
+
+export const createSampleMakerMasterclassProposalResponsePricePaiseMin = 0;
+
+
+
+export const CreateSampleMakerMasterclassProposalResponse = zod.object({
+  "id": zod.string(),
+  "makerId": zod.string(),
+  "makerBrand": zod.string(),
+  "title": zod.string(),
+  "type": zod.enum(['Live workshop', 'Recorded class']),
+  "duration": zod.string(),
+  "pricePaise": zod.number().int().min(createSampleMakerMasterclassProposalResponsePricePaiseMin),
+  "about": zod.string(),
+  "status": zod.enum(['submitted', 'approved', 'changes']),
+  "note": zod.string(),
+  "submittedAt": zod.coerce.date()
+})
+
+
+export const getSampleAdminMasterclassProposalsResponseProposalsItemPricePaiseMin = 0;
+
+
+
+export const GetSampleAdminMasterclassProposalsResponse = zod.object({
+  "sample": zod.literal(true),
+  "proposals": zod.array(zod.object({
+  "id": zod.string(),
+  "makerId": zod.string(),
+  "makerBrand": zod.string(),
+  "title": zod.string(),
+  "type": zod.enum(['Live workshop', 'Recorded class']),
+  "duration": zod.string(),
+  "pricePaise": zod.number().int().min(getSampleAdminMasterclassProposalsResponseProposalsItemPricePaiseMin),
+  "about": zod.string(),
+  "status": zod.enum(['submitted', 'approved', 'changes']),
+  "note": zod.string(),
+  "submittedAt": zod.coerce.date()
+}))
+})
+
+
+export const reviewSampleAdminMasterclassProposalPathIdMax = 100;
+
+
+
+export const ReviewSampleAdminMasterclassProposalParams = zod.object({
+  "id": zod.coerce.string().min(1).max(reviewSampleAdminMasterclassProposalPathIdMax)
+})
+
+export const reviewSampleAdminMasterclassProposalBodyNoteMax = 1000;
+
+
+
+export const ReviewSampleAdminMasterclassProposalBody = zod.object({
+  "decision": zod.enum(['approve', 'changes']),
+  "note": zod.string().max(reviewSampleAdminMasterclassProposalBodyNoteMax)
+})
+
+export const reviewSampleAdminMasterclassProposalResponsePricePaiseMin = 0;
+
+
+
+export const ReviewSampleAdminMasterclassProposalResponse = zod.object({
+  "id": zod.string(),
+  "makerId": zod.string(),
+  "makerBrand": zod.string(),
+  "title": zod.string(),
+  "type": zod.enum(['Live workshop', 'Recorded class']),
+  "duration": zod.string(),
+  "pricePaise": zod.number().int().min(reviewSampleAdminMasterclassProposalResponsePricePaiseMin),
+  "about": zod.string(),
+  "status": zod.enum(['submitted', 'approved', 'changes']),
+  "note": zod.string(),
+  "submittedAt": zod.coerce.date()
+})
+
+
+export const saveSampleMakerProductCostPathProductIdMax = 100;
+
+
+
+export const SaveSampleMakerProductCostParams = zod.object({
+  "productId": zod.coerce.string().min(1).max(saveSampleMakerProductCostPathProductIdMax)
+})
+
+export const saveSampleMakerProductCostBodyCostPaiseMin = 0;
+export const saveSampleMakerProductCostBodyCostPaiseMax = 100000000;
+
+
+
+export const SaveSampleMakerProductCostBody = zod.object({
+  "costPaise": zod.number().int().min(saveSampleMakerProductCostBodyCostPaiseMin).max(saveSampleMakerProductCostBodyCostPaiseMax).nullable()
+})
+
+export const saveSampleMakerProductCostResponseOnePricePaiseMin = 0;
+
+export const saveSampleMakerProductCostResponseOneCostPaiseMin = 0;
+
+export const saveSampleMakerProductCostResponseOneSplitGrossPaiseMin = 0;
+
+export const saveSampleMakerProductCostResponseOneSplitGstPaiseMin = 0;
+
+export const saveSampleMakerProductCostResponseOneSplitTaxablePaiseMin = 0;
+
+export const saveSampleMakerProductCostResponseOneSplitCommissionPaiseMin = 0;
+
+export const saveSampleMakerProductCostResponseOneSplitCommissionGstPaiseMin = 0;
+
+export const saveSampleMakerProductCostResponseOneSplitTcsPaiseMin = 0;
+
+export const saveSampleMakerProductCostResponseOneSplitPaymentFeePaiseMin = 0;
+
+export const saveSampleMakerProductCostResponseOneSplitDeductionsPaiseMin = 0;
+
+export const saveSampleMakerProductCostResponseOneSplitPayoutPaiseMin = 0;
+
+export const saveSampleMakerProductCostResponseOneCostsPaiseMin = 0;
+
+
+
+export const SaveSampleMakerProductCostResponse = zod.object({
+  "productId": zod.string(),
+  "name": zod.string(),
+  "pricePaise": zod.number().int().min(saveSampleMakerProductCostResponseOnePricePaiseMin),
+  "costPaise": zod.number().int().min(saveSampleMakerProductCostResponseOneCostPaiseMin).nullable(),
+  "split": zod.object({
+  "grossPaise": zod.number().int().min(saveSampleMakerProductCostResponseOneSplitGrossPaiseMin),
+  "gstPaise": zod.number().int().min(saveSampleMakerProductCostResponseOneSplitGstPaiseMin),
+  "taxablePaise": zod.number().int().min(saveSampleMakerProductCostResponseOneSplitTaxablePaiseMin),
+  "commissionPaise": zod.number().int().min(saveSampleMakerProductCostResponseOneSplitCommissionPaiseMin),
+  "commissionGstPaise": zod.number().int().min(saveSampleMakerProductCostResponseOneSplitCommissionGstPaiseMin),
+  "tcsPaise": zod.number().int().min(saveSampleMakerProductCostResponseOneSplitTcsPaiseMin),
+  "paymentFeePaise": zod.number().int().min(saveSampleMakerProductCostResponseOneSplitPaymentFeePaiseMin),
+  "deductionsPaise": zod.number().int().min(saveSampleMakerProductCostResponseOneSplitDeductionsPaiseMin),
+  "payoutPaise": zod.number().int().min(saveSampleMakerProductCostResponseOneSplitPayoutPaiseMin),
+  "netAfterGstPaise": zod.number().int()
+}),
+  "costsPaise": zod.number().int().min(saveSampleMakerProductCostResponseOneCostsPaiseMin),
+  "leftPerSalePaise": zod.number().int(),
+  "marginPct": zod.number(),
+  "health": zod.enum(['too_thin', 'tight', 'healthy'])
+})
+
+
+export const getSampleMakerDraftsResponseDraftsItemPricePaiseMin = 0;
+
+export const getSampleMakerDraftsResponseDraftsItemGstPctMin = 0;
+export const getSampleMakerDraftsResponseDraftsItemGstPctMax = 100;
+
+export const getSampleMakerDraftsResponseDraftsItemStockMin = 0;
+export const getSampleMakerDraftsResponseDraftsItemStockMax = 10000;
+
+export const getSampleMakerDraftsResponseDraftsItemDispatchDaysMax = 60;
+
+export const getSampleMakerDraftsResponseDraftsItemCostPaiseMin = 0;
+
+export const getSampleMakerDraftsResponseDraftsItemPhotoMax = 300000;
+
+export const getSampleMakerDraftsResponseDraftsItemStepMax = 7;
+
+
+
+export const GetSampleMakerDraftsResponse = zod.object({
+  "sample": zod.literal(true),
+  "drafts": zod.array(zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "kind": zod.string(),
+  "material": zod.string(),
+  "technique": zod.string(),
+  "size": zod.string(),
+  "pricePaise": zod.number().int().min(getSampleMakerDraftsResponseDraftsItemPricePaiseMin),
+  "gstPct": zod.number().int().min(getSampleMakerDraftsResponseDraftsItemGstPctMin).max(getSampleMakerDraftsResponseDraftsItemGstPctMax),
+  "stock": zod.number().int().min(getSampleMakerDraftsResponseDraftsItemStockMin).max(getSampleMakerDraftsResponseDraftsItemStockMax),
+  "dispatchDays": zod.number().int().min(1).max(getSampleMakerDraftsResponseDraftsItemDispatchDaysMax),
+  "madeToOrder": zod.boolean(),
+  "costPaise": zod.number().int().min(getSampleMakerDraftsResponseDraftsItemCostPaiseMin),
+  "story": zod.string(),
+  "photo": zod.string().max(getSampleMakerDraftsResponseDraftsItemPhotoMax),
+  "step": zod.number().int().min(1).max(getSampleMakerDraftsResponseDraftsItemStepMax),
+  "updatedAt": zod.coerce.date(),
+  "status": zod.enum(['draft', 'submitted', 'live', 'changes'])
+}))
+})
+
+
+export const createSampleMakerDraftBodyNameMax = 200;
+
+export const createSampleMakerDraftBodyKindMax = 200;
+
+export const createSampleMakerDraftBodyMaterialMax = 500;
+
+export const createSampleMakerDraftBodyTechniqueMax = 500;
+
+export const createSampleMakerDraftBodySizeMax = 200;
+
+export const createSampleMakerDraftBodyPricePaiseMin = 0;
+export const createSampleMakerDraftBodyPricePaiseMax = 100000000;
+
+export const createSampleMakerDraftBodyGstPctMin = 0;
+export const createSampleMakerDraftBodyGstPctMax = 100;
+
+export const createSampleMakerDraftBodyStockMin = 0;
+export const createSampleMakerDraftBodyStockMax = 10000;
+
+export const createSampleMakerDraftBodyDispatchDaysMax = 60;
+
+export const createSampleMakerDraftBodyCostPaiseMin = 0;
+export const createSampleMakerDraftBodyCostPaiseMax = 100000000;
+
+export const createSampleMakerDraftBodyStoryMax = 5000;
+
+export const createSampleMakerDraftBodyPhotoMax = 300000;
+
+export const createSampleMakerDraftBodyStepMax = 7;
+
+
+
+export const CreateSampleMakerDraftBody = zod.object({
+  "name": zod.string().max(createSampleMakerDraftBodyNameMax),
+  "kind": zod.string().max(createSampleMakerDraftBodyKindMax),
+  "material": zod.string().max(createSampleMakerDraftBodyMaterialMax),
+  "technique": zod.string().max(createSampleMakerDraftBodyTechniqueMax),
+  "size": zod.string().max(createSampleMakerDraftBodySizeMax),
+  "pricePaise": zod.number().int().min(createSampleMakerDraftBodyPricePaiseMin).max(createSampleMakerDraftBodyPricePaiseMax),
+  "gstPct": zod.number().int().min(createSampleMakerDraftBodyGstPctMin).max(createSampleMakerDraftBodyGstPctMax),
+  "stock": zod.number().int().min(createSampleMakerDraftBodyStockMin).max(createSampleMakerDraftBodyStockMax),
+  "dispatchDays": zod.number().int().min(1).max(createSampleMakerDraftBodyDispatchDaysMax),
+  "madeToOrder": zod.boolean(),
+  "costPaise": zod.number().int().min(createSampleMakerDraftBodyCostPaiseMin).max(createSampleMakerDraftBodyCostPaiseMax),
+  "story": zod.string().max(createSampleMakerDraftBodyStoryMax),
+  "photo": zod.string().max(createSampleMakerDraftBodyPhotoMax),
+  "step": zod.number().int().min(1).max(createSampleMakerDraftBodyStepMax)
+})
+
+export const createSampleMakerDraftResponsePricePaiseMin = 0;
+
+export const createSampleMakerDraftResponseGstPctMin = 0;
+export const createSampleMakerDraftResponseGstPctMax = 100;
+
+export const createSampleMakerDraftResponseStockMin = 0;
+export const createSampleMakerDraftResponseStockMax = 10000;
+
+export const createSampleMakerDraftResponseDispatchDaysMax = 60;
+
+export const createSampleMakerDraftResponseCostPaiseMin = 0;
+
+export const createSampleMakerDraftResponsePhotoMax = 300000;
+
+export const createSampleMakerDraftResponseStepMax = 7;
+
+
+
+export const CreateSampleMakerDraftResponse = zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "kind": zod.string(),
+  "material": zod.string(),
+  "technique": zod.string(),
+  "size": zod.string(),
+  "pricePaise": zod.number().int().min(createSampleMakerDraftResponsePricePaiseMin),
+  "gstPct": zod.number().int().min(createSampleMakerDraftResponseGstPctMin).max(createSampleMakerDraftResponseGstPctMax),
+  "stock": zod.number().int().min(createSampleMakerDraftResponseStockMin).max(createSampleMakerDraftResponseStockMax),
+  "dispatchDays": zod.number().int().min(1).max(createSampleMakerDraftResponseDispatchDaysMax),
+  "madeToOrder": zod.boolean(),
+  "costPaise": zod.number().int().min(createSampleMakerDraftResponseCostPaiseMin),
+  "story": zod.string(),
+  "photo": zod.string().max(createSampleMakerDraftResponsePhotoMax),
+  "step": zod.number().int().min(1).max(createSampleMakerDraftResponseStepMax),
+  "updatedAt": zod.coerce.date(),
+  "status": zod.enum(['draft', 'submitted', 'live', 'changes'])
+})
+
+
+export const getSampleMakerDraftPathIdMax = 100;
+
+
+
+export const GetSampleMakerDraftParams = zod.object({
+  "id": zod.coerce.string().min(1).max(getSampleMakerDraftPathIdMax)
+})
+
+export const getSampleMakerDraftResponsePricePaiseMin = 0;
+
+export const getSampleMakerDraftResponseGstPctMin = 0;
+export const getSampleMakerDraftResponseGstPctMax = 100;
+
+export const getSampleMakerDraftResponseStockMin = 0;
+export const getSampleMakerDraftResponseStockMax = 10000;
+
+export const getSampleMakerDraftResponseDispatchDaysMax = 60;
+
+export const getSampleMakerDraftResponseCostPaiseMin = 0;
+
+export const getSampleMakerDraftResponsePhotoMax = 300000;
+
+export const getSampleMakerDraftResponseStepMax = 7;
+
+
+
+export const GetSampleMakerDraftResponse = zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "kind": zod.string(),
+  "material": zod.string(),
+  "technique": zod.string(),
+  "size": zod.string(),
+  "pricePaise": zod.number().int().min(getSampleMakerDraftResponsePricePaiseMin),
+  "gstPct": zod.number().int().min(getSampleMakerDraftResponseGstPctMin).max(getSampleMakerDraftResponseGstPctMax),
+  "stock": zod.number().int().min(getSampleMakerDraftResponseStockMin).max(getSampleMakerDraftResponseStockMax),
+  "dispatchDays": zod.number().int().min(1).max(getSampleMakerDraftResponseDispatchDaysMax),
+  "madeToOrder": zod.boolean(),
+  "costPaise": zod.number().int().min(getSampleMakerDraftResponseCostPaiseMin),
+  "story": zod.string(),
+  "photo": zod.string().max(getSampleMakerDraftResponsePhotoMax),
+  "step": zod.number().int().min(1).max(getSampleMakerDraftResponseStepMax),
+  "updatedAt": zod.coerce.date(),
+  "status": zod.enum(['draft', 'submitted', 'live', 'changes'])
+})
+
+
+export const saveSampleMakerDraftPathIdMax = 100;
+
+
+
+export const SaveSampleMakerDraftParams = zod.object({
+  "id": zod.coerce.string().min(1).max(saveSampleMakerDraftPathIdMax)
+})
+
+export const saveSampleMakerDraftBodyNameMax = 200;
+
+export const saveSampleMakerDraftBodyKindMax = 200;
+
+export const saveSampleMakerDraftBodyMaterialMax = 500;
+
+export const saveSampleMakerDraftBodyTechniqueMax = 500;
+
+export const saveSampleMakerDraftBodySizeMax = 200;
+
+export const saveSampleMakerDraftBodyPricePaiseMin = 0;
+export const saveSampleMakerDraftBodyPricePaiseMax = 100000000;
+
+export const saveSampleMakerDraftBodyGstPctMin = 0;
+export const saveSampleMakerDraftBodyGstPctMax = 100;
+
+export const saveSampleMakerDraftBodyStockMin = 0;
+export const saveSampleMakerDraftBodyStockMax = 10000;
+
+export const saveSampleMakerDraftBodyDispatchDaysMax = 60;
+
+export const saveSampleMakerDraftBodyCostPaiseMin = 0;
+export const saveSampleMakerDraftBodyCostPaiseMax = 100000000;
+
+export const saveSampleMakerDraftBodyStoryMax = 5000;
+
+export const saveSampleMakerDraftBodyPhotoMax = 300000;
+
+export const saveSampleMakerDraftBodyStepMax = 7;
+
+
+
+export const SaveSampleMakerDraftBody = zod.object({
+  "name": zod.string().max(saveSampleMakerDraftBodyNameMax),
+  "kind": zod.string().max(saveSampleMakerDraftBodyKindMax),
+  "material": zod.string().max(saveSampleMakerDraftBodyMaterialMax),
+  "technique": zod.string().max(saveSampleMakerDraftBodyTechniqueMax),
+  "size": zod.string().max(saveSampleMakerDraftBodySizeMax),
+  "pricePaise": zod.number().int().min(saveSampleMakerDraftBodyPricePaiseMin).max(saveSampleMakerDraftBodyPricePaiseMax),
+  "gstPct": zod.number().int().min(saveSampleMakerDraftBodyGstPctMin).max(saveSampleMakerDraftBodyGstPctMax),
+  "stock": zod.number().int().min(saveSampleMakerDraftBodyStockMin).max(saveSampleMakerDraftBodyStockMax),
+  "dispatchDays": zod.number().int().min(1).max(saveSampleMakerDraftBodyDispatchDaysMax),
+  "madeToOrder": zod.boolean(),
+  "costPaise": zod.number().int().min(saveSampleMakerDraftBodyCostPaiseMin).max(saveSampleMakerDraftBodyCostPaiseMax),
+  "story": zod.string().max(saveSampleMakerDraftBodyStoryMax),
+  "photo": zod.string().max(saveSampleMakerDraftBodyPhotoMax),
+  "step": zod.number().int().min(1).max(saveSampleMakerDraftBodyStepMax)
+})
+
+export const saveSampleMakerDraftResponsePricePaiseMin = 0;
+
+export const saveSampleMakerDraftResponseGstPctMin = 0;
+export const saveSampleMakerDraftResponseGstPctMax = 100;
+
+export const saveSampleMakerDraftResponseStockMin = 0;
+export const saveSampleMakerDraftResponseStockMax = 10000;
+
+export const saveSampleMakerDraftResponseDispatchDaysMax = 60;
+
+export const saveSampleMakerDraftResponseCostPaiseMin = 0;
+
+export const saveSampleMakerDraftResponsePhotoMax = 300000;
+
+export const saveSampleMakerDraftResponseStepMax = 7;
+
+
+
+export const SaveSampleMakerDraftResponse = zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "kind": zod.string(),
+  "material": zod.string(),
+  "technique": zod.string(),
+  "size": zod.string(),
+  "pricePaise": zod.number().int().min(saveSampleMakerDraftResponsePricePaiseMin),
+  "gstPct": zod.number().int().min(saveSampleMakerDraftResponseGstPctMin).max(saveSampleMakerDraftResponseGstPctMax),
+  "stock": zod.number().int().min(saveSampleMakerDraftResponseStockMin).max(saveSampleMakerDraftResponseStockMax),
+  "dispatchDays": zod.number().int().min(1).max(saveSampleMakerDraftResponseDispatchDaysMax),
+  "madeToOrder": zod.boolean(),
+  "costPaise": zod.number().int().min(saveSampleMakerDraftResponseCostPaiseMin),
+  "story": zod.string(),
+  "photo": zod.string().max(saveSampleMakerDraftResponsePhotoMax),
+  "step": zod.number().int().min(1).max(saveSampleMakerDraftResponseStepMax),
+  "updatedAt": zod.coerce.date(),
+  "status": zod.enum(['draft', 'submitted', 'live', 'changes'])
+})
+
+
+export const submitSampleMakerDraftPathIdMax = 100;
+
+
+
+export const SubmitSampleMakerDraftParams = zod.object({
+  "id": zod.coerce.string().min(1).max(submitSampleMakerDraftPathIdMax)
+})
+
+export const SubmitSampleMakerDraftBody = zod.object({
+  "confirmedFacts": zod.literal(true)
+})
+
+export const SubmitSampleMakerDraftResponse = zod.object({
+  "id": zod.string(),
+  "status": zod.enum(['live', 'review']),
+  "reason": zod.string().nullable(),
+  "spotCheck": zod.boolean(),
+  "message": zod.string()
+})
+
+
+export const getSampleAdminPayoutsResponseRunsItemSplitGrossPaiseMin = 0;
+
+export const getSampleAdminPayoutsResponseRunsItemSplitGstPaiseMin = 0;
+
+export const getSampleAdminPayoutsResponseRunsItemSplitTaxablePaiseMin = 0;
+
+export const getSampleAdminPayoutsResponseRunsItemSplitCommissionPaiseMin = 0;
+
+export const getSampleAdminPayoutsResponseRunsItemSplitCommissionGstPaiseMin = 0;
+
+export const getSampleAdminPayoutsResponseRunsItemSplitTcsPaiseMin = 0;
+
+export const getSampleAdminPayoutsResponseRunsItemSplitPaymentFeePaiseMin = 0;
+
+export const getSampleAdminPayoutsResponseRunsItemSplitDeductionsPaiseMin = 0;
+
+export const getSampleAdminPayoutsResponseRunsItemSplitPayoutPaiseMin = 0;
+
+export const getSampleAdminPayoutsResponsePaidRunsItemGrossPaiseMin = 0;
+
+export const getSampleAdminPayoutsResponsePaidRunsItemPayoutPaiseMin = 0;
+
+
+
+export const GetSampleAdminPayoutsResponse = zod.object({
+  "sample": zod.literal(true),
+  "runs": zod.array(zod.object({
+  "makerId": zod.string(),
+  "makerBrand": zod.string(),
+  "date": zod.coerce.date(),
+  "orderIds": zod.array(zod.string()),
+  "split": zod.object({
+  "grossPaise": zod.number().int().min(getSampleAdminPayoutsResponseRunsItemSplitGrossPaiseMin),
+  "gstPaise": zod.number().int().min(getSampleAdminPayoutsResponseRunsItemSplitGstPaiseMin),
+  "taxablePaise": zod.number().int().min(getSampleAdminPayoutsResponseRunsItemSplitTaxablePaiseMin),
+  "commissionPaise": zod.number().int().min(getSampleAdminPayoutsResponseRunsItemSplitCommissionPaiseMin),
+  "commissionGstPaise": zod.number().int().min(getSampleAdminPayoutsResponseRunsItemSplitCommissionGstPaiseMin),
+  "tcsPaise": zod.number().int().min(getSampleAdminPayoutsResponseRunsItemSplitTcsPaiseMin),
+  "paymentFeePaise": zod.number().int().min(getSampleAdminPayoutsResponseRunsItemSplitPaymentFeePaiseMin),
+  "deductionsPaise": zod.number().int().min(getSampleAdminPayoutsResponseRunsItemSplitDeductionsPaiseMin),
+  "payoutPaise": zod.number().int().min(getSampleAdminPayoutsResponseRunsItemSplitPayoutPaiseMin),
+  "netAfterGstPaise": zod.number().int()
+})
+})),
+  "paidRuns": zod.array(zod.object({
+  "makerId": zod.string(),
+  "makerBrand": zod.string(),
+  "date": zod.coerce.date(),
+  "orderIds": zod.array(zod.string()),
+  "grossPaise": zod.number().int().min(getSampleAdminPayoutsResponsePaidRunsItemGrossPaiseMin),
+  "payoutPaise": zod.number().int().min(getSampleAdminPayoutsResponsePaidRunsItemPayoutPaiseMin),
+  "paidOn": zod.coerce.date()
+}))
+})
+
+
+export const getSampleAdminProductReviewsResponseReviewsItemPricePaiseMin = 0;
+
+export const getSampleAdminProductReviewsResponseReviewsItemStockMin = 0;
+
+
+export const getSampleAdminProductReviewsResponseReviewsItemChecksMin = 5;
+export const getSampleAdminProductReviewsResponseReviewsItemChecksMax = 5;
+
+
+
+export const GetSampleAdminProductReviewsResponse = zod.object({
+  "sample": zod.literal(true),
+  "reviews": zod.array(zod.object({
+  "id": zod.string(),
+  "makerId": zod.string(),
+  "makerBrand": zod.string(),
+  "name": zod.string(),
+  "kind": zod.string(),
+  "material": zod.string(),
+  "technique": zod.string(),
+  "size": zod.string(),
+  "pricePaise": zod.number().int().min(getSampleAdminProductReviewsResponseReviewsItemPricePaiseMin),
+  "stock": zod.number().int().min(getSampleAdminProductReviewsResponseReviewsItemStockMin),
+  "dispatchDays": zod.number().int().min(1),
+  "story": zod.string(),
+  "photo": zod.string(),
+  "submittedAt": zod.coerce.date(),
+  "status": zod.enum(['review', 'live', 'changes']),
+  "checks": zod.array(zod.boolean()).min(getSampleAdminProductReviewsResponseReviewsItemChecksMin).max(getSampleAdminProductReviewsResponseReviewsItemChecksMax),
+  "note": zod.string(),
+  "reason": zod.string().nullable()
+}))
+})
+
+
+export const reviewSampleAdminProductPathIdMax = 100;
+
+
+
+export const ReviewSampleAdminProductParams = zod.object({
+  "id": zod.coerce.string().min(1).max(reviewSampleAdminProductPathIdMax)
+})
+
+export const reviewSampleAdminProductBodyChecksMin = 5;
+export const reviewSampleAdminProductBodyChecksMax = 5;
+
+export const reviewSampleAdminProductBodyNoteMax = 2000;
+
+
+
+export const ReviewSampleAdminProductBody = zod.object({
+  "action": zod.enum(['approve', 'changes', 'spot_check']),
+  "checks": zod.array(zod.boolean()).min(reviewSampleAdminProductBodyChecksMin).max(reviewSampleAdminProductBodyChecksMax),
+  "note": zod.string().max(reviewSampleAdminProductBodyNoteMax)
+})
+
+export const reviewSampleAdminProductResponsePricePaiseMin = 0;
+
+export const reviewSampleAdminProductResponseStockMin = 0;
+
+
+export const reviewSampleAdminProductResponseChecksMin = 5;
+export const reviewSampleAdminProductResponseChecksMax = 5;
+
+
+
+export const ReviewSampleAdminProductResponse = zod.object({
+  "id": zod.string(),
+  "makerId": zod.string(),
+  "makerBrand": zod.string(),
+  "name": zod.string(),
+  "kind": zod.string(),
+  "material": zod.string(),
+  "technique": zod.string(),
+  "size": zod.string(),
+  "pricePaise": zod.number().int().min(reviewSampleAdminProductResponsePricePaiseMin),
+  "stock": zod.number().int().min(reviewSampleAdminProductResponseStockMin),
+  "dispatchDays": zod.number().int().min(1),
+  "story": zod.string(),
+  "photo": zod.string(),
+  "submittedAt": zod.coerce.date(),
+  "status": zod.enum(['review', 'live', 'changes']),
+  "checks": zod.array(zod.boolean()).min(reviewSampleAdminProductResponseChecksMin).max(reviewSampleAdminProductResponseChecksMax),
+  "note": zod.string(),
+  "reason": zod.string().nullable()
+})
+
+
+export const GetSampleAdminVendorApplicationsResponse = zod.object({
+  "sample": zod.literal(true),
+  "applications": zod.array(zod.object({
+  "id": zod.string(),
+  "brand": zod.string(),
+  "name": zod.string(),
+  "place": zod.string(),
+  "craft": zod.string(),
+  "gst": zod.string(),
+  "status": zod.enum(['pending', 'call', 'approved', 'declined'])
+}))
+})
+
+
+export const decideSampleAdminVendorApplicationPathIdMax = 100;
+
+
+
+export const DecideSampleAdminVendorApplicationParams = zod.object({
+  "id": zod.coerce.string().min(1).max(decideSampleAdminVendorApplicationPathIdMax)
+})
+
+export const DecideSampleAdminVendorApplicationBody = zod.object({
+  "decision": zod.enum(['approve', 'book_call', 'decline'])
+})
+
+export const DecideSampleAdminVendorApplicationResponse = zod.object({
+  "id": zod.string(),
+  "brand": zod.string(),
+  "name": zod.string(),
+  "place": zod.string(),
+  "craft": zod.string(),
+  "gst": zod.string(),
+  "status": zod.enum(['pending', 'call', 'approved', 'declined'])
+})
+
+
+export const createSampleCorporateEnquiryBodyPurposeMin = 3;
+export const createSampleCorporateEnquiryBodyPurposeMax = 120;
+
+export const createSampleCorporateEnquiryBodyQtyMax = 20000;
+
+export const createSampleCorporateEnquiryBodyBudgetPaiseMin = 100;
+export const createSampleCorporateEnquiryBodyBudgetPaiseMax = 100000000;
+
+export const createSampleCorporateEnquiryBodyNameMin = 2;
+export const createSampleCorporateEnquiryBodyNameMax = 120;
+
+export const createSampleCorporateEnquiryBodyCompanyMin = 2;
+export const createSampleCorporateEnquiryBodyCompanyMax = 160;
+
+export const createSampleCorporateEnquiryBodyContactMin = 8;
+export const createSampleCorporateEnquiryBodyContactMax = 24;
+
+
+
+export const CreateSampleCorporateEnquiryBody = zod.object({
+  "purpose": zod.string().min(createSampleCorporateEnquiryBodyPurposeMin).max(createSampleCorporateEnquiryBodyPurposeMax),
+  "qty": zod.number().int().min(1).max(createSampleCorporateEnquiryBodyQtyMax),
+  "budgetPaise": zod.number().int().min(createSampleCorporateEnquiryBodyBudgetPaiseMin).max(createSampleCorporateEnquiryBodyBudgetPaiseMax),
+  "neededBy": zod.coerce.date(),
+  "name": zod.string().min(createSampleCorporateEnquiryBodyNameMin).max(createSampleCorporateEnquiryBodyNameMax),
+  "company": zod.string().min(createSampleCorporateEnquiryBodyCompanyMin).max(createSampleCorporateEnquiryBodyCompanyMax),
+  "contact": zod.string().min(createSampleCorporateEnquiryBodyContactMin).max(createSampleCorporateEnquiryBodyContactMax)
+})
+
+export const CreateSampleCorporateEnquiryResponse = zod.object({
+  "sample": zod.literal(true),
+  "ref": zod.string(),
+  "stage": zod.enum(['new'])
+})
+
+
+
+export const getSampleAdminCorporateEnquiriesResponseEnquiriesItemBudgetPaiseMin = 0;
+
+export const getSampleAdminCorporateEnquiriesResponseEnquiriesItemQuotePaiseMin = 0;
+
+
+
+export const GetSampleAdminCorporateEnquiriesResponse = zod.object({
+  "sample": zod.literal(true),
+  "enquiries": zod.array(zod.object({
+  "ref": zod.string(),
+  "company": zod.string(),
+  "contactName": zod.string(),
+  "contact": zod.string(),
+  "purpose": zod.string(),
+  "qty": zod.number().int().min(1),
+  "budgetPaise": zod.number().int().min(getSampleAdminCorporateEnquiriesResponseEnquiriesItemBudgetPaiseMin),
+  "neededBy": zod.coerce.date(),
+  "message": zod.string(),
+  "stage": zod.enum(['new', 'contacted', 'quote', 'won', 'lost']),
+  "matchedMakerIds": zod.array(zod.string()),
+  "sentToMakerIds": zod.array(zod.string()),
+  "responses": zod.record(zod.string(), zod.enum(['yes', 'no'])),
+  "quotePaise": zod.number().int().min(getSampleAdminCorporateEnquiriesResponseEnquiriesItemQuotePaiseMin).nullable(),
+  "createdAt": zod.coerce.date()
+}))
+})
+
+
+export const getSampleAdminOverviewResponseMetricsSalesPaiseMin = 0;
+
+export const getSampleAdminOverviewResponseMetricsCommissionPaiseMin = 0;
+
+export const getSampleAdminOverviewResponseMetricsOrderCountMin = 0;
+
+export const getSampleAdminOverviewResponseMetricsLiveMakerCountMin = 0;
+
+export const getSampleAdminOverviewResponseMetricsLiveProductCountMin = 0;
+
+export const getSampleAdminOverviewResponseMetricsCorporatePipelinePaiseMin = 0;
+
+export const getSampleAdminOverviewResponseMetricsOpenCorporateCountMin = 0;
+
+export const getSampleAdminOverviewResponseMetricsPendingReviewCountMin = 0;
+
+export const getSampleAdminOverviewResponseMetricsOpenIssueCountMin = 0;
+
+export const getSampleAdminOverviewResponseMetricsPendingApplicationCountMin = 0;
+
+
+
+export const GetSampleAdminOverviewResponse = zod.object({
+  "sample": zod.literal(true),
+  "metrics": zod.object({
+  "salesPaise": zod.number().int().min(getSampleAdminOverviewResponseMetricsSalesPaiseMin),
+  "commissionPaise": zod.number().int().min(getSampleAdminOverviewResponseMetricsCommissionPaiseMin),
+  "orderCount": zod.number().int().min(getSampleAdminOverviewResponseMetricsOrderCountMin),
+  "liveMakerCount": zod.number().int().min(getSampleAdminOverviewResponseMetricsLiveMakerCountMin),
+  "liveProductCount": zod.number().int().min(getSampleAdminOverviewResponseMetricsLiveProductCountMin),
+  "corporatePipelinePaise": zod.number().int().min(getSampleAdminOverviewResponseMetricsCorporatePipelinePaiseMin),
+  "openCorporateCount": zod.number().int().min(getSampleAdminOverviewResponseMetricsOpenCorporateCountMin),
+  "pendingReviewCount": zod.number().int().min(getSampleAdminOverviewResponseMetricsPendingReviewCountMin),
+  "openIssueCount": zod.number().int().min(getSampleAdminOverviewResponseMetricsOpenIssueCountMin),
+  "pendingApplicationCount": zod.number().int().min(getSampleAdminOverviewResponseMetricsPendingApplicationCountMin)
+}),
+  "attention": zod.array(zod.object({
+  "id": zod.string(),
+  "label": zod.string(),
+  "href": zod.string(),
+  "kind": zod.enum(['order', 'review', 'application', 'corporate'])
+}))
+})
+
+
+export const getSampleAdminAcademySalesResponseSalesItemAmountPaiseMin = 0;
+
+export const getSampleAdminAcademySalesResponseSummaryRevenuePaiseMin = 0;
+
+export const getSampleAdminAcademySalesResponseSummarySeatsSoldMin = 0;
+
+export const getSampleAdminAcademySalesResponseSummaryRefundedCountMin = 0;
+
+export const getSampleAdminAcademySalesResponseSummaryImportedCountMin = 0;
+
+
+
+export const GetSampleAdminAcademySalesResponse = zod.object({
+  "sample": zod.literal(true),
+  "sales": zod.array(zod.object({
+  "id": zod.string(),
+  "date": zod.coerce.date(),
+  "course": zod.string(),
+  "learner": zod.string(),
+  "amountPaise": zod.number().int().min(getSampleAdminAcademySalesResponseSalesItemAmountPaiseMin),
+  "status": zod.enum(['paid', 'refunded', 'cancelled']),
+  "source": zod.enum(['sample', 'tagmango_import'])
+})),
+  "summary": zod.object({
+  "revenuePaise": zod.number().int().min(getSampleAdminAcademySalesResponseSummaryRevenuePaiseMin),
+  "seatsSold": zod.number().int().min(getSampleAdminAcademySalesResponseSummarySeatsSoldMin),
+  "refundedCount": zod.number().int().min(getSampleAdminAcademySalesResponseSummaryRefundedCountMin),
+  "importedCount": zod.number().int().min(getSampleAdminAcademySalesResponseSummaryImportedCountMin)
+})
+})
+
+
+export const importSampleAdminAcademyCsvBodyCsvMax = 1000000;
+
+
+
+export const ImportSampleAdminAcademyCsvBody = zod.object({
+  "csv": zod.string().min(1).max(importSampleAdminAcademyCsvBodyCsvMax)
+})
+
+export const importSampleAdminAcademyCsvResponseOneSalesItemAmountPaiseMin = 0;
+
+export const importSampleAdminAcademyCsvResponseOneSummaryRevenuePaiseMin = 0;
+
+export const importSampleAdminAcademyCsvResponseOneSummarySeatsSoldMin = 0;
+
+export const importSampleAdminAcademyCsvResponseOneSummaryRefundedCountMin = 0;
+
+export const importSampleAdminAcademyCsvResponseOneSummaryImportedCountMin = 0;
+
+export const importSampleAdminAcademyCsvResponseTwoImportedMin = 0;
+
+
+
+export const ImportSampleAdminAcademyCsvResponse = zod.object({
+  "sample": zod.literal(true),
+  "sales": zod.array(zod.object({
+  "id": zod.string(),
+  "date": zod.coerce.date(),
+  "course": zod.string(),
+  "learner": zod.string(),
+  "amountPaise": zod.number().int().min(importSampleAdminAcademyCsvResponseOneSalesItemAmountPaiseMin),
+  "status": zod.enum(['paid', 'refunded', 'cancelled']),
+  "source": zod.enum(['sample', 'tagmango_import'])
+})),
+  "summary": zod.object({
+  "revenuePaise": zod.number().int().min(importSampleAdminAcademyCsvResponseOneSummaryRevenuePaiseMin),
+  "seatsSold": zod.number().int().min(importSampleAdminAcademyCsvResponseOneSummarySeatsSoldMin),
+  "refundedCount": zod.number().int().min(importSampleAdminAcademyCsvResponseOneSummaryRefundedCountMin),
+  "importedCount": zod.number().int().min(importSampleAdminAcademyCsvResponseOneSummaryImportedCountMin)
+})
+}).and(zod.object({
+  "imported": zod.number().int().min(importSampleAdminAcademyCsvResponseTwoImportedMin)
+}))
+
+
+export const updateSampleAdminCorporateStagePathRefMax = 100;
+
+
+
+export const UpdateSampleAdminCorporateStageParams = zod.object({
+  "ref": zod.coerce.string().min(1).max(updateSampleAdminCorporateStagePathRefMax)
+})
+
+export const UpdateSampleAdminCorporateStageBody = zod.object({
+  "stage": zod.enum(['new', 'contacted', 'quote', 'won', 'lost'])
+})
+
+
+export const updateSampleAdminCorporateStageResponseBudgetPaiseMin = 0;
+
+export const updateSampleAdminCorporateStageResponseQuotePaiseMin = 0;
+
+
+
+export const UpdateSampleAdminCorporateStageResponse = zod.object({
+  "ref": zod.string(),
+  "company": zod.string(),
+  "contactName": zod.string(),
+  "contact": zod.string(),
+  "purpose": zod.string(),
+  "qty": zod.number().int().min(1),
+  "budgetPaise": zod.number().int().min(updateSampleAdminCorporateStageResponseBudgetPaiseMin),
+  "neededBy": zod.coerce.date(),
+  "message": zod.string(),
+  "stage": zod.enum(['new', 'contacted', 'quote', 'won', 'lost']),
+  "matchedMakerIds": zod.array(zod.string()),
+  "sentToMakerIds": zod.array(zod.string()),
+  "responses": zod.record(zod.string(), zod.enum(['yes', 'no'])),
+  "quotePaise": zod.number().int().min(updateSampleAdminCorporateStageResponseQuotePaiseMin).nullable(),
+  "createdAt": zod.coerce.date()
+})
+
+
+export const matchSampleAdminCorporateMakersPathRefMax = 100;
+
+
+
+export const MatchSampleAdminCorporateMakersParams = zod.object({
+  "ref": zod.coerce.string().min(1).max(matchSampleAdminCorporateMakersPathRefMax)
+})
+
+export const matchSampleAdminCorporateMakersBodyMakerIdsMax = 2;
+
+
+
+export const MatchSampleAdminCorporateMakersBody = zod.object({
+  "makerIds": zod.array(zod.enum(['m1', 'm2'])).max(matchSampleAdminCorporateMakersBodyMakerIdsMax)
+})
+
+
+export const matchSampleAdminCorporateMakersResponseBudgetPaiseMin = 0;
+
+export const matchSampleAdminCorporateMakersResponseQuotePaiseMin = 0;
+
+
+
+export const MatchSampleAdminCorporateMakersResponse = zod.object({
+  "ref": zod.string(),
+  "company": zod.string(),
+  "contactName": zod.string(),
+  "contact": zod.string(),
+  "purpose": zod.string(),
+  "qty": zod.number().int().min(1),
+  "budgetPaise": zod.number().int().min(matchSampleAdminCorporateMakersResponseBudgetPaiseMin),
+  "neededBy": zod.coerce.date(),
+  "message": zod.string(),
+  "stage": zod.enum(['new', 'contacted', 'quote', 'won', 'lost']),
+  "matchedMakerIds": zod.array(zod.string()),
+  "sentToMakerIds": zod.array(zod.string()),
+  "responses": zod.record(zod.string(), zod.enum(['yes', 'no'])),
+  "quotePaise": zod.number().int().min(matchSampleAdminCorporateMakersResponseQuotePaiseMin).nullable(),
+  "createdAt": zod.coerce.date()
+})
+
+
+export const saveSampleAdminCorporateQuotePathRefMax = 100;
+
+
+
+export const SaveSampleAdminCorporateQuoteParams = zod.object({
+  "ref": zod.coerce.string().min(1).max(saveSampleAdminCorporateQuotePathRefMax)
+})
+
+export const saveSampleAdminCorporateQuoteBodyQuotePaiseMin = 100;
+export const saveSampleAdminCorporateQuoteBodyQuotePaiseMax = 1000000000;
+
+
+
+export const SaveSampleAdminCorporateQuoteBody = zod.object({
+  "quotePaise": zod.number().int().min(saveSampleAdminCorporateQuoteBodyQuotePaiseMin).max(saveSampleAdminCorporateQuoteBodyQuotePaiseMax)
+})
+
+
+export const saveSampleAdminCorporateQuoteResponseBudgetPaiseMin = 0;
+
+export const saveSampleAdminCorporateQuoteResponseQuotePaiseMin = 0;
+
+
+
+export const SaveSampleAdminCorporateQuoteResponse = zod.object({
+  "ref": zod.string(),
+  "company": zod.string(),
+  "contactName": zod.string(),
+  "contact": zod.string(),
+  "purpose": zod.string(),
+  "qty": zod.number().int().min(1),
+  "budgetPaise": zod.number().int().min(saveSampleAdminCorporateQuoteResponseBudgetPaiseMin),
+  "neededBy": zod.coerce.date(),
+  "message": zod.string(),
+  "stage": zod.enum(['new', 'contacted', 'quote', 'won', 'lost']),
+  "matchedMakerIds": zod.array(zod.string()),
+  "sentToMakerIds": zod.array(zod.string()),
+  "responses": zod.record(zod.string(), zod.enum(['yes', 'no'])),
+  "quotePaise": zod.number().int().min(saveSampleAdminCorporateQuoteResponseQuotePaiseMin).nullable(),
+  "createdAt": zod.coerce.date()
+})
+
+
+export const recordSamplePayoutPaidPathMakerIdMax = 60;
+
+export const recordSamplePayoutPaidPathDateRegExp = new RegExp('^\\d{4}-\\d{2}-\\d{2}$');
+
+
+export const RecordSamplePayoutPaidParams = zod.object({
+  "makerId": zod.coerce.string().min(1).max(recordSamplePayoutPaidPathMakerIdMax),
+  "date": zod.coerce.string().regex(recordSamplePayoutPaidPathDateRegExp)
+})
+
+export const recordSamplePayoutPaidResponseOneGrossPaiseMin = 0;
+
+export const recordSamplePayoutPaidResponseOnePayoutPaiseMin = 0;
+
+
+
+export const RecordSamplePayoutPaidResponse = zod.object({
+  "makerId": zod.string(),
+  "makerBrand": zod.string(),
+  "date": zod.coerce.date(),
+  "orderIds": zod.array(zod.string()),
+  "grossPaise": zod.number().int().min(recordSamplePayoutPaidResponseOneGrossPaiseMin),
+  "payoutPaise": zod.number().int().min(recordSamplePayoutPaidResponseOnePayoutPaiseMin),
+  "paidOn": zod.coerce.date()
+}).and(zod.object({
+  "id": zod.string(),
+  "message": zod.string()
+}))
+
+
+
+export const getSampleCouponsResponseCouponsItemMinimumPaiseMin = 0;
+
+export const getSampleCouponsResponseCouponsItemMaximumDiscountPaiseMin = 0;
+
+
+
+export const getSampleCouponsResponseCouponsItemUsedCountMin = 0;
+
+
+
+export const GetSampleCouponsResponse = zod.object({
+  "sample": zod.literal(true),
+  "coupons": zod.array(zod.object({
+  "id": zod.string(),
+  "code": zod.string(),
+  "discountType": zod.enum(['percent', 'fixed']),
+  "discountValue": zod.number().int().min(1),
+  "minimumPaise": zod.number().int().min(getSampleCouponsResponseCouponsItemMinimumPaiseMin),
+  "maximumDiscountPaise": zod.number().int().min(getSampleCouponsResponseCouponsItemMaximumDiscountPaiseMin).nullable(),
+  "startsAt": zod.coerce.date(),
+  "endsAt": zod.coerce.date(),
+  "usageLimit": zod.number().int().min(1).nullable(),
+  "perShopperLimit": zod.number().int().min(1),
+  "usedCount": zod.number().int().min(getSampleCouponsResponseCouponsItemUsedCountMin),
+  "active": zod.boolean()
+}))
+})
+
+
+export const createSampleCouponBodyCodeRegExp = new RegExp('^[A-Z0-9_-]{3,40}$');
+
+export const createSampleCouponBodyMinimumPaiseMin = 0;
+
+export const createSampleCouponBodyMaximumDiscountPaiseMin = 0;
+
+
+export const createSampleCouponBodyPerShopperLimitMax = 100;
+
+
+
+export const CreateSampleCouponBody = zod.object({
+  "code": zod.string().regex(createSampleCouponBodyCodeRegExp),
+  "discountType": zod.enum(['percent', 'fixed']),
+  "discountValue": zod.number().int().min(1),
+  "minimumPaise": zod.number().int().min(createSampleCouponBodyMinimumPaiseMin),
+  "maximumDiscountPaise": zod.number().int().min(createSampleCouponBodyMaximumDiscountPaiseMin).nullable(),
+  "startsAt": zod.coerce.date(),
+  "endsAt": zod.coerce.date(),
+  "usageLimit": zod.number().int().min(1).nullable(),
+  "perShopperLimit": zod.number().int().min(1).max(createSampleCouponBodyPerShopperLimitMax),
+  "active": zod.boolean()
+})
+
+
+export const createSampleCouponResponseMinimumPaiseMin = 0;
+
+export const createSampleCouponResponseMaximumDiscountPaiseMin = 0;
+
+
+
+export const createSampleCouponResponseUsedCountMin = 0;
+
+
+
+export const CreateSampleCouponResponse = zod.object({
+  "id": zod.string(),
+  "code": zod.string(),
+  "discountType": zod.enum(['percent', 'fixed']),
+  "discountValue": zod.number().int().min(1),
+  "minimumPaise": zod.number().int().min(createSampleCouponResponseMinimumPaiseMin),
+  "maximumDiscountPaise": zod.number().int().min(createSampleCouponResponseMaximumDiscountPaiseMin).nullable(),
+  "startsAt": zod.coerce.date(),
+  "endsAt": zod.coerce.date(),
+  "usageLimit": zod.number().int().min(1).nullable(),
+  "perShopperLimit": zod.number().int().min(1),
+  "usedCount": zod.number().int().min(createSampleCouponResponseUsedCountMin),
+  "active": zod.boolean()
+})
+
+
+export const UpdateSampleCouponParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const updateSampleCouponBodyCodeRegExp = new RegExp('^[A-Z0-9_-]{3,40}$');
+
+export const updateSampleCouponBodyMinimumPaiseMin = 0;
+
+export const updateSampleCouponBodyMaximumDiscountPaiseMin = 0;
+
+
+export const updateSampleCouponBodyPerShopperLimitMax = 100;
+
+
+
+export const UpdateSampleCouponBody = zod.object({
+  "code": zod.string().regex(updateSampleCouponBodyCodeRegExp),
+  "discountType": zod.enum(['percent', 'fixed']),
+  "discountValue": zod.number().int().min(1),
+  "minimumPaise": zod.number().int().min(updateSampleCouponBodyMinimumPaiseMin),
+  "maximumDiscountPaise": zod.number().int().min(updateSampleCouponBodyMaximumDiscountPaiseMin).nullable(),
+  "startsAt": zod.coerce.date(),
+  "endsAt": zod.coerce.date(),
+  "usageLimit": zod.number().int().min(1).nullable(),
+  "perShopperLimit": zod.number().int().min(1).max(updateSampleCouponBodyPerShopperLimitMax),
+  "active": zod.boolean()
+})
+
+
+export const updateSampleCouponResponseMinimumPaiseMin = 0;
+
+export const updateSampleCouponResponseMaximumDiscountPaiseMin = 0;
+
+
+
+export const updateSampleCouponResponseUsedCountMin = 0;
+
+
+
+export const UpdateSampleCouponResponse = zod.object({
+  "id": zod.string(),
+  "code": zod.string(),
+  "discountType": zod.enum(['percent', 'fixed']),
+  "discountValue": zod.number().int().min(1),
+  "minimumPaise": zod.number().int().min(updateSampleCouponResponseMinimumPaiseMin),
+  "maximumDiscountPaise": zod.number().int().min(updateSampleCouponResponseMaximumDiscountPaiseMin).nullable(),
+  "startsAt": zod.coerce.date(),
+  "endsAt": zod.coerce.date(),
+  "usageLimit": zod.number().int().min(1).nullable(),
+  "perShopperLimit": zod.number().int().min(1),
+  "usedCount": zod.number().int().min(updateSampleCouponResponseUsedCountMin),
+  "active": zod.boolean()
+})
+
+
+export const GetSampleBlogResponse = zod.object({
+  "sample": zod.literal(true),
+  "posts": zod.array(zod.object({
+  "id": zod.string(),
+  "slug": zod.string(),
+  "title": zod.string(),
+  "excerpt": zod.string(),
+  "body": zod.string(),
+  "author": zod.string(),
+  "status": zod.enum(['draft', 'published']),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date(),
+  "publishedAt": zod.coerce.date().nullable()
+}))
+})
+
+
+export const GetSampleAdminBlogResponse = zod.object({
+  "sample": zod.literal(true),
+  "posts": zod.array(zod.object({
+  "id": zod.string(),
+  "slug": zod.string(),
+  "title": zod.string(),
+  "excerpt": zod.string(),
+  "body": zod.string(),
+  "author": zod.string(),
+  "status": zod.enum(['draft', 'published']),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date(),
+  "publishedAt": zod.coerce.date().nullable()
+}))
+})
+
+
+export const createSampleBlogPostBodySlugMin = 3;
+export const createSampleBlogPostBodySlugMax = 100;
+
+
+export const createSampleBlogPostBodySlugRegExp = new RegExp('^[a-z0-9]+(?:-[a-z0-9]+)*$');
+export const createSampleBlogPostBodyTitleMin = 3;
+export const createSampleBlogPostBodyTitleMax = 160;
+
+export const createSampleBlogPostBodyExcerptMin = 10;
+export const createSampleBlogPostBodyExcerptMax = 500;
+
+export const createSampleBlogPostBodyBodyMin = 30;
+export const createSampleBlogPostBodyBodyMax = 12000;
+
+export const createSampleBlogPostBodyAuthorMin = 2;
+export const createSampleBlogPostBodyAuthorMax = 120;
+
+
+
+export const CreateSampleBlogPostBody = zod.object({
+  "slug": zod.string().min(createSampleBlogPostBodySlugMin).max(createSampleBlogPostBodySlugMax).regex(createSampleBlogPostBodySlugRegExp),
+  "title": zod.string().min(createSampleBlogPostBodyTitleMin).max(createSampleBlogPostBodyTitleMax),
+  "excerpt": zod.string().min(createSampleBlogPostBodyExcerptMin).max(createSampleBlogPostBodyExcerptMax),
+  "body": zod.string().min(createSampleBlogPostBodyBodyMin).max(createSampleBlogPostBodyBodyMax),
+  "author": zod.string().min(createSampleBlogPostBodyAuthorMin).max(createSampleBlogPostBodyAuthorMax),
+  "status": zod.enum(['draft', 'published'])
+})
+
+export const CreateSampleBlogPostResponse = zod.object({
+  "id": zod.string(),
+  "slug": zod.string(),
+  "title": zod.string(),
+  "excerpt": zod.string(),
+  "body": zod.string(),
+  "author": zod.string(),
+  "status": zod.enum(['draft', 'published']),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date(),
+  "publishedAt": zod.coerce.date().nullable()
+})
+
+
+export const UpdateSampleBlogPostParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const updateSampleBlogPostBodySlugMin = 3;
+export const updateSampleBlogPostBodySlugMax = 100;
+
+
+export const updateSampleBlogPostBodySlugRegExp = new RegExp('^[a-z0-9]+(?:-[a-z0-9]+)*$');
+export const updateSampleBlogPostBodyTitleMin = 3;
+export const updateSampleBlogPostBodyTitleMax = 160;
+
+export const updateSampleBlogPostBodyExcerptMin = 10;
+export const updateSampleBlogPostBodyExcerptMax = 500;
+
+export const updateSampleBlogPostBodyBodyMin = 30;
+export const updateSampleBlogPostBodyBodyMax = 12000;
+
+export const updateSampleBlogPostBodyAuthorMin = 2;
+export const updateSampleBlogPostBodyAuthorMax = 120;
+
+
+
+export const UpdateSampleBlogPostBody = zod.object({
+  "slug": zod.string().min(updateSampleBlogPostBodySlugMin).max(updateSampleBlogPostBodySlugMax).regex(updateSampleBlogPostBodySlugRegExp),
+  "title": zod.string().min(updateSampleBlogPostBodyTitleMin).max(updateSampleBlogPostBodyTitleMax),
+  "excerpt": zod.string().min(updateSampleBlogPostBodyExcerptMin).max(updateSampleBlogPostBodyExcerptMax),
+  "body": zod.string().min(updateSampleBlogPostBodyBodyMin).max(updateSampleBlogPostBodyBodyMax),
+  "author": zod.string().min(updateSampleBlogPostBodyAuthorMin).max(updateSampleBlogPostBodyAuthorMax),
+  "status": zod.enum(['draft', 'published'])
+})
+
+export const UpdateSampleBlogPostResponse = zod.object({
+  "id": zod.string(),
+  "slug": zod.string(),
+  "title": zod.string(),
+  "excerpt": zod.string(),
+  "body": zod.string(),
+  "author": zod.string(),
+  "status": zod.enum(['draft', 'published']),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date(),
+  "publishedAt": zod.coerce.date().nullable()
+})
+
+
+export const createSampleCheckoutBodyLinesItemProductIdMax = 100;
+
+export const createSampleCheckoutBodyLinesItemQuantityMax = 20;
+
+export const createSampleCheckoutBodyLinesMax = 20;
+
+export const createSampleCheckoutBodyAddressIdMax = 120;
+
+export const createSampleCheckoutBodyDeliveryAddressNameMax = 120;
+
+export const createSampleCheckoutBodyDeliveryAddressPhoneRegExp = new RegExp('^[6-9][0-9]{9}$');
+export const createSampleCheckoutBodyDeliveryAddressLine1Max = 200;
+
+export const createSampleCheckoutBodyDeliveryAddressLine2Max = 200;
+
+export const createSampleCheckoutBodyDeliveryAddressStateMax = 100;
+
+export const createSampleCheckoutBodyDeliveryAddressPinRegExp = new RegExp('^[1-9][0-9]{5}$');
+export const createSampleCheckoutBodyCouponCodeMax = 40;
+
+
+
+export const CreateSampleCheckoutBody = zod.object({
+  "lines": zod.array(zod.object({
+  "productId": zod.string().min(1).max(createSampleCheckoutBodyLinesItemProductIdMax),
+  "quantity": zod.number().int().min(1).max(createSampleCheckoutBodyLinesItemQuantityMax)
+})).min(1).max(createSampleCheckoutBodyLinesMax),
+  "addressId": zod.string().min(1).max(createSampleCheckoutBodyAddressIdMax).optional(),
+  "deliveryAddress": zod.object({
+  "name": zod.string().min(1).max(createSampleCheckoutBodyDeliveryAddressNameMax),
+  "phone": zod.string().regex(createSampleCheckoutBodyDeliveryAddressPhoneRegExp),
+  "line1": zod.string().min(1).max(createSampleCheckoutBodyDeliveryAddressLine1Max),
+  "line2": zod.string().max(createSampleCheckoutBodyDeliveryAddressLine2Max).optional(),
+  "state": zod.string().min(1).max(createSampleCheckoutBodyDeliveryAddressStateMax),
+  "pin": zod.string().regex(createSampleCheckoutBodyDeliveryAddressPinRegExp)
+}).optional(),
+  "couponCode": zod.string().max(createSampleCheckoutBodyCouponCodeMax).optional(),
+  "idempotencyKey": zod.string().uuid()
+})
+
+export const createSampleCheckoutResponseItemsPaiseMin = 0;
+
+export const createSampleCheckoutResponseDiscountPaiseMin = 0;
+
+export const createSampleCheckoutResponseShippingPaiseMin = 0;
+
+export const createSampleCheckoutResponseTotalPaiseMin = 0;
+
+
+
+export const CreateSampleCheckoutResponse = zod.object({
+  "sample": zod.literal(true),
+  "orderId": zod.string(),
+  "reference": zod.string(),
+  "itemsPaise": zod.number().int().min(createSampleCheckoutResponseItemsPaiseMin),
+  "discountPaise": zod.number().int().min(createSampleCheckoutResponseDiscountPaiseMin),
+  "couponCode": zod.string().nullable(),
+  "shippingPaise": zod.number().int().min(createSampleCheckoutResponseShippingPaiseMin),
+  "totalPaise": zod.number().int().min(createSampleCheckoutResponseTotalPaiseMin),
+  "message": zod.string()
+})
+
+
+export const UpdateSampleWishlistParams = zod.object({
+  "productId": zod.coerce.string()
+})
+
+export const UpdateSampleWishlistBody = zod.object({
+  "saved": zod.boolean()
+})
+
+export const UpdateSampleWishlistResponse = zod.object({
+  "id": zod.string(),
+  "message": zod.string()
+})
+
+
+export const addSampleAddressBodyNameMax = 120;
+
+export const addSampleAddressBodyPhoneRegExp = new RegExp('^[6-9][0-9]{9}$');
+export const addSampleAddressBodyLine1Max = 200;
+
+export const addSampleAddressBodyLine2Max = 200;
+
+export const addSampleAddressBodyCityMax = 100;
+
+export const addSampleAddressBodyStateMax = 100;
+
+export const addSampleAddressBodyPinRegExp = new RegExp('^[1-9][0-9]{5}$');
+
+
+export const AddSampleAddressBody = zod.object({
+  "name": zod.string().min(1).max(addSampleAddressBodyNameMax),
+  "phone": zod.string().regex(addSampleAddressBodyPhoneRegExp),
+  "line1": zod.string().min(1).max(addSampleAddressBodyLine1Max),
+  "line2": zod.string().max(addSampleAddressBodyLine2Max),
+  "city": zod.string().min(1).max(addSampleAddressBodyCityMax),
+  "state": zod.string().min(1).max(addSampleAddressBodyStateMax),
+  "pin": zod.string().regex(addSampleAddressBodyPinRegExp),
+  "isDefault": zod.boolean()
+})
+
+export const AddSampleAddressResponse = zod.object({
+  "id": zod.string(),
+  "message": zod.string()
+})
+
+
+export const SetSampleDefaultAddressParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const SetSampleDefaultAddressResponse = zod.object({
+  "id": zod.string(),
+  "message": zod.string()
+})
+
+
+export const DeleteSampleAddressParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const DeleteSampleAddressResponse = zod.object({
+  "id": zod.string(),
+  "message": zod.string()
+})
+
+
+export const ResetSampleDataResponse = zod.object({
+  "id": zod.string(),
+  "message": zod.string()
 })
 
 

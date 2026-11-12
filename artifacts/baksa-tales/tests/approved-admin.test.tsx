@@ -30,11 +30,31 @@ describe('admin payout "Mark as paid"', () => {
   });
 
   it('paid row stays visible as Paid after a reload', async () => {
+    const sampleSessionKey = 'baksa-sample-account-session';
+    localStorage.setItem(sampleSessionKey, 'admin-test-session');
+    const run = {
+      makerId: 'tathaastu', makerBrand: 'Tathaastu', date: '2026-11-09T00:00:00.000Z',
+      orderIds: ['BT-test-001'], split: { grossPaise: 100000, payoutPaise: 88000 },
+    };
+    let payouts = { sample: true, runs: [run], paidRuns: [] as Array<{
+      makerId: string; makerBrand: string; date: string; orderIds: string[]; grossPaise: number; payoutPaise: number; paidOn: string;
+    }> };
+    vi.stubGlobal('fetch', vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input);
+      if (url.endsWith('/sample/admin/orders')) return new Response(JSON.stringify({ sample: true, orders: [] }), { status: 200 });
+      if (url.endsWith('/sample/admin/payouts') && !init?.method) return new Response(JSON.stringify(payouts), { status: 200 });
+      if (url.includes('/sample/admin/payouts/') && init?.method === 'POST') {
+        payouts = { sample: true, runs: [], paidRuns: [{ makerId: run.makerId, makerBrand: run.makerBrand, date: run.date, orderIds: run.orderIds, grossPaise: run.split.grossPaise, payoutPaise: run.split.payoutPaise, paidOn: '2026-11-12T00:00:00.000Z' }] };
+        return new Response(JSON.stringify({ paidRun: payouts.paidRuns[0] }), { status: 201 });
+      }
+      throw new Error(`Unexpected sample request: ${url}`);
+    }));
     let { root, ctx } = await mountAdminOrders();
+    await vi.waitFor(() => expect(root.querySelector('[data-testid^="button-mark-paid-"]')).toBeTruthy());
     const btn = root.querySelector<HTMLButtonElement>('[data-testid^="button-mark-paid-"]')!;
-    expect(btn).toBeTruthy();
     const makerId = btn.getAttribute('data-testid')!.replace('button-mark-paid-', '');
     btn.click();
+    await vi.waitFor(() => expect(root.querySelector(`[data-testid="status-paid-${makerId}"]`)?.textContent).toBe('Paid'));
     let paid = root.querySelector<HTMLButtonElement>(`[data-testid="status-paid-${makerId}"]`);
     expect(paid?.disabled).toBe(true);
     expect(paid?.textContent).toBe('Paid');
@@ -43,6 +63,7 @@ describe('admin payout "Mark as paid"', () => {
     // simulate a page reload: fresh modules, state comes back from localStorage
     vi.resetModules();
     ({ root, ctx } = await mountAdminOrders());
+    await vi.waitFor(() => expect(root.querySelector(`[data-testid="status-paid-${makerId}"]`)).toBeTruthy());
     paid = root.querySelector<HTMLButtonElement>(`[data-testid="status-paid-${makerId}"]`);
     expect(paid?.textContent).toBe('Paid');
     expect(paid?.disabled).toBe(true);

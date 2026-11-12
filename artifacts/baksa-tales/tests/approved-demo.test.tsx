@@ -9,8 +9,8 @@ import { PAGE_ROUTES, prepareTemplate } from '../src/demo/templates';
 
 describe('approved screen navigation', () => {
   it('maps every source screen to a distinct route', () => {
-    expect(Object.keys(PAGE_ROUTES)).toHaveLength(26);
-    expect(new Set(Object.values(PAGE_ROUTES)).size).toBe(26);
+    expect(Object.keys(PAGE_ROUTES)).toHaveLength(27);
+    expect(new Set(Object.values(PAGE_ROUTES)).size).toBe(27);
     expect(PAGE_ROUTES.Main).toBe('/');
     expect(PAGE_ROUTES.MakerHome).toBe('/maker');
     expect(PAGE_ROUTES.AdminOverview).toBe('/admin');
@@ -65,14 +65,12 @@ describe('browser demo bag and wishlist', () => {
 });
 
 describe('sample checkout progression', () => {
-  it('accepts any sample phone digits and any four-digit code', () => {
-    for (const phone of ['1234567890', '9876543210']) {
-      for (const code of ['0000', '1234', '9999']) {
-        const result = signIn(createSeedState(), phone, code);
-        expect(result.ok).toBe(true);
-        expect(result.state.checkout.step).toBe('address');
-      }
-    }
+  it('accepts valid sample phones only with the fixed simulation code', () => {
+    const result = signIn(createSeedState(), '9876543210', '246810');
+    expect(result.ok).toBe(true);
+    expect(result.state.checkout.step).toBe('address');
+    expect(signIn(createSeedState(), '1234567890', '246810').ok).toBe(false);
+    expect(signIn(createSeedState(), '9876543210', '123456').ok).toBe(false);
   });
   it('rejects malformed phone/code and missing address fields', () => {
     expect(signIn(createSeedState(), '12', '1234').ok).toBe(false);
@@ -88,7 +86,7 @@ describe('sample checkout progression', () => {
     expect(placeOrder(s).ok).toBe(false);
   });
   it('retains the order summary, clears the bag and decrements sample stock', () => {
-    const s = signIn(createSeedState(), '9876543210', '0000').state;
+    const s = signIn(createSeedState(), '9876543210', '246810').state;
     s.checkout.step = 'payment';
     const before = bagTotals(s);
     const stock = s.products.find(p => p.id === 't-bluelotus')!.stock;

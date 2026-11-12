@@ -36,10 +36,55 @@ export function hydrateChrome(ctx: Ctx, kind: 'store' | 'maker' | 'admin' | 'non
     if (kind === 'maker') {
       const courses = $$<HTMLAnchorElement>(root, 'aside nav a').find(link => norm(link.textContent) === 'My courses');
       if (courses) { courses.setAttribute('href', '/maker/courses'); courses.setAttribute('data-route', '/maker/courses'); }
+      const nav = $(root, 'aside nav');
+      if (nav && !$$<HTMLAnchorElement>(nav, 'a').some(link => norm(link.textContent) === 'Settings')) {
+        const templateLink = $$<HTMLAnchorElement>(nav, 'a').find(link => norm(link.textContent) === 'My brand')
+          ?? $$<HTMLAnchorElement>(nav, 'a').at(-1);
+        if (templateLink) {
+          const settingsLink = templateLink.cloneNode(true) as HTMLAnchorElement;
+          settingsLink.textContent = 'Settings';
+          settingsLink.setAttribute('href', routeHref('/maker/settings'));
+          settingsLink.setAttribute('data-route', '/maker/settings');
+          nav.appendChild(settingsLink);
+        }
+      }
     }
     sidebarActive(root, ctx.path);
     const aside = $(root, 'aside');
     const nav = aside && $(aside, 'nav');
+    if (kind === 'admin' && nav && !$$<HTMLAnchorElement>(nav, 'a').some(link => norm(link.textContent) === 'Coupons')) {
+      const templateLink = $$<HTMLAnchorElement>(nav, 'a').find(link => norm(link.textContent) === 'Academy')
+        ?? $$<HTMLAnchorElement>(nav, 'a').at(-1);
+      if (templateLink) {
+        const couponLink = templateLink.cloneNode(true) as HTMLAnchorElement;
+        couponLink.textContent = 'Coupons';
+        couponLink.setAttribute('href', routeHref('/admin/coupons'));
+        couponLink.setAttribute('data-route', '/admin/coupons');
+        nav.appendChild(couponLink);
+      }
+    }
+    if (kind === 'admin' && nav && !$$<HTMLAnchorElement>(nav, 'a').some(link => norm(link.textContent) === 'Blog')) {
+      const templateLink = $$<HTMLAnchorElement>(nav, 'a').find(link => norm(link.textContent) === 'Academy')
+        ?? $$<HTMLAnchorElement>(nav, 'a').at(-1);
+      if (templateLink) {
+        const blogLink = templateLink.cloneNode(true) as HTMLAnchorElement;
+        blogLink.textContent = 'Blog';
+        blogLink.setAttribute('href', routeHref('/admin/blog'));
+        blogLink.setAttribute('data-route', '/admin/blog');
+        nav.appendChild(blogLink);
+      }
+    }
+    if (kind === 'admin' && nav && !$$<HTMLAnchorElement>(nav, 'a').some(link => norm(link.textContent).startsWith('Site Studio'))) {
+      const templateLink = $$<HTMLAnchorElement>(nav, 'a').find(link => norm(link.textContent) === 'Academy')
+        ?? $$<HTMLAnchorElement>(nav, 'a').at(-1);
+      if (templateLink) {
+        const siteLink = templateLink.cloneNode(true) as HTMLAnchorElement;
+        siteLink.textContent = 'Site Studio · secure';
+        siteLink.setAttribute('href', routeHref('/admin/site'));
+        siteLink.setAttribute('data-route', '/admin/site');
+        nav.appendChild(siteLink);
+      }
+    }
     if (aside && nav) {
       aside.setAttribute('data-bt-sidebar', kind);
       tid(aside, `sidebar-${kind}`);
@@ -60,20 +105,51 @@ export function hydrateChrome(ctx: Ctx, kind: 'store' | 'maker' | 'admin' | 'non
       });
     }
     const ask = $(root, 'aside a[href="#ask"]');
-    if (ask) { tid(ask, 'link-ask-sahayak'); on(ctx, ask, 'click', e => { e.preventDefault(); ctx.navigate('/maker/growth'); }); }
+    if (ask) { tid(ask, 'link-ask-sahayak'); ask.setAttribute('href', routeHref('/maker/sahayak')); ask.setAttribute('data-route', '/maker/sahayak'); on(ctx, ask, 'click', e => { e.preventDefault(); ctx.navigate('/maker/sahayak'); }); }
   }
 
   if (kind === 'store') {
+    $$<HTMLAnchorElement>(root, 'a').forEach(a => {
+      if (norm(a.textContent).toLowerCase() !== 'gift finder') return;
+      a.textContent = a.closest('nav[aria-label="Main"]') ? 'Ask Bea' : 'Meet Bea';
+      a.setAttribute('href', '#ask-bea');
+      a.removeAttribute('data-route');
+      a.setAttribute('data-bea-open', '');
+    });
     const header = $$(root, 'header').find(h => $(h, 'nav[aria-label="Main"]'));
     if (header) {
       header.setAttribute('data-bt-header', '');
       tid(header, 'site-header');
       const nav = $(header, 'nav[aria-label="Main"]')!;
-      const NAV_ROUTES: Record<string, string> = { '#finder': '/finder', '#edit': '/shop', '#makers': '/makers/tathaastu', '#corporate': '/corporate', '#academy': '/academy' };
+      const NAV_ROUTES: Record<string, string> = { '#finder': '/bea', '#edit': '/shop', '#makers': '/makers/tathaastu', '#corporate': '/corporate', '#academy': '/academy' };
       $$<HTMLAnchorElement>(nav, 'a').forEach(a => {
         const r = NAV_ROUTES[a.getAttribute('href') ?? ''];
-        if (r) { a.setAttribute('href', routeHref(r)); a.setAttribute('data-route', r); }
+        if (r) {
+          if (r === '/bea') {
+            a.textContent = 'Ask Bea';
+            a.setAttribute('href', '#ask-bea');
+            a.removeAttribute('data-route');
+            a.setAttribute('data-bea-open', '');
+          } else {
+            a.setAttribute('href', routeHref(r));
+            a.setAttribute('data-route', r);
+          }
+        }
       });
+      // Bea is opened from the floating launcher; keep the primary nav focused
+      // on shopping and discovery destinations.
+      $$<HTMLAnchorElement>(nav, 'a').filter(a => a.hasAttribute('data-bea-open') || norm(a.textContent) === 'Ask Bea').forEach(a => a.remove());
+      if (!$$<HTMLAnchorElement>(nav, 'a').some(link => norm(link.textContent) === 'Journal')) {
+        const templateLink = $$<HTMLAnchorElement>(nav, 'a').find(link => link.getAttribute('data-route') === '/academy')
+          ?? $$<HTMLAnchorElement>(nav, 'a').at(-1);
+        if (templateLink) {
+          const journalLink = templateLink.cloneNode(true) as HTMLAnchorElement;
+          journalLink.textContent = 'Journal';
+          journalLink.setAttribute('href', routeHref('/blog'));
+          journalLink.setAttribute('data-route', '/blog');
+          nav.appendChild(journalLink);
+        }
+      }
       $$<HTMLAnchorElement>(nav, 'a').forEach(a => tid(a, `link-nav-${norm(a.textContent).toLowerCase().replace(/[^a-z]+/g, '-')}`));
       const btn = document.createElement('button');
       btn.type = 'button';
@@ -98,7 +174,7 @@ export function hydrateChrome(ctx: Ctx, kind: 'store' | 'maker' | 'admin' | 'non
       });
       const signIn = $$<HTMLAnchorElement>(header, 'a').find(a => norm(a.textContent) === 'Sign in');
       tid(signIn, 'link-sign-in');
-      on(ctx, signIn, 'click', e => { e.preventDefault(); e.stopPropagation(); ctx.navigate('/checkout'); });
+      on(ctx, signIn, 'click', e => { e.preventDefault(); e.stopPropagation(); ctx.navigate('/account'); });
 
       const wish = $<HTMLAnchorElement>(header, 'a[aria-label^="Wishlist"]');
       const bag = $<HTMLAnchorElement>(header, 'a[aria-label^="Bag"]');

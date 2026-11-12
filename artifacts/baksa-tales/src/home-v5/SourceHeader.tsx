@@ -25,6 +25,12 @@ export default function SourceHeader() {
     const onClick = (e: MouseEvent) => {
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey) return;
       const a = (e.target as Element).closest('a'); if (!a || !host.contains(a)) return;
+      if (a.hasAttribute('data-bea-open') || a.getAttribute('href') === '#ask-bea') {
+        e.preventDefault();
+        e.stopPropagation();
+        window.dispatchEvent(new CustomEvent('bt:open-bea'));
+        return;
+      }
       const r = a.getAttribute('data-route');
       if (r) { e.preventDefault(); nav(r); }
     };

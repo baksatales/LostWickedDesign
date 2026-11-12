@@ -8,15 +8,15 @@ const RAW = import.meta.glob('./templates/*.html', { query: '?raw', import: 'def
 
 export type TemplateName =
   | 'Main' | 'Shop' | 'Product' | 'Finder' | 'Results' | 'Checkout' | 'Maker' | 'Corporate' | 'Academy'
-  | 'MakerHome' | 'MakerOrders' | 'MakerProducts' | 'MakerAddProduct' | 'MakerEarnings' | 'MakerGrowth' | 'MakerOpportunities'
+   | 'MakerHome' | 'MakerOrders' | 'MakerProducts' | 'MakerAddProduct' | 'MakerEarnings' | 'MakerGrowth' | 'MakerOpportunities' | 'MakerSettings'
   | 'AdminOverview' | 'AdminReviews' | 'AdminOrders' | 'AdminEnquiries' | 'AdminAcademy'
   | 'Header' | 'Footer' | 'MakerNav' | 'AdminNav' | 'index';
 
 export const PAGE_ROUTES: Record<TemplateName, string> = {
-  Main: '/', Shop: '/shop', Product: '/product/blue-lotus-pond', Finder: '/finder', Results: '/results', Checkout: '/checkout',
+  Main: '/', Shop: '/shop', Product: '/product/blue-lotus-pond', Finder: '/bea', Results: '/results', Checkout: '/checkout',
   Maker: '/makers/tathaastu', Corporate: '/corporate', Academy: '/academy',
   MakerHome: '/maker', MakerOrders: '/maker/orders', MakerProducts: '/maker/products', MakerAddProduct: '/maker/products/new',
-  MakerEarnings: '/maker/earnings', MakerGrowth: '/maker/growth', MakerOpportunities: '/maker/opportunities',
+  MakerEarnings: '/maker/earnings', MakerGrowth: '/maker/growth', MakerOpportunities: '/maker/opportunities', MakerSettings: '/maker/settings',
   AdminOverview: '/admin', AdminReviews: '/admin/reviews', AdminOrders: '/admin/orders', AdminEnquiries: '/admin/enquiries', AdminAcademy: '/admin/academy',
   Header: '/design/header', Footer: '/design/footer', MakerNav: '/design/maker-nav', AdminNav: '/design/admin-nav', index: '/design',
 };

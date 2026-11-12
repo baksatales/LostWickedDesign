@@ -6,6 +6,8 @@ import {
 } from '../store';
 import { canDeliver, stateFromPincode, type FinderAnswers, type NeedBy } from '../domain';
 import type { DemoProduct } from '../catalog';
+import { requestOpenBea } from '../BeaPopover';
+import { sampleApi, submitSampleCorporateEnquiry } from '../sample-api';
 
 const HEART_FILLED = 'currentColor';
 
@@ -20,6 +22,8 @@ function bagAndOpen(id: string, qty = 1) { update(s => addToBag(s, id, qty)); se
 /* ------------------------------------------------------------------ Main */
 export function hydrateMain(ctx: Ctx) {
   const { root } = ctx;
+  const finderTeaser = byText(root, 'p', /^The gift finder,/);
+  if (finderTeaser) finderTeaser.textContent = 'Meet Bea, your gifting concierge';
   const paint = () => {
     const s = getState();
     $$<HTMLButtonElement>(root, 'button[aria-label^="Save "]').forEach(b => {
@@ -42,7 +46,7 @@ export function hydrateMain(ctx: Ctx) {
     const keys = ['parent', 'partner', 'friend', 'colleague', 'self'];
     $$<HTMLAnchorElement>(finder, 'a.lift').forEach((a, i) => {
       tid(a, `link-finder-start-${keys[i]}`);
-      on(ctx, a, 'click', e => { e.preventDefault(); e.stopPropagation(); update(s => ({ ...setFinderAnswer(s, 'recipient', keys[i]), finder: { ...s.finder, answers: { recipient: keys[i] as FinderAnswers['recipient'] }, done: false } })); ctx.navigate('/finder?step=2'); });
+      on(ctx, a, 'click', e => { e.preventDefault(); e.stopPropagation(); update(s => ({ ...setFinderAnswer(s, 'recipient', keys[i]), finder: { ...s.finder, answers: { recipient: keys[i] as FinderAnswers['recipient'] }, done: false, query: '' } })); requestOpenBea({ recipient: keys[i] as FinderAnswers['recipient'], step: 1 }); });
     });
   }
   // product tiles in the Edit: whole tile opens the product
@@ -80,17 +84,21 @@ export function hydrateShop(ctx: Ctx) {
   tid(makerCard, 'card-maker-spotlight');
   const moreLink = byText<HTMLAnchorElement>(root, 'a', /^Show \d+ more pieces$/);
   tid(moreLink, 'button-show-more');
-  const countP = byText(root, 'p', /handmade pieces from/);
-  tid(countP, 'text-shop-count');
   const intro = $(root, 'section h1');
+  let countP = byText(root, 'p', /handmade pieces from/);
+  if (!countP && intro) {
+    countP = document.createElement('p');
+    countP.setAttribute('style', 'margin: 0; font-family: Arvo, Georgia, serif; font-size: 13px; color: #34514B');
+    intro.before(countP);
+  }
+  tid(countP, 'text-shop-count');
   const emptyBox = document.createElement('div');
   emptyBox.setAttribute('data-testid', 'empty-shop');
   emptyBox.setAttribute('style', 'grid-column: 1 / -1; background: #FFFDF4; border-radius: 28px; padding: 36px; text-align: center; font-size: 20px; color: #5C463C');
 
-  const f: ShopFilters = { feel: 'all', price: 'any', maker: 'all', fast: false, sort: 'editor', q: ctx.search.get('q') ?? '', wishlistOnly: ctx.search.get('wishlist') === '1' };
-  const requestedFeel = ctx.search.get('feel');
-  const matchingFeel = SHOP_FEELS.find(option => option.feel === requestedFeel);
-  if (matchingFeel) f.feel = matchingFeel.feel;
+  const requestedFeel = ctx.search.get('feel') ?? 'all';
+  const initialFeel = SHOP_FEELS.find(option => option.feel === requestedFeel)?.feel ?? 'all';
+  const f: ShopFilters = { feel: initialFeel, price: 'any', maker: 'all', fast: false, sort: 'editor', q: ctx.search.get('q') ?? '', wishlistOnly: ctx.search.get('wishlist') === '1' };
   let showAll = false;
 
   const buildCard = (p: DemoProduct) => {
@@ -266,11 +274,26 @@ export function hydrateFinder(ctx: Ctx) {
   const optWrap = h1?.nextElementSibling as HTMLElement | null;
   const optTpl = optWrap && cloneEl($<HTMLButtonElement>(optWrap, 'button')!);
   const foot = optWrap?.nextElementSibling as HTMLElement | null;
+  const card = counter?.parentElement?.parentElement;
+  const intro = document.createElement('div');
+  intro.className = 'bt-bea-intro';
+  intro.innerHTML = '<span>BEA · YOUR GIFTING CONCIERGE</span><p>I’ll help you find a thoughtful gift from the Baksa Tales catalogue. Choose a reply and I’ll narrow it down.</p>';
+  const freeText = document.createElement('details');
+  freeText.className = 'bt-bea-free-text';
+  freeText.innerHTML = '<summary>Or ask Bea in your own words</summary><form><label for="bea-message">What are you looking for?</label><textarea id="bea-message" data-testid="input-bea-message" maxlength="500" required placeholder="For example: a birthday gift for my mother under ₹1,500"></textarea><button type="submit" data-testid="button-bea-send">Ask Bea</button><p class="bt-bea-disclosure">Sample concierge: uses your words to filter the sample catalogue. It does not use an AI service.</p><p class="bt-bea-error" role="alert" hidden></p></form>';
+  intro.appendChild(freeText);
+  card?.insertBefore(intro, counter?.parentElement ?? null);
+  const transcript = document.createElement('div');
+  transcript.className = 'bt-bea-transcript';
+  transcript.setAttribute('role', 'log');
+  transcript.setAttribute('aria-label', 'Your conversation with Bea');
+  h1?.before(transcript);
   tid(counter, 'text-question-count'); tid(skip, 'link-skip-finder'); tid(h1, 'text-question');
+  if (skip) skip.textContent = 'Browse the catalogue instead';
   on(ctx, skip, 'click', event => {
     event.preventDefault();
     event.stopPropagation();
-    update(s => ({ ...s, finder: { ...s.finder, done: true } }));
+    update(s => ({ ...s, finder: { ...s.finder, done: true, query: '' } }));
     ctx.navigate('/results');
   });
   const back = document.createElement('button');
@@ -281,11 +304,58 @@ export function hydrateFinder(ctx: Ctx) {
 
   const startStep = Number(ctx.search.get('step') ?? '1');
   let step = Math.min(4, Math.max(1, Number.isFinite(startStep) ? startStep : 1)) - 1;
-  if (step === 0 && !ctx.search.get('step')) update(s => ({ ...s, finder: { ...s.finder, answers: {}, done: false } }));
+  if (step === 0 && !ctx.search.get('step')) update(s => ({ ...s, finder: { ...s.finder, answers: {}, done: false, query: '' } }));
+
+  const freeForm = $<HTMLFormElement>(freeText, 'form')!;
+  const freeInput = $<HTMLTextAreaElement>(freeForm, 'textarea')!;
+  const freeError = $<HTMLParagraphElement>(freeForm, '[role="alert"]')!;
+  on(ctx, freeForm, 'submit', event => {
+    event.preventDefault();
+    const query = freeInput.value.trim();
+    if (query.length < 3) { freeError.textContent = 'Tell Bea a little more about the gift.'; freeError.hidden = false; return; }
+    const text = query.toLowerCase();
+    const answers: Partial<FinderAnswers> = {};
+    if (/\b(mum|mom|mother|father|dad|parent)\b/.test(text)) answers.recipient = 'parent';
+    else if (/\b(wife|husband|partner|girlfriend|boyfriend)\b/.test(text)) answers.recipient = 'partner';
+    else if (/\b(friend|bestie)\b/.test(text)) answers.recipient = 'friend';
+    else if (/\b(colleague|client|coworker|boss)\b/.test(text)) answers.recipient = 'colleague';
+    else if (/\bmyself|for me\b/.test(text)) answers.recipient = 'self';
+    if (/\bdiwali|festival\b/.test(text)) answers.occasion = 'diwali';
+    else if (/\bwedding|marriage\b/.test(text)) answers.occasion = 'wedding';
+    else if (/\bbirthday|bday\b/.test(text)) answers.occasion = 'birthday';
+    else if (/\bthank|thanks|gratitude\b/.test(text)) answers.occasion = 'thanks';
+    else if (/\bhousewarming|new home\b/.test(text)) answers.occasion = 'housewarming';
+    if (/\brelax|calm|soothe|unwind\b/.test(text)) answers.feel = 'soother';
+    else if (/\buseful|practical|everyday\b/.test(text)) answers.feel = 'thoughtful';
+    else if (/\bsurprise|special|memorable|showstopper\b/.test(text)) answers.feel = 'showstopper';
+    else if (/\bpersonal|heartfelt|meaningful\b/.test(text)) answers.feel = 'heart';
+    const amountMatch = text.match(/(?:under|below|less than|up to|upto|max(?:imum)?|budget(?: is)?)[^\d]{0,12}(\d[\d,]*)/);
+    const amount = amountMatch ? Number(amountMatch[1].replace(/,/g, '')) : null;
+    if (amount !== null && amount > 0) answers.budget = amount < 1500 ? 'b1' : amount < 3500 ? 'b2' : amount < 8000 ? 'b3' : 'b4';
+    freeError.hidden = true;
+    update(s => ({ ...s, finder: { ...s.finder, answers, query, done: true } }));
+    ctx.navigate('/results');
+  });
 
   const render = () => {
     const st = FINDER_STEPS[step];
     const ans = getState().finder.answers as Record<string, string>;
+    transcript.replaceChildren();
+    for (let index = 0; index < step; index += 1) {
+      const past = FINDER_STEPS[index];
+      const selected = past.opts.find(([value]) => value === ans[past.key]);
+      if (!selected) continue;
+      const pair = document.createElement('div');
+      pair.className = 'bt-bea-turn';
+      const question = document.createElement('p');
+      question.className = 'bt-bea-message';
+      question.textContent = `${past.q[0]}${past.q[1]}`;
+      const answer = document.createElement('p');
+      answer.className = 'bt-bea-reply';
+      answer.textContent = selected[1];
+      pair.append(question, answer);
+      transcript.appendChild(pair);
+    }
     if (counter) counter.textContent = `Question ${step + 1} of 4`;
     bars.forEach((b, i) => setStyle(b, i <= step ? onBar : offBar));
     if (h1) { h1.textContent = st.q[0]; const e = document.createElement('em'); e.setAttribute('style', emStyle); e.textContent = st.q[1]; h1.appendChild(e); }
@@ -299,7 +369,7 @@ export function hydrateFinder(ctx: Ctx) {
         b.addEventListener('click', () => {
           update(s => setFinderAnswer(s, st.key, value));
           if (step < 3) { step += 1; render(); }
-          else { update(s => ({ ...s, finder: { ...s.finder, done: true } })); ctx.navigate('/results'); }
+          else { update(s => ({ ...s, finder: { ...s.finder, done: true, query: '' } })); ctx.navigate('/results'); }
         });
         return b;
       }));
@@ -316,6 +386,8 @@ export function hydrateResults(ctx: Ctx) {
   const { root } = ctx;
   const h1 = $(root, 'h1'); const em = h1 && $(h1, 'em'); const emStyle = styleOf(em);
   const summary = byText(root, 'p', /Change answers/);
+  const finderEyebrow = byText(root, 'p', 'Your gift finder picks');
+  if (finderEyebrow) finderEyebrow.textContent = 'Bea’s gift picks';
   const [budgetSel, needSel] = $$<HTMLSelectElement>(root, 'section select');
   const hiddenP = byText(root, 'p', /^Not shown:/);
   const articles = $$<HTMLElement>(root, 'article');
@@ -329,7 +401,9 @@ export function hydrateResults(ctx: Ctx) {
   if (needSel) ['any', 'd10', 'd5'].forEach((v, i) => { if (needSel.options[i]) needSel.options[i].value = v; });
 
   const answers = (): FinderAnswers => {
-    const a = getState().finder.answers;
+    const s = getState();
+    const a = s.finder.answers;
+    if (s.finder.query) return { ...a, budget: (a.budget ?? 'b4') } as FinderAnswers;
     return a.budget || a.recipient || a.occasion || a.feel ? { ...DEFAULT_RESULTS_ANSWERS, ...a, budget: (a.budget ?? 'b4') } as FinderAnswers : DEFAULT_RESULTS_ANSWERS;
   };
   let ids: string[] = [];
@@ -339,12 +413,25 @@ export function hydrateResults(ctx: Ctx) {
     if (needSel) needSel.value = s.finder.needBy;
     const r = finderResult(s, a, s.finder.needBy);
     const recs = r.picks.length ? r.picks : r.nearMisses;
+    const query = s.finder.query.trim().toLowerCase();
+    if (query) {
+      const words = query.split(/[^a-z0-9]+/).filter(word => word.length > 2 && !['under', 'with', 'for', 'and', 'the', 'gift', 'her', 'him'].includes(word));
+      recs.sort((a, b) => {
+        const score = (id: string) => {
+          const p = productById(s, id)!;
+          const maker = makerById(s, p.makerId)?.brand ?? '';
+          const text = `${p.name} ${p.story ?? ''} ${p.material} ${p.technique} ${maker}`.toLowerCase();
+          return words.reduce((sum, word) => sum + (text.includes(word) ? 1 : 0), 0);
+        };
+        return score(b.productId) - score(a.productId);
+      });
+    }
     ids = recs.map(x => x.productId);
     if (h1) {
-      h1.textContent = r.picks.length ? `${WORDS[r.picks.length]} gift${r.picks.length === 1 ? '' : 's'} ` : 'The closest ';
+      h1.textContent = r.picks.length ? `Bea found ${WORDS[r.picks.length].toLowerCase()} gift${r.picks.length === 1 ? ' ' : 's '}` : 'Bea’s closest ';
       const e = document.createElement('em'); e.setAttribute('style', emStyle); e.textContent = r.picks.length ? (r.picks.length === 1 ? 'that fits.' : 'that fit.') : 'options.'; h1.appendChild(e);
     }
-    if (summary?.firstChild) summary.firstChild.textContent = `${finderSummary(a)} `;
+    if (summary?.firstChild) summary.firstChild.textContent = s.finder.query ? `Bea read: “${s.finder.query}”. ` : `${finderSummary(a)} `;
     const h = r.hidden; const parts: string[] = [];
     if (h.notInTime) parts.push(`${h.notInTime} that can’t be dispatched in time`);
     if (h.outOfStock) parts.push(`${h.outOfStock} out of stock`);
@@ -406,24 +493,41 @@ export function hydrateCorporate(ctx: Ctx) {
   const big = byText(root, 'p', /^Big order\?/)?.parentElement as HTMLElement | null;
   const paintBig = () => { if (big) big.style.display = Number(get('b2').value) >= 200 ? '' : 'none'; };
   on(ctx, get('b2'), 'input', paintBig);
-  const send = (e: Event) => {
+  const send = async (e: Event) => {
     e.preventDefault();
     const input = { purpose: get('b1').value, qty: get('b2').value, budget: get('b3').value, neededBy: get('b4').value, name: get('b5').value, company: get('b6').value, contact: get('b7').value };
     const s = getState();
     const r = submitBrief(s, input);
     (Object.keys(ids) as (keyof typeof ids)[]).forEach(k => fieldError(get(ids[k]), r.errors[k], `error-brief-${k}`));
     if (!r.ok) { const first = (Object.keys(ids) as (keyof typeof ids)[]).find(k => r.errors[k]); if (first) get(ids[first]).focus(); return; }
-    update(() => r.state);
+    if (submit) submit.disabled = true;
+    let ref = r.ref!;
+    try {
+      const saved = await submitSampleCorporateEnquiry({ purpose: input.purpose.trim(), qty: Number(input.qty), budgetPaise: Math.round(Number(input.budget) * 100), neededBy: input.neededBy, name: input.name.trim(), company: input.company.trim(), contact: input.contact.trim() });
+      ref = saved.ref;
+      const savedState = {
+        ...r.state,
+        briefs: r.state.briefs.map(brief => brief.ref === r.ref ? { ...brief, ref } : brief),
+        enquiries: r.state.enquiries.map(enquiry => enquiry.ref === r.ref ? { ...enquiry, ref } : enquiry),
+      };
+      update(() => savedState);
+      fieldError(submit, null, 'error-brief-save');
+    } catch (error) {
+      fieldError(submit, error instanceof Error ? error.message : 'Your brief was not saved. Please try again.', 'error-brief-save');
+      if (submit) submit.disabled = false;
+      return;
+    }
     const box = document.createElement('div');
     tid(box, 'brief-confirmation');
     box.setAttribute('role', 'status');
     box.setAttribute('style', 'grid-column: 1 / -1; background: #D5E6DE; border-radius: 28px; padding: 32px; color: #2C4640');
-    box.innerHTML = `<p style="margin: 0; font-family: Arvo, Georgia, serif; font-size: 13px">Brief received, ${r.ref}</p><h3 style="margin: 8px 0 0; font-size: 34px; font-weight: 500; color: #2B1712">Thank you, ${input.name.trim().replace(/[<>&]/g, '')}.</h3><p style="margin: 8px 0 0; font-size: 19px">Our gifting team will call you to talk it through. ${input.qty} gifts at about ${formatINR(Math.round(Number(input.budget) * 100))} each.</p>`;
+    box.innerHTML = `<p style="margin: 0; font-family: Arvo, Georgia, serif; font-size: 13px">Brief received, ${ref}</p><h3 style="margin: 8px 0 0; font-size: 34px; font-weight: 500; color: #2B1712">Thank you, ${input.name.trim().replace(/[<>&]/g, '')}.</h3><p style="margin: 8px 0 0; font-size: 19px">Our gifting team will call you to talk it through. ${input.qty} gifts at about ${formatINR(Math.round(Number(input.budget) * 100))} each.</p>`;
     const again = document.createElement('button'); again.type = 'button'; again.textContent = 'Send another brief'; again.setAttribute('style', BTN_OUTLINE + '; margin-top: 18px'); tid(again, 'button-brief-again');
     again.onclick = () => { box.remove(); Array.from(form.children).forEach(c => ((c as HTMLElement).style.display = '')); get('b5').value = ''; get('b6').value = ''; get('b7').value = ''; paintBig(); };
     box.appendChild(again);
     Array.from(form.children).forEach(c => ((c as HTMLElement).style.display = 'none'));
     form.appendChild(box);
+    if (submit) submit.disabled = false;
   };
   on(ctx, submit, 'click', send);
   on(ctx, form, 'submit', send);

@@ -43,6 +43,64 @@ import type {
   Receipt,
   ReviewInput,
   Runtime,
+  SampleAddressInput,
+  SampleAdminAcademyCsvInput,
+  SampleAdminAcademyImportResponse,
+  SampleAdminAcademySalesResponse,
+  SampleAdminCorporateEnquiriesResponse,
+  SampleAdminMasterclassProposalsResponse,
+  SampleAdminMasterclassReviewInput,
+  SampleAdminOrderStatusInput,
+  SampleAdminOverview,
+  SampleAdminPayoutsResponse,
+  SampleAdminProductReview,
+  SampleAdminProductReviewInput,
+  SampleAdminProductReviewsResponse,
+  SampleAdminVendorApplicationDecisionInput,
+  SampleAdminVendorApplicationsResponse,
+  SampleBlogPost,
+  SampleBlogPostInput,
+  SampleBlogResponse,
+  SampleCheckoutInput,
+  SampleCheckoutResult,
+  SampleCorporateEnquiry,
+  SampleCorporateEnquiryCreated,
+  SampleCorporateEnquiryInput,
+  SampleCorporateMatchesInput,
+  SampleCorporateQuoteInput,
+  SampleCorporateStageInput,
+  SampleCoupon,
+  SampleCouponInput,
+  SampleCouponsResponse,
+  SampleFulfilmentInput,
+  SampleIdentity,
+  SampleIdentityInput,
+  SampleMakerDraft,
+  SampleMakerDraftInput,
+  SampleMakerDraftsResponse,
+  SampleMakerEarnings,
+  SampleMakerMasterclassProposal,
+  SampleMakerMasterclassProposalInput,
+  SampleMakerOpportunitiesResponse,
+  SampleMakerOpportunity,
+  SampleMakerOpportunityResponseInput,
+  SampleMakerProductCost,
+  SampleMakerProductCostInput,
+  SampleMakerProfitsResponse,
+  SampleMakerSettings,
+  SampleMakerSettingsInput,
+  SampleMakerStock,
+  SampleMakerStockInput,
+  SampleMakerStocksResponse,
+  SampleOperationalOrder,
+  SampleOrdersResponse,
+  SamplePaidPayoutReceipt,
+  SampleProductSubmissionInput,
+  SampleProductSubmissionResponse,
+  SampleSession,
+  SampleShopperAccount,
+  SampleVendorApplication,
+  SampleWishlistInput,
   SiteDraft,
   SiteEdit,
   SiteRestoreInput,
@@ -1635,6 +1693,4491 @@ export function useGetWorkspace<TData = Awaited<ReturnType<typeof getWorkspace>>
 
 
 
+
+export const getCreateSampleSessionUrl = () => {
+
+
+
+
+  return `/api/sample/session`
+}
+
+export const createSampleSession = async (sampleIdentityInput: SampleIdentityInput, options?: Parameters<typeof customFetch>[1]): Promise<SampleSession> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<SampleSession>(getCreateSampleSessionUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sampleIdentityInput)
+  }
+);}
+
+
+
+
+
+export const getCreateSampleSessionMutationKey = () => ['createSampleSession'] as const;
+
+export const getCreateSampleSessionMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createSampleSession>>, TError,CreateSampleSessionMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createSampleSession>>, TError,CreateSampleSessionMutationVariables, TContext> => {
+
+const mutationKey = getCreateSampleSessionMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createSampleSession>>, CreateSampleSessionMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  createSampleSession(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateSampleSessionMutationResult = NonNullable<Awaited<ReturnType<typeof createSampleSession>>>
+    export type CreateSampleSessionMutationBody = BodyType<SampleIdentityInput>
+    export type CreateSampleSessionMutationError = ErrorType<unknown>
+    export type CreateSampleSessionMutationVariables = {data: BodyType<SampleIdentityInput>}
+
+    export const useCreateSampleSession = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createSampleSession>>, TError,CreateSampleSessionMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof createSampleSession>>,
+        TError,
+        CreateSampleSessionMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCreateSampleSessionMutationOptions(options), queryClient);
+    }
+
+export const getGetSampleSessionUrl = () => {
+
+
+
+
+  return `/api/sample/session`
+}
+
+export const getSampleSession = async ( options?: Parameters<typeof customFetch>[1]): Promise<SampleIdentity> => {
+
+  return customFetch<SampleIdentity>(getGetSampleSessionUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSampleSessionQueryKey = () => {
+    return [
+    `/api/sample/session`
+    ] as const;
+    }
+
+
+export const getGetSampleSessionQueryOptions = <TData = Awaited<ReturnType<typeof getSampleSession>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleSession>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSampleSessionQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSampleSession>>> = ({ signal }) => getSampleSession({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSampleSession>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSampleSessionQueryResult = NonNullable<Awaited<ReturnType<typeof getSampleSession>>>
+export type GetSampleSessionQueryError = ErrorType<unknown>
+
+
+export function useGetSampleSession<TData = Awaited<ReturnType<typeof getSampleSession>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleSession>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleSession>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleSession>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleSession<TData = Awaited<ReturnType<typeof getSampleSession>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleSession>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleSession>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleSession>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleSession<TData = Awaited<ReturnType<typeof getSampleSession>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleSession>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetSampleSession<TData = Awaited<ReturnType<typeof getSampleSession>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleSession>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSampleSessionQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getEndSampleSessionUrl = () => {
+
+
+
+
+  return `/api/sample/session`
+}
+
+export const endSampleSession = async ( options?: Parameters<typeof customFetch>[1]): Promise<Receipt> => {
+
+  return customFetch<Receipt>(getEndSampleSessionUrl(),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+
+export const getEndSampleSessionMutationKey = () => ['endSampleSession'] as const;
+
+export const getEndSampleSessionMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof endSampleSession>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof endSampleSession>>, TError,void, TContext> => {
+
+const mutationKey = getEndSampleSessionMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof endSampleSession>>, void> = () => {
+
+
+          return  endSampleSession(requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type EndSampleSessionMutationResult = NonNullable<Awaited<ReturnType<typeof endSampleSession>>>
+
+    export type EndSampleSessionMutationError = ErrorType<unknown>
+
+
+    export const useEndSampleSession = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof endSampleSession>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof endSampleSession>>,
+        TError,
+        void,
+        TContext
+      > => {
+      return useMutation(getEndSampleSessionMutationOptions(options), queryClient);
+    }
+
+export const getGetSampleShopperAccountUrl = () => {
+
+
+
+
+  return `/api/sample/shopper`
+}
+
+export const getSampleShopperAccount = async ( options?: Parameters<typeof customFetch>[1]): Promise<SampleShopperAccount> => {
+
+  return customFetch<SampleShopperAccount>(getGetSampleShopperAccountUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSampleShopperAccountQueryKey = () => {
+    return [
+    `/api/sample/shopper`
+    ] as const;
+    }
+
+
+export const getGetSampleShopperAccountQueryOptions = <TData = Awaited<ReturnType<typeof getSampleShopperAccount>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleShopperAccount>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSampleShopperAccountQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSampleShopperAccount>>> = ({ signal }) => getSampleShopperAccount({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSampleShopperAccount>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSampleShopperAccountQueryResult = NonNullable<Awaited<ReturnType<typeof getSampleShopperAccount>>>
+export type GetSampleShopperAccountQueryError = ErrorType<unknown>
+
+
+export function useGetSampleShopperAccount<TData = Awaited<ReturnType<typeof getSampleShopperAccount>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleShopperAccount>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleShopperAccount>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleShopperAccount>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleShopperAccount<TData = Awaited<ReturnType<typeof getSampleShopperAccount>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleShopperAccount>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleShopperAccount>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleShopperAccount>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleShopperAccount<TData = Awaited<ReturnType<typeof getSampleShopperAccount>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleShopperAccount>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetSampleShopperAccount<TData = Awaited<ReturnType<typeof getSampleShopperAccount>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleShopperAccount>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSampleShopperAccountQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetSampleMakerStocksUrl = () => {
+
+
+
+
+  return `/api/sample/maker/products`
+}
+
+export const getSampleMakerStocks = async ( options?: Parameters<typeof customFetch>[1]): Promise<SampleMakerStocksResponse> => {
+
+  return customFetch<SampleMakerStocksResponse>(getGetSampleMakerStocksUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSampleMakerStocksQueryKey = () => {
+    return [
+    `/api/sample/maker/products`
+    ] as const;
+    }
+
+
+export const getGetSampleMakerStocksQueryOptions = <TData = Awaited<ReturnType<typeof getSampleMakerStocks>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerStocks>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSampleMakerStocksQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSampleMakerStocks>>> = ({ signal }) => getSampleMakerStocks({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerStocks>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSampleMakerStocksQueryResult = NonNullable<Awaited<ReturnType<typeof getSampleMakerStocks>>>
+export type GetSampleMakerStocksQueryError = ErrorType<unknown>
+
+
+export function useGetSampleMakerStocks<TData = Awaited<ReturnType<typeof getSampleMakerStocks>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerStocks>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleMakerStocks>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleMakerStocks>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleMakerStocks<TData = Awaited<ReturnType<typeof getSampleMakerStocks>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerStocks>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleMakerStocks>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleMakerStocks>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleMakerStocks<TData = Awaited<ReturnType<typeof getSampleMakerStocks>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerStocks>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetSampleMakerStocks<TData = Awaited<ReturnType<typeof getSampleMakerStocks>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerStocks>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSampleMakerStocksQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateSampleMakerStockUrl = (productId: string,) => {
+
+
+
+
+  return `/api/sample/maker/products/${productId}/stock`
+}
+
+export const updateSampleMakerStock = async (productId: string,
+    sampleMakerStockInput: SampleMakerStockInput, options?: Parameters<typeof customFetch>[1]): Promise<SampleMakerStock> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<SampleMakerStock>(getUpdateSampleMakerStockUrl(productId),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sampleMakerStockInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateSampleMakerStockMutationKey = () => ['updateSampleMakerStock'] as const;
+
+export const getUpdateSampleMakerStockMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateSampleMakerStock>>, TError,UpdateSampleMakerStockMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateSampleMakerStock>>, TError,UpdateSampleMakerStockMutationVariables, TContext> => {
+
+const mutationKey = getUpdateSampleMakerStockMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateSampleMakerStock>>, UpdateSampleMakerStockMutationVariables> = (props) => {
+          const {productId,data} = props ?? {};
+
+          return  updateSampleMakerStock(productId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateSampleMakerStockMutationResult = NonNullable<Awaited<ReturnType<typeof updateSampleMakerStock>>>
+    export type UpdateSampleMakerStockMutationBody = BodyType<SampleMakerStockInput>
+    export type UpdateSampleMakerStockMutationError = ErrorType<unknown>
+    export type UpdateSampleMakerStockMutationVariables = {productId: string;data: BodyType<SampleMakerStockInput>}
+
+    export const useUpdateSampleMakerStock = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateSampleMakerStock>>, TError,UpdateSampleMakerStockMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof updateSampleMakerStock>>,
+        TError,
+        UpdateSampleMakerStockMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateSampleMakerStockMutationOptions(options), queryClient);
+    }
+
+export const getGetSampleMakerOrdersUrl = () => {
+
+
+
+
+  return `/api/sample/maker/orders`
+}
+
+export const getSampleMakerOrders = async ( options?: Parameters<typeof customFetch>[1]): Promise<SampleOrdersResponse> => {
+
+  return customFetch<SampleOrdersResponse>(getGetSampleMakerOrdersUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSampleMakerOrdersQueryKey = () => {
+    return [
+    `/api/sample/maker/orders`
+    ] as const;
+    }
+
+
+export const getGetSampleMakerOrdersQueryOptions = <TData = Awaited<ReturnType<typeof getSampleMakerOrders>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerOrders>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSampleMakerOrdersQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSampleMakerOrders>>> = ({ signal }) => getSampleMakerOrders({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerOrders>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSampleMakerOrdersQueryResult = NonNullable<Awaited<ReturnType<typeof getSampleMakerOrders>>>
+export type GetSampleMakerOrdersQueryError = ErrorType<unknown>
+
+
+export function useGetSampleMakerOrders<TData = Awaited<ReturnType<typeof getSampleMakerOrders>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerOrders>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleMakerOrders>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleMakerOrders>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleMakerOrders<TData = Awaited<ReturnType<typeof getSampleMakerOrders>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerOrders>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleMakerOrders>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleMakerOrders>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleMakerOrders<TData = Awaited<ReturnType<typeof getSampleMakerOrders>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerOrders>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetSampleMakerOrders<TData = Awaited<ReturnType<typeof getSampleMakerOrders>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerOrders>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSampleMakerOrdersQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetSampleAdminOrdersUrl = () => {
+
+
+
+
+  return `/api/sample/admin/orders`
+}
+
+export const getSampleAdminOrders = async ( options?: Parameters<typeof customFetch>[1]): Promise<SampleOrdersResponse> => {
+
+  return customFetch<SampleOrdersResponse>(getGetSampleAdminOrdersUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSampleAdminOrdersQueryKey = () => {
+    return [
+    `/api/sample/admin/orders`
+    ] as const;
+    }
+
+
+export const getGetSampleAdminOrdersQueryOptions = <TData = Awaited<ReturnType<typeof getSampleAdminOrders>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminOrders>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSampleAdminOrdersQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSampleAdminOrders>>> = ({ signal }) => getSampleAdminOrders({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminOrders>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSampleAdminOrdersQueryResult = NonNullable<Awaited<ReturnType<typeof getSampleAdminOrders>>>
+export type GetSampleAdminOrdersQueryError = ErrorType<unknown>
+
+
+export function useGetSampleAdminOrders<TData = Awaited<ReturnType<typeof getSampleAdminOrders>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminOrders>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleAdminOrders>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleAdminOrders>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleAdminOrders<TData = Awaited<ReturnType<typeof getSampleAdminOrders>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminOrders>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleAdminOrders>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleAdminOrders>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleAdminOrders<TData = Awaited<ReturnType<typeof getSampleAdminOrders>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminOrders>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetSampleAdminOrders<TData = Awaited<ReturnType<typeof getSampleAdminOrders>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminOrders>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSampleAdminOrdersQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateSampleOrderFulfilmentUrl = (id: string,) => {
+
+
+
+
+  return `/api/sample/orders/${id}/fulfilment`
+}
+
+export const updateSampleOrderFulfilment = async (id: string,
+    sampleFulfilmentInput: SampleFulfilmentInput, options?: Parameters<typeof customFetch>[1]): Promise<SampleOperationalOrder> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<SampleOperationalOrder>(getUpdateSampleOrderFulfilmentUrl(id),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sampleFulfilmentInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateSampleOrderFulfilmentMutationKey = () => ['updateSampleOrderFulfilment'] as const;
+
+export const getUpdateSampleOrderFulfilmentMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateSampleOrderFulfilment>>, TError,UpdateSampleOrderFulfilmentMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateSampleOrderFulfilment>>, TError,UpdateSampleOrderFulfilmentMutationVariables, TContext> => {
+
+const mutationKey = getUpdateSampleOrderFulfilmentMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateSampleOrderFulfilment>>, UpdateSampleOrderFulfilmentMutationVariables> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateSampleOrderFulfilment(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateSampleOrderFulfilmentMutationResult = NonNullable<Awaited<ReturnType<typeof updateSampleOrderFulfilment>>>
+    export type UpdateSampleOrderFulfilmentMutationBody = BodyType<SampleFulfilmentInput>
+    export type UpdateSampleOrderFulfilmentMutationError = ErrorType<unknown>
+    export type UpdateSampleOrderFulfilmentMutationVariables = {id: string;data: BodyType<SampleFulfilmentInput>}
+
+    export const useUpdateSampleOrderFulfilment = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateSampleOrderFulfilment>>, TError,UpdateSampleOrderFulfilmentMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof updateSampleOrderFulfilment>>,
+        TError,
+        UpdateSampleOrderFulfilmentMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateSampleOrderFulfilmentMutationOptions(options), queryClient);
+    }
+
+export const getUpdateSampleAdminOrderStatusUrl = (id: string,) => {
+
+
+
+
+  return `/api/sample/admin/orders/${id}/status`
+}
+
+export const updateSampleAdminOrderStatus = async (id: string,
+    sampleAdminOrderStatusInput: SampleAdminOrderStatusInput, options?: Parameters<typeof customFetch>[1]): Promise<SampleOperationalOrder> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<SampleOperationalOrder>(getUpdateSampleAdminOrderStatusUrl(id),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sampleAdminOrderStatusInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateSampleAdminOrderStatusMutationKey = () => ['updateSampleAdminOrderStatus'] as const;
+
+export const getUpdateSampleAdminOrderStatusMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateSampleAdminOrderStatus>>, TError,UpdateSampleAdminOrderStatusMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateSampleAdminOrderStatus>>, TError,UpdateSampleAdminOrderStatusMutationVariables, TContext> => {
+
+const mutationKey = getUpdateSampleAdminOrderStatusMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateSampleAdminOrderStatus>>, UpdateSampleAdminOrderStatusMutationVariables> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateSampleAdminOrderStatus(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateSampleAdminOrderStatusMutationResult = NonNullable<Awaited<ReturnType<typeof updateSampleAdminOrderStatus>>>
+    export type UpdateSampleAdminOrderStatusMutationBody = BodyType<SampleAdminOrderStatusInput>
+    export type UpdateSampleAdminOrderStatusMutationError = ErrorType<unknown>
+    export type UpdateSampleAdminOrderStatusMutationVariables = {id: string;data: BodyType<SampleAdminOrderStatusInput>}
+
+    export const useUpdateSampleAdminOrderStatus = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateSampleAdminOrderStatus>>, TError,UpdateSampleAdminOrderStatusMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof updateSampleAdminOrderStatus>>,
+        TError,
+        UpdateSampleAdminOrderStatusMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateSampleAdminOrderStatusMutationOptions(options), queryClient);
+    }
+
+export const getGetSampleMakerEarningsUrl = () => {
+
+
+
+
+  return `/api/sample/maker/earnings`
+}
+
+export const getSampleMakerEarnings = async ( options?: Parameters<typeof customFetch>[1]): Promise<SampleMakerEarnings> => {
+
+  return customFetch<SampleMakerEarnings>(getGetSampleMakerEarningsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSampleMakerEarningsQueryKey = () => {
+    return [
+    `/api/sample/maker/earnings`
+    ] as const;
+    }
+
+
+export const getGetSampleMakerEarningsQueryOptions = <TData = Awaited<ReturnType<typeof getSampleMakerEarnings>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerEarnings>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSampleMakerEarningsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSampleMakerEarnings>>> = ({ signal }) => getSampleMakerEarnings({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerEarnings>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSampleMakerEarningsQueryResult = NonNullable<Awaited<ReturnType<typeof getSampleMakerEarnings>>>
+export type GetSampleMakerEarningsQueryError = ErrorType<unknown>
+
+
+export function useGetSampleMakerEarnings<TData = Awaited<ReturnType<typeof getSampleMakerEarnings>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerEarnings>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleMakerEarnings>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleMakerEarnings>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleMakerEarnings<TData = Awaited<ReturnType<typeof getSampleMakerEarnings>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerEarnings>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleMakerEarnings>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleMakerEarnings>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleMakerEarnings<TData = Awaited<ReturnType<typeof getSampleMakerEarnings>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerEarnings>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetSampleMakerEarnings<TData = Awaited<ReturnType<typeof getSampleMakerEarnings>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerEarnings>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSampleMakerEarningsQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetSampleMakerProfitsUrl = () => {
+
+
+
+
+  return `/api/sample/maker/profits`
+}
+
+export const getSampleMakerProfits = async ( options?: Parameters<typeof customFetch>[1]): Promise<SampleMakerProfitsResponse> => {
+
+  return customFetch<SampleMakerProfitsResponse>(getGetSampleMakerProfitsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSampleMakerProfitsQueryKey = () => {
+    return [
+    `/api/sample/maker/profits`
+    ] as const;
+    }
+
+
+export const getGetSampleMakerProfitsQueryOptions = <TData = Awaited<ReturnType<typeof getSampleMakerProfits>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerProfits>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSampleMakerProfitsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSampleMakerProfits>>> = ({ signal }) => getSampleMakerProfits({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerProfits>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSampleMakerProfitsQueryResult = NonNullable<Awaited<ReturnType<typeof getSampleMakerProfits>>>
+export type GetSampleMakerProfitsQueryError = ErrorType<unknown>
+
+
+export function useGetSampleMakerProfits<TData = Awaited<ReturnType<typeof getSampleMakerProfits>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerProfits>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleMakerProfits>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleMakerProfits>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleMakerProfits<TData = Awaited<ReturnType<typeof getSampleMakerProfits>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerProfits>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleMakerProfits>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleMakerProfits>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleMakerProfits<TData = Awaited<ReturnType<typeof getSampleMakerProfits>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerProfits>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetSampleMakerProfits<TData = Awaited<ReturnType<typeof getSampleMakerProfits>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerProfits>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSampleMakerProfitsQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetSampleMakerSettingsUrl = () => {
+
+
+
+
+  return `/api/sample/maker/settings`
+}
+
+export const getSampleMakerSettings = async ( options?: Parameters<typeof customFetch>[1]): Promise<SampleMakerSettings> => {
+
+  return customFetch<SampleMakerSettings>(getGetSampleMakerSettingsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSampleMakerSettingsQueryKey = () => {
+    return [
+    `/api/sample/maker/settings`
+    ] as const;
+    }
+
+
+export const getGetSampleMakerSettingsQueryOptions = <TData = Awaited<ReturnType<typeof getSampleMakerSettings>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerSettings>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSampleMakerSettingsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSampleMakerSettings>>> = ({ signal }) => getSampleMakerSettings({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerSettings>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSampleMakerSettingsQueryResult = NonNullable<Awaited<ReturnType<typeof getSampleMakerSettings>>>
+export type GetSampleMakerSettingsQueryError = ErrorType<unknown>
+
+
+export function useGetSampleMakerSettings<TData = Awaited<ReturnType<typeof getSampleMakerSettings>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerSettings>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleMakerSettings>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleMakerSettings>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleMakerSettings<TData = Awaited<ReturnType<typeof getSampleMakerSettings>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerSettings>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleMakerSettings>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleMakerSettings>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleMakerSettings<TData = Awaited<ReturnType<typeof getSampleMakerSettings>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerSettings>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetSampleMakerSettings<TData = Awaited<ReturnType<typeof getSampleMakerSettings>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerSettings>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSampleMakerSettingsQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getSaveSampleMakerSettingsUrl = () => {
+
+
+
+
+  return `/api/sample/maker/settings`
+}
+
+export const saveSampleMakerSettings = async (sampleMakerSettingsInput: SampleMakerSettingsInput, options?: Parameters<typeof customFetch>[1]): Promise<SampleMakerSettings> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<SampleMakerSettings>(getSaveSampleMakerSettingsUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sampleMakerSettingsInput)
+  }
+);}
+
+
+
+
+
+export const getSaveSampleMakerSettingsMutationKey = () => ['saveSampleMakerSettings'] as const;
+
+export const getSaveSampleMakerSettingsMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof saveSampleMakerSettings>>, TError,SaveSampleMakerSettingsMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof saveSampleMakerSettings>>, TError,SaveSampleMakerSettingsMutationVariables, TContext> => {
+
+const mutationKey = getSaveSampleMakerSettingsMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof saveSampleMakerSettings>>, SaveSampleMakerSettingsMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  saveSampleMakerSettings(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SaveSampleMakerSettingsMutationResult = NonNullable<Awaited<ReturnType<typeof saveSampleMakerSettings>>>
+    export type SaveSampleMakerSettingsMutationBody = BodyType<SampleMakerSettingsInput>
+    export type SaveSampleMakerSettingsMutationError = ErrorType<unknown>
+    export type SaveSampleMakerSettingsMutationVariables = {data: BodyType<SampleMakerSettingsInput>}
+
+    export const useSaveSampleMakerSettings = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof saveSampleMakerSettings>>, TError,SaveSampleMakerSettingsMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof saveSampleMakerSettings>>,
+        TError,
+        SaveSampleMakerSettingsMutationVariables,
+        TContext
+      > => {
+      return useMutation(getSaveSampleMakerSettingsMutationOptions(options), queryClient);
+    }
+
+export const getGetSampleMakerOpportunitiesUrl = () => {
+
+
+
+
+  return `/api/sample/maker/opportunities`
+}
+
+export const getSampleMakerOpportunities = async ( options?: Parameters<typeof customFetch>[1]): Promise<SampleMakerOpportunitiesResponse> => {
+
+  return customFetch<SampleMakerOpportunitiesResponse>(getGetSampleMakerOpportunitiesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSampleMakerOpportunitiesQueryKey = () => {
+    return [
+    `/api/sample/maker/opportunities`
+    ] as const;
+    }
+
+
+export const getGetSampleMakerOpportunitiesQueryOptions = <TData = Awaited<ReturnType<typeof getSampleMakerOpportunities>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerOpportunities>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSampleMakerOpportunitiesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSampleMakerOpportunities>>> = ({ signal }) => getSampleMakerOpportunities({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerOpportunities>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSampleMakerOpportunitiesQueryResult = NonNullable<Awaited<ReturnType<typeof getSampleMakerOpportunities>>>
+export type GetSampleMakerOpportunitiesQueryError = ErrorType<unknown>
+
+
+export function useGetSampleMakerOpportunities<TData = Awaited<ReturnType<typeof getSampleMakerOpportunities>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerOpportunities>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleMakerOpportunities>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleMakerOpportunities>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleMakerOpportunities<TData = Awaited<ReturnType<typeof getSampleMakerOpportunities>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerOpportunities>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleMakerOpportunities>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleMakerOpportunities>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleMakerOpportunities<TData = Awaited<ReturnType<typeof getSampleMakerOpportunities>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerOpportunities>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetSampleMakerOpportunities<TData = Awaited<ReturnType<typeof getSampleMakerOpportunities>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerOpportunities>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSampleMakerOpportunitiesQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getRespondSampleMakerOpportunityUrl = (id: string,) => {
+
+
+
+
+  return `/api/sample/maker/opportunities/${id}/response`
+}
+
+export const respondSampleMakerOpportunity = async (id: string,
+    sampleMakerOpportunityResponseInput: SampleMakerOpportunityResponseInput, options?: Parameters<typeof customFetch>[1]): Promise<SampleMakerOpportunity> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<SampleMakerOpportunity>(getRespondSampleMakerOpportunityUrl(id),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sampleMakerOpportunityResponseInput)
+  }
+);}
+
+
+
+
+
+export const getRespondSampleMakerOpportunityMutationKey = () => ['respondSampleMakerOpportunity'] as const;
+
+export const getRespondSampleMakerOpportunityMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof respondSampleMakerOpportunity>>, TError,RespondSampleMakerOpportunityMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof respondSampleMakerOpportunity>>, TError,RespondSampleMakerOpportunityMutationVariables, TContext> => {
+
+const mutationKey = getRespondSampleMakerOpportunityMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof respondSampleMakerOpportunity>>, RespondSampleMakerOpportunityMutationVariables> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  respondSampleMakerOpportunity(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type RespondSampleMakerOpportunityMutationResult = NonNullable<Awaited<ReturnType<typeof respondSampleMakerOpportunity>>>
+    export type RespondSampleMakerOpportunityMutationBody = BodyType<SampleMakerOpportunityResponseInput>
+    export type RespondSampleMakerOpportunityMutationError = ErrorType<unknown>
+    export type RespondSampleMakerOpportunityMutationVariables = {id: string;data: BodyType<SampleMakerOpportunityResponseInput>}
+
+    export const useRespondSampleMakerOpportunity = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof respondSampleMakerOpportunity>>, TError,RespondSampleMakerOpportunityMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof respondSampleMakerOpportunity>>,
+        TError,
+        RespondSampleMakerOpportunityMutationVariables,
+        TContext
+      > => {
+      return useMutation(getRespondSampleMakerOpportunityMutationOptions(options), queryClient);
+    }
+
+export const getCreateSampleMakerMasterclassProposalUrl = () => {
+
+
+
+
+  return `/api/sample/maker/masterclass-proposals`
+}
+
+export const createSampleMakerMasterclassProposal = async (sampleMakerMasterclassProposalInput: SampleMakerMasterclassProposalInput, options?: Parameters<typeof customFetch>[1]): Promise<SampleMakerMasterclassProposal> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<SampleMakerMasterclassProposal>(getCreateSampleMakerMasterclassProposalUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sampleMakerMasterclassProposalInput)
+  }
+);}
+
+
+
+
+
+export const getCreateSampleMakerMasterclassProposalMutationKey = () => ['createSampleMakerMasterclassProposal'] as const;
+
+export const getCreateSampleMakerMasterclassProposalMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createSampleMakerMasterclassProposal>>, TError,CreateSampleMakerMasterclassProposalMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createSampleMakerMasterclassProposal>>, TError,CreateSampleMakerMasterclassProposalMutationVariables, TContext> => {
+
+const mutationKey = getCreateSampleMakerMasterclassProposalMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createSampleMakerMasterclassProposal>>, CreateSampleMakerMasterclassProposalMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  createSampleMakerMasterclassProposal(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateSampleMakerMasterclassProposalMutationResult = NonNullable<Awaited<ReturnType<typeof createSampleMakerMasterclassProposal>>>
+    export type CreateSampleMakerMasterclassProposalMutationBody = BodyType<SampleMakerMasterclassProposalInput>
+    export type CreateSampleMakerMasterclassProposalMutationError = ErrorType<unknown>
+    export type CreateSampleMakerMasterclassProposalMutationVariables = {data: BodyType<SampleMakerMasterclassProposalInput>}
+
+    export const useCreateSampleMakerMasterclassProposal = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createSampleMakerMasterclassProposal>>, TError,CreateSampleMakerMasterclassProposalMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof createSampleMakerMasterclassProposal>>,
+        TError,
+        CreateSampleMakerMasterclassProposalMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCreateSampleMakerMasterclassProposalMutationOptions(options), queryClient);
+    }
+
+export const getGetSampleAdminMasterclassProposalsUrl = () => {
+
+
+
+
+  return `/api/sample/admin/masterclass-proposals`
+}
+
+export const getSampleAdminMasterclassProposals = async ( options?: Parameters<typeof customFetch>[1]): Promise<SampleAdminMasterclassProposalsResponse> => {
+
+  return customFetch<SampleAdminMasterclassProposalsResponse>(getGetSampleAdminMasterclassProposalsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSampleAdminMasterclassProposalsQueryKey = () => {
+    return [
+    `/api/sample/admin/masterclass-proposals`
+    ] as const;
+    }
+
+
+export const getGetSampleAdminMasterclassProposalsQueryOptions = <TData = Awaited<ReturnType<typeof getSampleAdminMasterclassProposals>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminMasterclassProposals>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSampleAdminMasterclassProposalsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSampleAdminMasterclassProposals>>> = ({ signal }) => getSampleAdminMasterclassProposals({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminMasterclassProposals>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSampleAdminMasterclassProposalsQueryResult = NonNullable<Awaited<ReturnType<typeof getSampleAdminMasterclassProposals>>>
+export type GetSampleAdminMasterclassProposalsQueryError = ErrorType<unknown>
+
+
+export function useGetSampleAdminMasterclassProposals<TData = Awaited<ReturnType<typeof getSampleAdminMasterclassProposals>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminMasterclassProposals>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleAdminMasterclassProposals>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleAdminMasterclassProposals>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleAdminMasterclassProposals<TData = Awaited<ReturnType<typeof getSampleAdminMasterclassProposals>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminMasterclassProposals>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleAdminMasterclassProposals>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleAdminMasterclassProposals>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleAdminMasterclassProposals<TData = Awaited<ReturnType<typeof getSampleAdminMasterclassProposals>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminMasterclassProposals>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetSampleAdminMasterclassProposals<TData = Awaited<ReturnType<typeof getSampleAdminMasterclassProposals>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminMasterclassProposals>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSampleAdminMasterclassProposalsQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReviewSampleAdminMasterclassProposalUrl = (id: string,) => {
+
+
+
+
+  return `/api/sample/admin/masterclass-proposals/${id}`
+}
+
+export const reviewSampleAdminMasterclassProposal = async (id: string,
+    sampleAdminMasterclassReviewInput: SampleAdminMasterclassReviewInput, options?: Parameters<typeof customFetch>[1]): Promise<SampleMakerMasterclassProposal> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<SampleMakerMasterclassProposal>(getReviewSampleAdminMasterclassProposalUrl(id),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sampleAdminMasterclassReviewInput)
+  }
+);}
+
+
+
+
+
+export const getReviewSampleAdminMasterclassProposalMutationKey = () => ['reviewSampleAdminMasterclassProposal'] as const;
+
+export const getReviewSampleAdminMasterclassProposalMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reviewSampleAdminMasterclassProposal>>, TError,ReviewSampleAdminMasterclassProposalMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof reviewSampleAdminMasterclassProposal>>, TError,ReviewSampleAdminMasterclassProposalMutationVariables, TContext> => {
+
+const mutationKey = getReviewSampleAdminMasterclassProposalMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof reviewSampleAdminMasterclassProposal>>, ReviewSampleAdminMasterclassProposalMutationVariables> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  reviewSampleAdminMasterclassProposal(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ReviewSampleAdminMasterclassProposalMutationResult = NonNullable<Awaited<ReturnType<typeof reviewSampleAdminMasterclassProposal>>>
+    export type ReviewSampleAdminMasterclassProposalMutationBody = BodyType<SampleAdminMasterclassReviewInput>
+    export type ReviewSampleAdminMasterclassProposalMutationError = ErrorType<unknown>
+    export type ReviewSampleAdminMasterclassProposalMutationVariables = {id: string;data: BodyType<SampleAdminMasterclassReviewInput>}
+
+    export const useReviewSampleAdminMasterclassProposal = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reviewSampleAdminMasterclassProposal>>, TError,ReviewSampleAdminMasterclassProposalMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof reviewSampleAdminMasterclassProposal>>,
+        TError,
+        ReviewSampleAdminMasterclassProposalMutationVariables,
+        TContext
+      > => {
+      return useMutation(getReviewSampleAdminMasterclassProposalMutationOptions(options), queryClient);
+    }
+
+export const getSaveSampleMakerProductCostUrl = (productId: string,) => {
+
+
+
+
+  return `/api/sample/maker/products/${productId}/cost`
+}
+
+export const saveSampleMakerProductCost = async (productId: string,
+    sampleMakerProductCostInput: SampleMakerProductCostInput, options?: Parameters<typeof customFetch>[1]): Promise<SampleMakerProductCost> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<SampleMakerProductCost>(getSaveSampleMakerProductCostUrl(productId),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sampleMakerProductCostInput)
+  }
+);}
+
+
+
+
+
+export const getSaveSampleMakerProductCostMutationKey = () => ['saveSampleMakerProductCost'] as const;
+
+export const getSaveSampleMakerProductCostMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof saveSampleMakerProductCost>>, TError,SaveSampleMakerProductCostMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof saveSampleMakerProductCost>>, TError,SaveSampleMakerProductCostMutationVariables, TContext> => {
+
+const mutationKey = getSaveSampleMakerProductCostMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof saveSampleMakerProductCost>>, SaveSampleMakerProductCostMutationVariables> = (props) => {
+          const {productId,data} = props ?? {};
+
+          return  saveSampleMakerProductCost(productId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SaveSampleMakerProductCostMutationResult = NonNullable<Awaited<ReturnType<typeof saveSampleMakerProductCost>>>
+    export type SaveSampleMakerProductCostMutationBody = BodyType<SampleMakerProductCostInput>
+    export type SaveSampleMakerProductCostMutationError = ErrorType<unknown>
+    export type SaveSampleMakerProductCostMutationVariables = {productId: string;data: BodyType<SampleMakerProductCostInput>}
+
+    export const useSaveSampleMakerProductCost = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof saveSampleMakerProductCost>>, TError,SaveSampleMakerProductCostMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof saveSampleMakerProductCost>>,
+        TError,
+        SaveSampleMakerProductCostMutationVariables,
+        TContext
+      > => {
+      return useMutation(getSaveSampleMakerProductCostMutationOptions(options), queryClient);
+    }
+
+export const getGetSampleMakerDraftsUrl = () => {
+
+
+
+
+  return `/api/sample/maker/drafts`
+}
+
+export const getSampleMakerDrafts = async ( options?: Parameters<typeof customFetch>[1]): Promise<SampleMakerDraftsResponse> => {
+
+  return customFetch<SampleMakerDraftsResponse>(getGetSampleMakerDraftsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSampleMakerDraftsQueryKey = () => {
+    return [
+    `/api/sample/maker/drafts`
+    ] as const;
+    }
+
+
+export const getGetSampleMakerDraftsQueryOptions = <TData = Awaited<ReturnType<typeof getSampleMakerDrafts>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerDrafts>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSampleMakerDraftsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSampleMakerDrafts>>> = ({ signal }) => getSampleMakerDrafts({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerDrafts>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSampleMakerDraftsQueryResult = NonNullable<Awaited<ReturnType<typeof getSampleMakerDrafts>>>
+export type GetSampleMakerDraftsQueryError = ErrorType<unknown>
+
+
+export function useGetSampleMakerDrafts<TData = Awaited<ReturnType<typeof getSampleMakerDrafts>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerDrafts>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleMakerDrafts>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleMakerDrafts>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleMakerDrafts<TData = Awaited<ReturnType<typeof getSampleMakerDrafts>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerDrafts>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleMakerDrafts>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleMakerDrafts>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleMakerDrafts<TData = Awaited<ReturnType<typeof getSampleMakerDrafts>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerDrafts>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetSampleMakerDrafts<TData = Awaited<ReturnType<typeof getSampleMakerDrafts>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerDrafts>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSampleMakerDraftsQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getCreateSampleMakerDraftUrl = () => {
+
+
+
+
+  return `/api/sample/maker/drafts`
+}
+
+export const createSampleMakerDraft = async (sampleMakerDraftInput: SampleMakerDraftInput, options?: Parameters<typeof customFetch>[1]): Promise<SampleMakerDraft> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<SampleMakerDraft>(getCreateSampleMakerDraftUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sampleMakerDraftInput)
+  }
+);}
+
+
+
+
+
+export const getCreateSampleMakerDraftMutationKey = () => ['createSampleMakerDraft'] as const;
+
+export const getCreateSampleMakerDraftMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createSampleMakerDraft>>, TError,CreateSampleMakerDraftMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createSampleMakerDraft>>, TError,CreateSampleMakerDraftMutationVariables, TContext> => {
+
+const mutationKey = getCreateSampleMakerDraftMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createSampleMakerDraft>>, CreateSampleMakerDraftMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  createSampleMakerDraft(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateSampleMakerDraftMutationResult = NonNullable<Awaited<ReturnType<typeof createSampleMakerDraft>>>
+    export type CreateSampleMakerDraftMutationBody = BodyType<SampleMakerDraftInput>
+    export type CreateSampleMakerDraftMutationError = ErrorType<unknown>
+    export type CreateSampleMakerDraftMutationVariables = {data: BodyType<SampleMakerDraftInput>}
+
+    export const useCreateSampleMakerDraft = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createSampleMakerDraft>>, TError,CreateSampleMakerDraftMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof createSampleMakerDraft>>,
+        TError,
+        CreateSampleMakerDraftMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCreateSampleMakerDraftMutationOptions(options), queryClient);
+    }
+
+export const getGetSampleMakerDraftUrl = (id: string,) => {
+
+
+
+
+  return `/api/sample/maker/drafts/${id}`
+}
+
+export const getSampleMakerDraft = async (id: string, options?: Parameters<typeof customFetch>[1]): Promise<SampleMakerDraft> => {
+
+  return customFetch<SampleMakerDraft>(getGetSampleMakerDraftUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSampleMakerDraftQueryKey = (id: string,) => {
+    return [
+    `/api/sample/maker/drafts/${id}`
+    ] as const;
+    }
+
+
+export const getGetSampleMakerDraftQueryOptions = <TData = Awaited<ReturnType<typeof getSampleMakerDraft>>, TError = ErrorType<unknown>>(id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerDraft>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSampleMakerDraftQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSampleMakerDraft>>> = ({ signal }) => getSampleMakerDraft(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerDraft>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSampleMakerDraftQueryResult = NonNullable<Awaited<ReturnType<typeof getSampleMakerDraft>>>
+export type GetSampleMakerDraftQueryError = ErrorType<unknown>
+
+
+export function useGetSampleMakerDraft<TData = Awaited<ReturnType<typeof getSampleMakerDraft>>, TError = ErrorType<unknown>>(
+ id: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerDraft>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleMakerDraft>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleMakerDraft>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleMakerDraft<TData = Awaited<ReturnType<typeof getSampleMakerDraft>>, TError = ErrorType<unknown>>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerDraft>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleMakerDraft>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleMakerDraft>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleMakerDraft<TData = Awaited<ReturnType<typeof getSampleMakerDraft>>, TError = ErrorType<unknown>>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerDraft>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetSampleMakerDraft<TData = Awaited<ReturnType<typeof getSampleMakerDraft>>, TError = ErrorType<unknown>>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleMakerDraft>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSampleMakerDraftQueryOptions(id,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getSaveSampleMakerDraftUrl = (id: string,) => {
+
+
+
+
+  return `/api/sample/maker/drafts/${id}`
+}
+
+export const saveSampleMakerDraft = async (id: string,
+    sampleMakerDraftInput: SampleMakerDraftInput, options?: Parameters<typeof customFetch>[1]): Promise<SampleMakerDraft> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<SampleMakerDraft>(getSaveSampleMakerDraftUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sampleMakerDraftInput)
+  }
+);}
+
+
+
+
+
+export const getSaveSampleMakerDraftMutationKey = () => ['saveSampleMakerDraft'] as const;
+
+export const getSaveSampleMakerDraftMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof saveSampleMakerDraft>>, TError,SaveSampleMakerDraftMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof saveSampleMakerDraft>>, TError,SaveSampleMakerDraftMutationVariables, TContext> => {
+
+const mutationKey = getSaveSampleMakerDraftMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof saveSampleMakerDraft>>, SaveSampleMakerDraftMutationVariables> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  saveSampleMakerDraft(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SaveSampleMakerDraftMutationResult = NonNullable<Awaited<ReturnType<typeof saveSampleMakerDraft>>>
+    export type SaveSampleMakerDraftMutationBody = BodyType<SampleMakerDraftInput>
+    export type SaveSampleMakerDraftMutationError = ErrorType<unknown>
+    export type SaveSampleMakerDraftMutationVariables = {id: string;data: BodyType<SampleMakerDraftInput>}
+
+    export const useSaveSampleMakerDraft = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof saveSampleMakerDraft>>, TError,SaveSampleMakerDraftMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof saveSampleMakerDraft>>,
+        TError,
+        SaveSampleMakerDraftMutationVariables,
+        TContext
+      > => {
+      return useMutation(getSaveSampleMakerDraftMutationOptions(options), queryClient);
+    }
+
+export const getSubmitSampleMakerDraftUrl = (id: string,) => {
+
+
+
+
+  return `/api/sample/maker/drafts/${id}/submit`
+}
+
+export const submitSampleMakerDraft = async (id: string,
+    sampleProductSubmissionInput: SampleProductSubmissionInput, options?: Parameters<typeof customFetch>[1]): Promise<SampleProductSubmissionResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<SampleProductSubmissionResponse>(getSubmitSampleMakerDraftUrl(id),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sampleProductSubmissionInput)
+  }
+);}
+
+
+
+
+
+export const getSubmitSampleMakerDraftMutationKey = () => ['submitSampleMakerDraft'] as const;
+
+export const getSubmitSampleMakerDraftMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof submitSampleMakerDraft>>, TError,SubmitSampleMakerDraftMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof submitSampleMakerDraft>>, TError,SubmitSampleMakerDraftMutationVariables, TContext> => {
+
+const mutationKey = getSubmitSampleMakerDraftMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof submitSampleMakerDraft>>, SubmitSampleMakerDraftMutationVariables> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  submitSampleMakerDraft(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SubmitSampleMakerDraftMutationResult = NonNullable<Awaited<ReturnType<typeof submitSampleMakerDraft>>>
+    export type SubmitSampleMakerDraftMutationBody = BodyType<SampleProductSubmissionInput>
+    export type SubmitSampleMakerDraftMutationError = ErrorType<unknown>
+    export type SubmitSampleMakerDraftMutationVariables = {id: string;data: BodyType<SampleProductSubmissionInput>}
+
+    export const useSubmitSampleMakerDraft = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof submitSampleMakerDraft>>, TError,SubmitSampleMakerDraftMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof submitSampleMakerDraft>>,
+        TError,
+        SubmitSampleMakerDraftMutationVariables,
+        TContext
+      > => {
+      return useMutation(getSubmitSampleMakerDraftMutationOptions(options), queryClient);
+    }
+
+export const getGetSampleAdminPayoutsUrl = () => {
+
+
+
+
+  return `/api/sample/admin/payouts`
+}
+
+export const getSampleAdminPayouts = async ( options?: Parameters<typeof customFetch>[1]): Promise<SampleAdminPayoutsResponse> => {
+
+  return customFetch<SampleAdminPayoutsResponse>(getGetSampleAdminPayoutsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSampleAdminPayoutsQueryKey = () => {
+    return [
+    `/api/sample/admin/payouts`
+    ] as const;
+    }
+
+
+export const getGetSampleAdminPayoutsQueryOptions = <TData = Awaited<ReturnType<typeof getSampleAdminPayouts>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminPayouts>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSampleAdminPayoutsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSampleAdminPayouts>>> = ({ signal }) => getSampleAdminPayouts({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminPayouts>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSampleAdminPayoutsQueryResult = NonNullable<Awaited<ReturnType<typeof getSampleAdminPayouts>>>
+export type GetSampleAdminPayoutsQueryError = ErrorType<unknown>
+
+
+export function useGetSampleAdminPayouts<TData = Awaited<ReturnType<typeof getSampleAdminPayouts>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminPayouts>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleAdminPayouts>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleAdminPayouts>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleAdminPayouts<TData = Awaited<ReturnType<typeof getSampleAdminPayouts>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminPayouts>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleAdminPayouts>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleAdminPayouts>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleAdminPayouts<TData = Awaited<ReturnType<typeof getSampleAdminPayouts>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminPayouts>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetSampleAdminPayouts<TData = Awaited<ReturnType<typeof getSampleAdminPayouts>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminPayouts>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSampleAdminPayoutsQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetSampleAdminProductReviewsUrl = () => {
+
+
+
+
+  return `/api/sample/admin/product-reviews`
+}
+
+export const getSampleAdminProductReviews = async ( options?: Parameters<typeof customFetch>[1]): Promise<SampleAdminProductReviewsResponse> => {
+
+  return customFetch<SampleAdminProductReviewsResponse>(getGetSampleAdminProductReviewsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSampleAdminProductReviewsQueryKey = () => {
+    return [
+    `/api/sample/admin/product-reviews`
+    ] as const;
+    }
+
+
+export const getGetSampleAdminProductReviewsQueryOptions = <TData = Awaited<ReturnType<typeof getSampleAdminProductReviews>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminProductReviews>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSampleAdminProductReviewsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSampleAdminProductReviews>>> = ({ signal }) => getSampleAdminProductReviews({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminProductReviews>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSampleAdminProductReviewsQueryResult = NonNullable<Awaited<ReturnType<typeof getSampleAdminProductReviews>>>
+export type GetSampleAdminProductReviewsQueryError = ErrorType<unknown>
+
+
+export function useGetSampleAdminProductReviews<TData = Awaited<ReturnType<typeof getSampleAdminProductReviews>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminProductReviews>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleAdminProductReviews>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleAdminProductReviews>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleAdminProductReviews<TData = Awaited<ReturnType<typeof getSampleAdminProductReviews>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminProductReviews>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleAdminProductReviews>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleAdminProductReviews>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleAdminProductReviews<TData = Awaited<ReturnType<typeof getSampleAdminProductReviews>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminProductReviews>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetSampleAdminProductReviews<TData = Awaited<ReturnType<typeof getSampleAdminProductReviews>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminProductReviews>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSampleAdminProductReviewsQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReviewSampleAdminProductUrl = (id: string,) => {
+
+
+
+
+  return `/api/sample/admin/product-reviews/${id}`
+}
+
+export const reviewSampleAdminProduct = async (id: string,
+    sampleAdminProductReviewInput: SampleAdminProductReviewInput, options?: Parameters<typeof customFetch>[1]): Promise<SampleAdminProductReview> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<SampleAdminProductReview>(getReviewSampleAdminProductUrl(id),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sampleAdminProductReviewInput)
+  }
+);}
+
+
+
+
+
+export const getReviewSampleAdminProductMutationKey = () => ['reviewSampleAdminProduct'] as const;
+
+export const getReviewSampleAdminProductMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reviewSampleAdminProduct>>, TError,ReviewSampleAdminProductMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof reviewSampleAdminProduct>>, TError,ReviewSampleAdminProductMutationVariables, TContext> => {
+
+const mutationKey = getReviewSampleAdminProductMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof reviewSampleAdminProduct>>, ReviewSampleAdminProductMutationVariables> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  reviewSampleAdminProduct(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ReviewSampleAdminProductMutationResult = NonNullable<Awaited<ReturnType<typeof reviewSampleAdminProduct>>>
+    export type ReviewSampleAdminProductMutationBody = BodyType<SampleAdminProductReviewInput>
+    export type ReviewSampleAdminProductMutationError = ErrorType<unknown>
+    export type ReviewSampleAdminProductMutationVariables = {id: string;data: BodyType<SampleAdminProductReviewInput>}
+
+    export const useReviewSampleAdminProduct = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reviewSampleAdminProduct>>, TError,ReviewSampleAdminProductMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof reviewSampleAdminProduct>>,
+        TError,
+        ReviewSampleAdminProductMutationVariables,
+        TContext
+      > => {
+      return useMutation(getReviewSampleAdminProductMutationOptions(options), queryClient);
+    }
+
+export const getGetSampleAdminVendorApplicationsUrl = () => {
+
+
+
+
+  return `/api/sample/admin/vendor-applications`
+}
+
+export const getSampleAdminVendorApplications = async ( options?: Parameters<typeof customFetch>[1]): Promise<SampleAdminVendorApplicationsResponse> => {
+
+  return customFetch<SampleAdminVendorApplicationsResponse>(getGetSampleAdminVendorApplicationsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSampleAdminVendorApplicationsQueryKey = () => {
+    return [
+    `/api/sample/admin/vendor-applications`
+    ] as const;
+    }
+
+
+export const getGetSampleAdminVendorApplicationsQueryOptions = <TData = Awaited<ReturnType<typeof getSampleAdminVendorApplications>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminVendorApplications>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSampleAdminVendorApplicationsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSampleAdminVendorApplications>>> = ({ signal }) => getSampleAdminVendorApplications({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminVendorApplications>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSampleAdminVendorApplicationsQueryResult = NonNullable<Awaited<ReturnType<typeof getSampleAdminVendorApplications>>>
+export type GetSampleAdminVendorApplicationsQueryError = ErrorType<unknown>
+
+
+export function useGetSampleAdminVendorApplications<TData = Awaited<ReturnType<typeof getSampleAdminVendorApplications>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminVendorApplications>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleAdminVendorApplications>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleAdminVendorApplications>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleAdminVendorApplications<TData = Awaited<ReturnType<typeof getSampleAdminVendorApplications>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminVendorApplications>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleAdminVendorApplications>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleAdminVendorApplications>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleAdminVendorApplications<TData = Awaited<ReturnType<typeof getSampleAdminVendorApplications>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminVendorApplications>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetSampleAdminVendorApplications<TData = Awaited<ReturnType<typeof getSampleAdminVendorApplications>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminVendorApplications>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSampleAdminVendorApplicationsQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getDecideSampleAdminVendorApplicationUrl = (id: string,) => {
+
+
+
+
+  return `/api/sample/admin/vendor-applications/${id}`
+}
+
+export const decideSampleAdminVendorApplication = async (id: string,
+    sampleAdminVendorApplicationDecisionInput: SampleAdminVendorApplicationDecisionInput, options?: Parameters<typeof customFetch>[1]): Promise<SampleVendorApplication> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<SampleVendorApplication>(getDecideSampleAdminVendorApplicationUrl(id),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sampleAdminVendorApplicationDecisionInput)
+  }
+);}
+
+
+
+
+
+export const getDecideSampleAdminVendorApplicationMutationKey = () => ['decideSampleAdminVendorApplication'] as const;
+
+export const getDecideSampleAdminVendorApplicationMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof decideSampleAdminVendorApplication>>, TError,DecideSampleAdminVendorApplicationMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof decideSampleAdminVendorApplication>>, TError,DecideSampleAdminVendorApplicationMutationVariables, TContext> => {
+
+const mutationKey = getDecideSampleAdminVendorApplicationMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof decideSampleAdminVendorApplication>>, DecideSampleAdminVendorApplicationMutationVariables> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  decideSampleAdminVendorApplication(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DecideSampleAdminVendorApplicationMutationResult = NonNullable<Awaited<ReturnType<typeof decideSampleAdminVendorApplication>>>
+    export type DecideSampleAdminVendorApplicationMutationBody = BodyType<SampleAdminVendorApplicationDecisionInput>
+    export type DecideSampleAdminVendorApplicationMutationError = ErrorType<unknown>
+    export type DecideSampleAdminVendorApplicationMutationVariables = {id: string;data: BodyType<SampleAdminVendorApplicationDecisionInput>}
+
+    export const useDecideSampleAdminVendorApplication = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof decideSampleAdminVendorApplication>>, TError,DecideSampleAdminVendorApplicationMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof decideSampleAdminVendorApplication>>,
+        TError,
+        DecideSampleAdminVendorApplicationMutationVariables,
+        TContext
+      > => {
+      return useMutation(getDecideSampleAdminVendorApplicationMutationOptions(options), queryClient);
+    }
+
+export const getCreateSampleCorporateEnquiryUrl = () => {
+
+
+
+
+  return `/api/sample/corporate/enquiries`
+}
+
+export const createSampleCorporateEnquiry = async (sampleCorporateEnquiryInput: SampleCorporateEnquiryInput, options?: Parameters<typeof customFetch>[1]): Promise<SampleCorporateEnquiryCreated> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<SampleCorporateEnquiryCreated>(getCreateSampleCorporateEnquiryUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sampleCorporateEnquiryInput)
+  }
+);}
+
+
+
+
+
+export const getCreateSampleCorporateEnquiryMutationKey = () => ['createSampleCorporateEnquiry'] as const;
+
+export const getCreateSampleCorporateEnquiryMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createSampleCorporateEnquiry>>, TError,CreateSampleCorporateEnquiryMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createSampleCorporateEnquiry>>, TError,CreateSampleCorporateEnquiryMutationVariables, TContext> => {
+
+const mutationKey = getCreateSampleCorporateEnquiryMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createSampleCorporateEnquiry>>, CreateSampleCorporateEnquiryMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  createSampleCorporateEnquiry(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateSampleCorporateEnquiryMutationResult = NonNullable<Awaited<ReturnType<typeof createSampleCorporateEnquiry>>>
+    export type CreateSampleCorporateEnquiryMutationBody = BodyType<SampleCorporateEnquiryInput>
+    export type CreateSampleCorporateEnquiryMutationError = ErrorType<unknown>
+    export type CreateSampleCorporateEnquiryMutationVariables = {data: BodyType<SampleCorporateEnquiryInput>}
+
+    export const useCreateSampleCorporateEnquiry = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createSampleCorporateEnquiry>>, TError,CreateSampleCorporateEnquiryMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof createSampleCorporateEnquiry>>,
+        TError,
+        CreateSampleCorporateEnquiryMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCreateSampleCorporateEnquiryMutationOptions(options), queryClient);
+    }
+
+export const getGetSampleAdminCorporateEnquiriesUrl = () => {
+
+
+
+
+  return `/api/sample/admin/enquiries`
+}
+
+export const getSampleAdminCorporateEnquiries = async ( options?: Parameters<typeof customFetch>[1]): Promise<SampleAdminCorporateEnquiriesResponse> => {
+
+  return customFetch<SampleAdminCorporateEnquiriesResponse>(getGetSampleAdminCorporateEnquiriesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSampleAdminCorporateEnquiriesQueryKey = () => {
+    return [
+    `/api/sample/admin/enquiries`
+    ] as const;
+    }
+
+
+export const getGetSampleAdminCorporateEnquiriesQueryOptions = <TData = Awaited<ReturnType<typeof getSampleAdminCorporateEnquiries>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminCorporateEnquiries>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSampleAdminCorporateEnquiriesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSampleAdminCorporateEnquiries>>> = ({ signal }) => getSampleAdminCorporateEnquiries({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminCorporateEnquiries>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSampleAdminCorporateEnquiriesQueryResult = NonNullable<Awaited<ReturnType<typeof getSampleAdminCorporateEnquiries>>>
+export type GetSampleAdminCorporateEnquiriesQueryError = ErrorType<unknown>
+
+
+export function useGetSampleAdminCorporateEnquiries<TData = Awaited<ReturnType<typeof getSampleAdminCorporateEnquiries>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminCorporateEnquiries>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleAdminCorporateEnquiries>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleAdminCorporateEnquiries>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleAdminCorporateEnquiries<TData = Awaited<ReturnType<typeof getSampleAdminCorporateEnquiries>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminCorporateEnquiries>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleAdminCorporateEnquiries>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleAdminCorporateEnquiries>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleAdminCorporateEnquiries<TData = Awaited<ReturnType<typeof getSampleAdminCorporateEnquiries>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminCorporateEnquiries>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetSampleAdminCorporateEnquiries<TData = Awaited<ReturnType<typeof getSampleAdminCorporateEnquiries>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminCorporateEnquiries>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSampleAdminCorporateEnquiriesQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetSampleAdminOverviewUrl = () => {
+
+
+
+
+  return `/api/sample/admin/overview`
+}
+
+export const getSampleAdminOverview = async ( options?: Parameters<typeof customFetch>[1]): Promise<SampleAdminOverview> => {
+
+  return customFetch<SampleAdminOverview>(getGetSampleAdminOverviewUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSampleAdminOverviewQueryKey = () => {
+    return [
+    `/api/sample/admin/overview`
+    ] as const;
+    }
+
+
+export const getGetSampleAdminOverviewQueryOptions = <TData = Awaited<ReturnType<typeof getSampleAdminOverview>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminOverview>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSampleAdminOverviewQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSampleAdminOverview>>> = ({ signal }) => getSampleAdminOverview({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminOverview>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSampleAdminOverviewQueryResult = NonNullable<Awaited<ReturnType<typeof getSampleAdminOverview>>>
+export type GetSampleAdminOverviewQueryError = ErrorType<unknown>
+
+
+export function useGetSampleAdminOverview<TData = Awaited<ReturnType<typeof getSampleAdminOverview>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminOverview>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleAdminOverview>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleAdminOverview>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleAdminOverview<TData = Awaited<ReturnType<typeof getSampleAdminOverview>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminOverview>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleAdminOverview>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleAdminOverview>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleAdminOverview<TData = Awaited<ReturnType<typeof getSampleAdminOverview>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminOverview>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetSampleAdminOverview<TData = Awaited<ReturnType<typeof getSampleAdminOverview>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminOverview>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSampleAdminOverviewQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetSampleAdminAcademySalesUrl = () => {
+
+
+
+
+  return `/api/sample/admin/academy`
+}
+
+export const getSampleAdminAcademySales = async ( options?: Parameters<typeof customFetch>[1]): Promise<SampleAdminAcademySalesResponse> => {
+
+  return customFetch<SampleAdminAcademySalesResponse>(getGetSampleAdminAcademySalesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSampleAdminAcademySalesQueryKey = () => {
+    return [
+    `/api/sample/admin/academy`
+    ] as const;
+    }
+
+
+export const getGetSampleAdminAcademySalesQueryOptions = <TData = Awaited<ReturnType<typeof getSampleAdminAcademySales>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminAcademySales>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSampleAdminAcademySalesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSampleAdminAcademySales>>> = ({ signal }) => getSampleAdminAcademySales({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminAcademySales>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSampleAdminAcademySalesQueryResult = NonNullable<Awaited<ReturnType<typeof getSampleAdminAcademySales>>>
+export type GetSampleAdminAcademySalesQueryError = ErrorType<unknown>
+
+
+export function useGetSampleAdminAcademySales<TData = Awaited<ReturnType<typeof getSampleAdminAcademySales>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminAcademySales>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleAdminAcademySales>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleAdminAcademySales>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleAdminAcademySales<TData = Awaited<ReturnType<typeof getSampleAdminAcademySales>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminAcademySales>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleAdminAcademySales>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleAdminAcademySales>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleAdminAcademySales<TData = Awaited<ReturnType<typeof getSampleAdminAcademySales>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminAcademySales>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetSampleAdminAcademySales<TData = Awaited<ReturnType<typeof getSampleAdminAcademySales>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminAcademySales>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSampleAdminAcademySalesQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getImportSampleAdminAcademyCsvUrl = () => {
+
+
+
+
+  return `/api/sample/admin/academy/import`
+}
+
+export const importSampleAdminAcademyCsv = async (sampleAdminAcademyCsvInput: SampleAdminAcademyCsvInput, options?: Parameters<typeof customFetch>[1]): Promise<SampleAdminAcademyImportResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<SampleAdminAcademyImportResponse>(getImportSampleAdminAcademyCsvUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sampleAdminAcademyCsvInput)
+  }
+);}
+
+
+
+
+
+export const getImportSampleAdminAcademyCsvMutationKey = () => ['importSampleAdminAcademyCsv'] as const;
+
+export const getImportSampleAdminAcademyCsvMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof importSampleAdminAcademyCsv>>, TError,ImportSampleAdminAcademyCsvMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof importSampleAdminAcademyCsv>>, TError,ImportSampleAdminAcademyCsvMutationVariables, TContext> => {
+
+const mutationKey = getImportSampleAdminAcademyCsvMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof importSampleAdminAcademyCsv>>, ImportSampleAdminAcademyCsvMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  importSampleAdminAcademyCsv(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ImportSampleAdminAcademyCsvMutationResult = NonNullable<Awaited<ReturnType<typeof importSampleAdminAcademyCsv>>>
+    export type ImportSampleAdminAcademyCsvMutationBody = BodyType<SampleAdminAcademyCsvInput>
+    export type ImportSampleAdminAcademyCsvMutationError = ErrorType<unknown>
+    export type ImportSampleAdminAcademyCsvMutationVariables = {data: BodyType<SampleAdminAcademyCsvInput>}
+
+    export const useImportSampleAdminAcademyCsv = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof importSampleAdminAcademyCsv>>, TError,ImportSampleAdminAcademyCsvMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof importSampleAdminAcademyCsv>>,
+        TError,
+        ImportSampleAdminAcademyCsvMutationVariables,
+        TContext
+      > => {
+      return useMutation(getImportSampleAdminAcademyCsvMutationOptions(options), queryClient);
+    }
+
+export const getUpdateSampleAdminCorporateStageUrl = (ref: string,) => {
+
+
+
+
+  return `/api/sample/admin/enquiries/${ref}/stage`
+}
+
+export const updateSampleAdminCorporateStage = async (ref: string,
+    sampleCorporateStageInput: SampleCorporateStageInput, options?: Parameters<typeof customFetch>[1]): Promise<SampleCorporateEnquiry> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<SampleCorporateEnquiry>(getUpdateSampleAdminCorporateStageUrl(ref),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sampleCorporateStageInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateSampleAdminCorporateStageMutationKey = () => ['updateSampleAdminCorporateStage'] as const;
+
+export const getUpdateSampleAdminCorporateStageMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateSampleAdminCorporateStage>>, TError,UpdateSampleAdminCorporateStageMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateSampleAdminCorporateStage>>, TError,UpdateSampleAdminCorporateStageMutationVariables, TContext> => {
+
+const mutationKey = getUpdateSampleAdminCorporateStageMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateSampleAdminCorporateStage>>, UpdateSampleAdminCorporateStageMutationVariables> = (props) => {
+          const {ref,data} = props ?? {};
+
+          return  updateSampleAdminCorporateStage(ref,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateSampleAdminCorporateStageMutationResult = NonNullable<Awaited<ReturnType<typeof updateSampleAdminCorporateStage>>>
+    export type UpdateSampleAdminCorporateStageMutationBody = BodyType<SampleCorporateStageInput>
+    export type UpdateSampleAdminCorporateStageMutationError = ErrorType<unknown>
+    export type UpdateSampleAdminCorporateStageMutationVariables = {ref: string;data: BodyType<SampleCorporateStageInput>}
+
+    export const useUpdateSampleAdminCorporateStage = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateSampleAdminCorporateStage>>, TError,UpdateSampleAdminCorporateStageMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof updateSampleAdminCorporateStage>>,
+        TError,
+        UpdateSampleAdminCorporateStageMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateSampleAdminCorporateStageMutationOptions(options), queryClient);
+    }
+
+export const getMatchSampleAdminCorporateMakersUrl = (ref: string,) => {
+
+
+
+
+  return `/api/sample/admin/enquiries/${ref}/matches`
+}
+
+export const matchSampleAdminCorporateMakers = async (ref: string,
+    sampleCorporateMatchesInput: SampleCorporateMatchesInput, options?: Parameters<typeof customFetch>[1]): Promise<SampleCorporateEnquiry> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<SampleCorporateEnquiry>(getMatchSampleAdminCorporateMakersUrl(ref),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sampleCorporateMatchesInput)
+  }
+);}
+
+
+
+
+
+export const getMatchSampleAdminCorporateMakersMutationKey = () => ['matchSampleAdminCorporateMakers'] as const;
+
+export const getMatchSampleAdminCorporateMakersMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof matchSampleAdminCorporateMakers>>, TError,MatchSampleAdminCorporateMakersMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof matchSampleAdminCorporateMakers>>, TError,MatchSampleAdminCorporateMakersMutationVariables, TContext> => {
+
+const mutationKey = getMatchSampleAdminCorporateMakersMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof matchSampleAdminCorporateMakers>>, MatchSampleAdminCorporateMakersMutationVariables> = (props) => {
+          const {ref,data} = props ?? {};
+
+          return  matchSampleAdminCorporateMakers(ref,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type MatchSampleAdminCorporateMakersMutationResult = NonNullable<Awaited<ReturnType<typeof matchSampleAdminCorporateMakers>>>
+    export type MatchSampleAdminCorporateMakersMutationBody = BodyType<SampleCorporateMatchesInput>
+    export type MatchSampleAdminCorporateMakersMutationError = ErrorType<unknown>
+    export type MatchSampleAdminCorporateMakersMutationVariables = {ref: string;data: BodyType<SampleCorporateMatchesInput>}
+
+    export const useMatchSampleAdminCorporateMakers = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof matchSampleAdminCorporateMakers>>, TError,MatchSampleAdminCorporateMakersMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof matchSampleAdminCorporateMakers>>,
+        TError,
+        MatchSampleAdminCorporateMakersMutationVariables,
+        TContext
+      > => {
+      return useMutation(getMatchSampleAdminCorporateMakersMutationOptions(options), queryClient);
+    }
+
+export const getSaveSampleAdminCorporateQuoteUrl = (ref: string,) => {
+
+
+
+
+  return `/api/sample/admin/enquiries/${ref}/quote`
+}
+
+export const saveSampleAdminCorporateQuote = async (ref: string,
+    sampleCorporateQuoteInput: SampleCorporateQuoteInput, options?: Parameters<typeof customFetch>[1]): Promise<SampleCorporateEnquiry> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<SampleCorporateEnquiry>(getSaveSampleAdminCorporateQuoteUrl(ref),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sampleCorporateQuoteInput)
+  }
+);}
+
+
+
+
+
+export const getSaveSampleAdminCorporateQuoteMutationKey = () => ['saveSampleAdminCorporateQuote'] as const;
+
+export const getSaveSampleAdminCorporateQuoteMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof saveSampleAdminCorporateQuote>>, TError,SaveSampleAdminCorporateQuoteMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof saveSampleAdminCorporateQuote>>, TError,SaveSampleAdminCorporateQuoteMutationVariables, TContext> => {
+
+const mutationKey = getSaveSampleAdminCorporateQuoteMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof saveSampleAdminCorporateQuote>>, SaveSampleAdminCorporateQuoteMutationVariables> = (props) => {
+          const {ref,data} = props ?? {};
+
+          return  saveSampleAdminCorporateQuote(ref,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SaveSampleAdminCorporateQuoteMutationResult = NonNullable<Awaited<ReturnType<typeof saveSampleAdminCorporateQuote>>>
+    export type SaveSampleAdminCorporateQuoteMutationBody = BodyType<SampleCorporateQuoteInput>
+    export type SaveSampleAdminCorporateQuoteMutationError = ErrorType<unknown>
+    export type SaveSampleAdminCorporateQuoteMutationVariables = {ref: string;data: BodyType<SampleCorporateQuoteInput>}
+
+    export const useSaveSampleAdminCorporateQuote = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof saveSampleAdminCorporateQuote>>, TError,SaveSampleAdminCorporateQuoteMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof saveSampleAdminCorporateQuote>>,
+        TError,
+        SaveSampleAdminCorporateQuoteMutationVariables,
+        TContext
+      > => {
+      return useMutation(getSaveSampleAdminCorporateQuoteMutationOptions(options), queryClient);
+    }
+
+export const getRecordSamplePayoutPaidUrl = (makerId: string,
+    date: string,) => {
+
+
+
+
+  return `/api/sample/admin/payouts/${makerId}/${date}/paid`
+}
+
+export const recordSamplePayoutPaid = async (makerId: string,
+    date: string, options?: Parameters<typeof customFetch>[1]): Promise<SamplePaidPayoutReceipt> => {
+
+  return customFetch<SamplePaidPayoutReceipt>(getRecordSamplePayoutPaidUrl(makerId,date),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getRecordSamplePayoutPaidMutationKey = () => ['recordSamplePayoutPaid'] as const;
+
+export const getRecordSamplePayoutPaidMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof recordSamplePayoutPaid>>, TError,RecordSamplePayoutPaidMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof recordSamplePayoutPaid>>, TError,RecordSamplePayoutPaidMutationVariables, TContext> => {
+
+const mutationKey = getRecordSamplePayoutPaidMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof recordSamplePayoutPaid>>, RecordSamplePayoutPaidMutationVariables> = (props) => {
+          const {makerId,date} = props ?? {};
+
+          return  recordSamplePayoutPaid(makerId,date,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type RecordSamplePayoutPaidMutationResult = NonNullable<Awaited<ReturnType<typeof recordSamplePayoutPaid>>>
+
+    export type RecordSamplePayoutPaidMutationError = ErrorType<unknown>
+    export type RecordSamplePayoutPaidMutationVariables = {makerId: string;date: string}
+
+    export const useRecordSamplePayoutPaid = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof recordSamplePayoutPaid>>, TError,RecordSamplePayoutPaidMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof recordSamplePayoutPaid>>,
+        TError,
+        RecordSamplePayoutPaidMutationVariables,
+        TContext
+      > => {
+      return useMutation(getRecordSamplePayoutPaidMutationOptions(options), queryClient);
+    }
+
+export const getGetSampleCouponsUrl = () => {
+
+
+
+
+  return `/api/sample/admin/coupons`
+}
+
+export const getSampleCoupons = async ( options?: Parameters<typeof customFetch>[1]): Promise<SampleCouponsResponse> => {
+
+  return customFetch<SampleCouponsResponse>(getGetSampleCouponsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSampleCouponsQueryKey = () => {
+    return [
+    `/api/sample/admin/coupons`
+    ] as const;
+    }
+
+
+export const getGetSampleCouponsQueryOptions = <TData = Awaited<ReturnType<typeof getSampleCoupons>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleCoupons>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSampleCouponsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSampleCoupons>>> = ({ signal }) => getSampleCoupons({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSampleCoupons>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSampleCouponsQueryResult = NonNullable<Awaited<ReturnType<typeof getSampleCoupons>>>
+export type GetSampleCouponsQueryError = ErrorType<unknown>
+
+
+export function useGetSampleCoupons<TData = Awaited<ReturnType<typeof getSampleCoupons>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleCoupons>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleCoupons>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleCoupons>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleCoupons<TData = Awaited<ReturnType<typeof getSampleCoupons>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleCoupons>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleCoupons>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleCoupons>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleCoupons<TData = Awaited<ReturnType<typeof getSampleCoupons>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleCoupons>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetSampleCoupons<TData = Awaited<ReturnType<typeof getSampleCoupons>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleCoupons>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSampleCouponsQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getCreateSampleCouponUrl = () => {
+
+
+
+
+  return `/api/sample/admin/coupons`
+}
+
+export const createSampleCoupon = async (sampleCouponInput: SampleCouponInput, options?: Parameters<typeof customFetch>[1]): Promise<SampleCoupon> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<SampleCoupon>(getCreateSampleCouponUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sampleCouponInput)
+  }
+);}
+
+
+
+
+
+export const getCreateSampleCouponMutationKey = () => ['createSampleCoupon'] as const;
+
+export const getCreateSampleCouponMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createSampleCoupon>>, TError,CreateSampleCouponMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createSampleCoupon>>, TError,CreateSampleCouponMutationVariables, TContext> => {
+
+const mutationKey = getCreateSampleCouponMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createSampleCoupon>>, CreateSampleCouponMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  createSampleCoupon(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateSampleCouponMutationResult = NonNullable<Awaited<ReturnType<typeof createSampleCoupon>>>
+    export type CreateSampleCouponMutationBody = BodyType<SampleCouponInput>
+    export type CreateSampleCouponMutationError = ErrorType<unknown>
+    export type CreateSampleCouponMutationVariables = {data: BodyType<SampleCouponInput>}
+
+    export const useCreateSampleCoupon = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createSampleCoupon>>, TError,CreateSampleCouponMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof createSampleCoupon>>,
+        TError,
+        CreateSampleCouponMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCreateSampleCouponMutationOptions(options), queryClient);
+    }
+
+export const getUpdateSampleCouponUrl = (id: string,) => {
+
+
+
+
+  return `/api/sample/admin/coupons/${id}`
+}
+
+export const updateSampleCoupon = async (id: string,
+    sampleCouponInput: SampleCouponInput, options?: Parameters<typeof customFetch>[1]): Promise<SampleCoupon> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<SampleCoupon>(getUpdateSampleCouponUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sampleCouponInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateSampleCouponMutationKey = () => ['updateSampleCoupon'] as const;
+
+export const getUpdateSampleCouponMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateSampleCoupon>>, TError,UpdateSampleCouponMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateSampleCoupon>>, TError,UpdateSampleCouponMutationVariables, TContext> => {
+
+const mutationKey = getUpdateSampleCouponMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateSampleCoupon>>, UpdateSampleCouponMutationVariables> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateSampleCoupon(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateSampleCouponMutationResult = NonNullable<Awaited<ReturnType<typeof updateSampleCoupon>>>
+    export type UpdateSampleCouponMutationBody = BodyType<SampleCouponInput>
+    export type UpdateSampleCouponMutationError = ErrorType<unknown>
+    export type UpdateSampleCouponMutationVariables = {id: string;data: BodyType<SampleCouponInput>}
+
+    export const useUpdateSampleCoupon = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateSampleCoupon>>, TError,UpdateSampleCouponMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof updateSampleCoupon>>,
+        TError,
+        UpdateSampleCouponMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateSampleCouponMutationOptions(options), queryClient);
+    }
+
+export const getGetSampleBlogUrl = () => {
+
+
+
+
+  return `/api/sample/blog`
+}
+
+export const getSampleBlog = async ( options?: Parameters<typeof customFetch>[1]): Promise<SampleBlogResponse> => {
+
+  return customFetch<SampleBlogResponse>(getGetSampleBlogUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSampleBlogQueryKey = () => {
+    return [
+    `/api/sample/blog`
+    ] as const;
+    }
+
+
+export const getGetSampleBlogQueryOptions = <TData = Awaited<ReturnType<typeof getSampleBlog>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleBlog>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSampleBlogQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSampleBlog>>> = ({ signal }) => getSampleBlog({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSampleBlog>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSampleBlogQueryResult = NonNullable<Awaited<ReturnType<typeof getSampleBlog>>>
+export type GetSampleBlogQueryError = ErrorType<unknown>
+
+
+export function useGetSampleBlog<TData = Awaited<ReturnType<typeof getSampleBlog>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleBlog>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleBlog>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleBlog>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleBlog<TData = Awaited<ReturnType<typeof getSampleBlog>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleBlog>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleBlog>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleBlog>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleBlog<TData = Awaited<ReturnType<typeof getSampleBlog>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleBlog>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetSampleBlog<TData = Awaited<ReturnType<typeof getSampleBlog>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleBlog>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSampleBlogQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetSampleAdminBlogUrl = () => {
+
+
+
+
+  return `/api/sample/admin/blog`
+}
+
+export const getSampleAdminBlog = async ( options?: Parameters<typeof customFetch>[1]): Promise<SampleBlogResponse> => {
+
+  return customFetch<SampleBlogResponse>(getGetSampleAdminBlogUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSampleAdminBlogQueryKey = () => {
+    return [
+    `/api/sample/admin/blog`
+    ] as const;
+    }
+
+
+export const getGetSampleAdminBlogQueryOptions = <TData = Awaited<ReturnType<typeof getSampleAdminBlog>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminBlog>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSampleAdminBlogQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSampleAdminBlog>>> = ({ signal }) => getSampleAdminBlog({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminBlog>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSampleAdminBlogQueryResult = NonNullable<Awaited<ReturnType<typeof getSampleAdminBlog>>>
+export type GetSampleAdminBlogQueryError = ErrorType<unknown>
+
+
+export function useGetSampleAdminBlog<TData = Awaited<ReturnType<typeof getSampleAdminBlog>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminBlog>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleAdminBlog>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleAdminBlog>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleAdminBlog<TData = Awaited<ReturnType<typeof getSampleAdminBlog>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminBlog>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSampleAdminBlog>>,
+          TError,
+          Awaited<ReturnType<typeof getSampleAdminBlog>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSampleAdminBlog<TData = Awaited<ReturnType<typeof getSampleAdminBlog>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminBlog>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetSampleAdminBlog<TData = Awaited<ReturnType<typeof getSampleAdminBlog>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSampleAdminBlog>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSampleAdminBlogQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getCreateSampleBlogPostUrl = () => {
+
+
+
+
+  return `/api/sample/admin/blog`
+}
+
+export const createSampleBlogPost = async (sampleBlogPostInput: SampleBlogPostInput, options?: Parameters<typeof customFetch>[1]): Promise<SampleBlogPost> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<SampleBlogPost>(getCreateSampleBlogPostUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sampleBlogPostInput)
+  }
+);}
+
+
+
+
+
+export const getCreateSampleBlogPostMutationKey = () => ['createSampleBlogPost'] as const;
+
+export const getCreateSampleBlogPostMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createSampleBlogPost>>, TError,CreateSampleBlogPostMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createSampleBlogPost>>, TError,CreateSampleBlogPostMutationVariables, TContext> => {
+
+const mutationKey = getCreateSampleBlogPostMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createSampleBlogPost>>, CreateSampleBlogPostMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  createSampleBlogPost(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateSampleBlogPostMutationResult = NonNullable<Awaited<ReturnType<typeof createSampleBlogPost>>>
+    export type CreateSampleBlogPostMutationBody = BodyType<SampleBlogPostInput>
+    export type CreateSampleBlogPostMutationError = ErrorType<unknown>
+    export type CreateSampleBlogPostMutationVariables = {data: BodyType<SampleBlogPostInput>}
+
+    export const useCreateSampleBlogPost = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createSampleBlogPost>>, TError,CreateSampleBlogPostMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof createSampleBlogPost>>,
+        TError,
+        CreateSampleBlogPostMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCreateSampleBlogPostMutationOptions(options), queryClient);
+    }
+
+export const getUpdateSampleBlogPostUrl = (id: string,) => {
+
+
+
+
+  return `/api/sample/admin/blog/${id}`
+}
+
+export const updateSampleBlogPost = async (id: string,
+    sampleBlogPostInput: SampleBlogPostInput, options?: Parameters<typeof customFetch>[1]): Promise<SampleBlogPost> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<SampleBlogPost>(getUpdateSampleBlogPostUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sampleBlogPostInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateSampleBlogPostMutationKey = () => ['updateSampleBlogPost'] as const;
+
+export const getUpdateSampleBlogPostMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateSampleBlogPost>>, TError,UpdateSampleBlogPostMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateSampleBlogPost>>, TError,UpdateSampleBlogPostMutationVariables, TContext> => {
+
+const mutationKey = getUpdateSampleBlogPostMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateSampleBlogPost>>, UpdateSampleBlogPostMutationVariables> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateSampleBlogPost(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateSampleBlogPostMutationResult = NonNullable<Awaited<ReturnType<typeof updateSampleBlogPost>>>
+    export type UpdateSampleBlogPostMutationBody = BodyType<SampleBlogPostInput>
+    export type UpdateSampleBlogPostMutationError = ErrorType<unknown>
+    export type UpdateSampleBlogPostMutationVariables = {id: string;data: BodyType<SampleBlogPostInput>}
+
+    export const useUpdateSampleBlogPost = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateSampleBlogPost>>, TError,UpdateSampleBlogPostMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof updateSampleBlogPost>>,
+        TError,
+        UpdateSampleBlogPostMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateSampleBlogPostMutationOptions(options), queryClient);
+    }
+
+export const getCreateSampleCheckoutUrl = () => {
+
+
+
+
+  return `/api/sample/shopper/checkout`
+}
+
+export const createSampleCheckout = async (sampleCheckoutInput: SampleCheckoutInput, options?: Parameters<typeof customFetch>[1]): Promise<SampleCheckoutResult> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<SampleCheckoutResult>(getCreateSampleCheckoutUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sampleCheckoutInput)
+  }
+);}
+
+
+
+
+
+export const getCreateSampleCheckoutMutationKey = () => ['createSampleCheckout'] as const;
+
+export const getCreateSampleCheckoutMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createSampleCheckout>>, TError,CreateSampleCheckoutMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createSampleCheckout>>, TError,CreateSampleCheckoutMutationVariables, TContext> => {
+
+const mutationKey = getCreateSampleCheckoutMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createSampleCheckout>>, CreateSampleCheckoutMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  createSampleCheckout(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateSampleCheckoutMutationResult = NonNullable<Awaited<ReturnType<typeof createSampleCheckout>>>
+    export type CreateSampleCheckoutMutationBody = BodyType<SampleCheckoutInput>
+    export type CreateSampleCheckoutMutationError = ErrorType<unknown>
+    export type CreateSampleCheckoutMutationVariables = {data: BodyType<SampleCheckoutInput>}
+
+    export const useCreateSampleCheckout = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createSampleCheckout>>, TError,CreateSampleCheckoutMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof createSampleCheckout>>,
+        TError,
+        CreateSampleCheckoutMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCreateSampleCheckoutMutationOptions(options), queryClient);
+    }
+
+export const getUpdateSampleWishlistUrl = (productId: string,) => {
+
+
+
+
+  return `/api/sample/shopper/wishlist/${productId}`
+}
+
+export const updateSampleWishlist = async (productId: string,
+    sampleWishlistInput: SampleWishlistInput, options?: Parameters<typeof customFetch>[1]): Promise<Receipt> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<Receipt>(getUpdateSampleWishlistUrl(productId),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sampleWishlistInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateSampleWishlistMutationKey = () => ['updateSampleWishlist'] as const;
+
+export const getUpdateSampleWishlistMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateSampleWishlist>>, TError,UpdateSampleWishlistMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateSampleWishlist>>, TError,UpdateSampleWishlistMutationVariables, TContext> => {
+
+const mutationKey = getUpdateSampleWishlistMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateSampleWishlist>>, UpdateSampleWishlistMutationVariables> = (props) => {
+          const {productId,data} = props ?? {};
+
+          return  updateSampleWishlist(productId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateSampleWishlistMutationResult = NonNullable<Awaited<ReturnType<typeof updateSampleWishlist>>>
+    export type UpdateSampleWishlistMutationBody = BodyType<SampleWishlistInput>
+    export type UpdateSampleWishlistMutationError = ErrorType<unknown>
+    export type UpdateSampleWishlistMutationVariables = {productId: string;data: BodyType<SampleWishlistInput>}
+
+    export const useUpdateSampleWishlist = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateSampleWishlist>>, TError,UpdateSampleWishlistMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof updateSampleWishlist>>,
+        TError,
+        UpdateSampleWishlistMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateSampleWishlistMutationOptions(options), queryClient);
+    }
+
+export const getAddSampleAddressUrl = () => {
+
+
+
+
+  return `/api/sample/shopper/addresses`
+}
+
+export const addSampleAddress = async (sampleAddressInput: SampleAddressInput, options?: Parameters<typeof customFetch>[1]): Promise<Receipt> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<Receipt>(getAddSampleAddressUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sampleAddressInput)
+  }
+);}
+
+
+
+
+
+export const getAddSampleAddressMutationKey = () => ['addSampleAddress'] as const;
+
+export const getAddSampleAddressMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addSampleAddress>>, TError,AddSampleAddressMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof addSampleAddress>>, TError,AddSampleAddressMutationVariables, TContext> => {
+
+const mutationKey = getAddSampleAddressMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof addSampleAddress>>, AddSampleAddressMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  addSampleAddress(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AddSampleAddressMutationResult = NonNullable<Awaited<ReturnType<typeof addSampleAddress>>>
+    export type AddSampleAddressMutationBody = BodyType<SampleAddressInput>
+    export type AddSampleAddressMutationError = ErrorType<unknown>
+    export type AddSampleAddressMutationVariables = {data: BodyType<SampleAddressInput>}
+
+    export const useAddSampleAddress = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addSampleAddress>>, TError,AddSampleAddressMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof addSampleAddress>>,
+        TError,
+        AddSampleAddressMutationVariables,
+        TContext
+      > => {
+      return useMutation(getAddSampleAddressMutationOptions(options), queryClient);
+    }
+
+export const getSetSampleDefaultAddressUrl = (id: string,) => {
+
+
+
+
+  return `/api/sample/shopper/addresses/${id}/default`
+}
+
+export const setSampleDefaultAddress = async (id: string, options?: Parameters<typeof customFetch>[1]): Promise<Receipt> => {
+
+  return customFetch<Receipt>(getSetSampleDefaultAddressUrl(id),
+  {
+    ...options,
+    method: 'PATCH'
+
+
+  }
+);}
+
+
+
+
+
+export const getSetSampleDefaultAddressMutationKey = () => ['setSampleDefaultAddress'] as const;
+
+export const getSetSampleDefaultAddressMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof setSampleDefaultAddress>>, TError,SetSampleDefaultAddressMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof setSampleDefaultAddress>>, TError,SetSampleDefaultAddressMutationVariables, TContext> => {
+
+const mutationKey = getSetSampleDefaultAddressMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof setSampleDefaultAddress>>, SetSampleDefaultAddressMutationVariables> = (props) => {
+          const {id} = props ?? {};
+
+          return  setSampleDefaultAddress(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SetSampleDefaultAddressMutationResult = NonNullable<Awaited<ReturnType<typeof setSampleDefaultAddress>>>
+
+    export type SetSampleDefaultAddressMutationError = ErrorType<unknown>
+    export type SetSampleDefaultAddressMutationVariables = {id: string}
+
+    export const useSetSampleDefaultAddress = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof setSampleDefaultAddress>>, TError,SetSampleDefaultAddressMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof setSampleDefaultAddress>>,
+        TError,
+        SetSampleDefaultAddressMutationVariables,
+        TContext
+      > => {
+      return useMutation(getSetSampleDefaultAddressMutationOptions(options), queryClient);
+    }
+
+export const getDeleteSampleAddressUrl = (id: string,) => {
+
+
+
+
+  return `/api/sample/shopper/addresses/${id}`
+}
+
+export const deleteSampleAddress = async (id: string, options?: Parameters<typeof customFetch>[1]): Promise<Receipt> => {
+
+  return customFetch<Receipt>(getDeleteSampleAddressUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+
+export const getDeleteSampleAddressMutationKey = () => ['deleteSampleAddress'] as const;
+
+export const getDeleteSampleAddressMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteSampleAddress>>, TError,DeleteSampleAddressMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteSampleAddress>>, TError,DeleteSampleAddressMutationVariables, TContext> => {
+
+const mutationKey = getDeleteSampleAddressMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteSampleAddress>>, DeleteSampleAddressMutationVariables> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteSampleAddress(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteSampleAddressMutationResult = NonNullable<Awaited<ReturnType<typeof deleteSampleAddress>>>
+
+    export type DeleteSampleAddressMutationError = ErrorType<unknown>
+    export type DeleteSampleAddressMutationVariables = {id: string}
+
+    export const useDeleteSampleAddress = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteSampleAddress>>, TError,DeleteSampleAddressMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof deleteSampleAddress>>,
+        TError,
+        DeleteSampleAddressMutationVariables,
+        TContext
+      > => {
+      return useMutation(getDeleteSampleAddressMutationOptions(options), queryClient);
+    }
+
+export const getResetSampleDataUrl = () => {
+
+
+
+
+  return `/api/sample/reset`
+}
+
+export const resetSampleData = async ( options?: Parameters<typeof customFetch>[1]): Promise<Receipt> => {
+
+  return customFetch<Receipt>(getResetSampleDataUrl(),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getResetSampleDataMutationKey = () => ['resetSampleData'] as const;
+
+export const getResetSampleDataMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof resetSampleData>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof resetSampleData>>, TError,void, TContext> => {
+
+const mutationKey = getResetSampleDataMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof resetSampleData>>, void> = () => {
+
+
+          return  resetSampleData(requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ResetSampleDataMutationResult = NonNullable<Awaited<ReturnType<typeof resetSampleData>>>
+
+    export type ResetSampleDataMutationError = ErrorType<unknown>
+
+
+    export const useResetSampleData = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof resetSampleData>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof resetSampleData>>,
+        TError,
+        void,
+        TContext
+      > => {
+      return useMutation(getResetSampleDataMutationOptions(options), queryClient);
+    }
 
 export const getSaveProductUrl = () => {
 

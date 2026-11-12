@@ -240,6 +240,643 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Workspace" }
+  /sample/session:
+    post:
+      operationId: createSampleSession
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SampleIdentityInput" }
+      responses:
+        "201":
+          description: Explicitly simulated, server-backed sample identity.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleSession" }
+    get:
+      operationId: getSampleSession
+      responses:
+        "200":
+          description: Current sample identity, never a Supabase identity.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleIdentity" }
+    delete:
+      operationId: endSampleSession
+      responses:
+        "200":
+          description: Sample session ended.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Receipt" }
+  /sample/shopper:
+    get:
+      operationId: getSampleShopperAccount
+      responses:
+        "200":
+          description: Own sample shopper orders, classes, addresses, and wishlist.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleShopperAccount" }
+  /sample/maker/products:
+    get:
+      operationId: getSampleMakerStocks
+      responses:
+        "200":
+          description: Stock for the signed-in sample maker's own products.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleMakerStocksResponse" }
+  /sample/maker/products/{productId}/stock:
+    put:
+      operationId: updateSampleMakerStock
+      parameters:
+        - { in: path, name: productId, required: true, schema: { type: string, minLength: 1, maxLength: 100 } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SampleMakerStockInput" }
+      responses:
+        "200":
+          description: Stock saved for a product owned by the signed-in sample maker.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleMakerStock" }
+  /sample/maker/orders:
+    get:
+      operationId: getSampleMakerOrders
+      responses:
+        "200":
+          description: Orders for the signed-in sample maker's own shop.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleOrdersResponse" }
+  /sample/admin/orders:
+    get:
+      operationId: getSampleAdminOrders
+      responses:
+        "200":
+          description: All isolated sample orders for the admin workspace.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleOrdersResponse" }
+  /sample/orders/{id}/fulfilment:
+    patch:
+      operationId: updateSampleOrderFulfilment
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string, minLength: 1, maxLength: 100 } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SampleFulfilmentInput" }
+      responses:
+        "200":
+          description: Maker fulfilment update validated and saved to isolated sample data.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleOperationalOrder" }
+  /sample/admin/orders/{id}/status:
+    patch:
+      operationId: updateSampleAdminOrderStatus
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string, minLength: 1, maxLength: 100 } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SampleAdminOrderStatusInput" }
+      responses:
+        "200":
+          description: Sample delay or refund status recorded with an admin note; no gateway refund occurs.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleOperationalOrder" }
+  /sample/maker/earnings:
+    get:
+      operationId: getSampleMakerEarnings
+      responses:
+        "200":
+          description: Server-calculated sample earnings, deductions, and weekly payout dates for the signed-in maker.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleMakerEarnings" }
+  /sample/maker/profits:
+    get:
+      operationId: getSampleMakerProfits
+      responses:
+        "200":
+          description: Maker-only product contribution margins with private costs.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleMakerProfitsResponse" }
+  /sample/maker/settings:
+    get:
+      operationId: getSampleMakerSettings
+      responses:
+        "200":
+          description: Own sample-maker trust and tax settings, without bank account details.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleMakerSettings" }
+    put:
+      operationId: saveSampleMakerSettings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SampleMakerSettingsInput" }
+      responses:
+        "200":
+          description: Own sample GST status and state saved.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleMakerSettings" }
+  /sample/maker/opportunities:
+    get:
+      operationId: getSampleMakerOpportunities
+      responses:
+        "200":
+          description: Maker-only opportunity briefs without corporate identity or contact information.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleMakerOpportunitiesResponse" }
+  /sample/maker/opportunities/{id}/response:
+    patch:
+      operationId: respondSampleMakerOpportunity
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string, minLength: 1, maxLength: 100 } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SampleMakerOpportunityResponseInput" }
+      responses:
+        "200":
+          description: Maker response saved to the private sample workspace.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleMakerOpportunity" }
+  /sample/maker/masterclass-proposals:
+    post:
+      operationId: createSampleMakerMasterclassProposal
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SampleMakerMasterclassProposalInput" }
+      responses:
+        "201":
+          description: Maker proposal saved for admin review.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleMakerMasterclassProposal" }
+  /sample/admin/masterclass-proposals:
+    get:
+      operationId: getSampleAdminMasterclassProposals
+      responses:
+        "200":
+          description: Admin-only sample class proposals.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleAdminMasterclassProposalsResponse" }
+  /sample/admin/masterclass-proposals/{id}:
+    patch:
+      operationId: reviewSampleAdminMasterclassProposal
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string, minLength: 1, maxLength: 100 } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SampleAdminMasterclassReviewInput" }
+      responses:
+        "200":
+          description: Admin review saved for the sample proposal.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleMakerMasterclassProposal" }
+  /sample/maker/products/{productId}/cost:
+    put:
+      operationId: saveSampleMakerProductCost
+      parameters:
+        - { in: path, name: productId, required: true, schema: { type: string, minLength: 1, maxLength: 100 } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SampleMakerProductCostInput" }
+      responses:
+        "200":
+          description: Server-calculated private contribution margin.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleMakerProductCost" }
+  /sample/maker/drafts:
+    get:
+      operationId: getSampleMakerDrafts
+      responses:
+        "200":
+          description: Private drafts belonging only to the signed-in sample maker.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleMakerDraftsResponse" }
+    post:
+      operationId: createSampleMakerDraft
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SampleMakerDraftInput" }
+      responses:
+        "201":
+          description: Private sample product draft created.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleMakerDraft" }
+  /sample/maker/drafts/{id}:
+    get:
+      operationId: getSampleMakerDraft
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string, minLength: 1, maxLength: 100 } }
+      responses:
+        "200":
+          description: Private draft belonging to the signed-in sample maker.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleMakerDraft" }
+    put:
+      operationId: saveSampleMakerDraft
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string, minLength: 1, maxLength: 100 } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SampleMakerDraftInput" }
+      responses:
+        "200":
+          description: Private sample product draft saved.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleMakerDraft" }
+  /sample/maker/drafts/{id}/submit:
+    post:
+      operationId: submitSampleMakerDraft
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string, minLength: 1, maxLength: 100 } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SampleProductSubmissionInput" }
+      responses:
+        "200":
+          description: Server-validated sample submission after maker facts are confirmed.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleProductSubmissionResponse" }
+  /sample/admin/payouts:
+    get:
+      operationId: getSampleAdminPayouts
+      responses:
+        "200":
+          description: Eligible unpaid sample payout runs and recorded paid runs.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleAdminPayoutsResponse" }
+  /sample/admin/product-reviews:
+    get:
+      operationId: getSampleAdminProductReviews
+      responses:
+        "200":
+          description: Sample product review queue without private maker costs.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleAdminProductReviewsResponse" }
+  /sample/admin/product-reviews/{id}:
+    patch:
+      operationId: reviewSampleAdminProduct
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string, minLength: 1, maxLength: 100 } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SampleAdminProductReviewInput" }
+      responses:
+        "200":
+          description: Server-validated sample listing decision.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleAdminProductReview" }
+  /sample/admin/vendor-applications:
+    get:
+      operationId: getSampleAdminVendorApplications
+      responses:
+        "200":
+          description: Admin-only sample maker application queue.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleAdminVendorApplicationsResponse" }
+  /sample/admin/vendor-applications/{id}:
+    patch:
+      operationId: decideSampleAdminVendorApplication
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string, minLength: 1, maxLength: 100 } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SampleAdminVendorApplicationDecisionInput" }
+      responses:
+        "200":
+          description: Admin decision saved to the sample application record.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleVendorApplication" }
+  /sample/corporate/enquiries:
+    post:
+      operationId: createSampleCorporateEnquiry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SampleCorporateEnquiryInput" }
+      responses:
+        "201":
+          description: An isolated sample-only corporate enquiry; no CRM or messaging provider is contacted.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleCorporateEnquiryCreated" }
+  /sample/admin/enquiries:
+    get:
+      operationId: getSampleAdminCorporateEnquiries
+      responses:
+        "200":
+          description: Admin-only corporate enquiry records, including private buyer contact details.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleAdminCorporateEnquiriesResponse" }
+  /sample/admin/overview:
+    get:
+      operationId: getSampleAdminOverview
+      responses:
+        "200":
+          description: Server-calculated sample dashboard totals and current attention items.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleAdminOverview" }
+  /sample/admin/academy:
+    get:
+      operationId: getSampleAdminAcademySales
+      responses:
+        "200":
+          description: Sample and imported live-workshop sale rows and totals.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleAdminAcademySalesResponse" }
+  /sample/admin/academy/import:
+    post:
+      operationId: importSampleAdminAcademyCsv
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SampleAdminAcademyCsvInput" }
+      responses:
+        "200":
+          description: Validated live-workshop CSV rows stored in the isolated sample Academy.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleAdminAcademyImportResponse" }
+  /sample/admin/enquiries/{ref}/stage:
+    patch:
+      operationId: updateSampleAdminCorporateStage
+      parameters:
+        - { in: path, name: ref, required: true, schema: { type: string, minLength: 1, maxLength: 100 } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SampleCorporateStageInput" }
+      responses:
+        "200":
+          description: Corporate enquiry stage saved.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleCorporateEnquiry" }
+  /sample/admin/enquiries/{ref}/matches:
+    put:
+      operationId: matchSampleAdminCorporateMakers
+      parameters:
+        - { in: path, name: ref, required: true, schema: { type: string, minLength: 1, maxLength: 100 } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SampleCorporateMatchesInput" }
+      responses:
+        "200":
+          description: Maker matches are saved; maker briefs omit corporate identity and contact.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleCorporateEnquiry" }
+  /sample/admin/enquiries/{ref}/quote:
+    put:
+      operationId: saveSampleAdminCorporateQuote
+      parameters:
+        - { in: path, name: ref, required: true, schema: { type: string, minLength: 1, maxLength: 100 } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SampleCorporateQuoteInput" }
+      responses:
+        "200":
+          description: Quote amount saved to the sample corporate enquiry.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleCorporateEnquiry" }
+  /sample/admin/payouts/{makerId}/{date}/paid:
+    post:
+      operationId: recordSamplePayoutPaid
+      parameters:
+        - { in: path, name: makerId, required: true, schema: { type: string, minLength: 1, maxLength: 60 } }
+        - { in: path, name: date, required: true, schema: { type: string, pattern: '^\d{4}-\d{2}-\d{2}$' } }
+      responses:
+        "200":
+          description: An eligible run recorded as paid once; no bank transfer is initiated.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SamplePaidPayoutReceipt" }
+  /sample/admin/coupons:
+    get:
+      operationId: getSampleCoupons
+      responses:
+        "200":
+          description: Coupons in the isolated sample workspace.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleCouponsResponse" }
+    post:
+      operationId: createSampleCoupon
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SampleCouponInput" }
+      responses:
+        "201":
+          description: Sample coupon created.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleCoupon" }
+  /sample/admin/coupons/{id}:
+    put:
+      operationId: updateSampleCoupon
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SampleCouponInput" }
+      responses:
+        "200":
+          description: Sample coupon updated.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleCoupon" }
+  /sample/blog:
+    get:
+      operationId: getSampleBlog
+      responses:
+        "200":
+          description: Published sample blog posts; draft posts remain private.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleBlogResponse" }
+  /sample/admin/blog:
+    get:
+      operationId: getSampleAdminBlog
+      responses:
+        "200":
+          description: All sample blog posts for the admin workspace.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleBlogResponse" }
+    post:
+      operationId: createSampleBlogPost
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SampleBlogPostInput" }
+      responses:
+        "201":
+          description: Sample blog post created.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleBlogPost" }
+  /sample/admin/blog/{id}:
+    put:
+      operationId: updateSampleBlogPost
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SampleBlogPostInput" }
+      responses:
+        "200":
+          description: Sample blog post updated.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleBlogPost" }
+  /sample/shopper/checkout:
+    post:
+      operationId: createSampleCheckout
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SampleCheckoutInput" }
+      responses:
+        "201":
+          description: Sample order saved without taking a payment.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleCheckoutResult" }
+        "200":
+          description: Idempotent replay of the saved sample order.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SampleCheckoutResult" }
+  /sample/shopper/wishlist/{productId}:
+    put:
+      operationId: updateSampleWishlist
+      parameters:
+        - { in: path, name: productId, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SampleWishlistInput" }
+      responses:
+        "200":
+          description: Sample wishlist updated on the server.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Receipt" }
+  /sample/shopper/addresses:
+    post:
+      operationId: addSampleAddress
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SampleAddressInput" }
+      responses:
+        "201":
+          description: Sample address saved.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Receipt" }
+  /sample/shopper/addresses/{id}/default:
+    patch:
+      operationId: setSampleDefaultAddress
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Own sample address set as default.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Receipt" }
+  /sample/shopper/addresses/{id}:
+    delete:
+      operationId: deleteSampleAddress
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Own sample address removed.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Receipt" }
+  /sample/reset:
+    post:
+      operationId: resetSampleData
+      responses:
+        "200":
+          description: Isolated sample records reset; no live database is touched.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Receipt" }
   /maker/products:
     post:
       operationId: saveProduct
@@ -299,8 +936,10 @@ components:
       additionalProperties: false
       required: [purpose, facts, tone]
       properties:
+        task: { type: string, enum: [draft, rewrite], default: draft }
         purpose: { type: string, enum: [story, product, caption] }
         facts: { type: string, minLength: 20, maxLength: 8000 }
+        currentText: { type: string, maxLength: 8000 }
         tone: { type: string, enum: [warm, celebratory, editorial] }
     EditorialDraft:
       type: object
@@ -703,6 +1342,688 @@ components:
         ordersCount: { type: integer }
         applicationsCount: { type: integer }
         briefsCount: { type: integer }
+    SampleIdentityInput:
+      type: object
+      additionalProperties: false
+      required: [identity, mobileNumber, simulationCode]
+      properties:
+        identity:
+          type: string
+          enum: [shopper, shopper-other, maker, maker-other, admin]
+        mobileNumber: { type: string, pattern: "^[6-9][0-9]{9}$" }
+        simulationCode: { type: string, pattern: "^246810$" }
+    SampleIdentity:
+      type: object
+      required: [sample, identity, role, userId, displayName]
+      properties:
+        sample: { type: boolean, const: true }
+        identity: { type: string }
+        role: { type: string, enum: [shopper, maker, admin] }
+        userId: { type: string }
+        displayName: { type: string }
+    SampleSession:
+      allOf:
+        - $ref: "#/components/schemas/SampleIdentity"
+        - type: object
+          required: [token, expiresAt]
+          properties:
+            token: { type: string }
+            expiresAt: { type: string }
+    SampleOrder:
+      type: object
+      required: [id, reference, status, placedOn, totalPaise, discountPaise, couponCode, items, trackingNumber, carrier, delayNote]
+      properties:
+        id: { type: string }
+        reference: { type: string }
+        status: { type: string, enum: [placed, packed, on_the_way, delivered, delayed] }
+        placedOn: { type: string }
+        totalPaise: { type: integer }
+        discountPaise: { type: integer, minimum: 0 }
+        couponCode: { type: ["string", "null"] }
+        items: { type: array, items: { type: string } }
+        trackingNumber: { type: string }
+        carrier: { type: string }
+        delayNote: { type: string }
+    SampleClass:
+      type: object
+      required: [id, title, teacher, access, schedule]
+      properties:
+        id: { type: string }
+        title: { type: string }
+        teacher: { type: string }
+        access: { type: string, enum: [recorded, live] }
+        schedule: { type: string }
+    SampleAddress:
+      type: object
+      required: [id, name, phone, line1, line2, city, state, pin, isDefault]
+      properties:
+        id: { type: string }
+        name: { type: string, maxLength: 120 }
+        phone: { type: string, maxLength: 15 }
+        line1: { type: string, maxLength: 200 }
+        line2: { type: string, maxLength: 200 }
+        city: { type: string, maxLength: 100 }
+        state: { type: string, maxLength: 100 }
+        pin: { type: string, pattern: '^[1-9][0-9]{5}$' }
+        isDefault: { type: boolean }
+    SampleShopperAccount:
+      type: object
+      required: [sample, displayName, orders, classes, addresses, wishlist]
+      properties:
+        sample: { type: boolean, const: true }
+        displayName: { type: string }
+        orders: { type: array, items: { $ref: "#/components/schemas/SampleOrder" } }
+        classes: { type: array, items: { $ref: "#/components/schemas/SampleClass" } }
+        addresses: { type: array, items: { $ref: "#/components/schemas/SampleAddress" } }
+        wishlist: { type: array, items: { type: string } }
+    SampleMakerStock:
+      type: object
+      required: [id, stock]
+      properties:
+        id: { type: string }
+        stock: { type: integer, minimum: 0, maximum: 10000 }
+    SampleMakerStocksResponse:
+      type: object
+      required: [sample, products]
+      properties:
+        sample: { type: boolean, const: true }
+        products: { type: array, items: { $ref: "#/components/schemas/SampleMakerStock" } }
+    SampleMakerStockInput:
+      type: object
+      additionalProperties: false
+      required: [stock]
+      properties:
+        stock: { type: integer, minimum: 0, maximum: 10000 }
+    SampleMakerDraft:
+      type: object
+      required: [id, name, kind, material, technique, size, pricePaise, gstPct, stock, dispatchDays, madeToOrder, costPaise, story, photo, step, updatedAt, status]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        kind: { type: string }
+        material: { type: string }
+        technique: { type: string }
+        size: { type: string }
+        pricePaise: { type: integer, minimum: 0 }
+        gstPct: { type: integer, minimum: 0, maximum: 100 }
+        stock: { type: integer, minimum: 0, maximum: 10000 }
+        dispatchDays: { type: integer, minimum: 1, maximum: 60 }
+        madeToOrder: { type: boolean }
+        costPaise: { type: integer, minimum: 0 }
+        story: { type: string }
+        photo: { type: string, maxLength: 300000 }
+        step: { type: integer, minimum: 1, maximum: 7 }
+        updatedAt: { type: string, format: date-time }
+        status: { type: string, enum: [draft, submitted, live, changes] }
+    SampleMakerDraftInput:
+      type: object
+      additionalProperties: false
+      required: [name, kind, material, technique, size, pricePaise, gstPct, stock, dispatchDays, madeToOrder, costPaise, story, photo, step]
+      properties:
+        name: { type: string, maxLength: 200 }
+        kind: { type: string, maxLength: 200 }
+        material: { type: string, maxLength: 500 }
+        technique: { type: string, maxLength: 500 }
+        size: { type: string, maxLength: 200 }
+        pricePaise: { type: integer, minimum: 0, maximum: 100000000 }
+        gstPct: { type: integer, minimum: 0, maximum: 100 }
+        stock: { type: integer, minimum: 0, maximum: 10000 }
+        dispatchDays: { type: integer, minimum: 1, maximum: 60 }
+        madeToOrder: { type: boolean }
+        costPaise: { type: integer, minimum: 0, maximum: 100000000 }
+        story: { type: string, maxLength: 5000 }
+        photo: { type: string, maxLength: 300000 }
+        step: { type: integer, minimum: 1, maximum: 7 }
+    SampleMakerDraftsResponse:
+      type: object
+      required: [sample, drafts]
+      properties:
+        sample: { type: boolean, const: true }
+        drafts: { type: array, items: { $ref: "#/components/schemas/SampleMakerDraft" } }
+    SampleProductSubmissionInput:
+      type: object
+      additionalProperties: false
+      required: [confirmedFacts]
+      properties:
+        confirmedFacts: { type: boolean, const: true }
+    SampleProductSubmissionResponse:
+      type: object
+      required: [id, status, reason, spotCheck, message]
+      properties:
+        id: { type: string }
+        status: { type: string, enum: [live, review] }
+        reason: { type: ["string", "null"] }
+        spotCheck: { type: boolean }
+        message: { type: string }
+    SampleAdminProductReview:
+      type: object
+      required: [id, makerId, makerBrand, name, kind, material, technique, size, pricePaise, stock, dispatchDays, story, photo, submittedAt, status, checks, note, reason]
+      properties:
+        id: { type: string }
+        makerId: { type: string }
+        makerBrand: { type: string }
+        name: { type: string }
+        kind: { type: string }
+        material: { type: string }
+        technique: { type: string }
+        size: { type: string }
+        pricePaise: { type: integer, minimum: 0 }
+        stock: { type: integer, minimum: 0 }
+        dispatchDays: { type: integer, minimum: 1 }
+        story: { type: string }
+        photo: { type: string }
+        submittedAt: { type: string, format: date-time }
+        status: { type: string, enum: [review, live, changes] }
+        checks: { type: array, minItems: 5, maxItems: 5, items: { type: boolean } }
+        note: { type: string }
+        reason: { type: ["string", "null"] }
+    SampleAdminProductReviewsResponse:
+      type: object
+      required: [sample, reviews]
+      properties:
+        sample: { type: boolean, const: true }
+        reviews: { type: array, items: { $ref: "#/components/schemas/SampleAdminProductReview" } }
+    SampleAdminProductReviewInput:
+      type: object
+      additionalProperties: false
+      required: [action, checks, note]
+      properties:
+        action: { type: string, enum: [approve, changes, spot_check] }
+        checks: { type: array, minItems: 5, maxItems: 5, items: { type: boolean } }
+        note: { type: string, maxLength: 2000 }
+    SampleVendorApplication:
+      type: object
+      required: [id, brand, name, place, craft, gst, status]
+      properties:
+        id: { type: string }
+        brand: { type: string }
+        name: { type: string }
+        place: { type: string }
+        craft: { type: string }
+        gst: { type: string }
+        status: { type: string, enum: [pending, call, approved, declined] }
+    SampleAdminVendorApplicationsResponse:
+      type: object
+      required: [sample, applications]
+      properties:
+        sample: { type: boolean, const: true }
+        applications: { type: array, items: { $ref: "#/components/schemas/SampleVendorApplication" } }
+    SampleAdminVendorApplicationDecisionInput:
+      type: object
+      additionalProperties: false
+      required: [decision]
+      properties:
+        decision: { type: string, enum: [approve, book_call, decline] }
+    SampleCorporateEnquiry:
+      type: object
+      required: [ref, company, contactName, contact, purpose, qty, budgetPaise, neededBy, message, stage, matchedMakerIds, sentToMakerIds, responses, quotePaise, createdAt]
+      properties:
+        ref: { type: string }
+        company: { type: string }
+        contactName: { type: string }
+        contact: { type: string }
+        purpose: { type: string }
+        qty: { type: integer, minimum: 1 }
+        budgetPaise: { type: integer, minimum: 0 }
+        neededBy: { type: string, format: date }
+        message: { type: string }
+        stage: { type: string, enum: [new, contacted, quote, won, lost] }
+        matchedMakerIds: { type: array, items: { type: string } }
+        sentToMakerIds: { type: array, items: { type: string } }
+        responses: { type: object, additionalProperties: { type: string, enum: [yes, no] } }
+        quotePaise: { type: ["integer", "null"], minimum: 0 }
+        createdAt: { type: string, format: date-time }
+    SampleCorporateEnquiryInput:
+      type: object
+      additionalProperties: false
+      required: [purpose, qty, budgetPaise, neededBy, name, company, contact]
+      properties:
+        purpose: { type: string, minLength: 3, maxLength: 120 }
+        qty: { type: integer, minimum: 1, maximum: 20000 }
+        budgetPaise: { type: integer, minimum: 100, maximum: 100000000 }
+        neededBy: { type: string, format: date }
+        name: { type: string, minLength: 2, maxLength: 120 }
+        company: { type: string, minLength: 2, maxLength: 160 }
+        contact: { type: string, minLength: 8, maxLength: 24 }
+    SampleCorporateEnquiryCreated:
+      type: object
+      required: [sample, ref, stage]
+      properties:
+        sample: { type: boolean, const: true }
+        ref: { type: string }
+        stage: { type: string, enum: [new] }
+    SampleAdminCorporateEnquiriesResponse:
+      type: object
+      required: [sample, enquiries]
+      properties:
+        sample: { type: boolean, const: true }
+        enquiries: { type: array, items: { $ref: "#/components/schemas/SampleCorporateEnquiry" } }
+    SampleCorporateStageInput:
+      type: object
+      additionalProperties: false
+      required: [stage]
+      properties:
+        stage: { type: string, enum: [new, contacted, quote, won, lost] }
+    SampleCorporateMatchesInput:
+      type: object
+      additionalProperties: false
+      required: [makerIds]
+      properties:
+        makerIds: { type: array, uniqueItems: true, maxItems: 2, items: { type: string, enum: [m1, m2] } }
+    SampleCorporateQuoteInput:
+      type: object
+      additionalProperties: false
+      required: [quotePaise]
+      properties:
+        quotePaise: { type: integer, minimum: 100, maximum: 1000000000 }
+    SampleAdminOverview:
+      type: object
+      required: [sample, metrics, attention]
+      properties:
+        sample: { type: boolean, const: true }
+        metrics:
+          type: object
+          required: [salesPaise, commissionPaise, orderCount, liveMakerCount, liveProductCount, corporatePipelinePaise, openCorporateCount, pendingReviewCount, openIssueCount, pendingApplicationCount]
+          properties:
+            salesPaise: { type: integer, minimum: 0 }
+            commissionPaise: { type: integer, minimum: 0 }
+            orderCount: { type: integer, minimum: 0 }
+            liveMakerCount: { type: integer, minimum: 0 }
+            liveProductCount: { type: integer, minimum: 0 }
+            corporatePipelinePaise: { type: integer, minimum: 0 }
+            openCorporateCount: { type: integer, minimum: 0 }
+            pendingReviewCount: { type: integer, minimum: 0 }
+            openIssueCount: { type: integer, minimum: 0 }
+            pendingApplicationCount: { type: integer, minimum: 0 }
+        attention:
+          type: array
+          items:
+            type: object
+            required: [id, label, href, kind]
+            properties:
+              id: { type: string }
+              label: { type: string }
+              href: { type: string }
+              kind: { type: string, enum: [order, review, application, corporate] }
+    SampleAcademySale:
+      type: object
+      required: [id, date, course, learner, amountPaise, status, source]
+      properties:
+        id: { type: string }
+        date: { type: string, format: date }
+        course: { type: string }
+        learner: { type: string }
+        amountPaise: { type: integer, minimum: 0 }
+        status: { type: string, enum: [paid, refunded, cancelled] }
+        source: { type: string, enum: [sample, tagmango_import] }
+    SampleAdminAcademySalesResponse:
+      type: object
+      required: [sample, sales, summary]
+      properties:
+        sample: { type: boolean, const: true }
+        sales: { type: array, items: { $ref: "#/components/schemas/SampleAcademySale" } }
+        summary:
+          type: object
+          required: [revenuePaise, seatsSold, refundedCount, importedCount]
+          properties:
+            revenuePaise: { type: integer, minimum: 0 }
+            seatsSold: { type: integer, minimum: 0 }
+            refundedCount: { type: integer, minimum: 0 }
+            importedCount: { type: integer, minimum: 0 }
+    SampleAdminAcademyCsvInput:
+      type: object
+      additionalProperties: false
+      required: [csv]
+      properties:
+        csv: { type: string, minLength: 1, maxLength: 1000000 }
+    SampleAdminAcademyImportResponse:
+      allOf:
+        - { $ref: "#/components/schemas/SampleAdminAcademySalesResponse" }
+        - type: object
+          required: [imported]
+          properties:
+            imported: { type: integer, minimum: 0 }
+    SampleOperationalOrder:
+      type: object
+      required: [id, productId, productName, makerId, makerBrand, qty, amountPaise, customer, city, date, status, courier, tracking, deliveredOn, settled, issue]
+      properties:
+        id: { type: string }
+        productId: { type: string }
+        productName: { type: string }
+        makerId: { type: string }
+        makerBrand: { type: string }
+        qty: { type: integer, minimum: 1 }
+        amountPaise: { type: integer, minimum: 0 }
+        customer: { type: string }
+        city: { type: string }
+        date: { type: string, format: date }
+        status: { type: string, enum: [new, packed, dispatched, delivered, problem, delayed, refunded] }
+        courier: { type: string }
+        tracking: { type: string }
+        deliveredOn: { type: ["string", "null"], format: date }
+        settled: { type: boolean }
+        issue: { type: string }
+    SampleOrdersResponse:
+      type: object
+      required: [sample, orders]
+      properties:
+        sample: { type: boolean, const: true }
+        orders: { type: array, items: { $ref: "#/components/schemas/SampleOperationalOrder" } }
+    SampleFulfilmentInput:
+      type: object
+      additionalProperties: false
+      required: [status, courier, tracking, note]
+      properties:
+        status: { type: string, enum: [packed, dispatched, delivered, problem] }
+        courier: { type: string, maxLength: 120 }
+        tracking: { type: string, maxLength: 160 }
+        note: { type: string, maxLength: 2000 }
+    SampleAdminOrderStatusInput:
+      type: object
+      additionalProperties: false
+      required: [status, note]
+      properties:
+        status: { type: string, enum: [delayed, refunded] }
+        note: { type: string, minLength: 3, maxLength: 2000 }
+    SampleSaleSplit:
+      type: object
+      required: [grossPaise, gstPaise, taxablePaise, commissionPaise, commissionGstPaise, tcsPaise, paymentFeePaise, deductionsPaise, payoutPaise, netAfterGstPaise]
+      properties:
+        grossPaise: { type: integer, minimum: 0 }
+        gstPaise: { type: integer, minimum: 0 }
+        taxablePaise: { type: integer, minimum: 0 }
+        commissionPaise: { type: integer, minimum: 0 }
+        commissionGstPaise: { type: integer, minimum: 0 }
+        tcsPaise: { type: integer, minimum: 0 }
+        paymentFeePaise: { type: integer, minimum: 0 }
+        deductionsPaise: { type: integer, minimum: 0 }
+        payoutPaise: { type: integer, minimum: 0 }
+        netAfterGstPaise: { type: integer }
+    SamplePayoutRun:
+      type: object
+      required: [makerId, makerBrand, date, orderIds, split]
+      properties:
+        makerId: { type: string }
+        makerBrand: { type: string }
+        date: { type: string, format: date }
+        orderIds: { type: array, items: { type: string } }
+        split: { $ref: "#/components/schemas/SampleSaleSplit" }
+    SamplePaidPayout:
+      type: object
+      required: [makerId, makerBrand, date, orderIds, grossPaise, payoutPaise, paidOn]
+      properties:
+        makerId: { type: string }
+        makerBrand: { type: string }
+        date: { type: string, format: date }
+        orderIds: { type: array, items: { type: string } }
+        grossPaise: { type: integer, minimum: 0 }
+        payoutPaise: { type: integer, minimum: 0 }
+        paidOn: { type: string, format: date }
+    SampleMakerEarnings:
+      type: object
+      required: [sample, makerId, makerBrand, deliveredCount, split, runs, nextRunDate, nextPayoutPaise, nextPayoutDate, pendingCount, pendingPaise]
+      properties:
+        sample: { type: boolean, const: true }
+        makerId: { type: string }
+        makerBrand: { type: string }
+        deliveredCount: { type: integer, minimum: 0 }
+        split: { $ref: "#/components/schemas/SampleSaleSplit" }
+        runs: { type: array, items: { $ref: "#/components/schemas/SamplePayoutRun" } }
+        nextRunDate: { type: string, format: date }
+        nextPayoutPaise: { type: integer, minimum: 0 }
+        nextPayoutDate: { type: string, format: date }
+        pendingCount: { type: integer, minimum: 0 }
+        pendingPaise: { type: integer, minimum: 0 }
+    SampleMakerProfit:
+      type: object
+      required: [productId, name, pricePaise, costPaise, split, costsPaise, leftPerSalePaise, marginPct, health]
+      properties:
+        productId: { type: string }
+        name: { type: string }
+        pricePaise: { type: integer, minimum: 0 }
+        costPaise: { type: ["integer", "null"], minimum: 0 }
+        split: { $ref: "#/components/schemas/SampleSaleSplit" }
+        costsPaise: { type: integer, minimum: 0 }
+        leftPerSalePaise: { type: integer }
+        marginPct: { type: number }
+        health: { type: string, enum: [too_thin, tight, healthy] }
+    SampleMakerProfitsResponse:
+      type: object
+      required: [sample, products]
+      properties:
+        sample: { type: boolean, const: true }
+        products: { type: array, items: { $ref: "#/components/schemas/SampleMakerProfit" } }
+    SampleMakerProductCostInput:
+      type: object
+      additionalProperties: false
+      required: [costPaise]
+      properties:
+        costPaise: { type: ["integer", "null"], minimum: 0, maximum: 100000000 }
+    SampleMakerProductCost:
+      allOf:
+        - { $ref: "#/components/schemas/SampleMakerProfit" }
+    SampleMakerSettings:
+      type: object
+      required: [sample, makerId, brand, trusted, approvedCount, gstRegistered, state, payoutOnboarding, message]
+      properties:
+        sample: { type: boolean, const: true }
+        makerId: { type: string }
+        brand: { type: string }
+        trusted: { type: boolean }
+        approvedCount: { type: integer, minimum: 0 }
+        gstRegistered: { type: boolean }
+        state: { type: string }
+        payoutOnboarding: { type: string, enum: [not_configured] }
+        message: { type: string }
+    SampleMakerSettingsInput:
+      type: object
+      additionalProperties: false
+      required: [gstRegistered, state]
+      properties:
+        gstRegistered: { type: boolean }
+        state: { type: string, minLength: 2, maxLength: 80 }
+    SampleMakerOpportunity:
+      type: object
+      required: [id, type, title, detail, status]
+      properties:
+        id: { type: string }
+        type: { type: string, enum: [corporate, event] }
+        title: { type: string }
+        detail: { type: string }
+        status: { type: string, enum: [open, yes, no] }
+    SampleMakerOpportunitiesResponse:
+      type: object
+      required: [sample, opportunities]
+      properties:
+        sample: { type: boolean, const: true }
+        opportunities: { type: array, items: { $ref: "#/components/schemas/SampleMakerOpportunity" } }
+    SampleMakerOpportunityResponseInput:
+      type: object
+      additionalProperties: false
+      required: [decision]
+      properties:
+        decision: { type: string, enum: [yes, no] }
+    SampleMakerMasterclassProposal:
+      type: object
+      required: [id, makerId, makerBrand, title, type, duration, pricePaise, about, status, note, submittedAt]
+      properties:
+        id: { type: string }
+        makerId: { type: string }
+        makerBrand: { type: string }
+        title: { type: string }
+        type: { type: string, enum: [Live workshop, Recorded class] }
+        duration: { type: string }
+        pricePaise: { type: integer, minimum: 0 }
+        about: { type: string }
+        status: { type: string, enum: [submitted, approved, changes] }
+        note: { type: string }
+        submittedAt: { type: string, format: date-time }
+    SampleMakerMasterclassProposalInput:
+      type: object
+      additionalProperties: false
+      required: [title, type, duration, pricePaise, about]
+      properties:
+        title: { type: string, minLength: 5, maxLength: 160 }
+        type: { type: string, enum: [Live workshop, Recorded class] }
+        duration: { type: string, minLength: 2, maxLength: 120 }
+        pricePaise: { type: integer, minimum: 0, maximum: 100000000 }
+        about: { type: string, minLength: 20, maxLength: 2000 }
+    SampleAdminMasterclassProposalsResponse:
+      type: object
+      required: [sample, proposals]
+      properties:
+        sample: { type: boolean, const: true }
+        proposals: { type: array, items: { $ref: "#/components/schemas/SampleMakerMasterclassProposal" } }
+    SampleAdminMasterclassReviewInput:
+      type: object
+      additionalProperties: false
+      required: [decision, note]
+      properties:
+        decision: { type: string, enum: [approve, changes] }
+        note: { type: string, maxLength: 1000 }
+    SampleAdminPayoutsResponse:
+      type: object
+      required: [sample, runs, paidRuns]
+      properties:
+        sample: { type: boolean, const: true }
+        runs: { type: array, items: { $ref: "#/components/schemas/SamplePayoutRun" } }
+        paidRuns: { type: array, items: { $ref: "#/components/schemas/SamplePaidPayout" } }
+    SamplePaidPayoutReceipt:
+      allOf:
+        - $ref: "#/components/schemas/SamplePaidPayout"
+        - type: object
+          required: [id, message]
+          properties:
+            id: { type: string }
+            message: { type: string }
+    SampleCheckoutLine:
+      type: object
+      additionalProperties: false
+      required: [productId, quantity]
+      properties:
+        productId: { type: string, minLength: 1, maxLength: 100 }
+        quantity: { type: integer, minimum: 1, maximum: 20 }
+    SampleCheckoutInput:
+      type: object
+      additionalProperties: false
+      required: [lines, idempotencyKey]
+      properties:
+        lines: { type: array, minItems: 1, maxItems: 20, items: { $ref: "#/components/schemas/SampleCheckoutLine" } }
+        addressId: { type: string, minLength: 1, maxLength: 120 }
+        deliveryAddress: { $ref: "#/components/schemas/SampleDeliveryAddress" }
+        couponCode: { type: string, maxLength: 40 }
+        idempotencyKey: { type: string, format: uuid }
+    SampleDeliveryAddress:
+      type: object
+      additionalProperties: false
+      required: [name, phone, line1, state, pin]
+      properties:
+        name: { type: string, minLength: 1, maxLength: 120 }
+        phone: { type: string, pattern: "^[6-9][0-9]{9}$" }
+        line1: { type: string, minLength: 1, maxLength: 200 }
+        line2: { type: string, maxLength: 200 }
+        state: { type: string, minLength: 1, maxLength: 100 }
+        pin: { type: string, pattern: "^[1-9][0-9]{5}$" }
+    SampleCheckoutResult:
+      type: object
+      required: [sample, orderId, reference, itemsPaise, discountPaise, couponCode, shippingPaise, totalPaise, message]
+      properties:
+        sample: { type: boolean, const: true }
+        orderId: { type: string }
+        reference: { type: string }
+        itemsPaise: { type: integer, minimum: 0 }
+        discountPaise: { type: integer, minimum: 0 }
+        couponCode: { type: ["string", "null"] }
+        shippingPaise: { type: integer, minimum: 0 }
+        totalPaise: { type: integer, minimum: 0 }
+        message: { type: string }
+    SampleCoupon:
+      type: object
+      required: [id, code, discountType, discountValue, minimumPaise, maximumDiscountPaise, startsAt, endsAt, usageLimit, perShopperLimit, usedCount, active]
+      properties:
+        id: { type: string }
+        code: { type: string }
+        discountType: { type: string, enum: [percent, fixed] }
+        discountValue: { type: integer, minimum: 1 }
+        minimumPaise: { type: integer, minimum: 0 }
+        maximumDiscountPaise: { type: ["integer", "null"], minimum: 0 }
+        startsAt: { type: string, format: date-time }
+        endsAt: { type: string, format: date-time }
+        usageLimit: { type: ["integer", "null"], minimum: 1 }
+        perShopperLimit: { type: integer, minimum: 1 }
+        usedCount: { type: integer, minimum: 0 }
+        active: { type: boolean }
+    SampleCouponsResponse:
+      type: object
+      required: [sample, coupons]
+      properties:
+        sample: { type: boolean, const: true }
+        coupons: { type: array, items: { $ref: "#/components/schemas/SampleCoupon" } }
+    SampleCouponInput:
+      type: object
+      additionalProperties: false
+      required: [code, discountType, discountValue, minimumPaise, maximumDiscountPaise, startsAt, endsAt, usageLimit, perShopperLimit, active]
+      properties:
+        code: { type: string, pattern: "^[A-Z0-9_-]{3,40}$" }
+        discountType: { type: string, enum: [percent, fixed] }
+        discountValue: { type: integer, minimum: 1 }
+        minimumPaise: { type: integer, minimum: 0 }
+        maximumDiscountPaise: { type: ["integer", "null"], minimum: 0 }
+        startsAt: { type: string, format: date-time }
+        endsAt: { type: string, format: date-time }
+        usageLimit: { type: ["integer", "null"], minimum: 1 }
+        perShopperLimit: { type: integer, minimum: 1, maximum: 100 }
+        active: { type: boolean }
+    SampleBlogPost:
+      type: object
+      required: [id, slug, title, excerpt, body, author, status, createdAt, updatedAt, publishedAt]
+      properties:
+        id: { type: string }
+        slug: { type: string }
+        title: { type: string }
+        excerpt: { type: string }
+        body: { type: string }
+        author: { type: string }
+        status: { type: string, enum: [draft, published] }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+        publishedAt: { type: ["string", "null"], format: date-time }
+    SampleBlogPostInput:
+      type: object
+      additionalProperties: false
+      required: [slug, title, excerpt, body, author, status]
+      properties:
+        slug: { type: string, minLength: 3, maxLength: 100, pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$" }
+        title: { type: string, minLength: 3, maxLength: 160 }
+        excerpt: { type: string, minLength: 10, maxLength: 500 }
+        body: { type: string, minLength: 30, maxLength: 12000 }
+        author: { type: string, minLength: 2, maxLength: 120 }
+        status: { type: string, enum: [draft, published] }
+    SampleBlogResponse:
+      type: object
+      required: [sample, posts]
+      properties:
+        sample: { type: boolean, const: true }
+        posts: { type: array, items: { $ref: "#/components/schemas/SampleBlogPost" } }
+    SampleWishlistInput:
+      type: object
+      additionalProperties: false
+      required: [saved]
+      properties:
+        saved: { type: boolean }
+    SampleAddressInput:
+      type: object
+      additionalProperties: false
+      required: [name, phone, line1, line2, city, state, pin, isDefault]
+      properties:
+        name: { type: string, minLength: 1, maxLength: 120 }
+        phone: { type: string, pattern: '^[6-9][0-9]{9}$' }
+        line1: { type: string, minLength: 1, maxLength: 200 }
+        line2: { type: string, maxLength: 200 }
+        city: { type: string, minLength: 1, maxLength: 100 }
+        state: { type: string, minLength: 1, maxLength: 100 }
+        pin: { type: string, pattern: '^[1-9][0-9]{5}$' }
+        isDefault: { type: boolean }
     HealthStatus:
       type: object
       properties:

@@ -86,6 +86,12 @@ The user wants visual and editorial elements editable so they can change the loo
 
 **How to apply:** Treat owner editing as a core product experience, not a developer-only configuration file. Preserve the agreed identity and clearly separate editable presentation from protected business rules.
 
+The admin dashboard also needs coupons and a blogging section; website content and presentation settings, including colors and fonts, should be editable and functional across the site. Sahayak should write or rewrite text from makers' microphone dictation and typed text. Bea is the shopper gifting concierge, replacing the Gift Finder identity, and should support both guided choices and free-text questions.
+
+**Why:** The user requested these additions to the Baksa Tales product.
+
+**How to apply:** Make these real, testable features rather than static panels. Keep commerce rules server-authoritative, preserve the approved visual defaults until an editor changes them, and distinguish typed or speech-transcribed input from any unconfigured voice/AI service.
+
 Use a new development Supabase project for the initial connection, not an existing or production database.
 
 **Why:** The user explicitly chose “Create a new development project” during connection setup and later confirmed the separate verified-account admin grant worked.
@@ -97,3 +103,9 @@ When setup appears successful, independently verify readiness against the connec
 **Why:** Successful-looking table probes during Supabase onboarding did not reliably establish that the app schema existed.
 
 **How to apply:** Establish the actual schema before choosing an initializer or an existing-schema update. Never create only a success marker to bypass missing security changes; preserve saved content and analytics identities.
+
+Makers should enter payout account details through provider-hosted onboarding; the payout provider is not selected yet.
+
+**Why:** The owner chose bank payouts with provider-hosted onboarding, then said makers would add their details themselves.
+
+**How to apply:** Do not add raw account-number or IFSC fields to browser storage or the marketplace database, and do not initiate transfers until the provider is selected and configured.

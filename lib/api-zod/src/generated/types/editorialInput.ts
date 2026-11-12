@@ -6,14 +6,18 @@
  * OpenAPI spec version: 0.1.0
  */
 import type { EditorialInputPurpose } from './editorialInputPurpose';
+import type { EditorialInputTask } from './editorialInputTask';
 import type { EditorialInputTone } from './editorialInputTone';
 
 export interface EditorialInput {
+  task?: EditorialInputTask;
   purpose: EditorialInputPurpose;
   /**
      * @minLength 20
      * @maxLength 8000
      */
   facts: string;
+  /** @maxLength 8000 */
+  currentText?: string;
   tone: EditorialInputTone;
 }

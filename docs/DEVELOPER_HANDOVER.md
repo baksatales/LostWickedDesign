@@ -1,7 +1,95 @@
 # Baksa Tales — developer handover
 
-Source snapshot prepared 6 November 2026. Start with this document; older
-implementation records describe earlier milestones, not the current baseline.
+Updated 12 November 2026. Start with the current-preview addendum below. The dated
+sections that follow are retained implementation notes; where they conflict with
+the addendum, the addendum describes the current approved demo.
+
+## Current preview state — 12 November 2026
+
+### What is available to review
+
+- The active approved storefront is `artifacts/baksa-tales/src/demo/ApprovedApp.tsx`;
+  it layers interactions onto the approved HTML templates without editing those
+  reference files.
+- **Bea** opens as a responsive popup over the current page. The header link,
+  homepage recipient shortcuts and direct `/bea` or `/finder` routes open it.
+  Guided questions, free-text requests and sample recommendations remain inside
+  the popup. Free text uses rules-based matching against the sample catalogue,
+  not a generative AI service.
+- The isolated sample admin routes are `/admin/coupons` and `/admin/blog`;
+  published sample stories appear at `/blog`. Coupon discounts are calculated
+  by the sample API during sample checkout. Blog drafts and publishing use the
+  sample API.
+- To view a protected sample admin route, open `/admin`, enter any valid
+  10-digit Indian mobile number, choose **Baksa team · sample**, and enter the
+  fixed code `246810`. This is a simulation: no SMS is sent and it grants no
+  access to live records.
+
+### Data and unfinished work
+
+- Coupon, blog and shopper-account changes use isolated, server-backed sample
+  data. The data is not a production CMS/database and can reset when the API
+  process restarts or when sample data is reset. The rest of the approved
+  storefront and most maker/admin dashboard interactions still use demonstration
+  state.
+- `/admin/site` and `/maker/sahayak` now open the existing real-account workspaces
+  inside the active app. Both still require verified Supabase roles; sample
+  sessions cannot enter them. Site Studio can edit the separate SiteDocument
+  storefront, but it does not yet edit the active approved HTML pages.
+- The secure maker workspace now includes Sahayak rewriting and opt-in browser
+  dictation in the product description and writing bench. Suggestions stay
+  unsaved until the maker applies them. AI calls still require a verified live
+  maker/admin account and configured AI service; sample sessions cannot use it.
+- The site-wide editor for active approved pages, admin categories and analytics,
+  maker SEO/AEO fields, relevant Academy recommendations, and full live/sample
+  maker/admin business workflows remain unfinished.
+- Maker payout setup remains unconfigured. The owner chose provider-hosted
+  onboarding, but no specific provider is selected; the app does not collect raw
+  bank details or initiate transfers.
+- The full secure maker/admin workflows and live Supabase/RLS acceptance are
+  incomplete. No remote migration, seed, account grant, production publish,
+  payment, refund, bank transfer, SMS or courier action was performed for this
+  preview update.
+
+### Latest verification
+
+- Frontend and API TypeScript checks passed.
+- Browser suite: **25/25 checks passed**, including Bea opening without changing
+  the current page, sample/live identity separation for secure tools, and mobile
+  layout.
+- Visual suite: **64 desktop/mobile captures**, with no measured overflow,
+  broken images or browser errors.
+- API/account suites: **31/31 checks passed**. These checks do not prove live
+  Supabase, SMS, payment or AI integration behavior.
+
+Repeat the relevant checks from the repository root:
+
+```sh
+pnpm --filter @workspace/baksa-tales run typecheck
+pnpm --filter @workspace/baksa-tales run test:browser
+pnpm --filter @workspace/baksa-tales run test:visual
+pnpm --filter @workspace/api-server exec vitest run tests/api.test.ts tests/sample-accounts.test.ts
+```
+
+### Main files for this update
+
+- `artifacts/baksa-tales/src/demo/BeaPopover.tsx` — Bea popup, guided questions,
+  free-text matching and in-popup recommendations.
+- `artifacts/baksa-tales/src/demo/chrome.ts` and
+  `artifacts/baksa-tales/src/demo/pages/storefront.ts` — storefront links and
+  homepage shortcuts that open Bea.
+- `artifacts/baksa-tales/src/demo/SampleAdminCoupons.tsx` and
+  `artifacts/baksa-tales/src/demo/SampleBlog.tsx` — sample admin screens.
+- `artifacts/baksa-tales/src/pages/MakerArea.tsx` and
+  `artifacts/baksa-tales/src/components/SpeechDictationButton.tsx` — verified
+  maker writing tools; not available to browser-only sample identities.
+- `artifacts/api-server/src/lib/sample-accounts.ts` and
+  `artifacts/api-server/src/lib/sample-content.ts` — isolated sample business
+  records and validation.
+- `artifacts/baksa-tales/tests/approved-browser.mjs` and
+  `artifacts/baksa-tales/tests/approved-visual.mjs` — browser and visual checks.
+
+## Historical implementation handover — 6 November 2026
 
 ## What this package is
 
@@ -14,7 +102,7 @@ This is **not a launch-ready multivendor marketplace**. No database dump, custom
 records, passwords, API keys, login sessions, Git history or private agent/chat
 files are included. Environment examples contain blank values only.
 
-## Current baseline
+## Earlier baseline snapshot — 6 November 2026
 
 - The development Supabase connection and reviewed schema were verified through
   the running API. The owner confirmed that verified-account admin access works.

@@ -99,6 +99,17 @@ describe("mutation boundaries without external setup", () => {
       expect(response.status, `${method} ${path}`).toBe(401);
     }
   });
+  it("does not treat an isolated sample maker session as a live AI identity", async () => {
+    const login = await post("/sample/session", { identity: "maker", mobileNumber: "9876543210", simulationCode: "246810" });
+    expect(login.status).toBe(201);
+    const { token } = await login.json() as { token: string };
+    const response = await post("/editorial/assist", {
+      task: "rewrite", purpose: "product", facts: "A maker-written sample description with verified materials.",
+      currentText: "A maker-written sample description with verified materials.", tone: "warm",
+    }, { authorization: `Bearer ${token}` });
+    expect(response.status).toBe(503);
+    expect((await response.json()).error).toContain("security migration");
+  });
   it("refuses an anonymous workspace, including a forged role header", async () => {
     expect((await fetch(url + "/workspace", { headers: { "x-role": "admin" } })).status).toBe(401);
   });

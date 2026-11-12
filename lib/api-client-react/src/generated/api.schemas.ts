@@ -5,6 +5,14 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
+export type EditorialInputTask = typeof EditorialInputTask[keyof typeof EditorialInputTask];
+
+
+export const EditorialInputTask = {
+  draft: 'draft',
+  rewrite: 'rewrite',
+} as const;
+
 export type EditorialInputPurpose = typeof EditorialInputPurpose[keyof typeof EditorialInputPurpose];
 
 
@@ -24,12 +32,15 @@ export const EditorialInputTone = {
 } as const;
 
 export interface EditorialInput {
+  task?: EditorialInputTask;
   purpose: EditorialInputPurpose;
   /**
      * @minLength 20
      * @maxLength 8000
      */
   facts: string;
+  /** @maxLength 8000 */
+  currentText?: string;
   tone: EditorialInputTone;
 }
 
@@ -681,6 +692,1185 @@ export interface Workspace {
   ordersCount: number;
   applicationsCount: number;
   briefsCount: number;
+}
+
+export type SampleIdentityInputIdentity = typeof SampleIdentityInputIdentity[keyof typeof SampleIdentityInputIdentity];
+
+
+export const SampleIdentityInputIdentity = {
+  shopper: 'shopper',
+  'shopper-other': 'shopper-other',
+  maker: 'maker',
+  'maker-other': 'maker-other',
+  admin: 'admin',
+} as const;
+
+export interface SampleIdentityInput {
+  identity: SampleIdentityInputIdentity;
+  /** @pattern ^[6-9][0-9]{9}$ */
+  mobileNumber: string;
+  /** @pattern ^246810$ */
+  simulationCode: string;
+}
+
+export type SampleIdentityRole = typeof SampleIdentityRole[keyof typeof SampleIdentityRole];
+
+
+export const SampleIdentityRole = {
+  shopper: 'shopper',
+  maker: 'maker',
+  admin: 'admin',
+} as const;
+
+export interface SampleIdentity {
+  sample: true;
+  identity: string;
+  role: SampleIdentityRole;
+  userId: string;
+  displayName: string;
+}
+
+export type SampleSession = SampleIdentity & {
+  token: string;
+  expiresAt: string;
+};
+
+export type SampleOrderStatus = typeof SampleOrderStatus[keyof typeof SampleOrderStatus];
+
+
+export const SampleOrderStatus = {
+  placed: 'placed',
+  packed: 'packed',
+  on_the_way: 'on_the_way',
+  delivered: 'delivered',
+  delayed: 'delayed',
+} as const;
+
+export interface SampleOrder {
+  id: string;
+  reference: string;
+  status: SampleOrderStatus;
+  placedOn: string;
+  totalPaise: number;
+  /** @minimum 0 */
+  discountPaise: number;
+  /** @nullable */
+  couponCode: string | null;
+  items: string[];
+  trackingNumber: string;
+  carrier: string;
+  delayNote: string;
+}
+
+export type SampleClassAccess = typeof SampleClassAccess[keyof typeof SampleClassAccess];
+
+
+export const SampleClassAccess = {
+  recorded: 'recorded',
+  live: 'live',
+} as const;
+
+export interface SampleClass {
+  id: string;
+  title: string;
+  teacher: string;
+  access: SampleClassAccess;
+  schedule: string;
+}
+
+export interface SampleAddress {
+  id: string;
+  /** @maxLength 120 */
+  name: string;
+  /** @maxLength 15 */
+  phone: string;
+  /** @maxLength 200 */
+  line1: string;
+  /** @maxLength 200 */
+  line2: string;
+  /** @maxLength 100 */
+  city: string;
+  /** @maxLength 100 */
+  state: string;
+  /** @pattern ^[1-9][0-9]{5}$ */
+  pin: string;
+  isDefault: boolean;
+}
+
+export interface SampleShopperAccount {
+  sample: true;
+  displayName: string;
+  orders: SampleOrder[];
+  classes: SampleClass[];
+  addresses: SampleAddress[];
+  wishlist: string[];
+}
+
+export interface SampleMakerStock {
+  id: string;
+  /**
+     * @minimum 0
+     * @maximum 10000
+     */
+  stock: number;
+}
+
+export interface SampleMakerStocksResponse {
+  sample: true;
+  products: SampleMakerStock[];
+}
+
+export interface SampleMakerStockInput {
+  /**
+     * @minimum 0
+     * @maximum 10000
+     */
+  stock: number;
+}
+
+export type SampleMakerDraftStatus = typeof SampleMakerDraftStatus[keyof typeof SampleMakerDraftStatus];
+
+
+export const SampleMakerDraftStatus = {
+  draft: 'draft',
+  submitted: 'submitted',
+  live: 'live',
+  changes: 'changes',
+} as const;
+
+export interface SampleMakerDraft {
+  id: string;
+  name: string;
+  kind: string;
+  material: string;
+  technique: string;
+  size: string;
+  /** @minimum 0 */
+  pricePaise: number;
+  /**
+     * @minimum 0
+     * @maximum 100
+     */
+  gstPct: number;
+  /**
+     * @minimum 0
+     * @maximum 10000
+     */
+  stock: number;
+  /**
+     * @minimum 1
+     * @maximum 60
+     */
+  dispatchDays: number;
+  madeToOrder: boolean;
+  /** @minimum 0 */
+  costPaise: number;
+  story: string;
+  /** @maxLength 300000 */
+  photo: string;
+  /**
+     * @minimum 1
+     * @maximum 7
+     */
+  step: number;
+  updatedAt: string;
+  status: SampleMakerDraftStatus;
+}
+
+export interface SampleMakerDraftInput {
+  /** @maxLength 200 */
+  name: string;
+  /** @maxLength 200 */
+  kind: string;
+  /** @maxLength 500 */
+  material: string;
+  /** @maxLength 500 */
+  technique: string;
+  /** @maxLength 200 */
+  size: string;
+  /**
+     * @minimum 0
+     * @maximum 100000000
+     */
+  pricePaise: number;
+  /**
+     * @minimum 0
+     * @maximum 100
+     */
+  gstPct: number;
+  /**
+     * @minimum 0
+     * @maximum 10000
+     */
+  stock: number;
+  /**
+     * @minimum 1
+     * @maximum 60
+     */
+  dispatchDays: number;
+  madeToOrder: boolean;
+  /**
+     * @minimum 0
+     * @maximum 100000000
+     */
+  costPaise: number;
+  /** @maxLength 5000 */
+  story: string;
+  /** @maxLength 300000 */
+  photo: string;
+  /**
+     * @minimum 1
+     * @maximum 7
+     */
+  step: number;
+}
+
+export interface SampleMakerDraftsResponse {
+  sample: true;
+  drafts: SampleMakerDraft[];
+}
+
+export const SampleProductSubmissionInputValue = {
+  confirmedFacts: true,
+} as const;
+export type SampleProductSubmissionInput = typeof SampleProductSubmissionInputValue;
+
+export type SampleProductSubmissionResponseStatus = typeof SampleProductSubmissionResponseStatus[keyof typeof SampleProductSubmissionResponseStatus];
+
+
+export const SampleProductSubmissionResponseStatus = {
+  live: 'live',
+  review: 'review',
+} as const;
+
+export interface SampleProductSubmissionResponse {
+  id: string;
+  status: SampleProductSubmissionResponseStatus;
+  /** @nullable */
+  reason: string | null;
+  spotCheck: boolean;
+  message: string;
+}
+
+export type SampleAdminProductReviewStatus = typeof SampleAdminProductReviewStatus[keyof typeof SampleAdminProductReviewStatus];
+
+
+export const SampleAdminProductReviewStatus = {
+  review: 'review',
+  live: 'live',
+  changes: 'changes',
+} as const;
+
+export interface SampleAdminProductReview {
+  id: string;
+  makerId: string;
+  makerBrand: string;
+  name: string;
+  kind: string;
+  material: string;
+  technique: string;
+  size: string;
+  /** @minimum 0 */
+  pricePaise: number;
+  /** @minimum 0 */
+  stock: number;
+  /** @minimum 1 */
+  dispatchDays: number;
+  story: string;
+  photo: string;
+  submittedAt: string;
+  status: SampleAdminProductReviewStatus;
+  /**
+     * @minItems 5
+     * @maxItems 5
+     */
+  checks: boolean[];
+  note: string;
+  /** @nullable */
+  reason: string | null;
+}
+
+export interface SampleAdminProductReviewsResponse {
+  sample: true;
+  reviews: SampleAdminProductReview[];
+}
+
+export type SampleAdminProductReviewInputAction = typeof SampleAdminProductReviewInputAction[keyof typeof SampleAdminProductReviewInputAction];
+
+
+export const SampleAdminProductReviewInputAction = {
+  approve: 'approve',
+  changes: 'changes',
+  spot_check: 'spot_check',
+} as const;
+
+export interface SampleAdminProductReviewInput {
+  action: SampleAdminProductReviewInputAction;
+  /**
+     * @minItems 5
+     * @maxItems 5
+     */
+  checks: boolean[];
+  /** @maxLength 2000 */
+  note: string;
+}
+
+export type SampleVendorApplicationStatus = typeof SampleVendorApplicationStatus[keyof typeof SampleVendorApplicationStatus];
+
+
+export const SampleVendorApplicationStatus = {
+  pending: 'pending',
+  call: 'call',
+  approved: 'approved',
+  declined: 'declined',
+} as const;
+
+export interface SampleVendorApplication {
+  id: string;
+  brand: string;
+  name: string;
+  place: string;
+  craft: string;
+  gst: string;
+  status: SampleVendorApplicationStatus;
+}
+
+export interface SampleAdminVendorApplicationsResponse {
+  sample: true;
+  applications: SampleVendorApplication[];
+}
+
+export type SampleAdminVendorApplicationDecisionInputDecision = typeof SampleAdminVendorApplicationDecisionInputDecision[keyof typeof SampleAdminVendorApplicationDecisionInputDecision];
+
+
+export const SampleAdminVendorApplicationDecisionInputDecision = {
+  approve: 'approve',
+  book_call: 'book_call',
+  decline: 'decline',
+} as const;
+
+export interface SampleAdminVendorApplicationDecisionInput {
+  decision: SampleAdminVendorApplicationDecisionInputDecision;
+}
+
+export type SampleCorporateEnquiryStage = typeof SampleCorporateEnquiryStage[keyof typeof SampleCorporateEnquiryStage];
+
+
+export const SampleCorporateEnquiryStage = {
+  new: 'new',
+  contacted: 'contacted',
+  quote: 'quote',
+  won: 'won',
+  lost: 'lost',
+} as const;
+
+export type SampleCorporateEnquiryResponses = {[key: string]: 'yes' | 'no'};
+
+export interface SampleCorporateEnquiry {
+  ref: string;
+  company: string;
+  contactName: string;
+  contact: string;
+  purpose: string;
+  /** @minimum 1 */
+  qty: number;
+  /** @minimum 0 */
+  budgetPaise: number;
+  neededBy: string;
+  message: string;
+  stage: SampleCorporateEnquiryStage;
+  matchedMakerIds: string[];
+  sentToMakerIds: string[];
+  responses: SampleCorporateEnquiryResponses;
+  /**
+     * @minimum 0
+     * @nullable
+     */
+  quotePaise: number | null;
+  createdAt: string;
+}
+
+export interface SampleCorporateEnquiryInput {
+  /**
+     * @minLength 3
+     * @maxLength 120
+     */
+  purpose: string;
+  /**
+     * @minimum 1
+     * @maximum 20000
+     */
+  qty: number;
+  /**
+     * @minimum 100
+     * @maximum 100000000
+     */
+  budgetPaise: number;
+  neededBy: string;
+  /**
+     * @minLength 2
+     * @maxLength 120
+     */
+  name: string;
+  /**
+     * @minLength 2
+     * @maxLength 160
+     */
+  company: string;
+  /**
+     * @minLength 8
+     * @maxLength 24
+     */
+  contact: string;
+}
+
+export type SampleCorporateEnquiryCreatedStage = typeof SampleCorporateEnquiryCreatedStage[keyof typeof SampleCorporateEnquiryCreatedStage];
+
+
+export const SampleCorporateEnquiryCreatedStage = {
+  new: 'new',
+} as const;
+
+export interface SampleCorporateEnquiryCreated {
+  sample: true;
+  ref: string;
+  stage: SampleCorporateEnquiryCreatedStage;
+}
+
+export interface SampleAdminCorporateEnquiriesResponse {
+  sample: true;
+  enquiries: SampleCorporateEnquiry[];
+}
+
+export type SampleCorporateStageInputStage = typeof SampleCorporateStageInputStage[keyof typeof SampleCorporateStageInputStage];
+
+
+export const SampleCorporateStageInputStage = {
+  new: 'new',
+  contacted: 'contacted',
+  quote: 'quote',
+  won: 'won',
+  lost: 'lost',
+} as const;
+
+export interface SampleCorporateStageInput {
+  stage: SampleCorporateStageInputStage;
+}
+
+export type SampleCorporateMatchesInputMakerIdsItem = typeof SampleCorporateMatchesInputMakerIdsItem[keyof typeof SampleCorporateMatchesInputMakerIdsItem];
+
+
+export const SampleCorporateMatchesInputMakerIdsItem = {
+  m1: 'm1',
+  m2: 'm2',
+} as const;
+
+export interface SampleCorporateMatchesInput {
+  /** @maxItems 2 */
+  makerIds: SampleCorporateMatchesInputMakerIdsItem[];
+}
+
+export interface SampleCorporateQuoteInput {
+  /**
+     * @minimum 100
+     * @maximum 1000000000
+     */
+  quotePaise: number;
+}
+
+export type SampleAdminOverviewMetrics = {
+  /** @minimum 0 */
+  salesPaise: number;
+  /** @minimum 0 */
+  commissionPaise: number;
+  /** @minimum 0 */
+  orderCount: number;
+  /** @minimum 0 */
+  liveMakerCount: number;
+  /** @minimum 0 */
+  liveProductCount: number;
+  /** @minimum 0 */
+  corporatePipelinePaise: number;
+  /** @minimum 0 */
+  openCorporateCount: number;
+  /** @minimum 0 */
+  pendingReviewCount: number;
+  /** @minimum 0 */
+  openIssueCount: number;
+  /** @minimum 0 */
+  pendingApplicationCount: number;
+};
+
+export type SampleAdminOverviewAttentionItemKind = typeof SampleAdminOverviewAttentionItemKind[keyof typeof SampleAdminOverviewAttentionItemKind];
+
+
+export const SampleAdminOverviewAttentionItemKind = {
+  order: 'order',
+  review: 'review',
+  application: 'application',
+  corporate: 'corporate',
+} as const;
+
+export type SampleAdminOverviewAttentionItem = {
+  id: string;
+  label: string;
+  href: string;
+  kind: SampleAdminOverviewAttentionItemKind;
+};
+
+export interface SampleAdminOverview {
+  sample: true;
+  metrics: SampleAdminOverviewMetrics;
+  attention: SampleAdminOverviewAttentionItem[];
+}
+
+export type SampleAcademySaleStatus = typeof SampleAcademySaleStatus[keyof typeof SampleAcademySaleStatus];
+
+
+export const SampleAcademySaleStatus = {
+  paid: 'paid',
+  refunded: 'refunded',
+  cancelled: 'cancelled',
+} as const;
+
+export type SampleAcademySaleSource = typeof SampleAcademySaleSource[keyof typeof SampleAcademySaleSource];
+
+
+export const SampleAcademySaleSource = {
+  sample: 'sample',
+  tagmango_import: 'tagmango_import',
+} as const;
+
+export interface SampleAcademySale {
+  id: string;
+  date: string;
+  course: string;
+  learner: string;
+  /** @minimum 0 */
+  amountPaise: number;
+  status: SampleAcademySaleStatus;
+  source: SampleAcademySaleSource;
+}
+
+export type SampleAdminAcademySalesResponseSummary = {
+  /** @minimum 0 */
+  revenuePaise: number;
+  /** @minimum 0 */
+  seatsSold: number;
+  /** @minimum 0 */
+  refundedCount: number;
+  /** @minimum 0 */
+  importedCount: number;
+};
+
+export interface SampleAdminAcademySalesResponse {
+  sample: true;
+  sales: SampleAcademySale[];
+  summary: SampleAdminAcademySalesResponseSummary;
+}
+
+export interface SampleAdminAcademyCsvInput {
+  /**
+     * @minLength 1
+     * @maxLength 1000000
+     */
+  csv: string;
+}
+
+export type SampleAdminAcademyImportResponse = SampleAdminAcademySalesResponse & {
+  /** @minimum 0 */
+  imported: number;
+};
+
+export type SampleOperationalOrderStatus = typeof SampleOperationalOrderStatus[keyof typeof SampleOperationalOrderStatus];
+
+
+export const SampleOperationalOrderStatus = {
+  new: 'new',
+  packed: 'packed',
+  dispatched: 'dispatched',
+  delivered: 'delivered',
+  problem: 'problem',
+  delayed: 'delayed',
+  refunded: 'refunded',
+} as const;
+
+export interface SampleOperationalOrder {
+  id: string;
+  productId: string;
+  productName: string;
+  makerId: string;
+  makerBrand: string;
+  /** @minimum 1 */
+  qty: number;
+  /** @minimum 0 */
+  amountPaise: number;
+  customer: string;
+  city: string;
+  date: string;
+  status: SampleOperationalOrderStatus;
+  courier: string;
+  tracking: string;
+  /** @nullable */
+  deliveredOn: string | null;
+  settled: boolean;
+  issue: string;
+}
+
+export interface SampleOrdersResponse {
+  sample: true;
+  orders: SampleOperationalOrder[];
+}
+
+export type SampleFulfilmentInputStatus = typeof SampleFulfilmentInputStatus[keyof typeof SampleFulfilmentInputStatus];
+
+
+export const SampleFulfilmentInputStatus = {
+  packed: 'packed',
+  dispatched: 'dispatched',
+  delivered: 'delivered',
+  problem: 'problem',
+} as const;
+
+export interface SampleFulfilmentInput {
+  status: SampleFulfilmentInputStatus;
+  /** @maxLength 120 */
+  courier: string;
+  /** @maxLength 160 */
+  tracking: string;
+  /** @maxLength 2000 */
+  note: string;
+}
+
+export type SampleAdminOrderStatusInputStatus = typeof SampleAdminOrderStatusInputStatus[keyof typeof SampleAdminOrderStatusInputStatus];
+
+
+export const SampleAdminOrderStatusInputStatus = {
+  delayed: 'delayed',
+  refunded: 'refunded',
+} as const;
+
+export interface SampleAdminOrderStatusInput {
+  status: SampleAdminOrderStatusInputStatus;
+  /**
+     * @minLength 3
+     * @maxLength 2000
+     */
+  note: string;
+}
+
+export interface SampleSaleSplit {
+  /** @minimum 0 */
+  grossPaise: number;
+  /** @minimum 0 */
+  gstPaise: number;
+  /** @minimum 0 */
+  taxablePaise: number;
+  /** @minimum 0 */
+  commissionPaise: number;
+  /** @minimum 0 */
+  commissionGstPaise: number;
+  /** @minimum 0 */
+  tcsPaise: number;
+  /** @minimum 0 */
+  paymentFeePaise: number;
+  /** @minimum 0 */
+  deductionsPaise: number;
+  /** @minimum 0 */
+  payoutPaise: number;
+  netAfterGstPaise: number;
+}
+
+export interface SamplePayoutRun {
+  makerId: string;
+  makerBrand: string;
+  date: string;
+  orderIds: string[];
+  split: SampleSaleSplit;
+}
+
+export interface SamplePaidPayout {
+  makerId: string;
+  makerBrand: string;
+  date: string;
+  orderIds: string[];
+  /** @minimum 0 */
+  grossPaise: number;
+  /** @minimum 0 */
+  payoutPaise: number;
+  paidOn: string;
+}
+
+export interface SampleMakerEarnings {
+  sample: true;
+  makerId: string;
+  makerBrand: string;
+  /** @minimum 0 */
+  deliveredCount: number;
+  split: SampleSaleSplit;
+  runs: SamplePayoutRun[];
+  nextRunDate: string;
+  /** @minimum 0 */
+  nextPayoutPaise: number;
+  nextPayoutDate: string;
+  /** @minimum 0 */
+  pendingCount: number;
+  /** @minimum 0 */
+  pendingPaise: number;
+}
+
+export type SampleMakerProfitHealth = typeof SampleMakerProfitHealth[keyof typeof SampleMakerProfitHealth];
+
+
+export const SampleMakerProfitHealth = {
+  too_thin: 'too_thin',
+  tight: 'tight',
+  healthy: 'healthy',
+} as const;
+
+export interface SampleMakerProfit {
+  productId: string;
+  name: string;
+  /** @minimum 0 */
+  pricePaise: number;
+  /**
+     * @minimum 0
+     * @nullable
+     */
+  costPaise: number | null;
+  split: SampleSaleSplit;
+  /** @minimum 0 */
+  costsPaise: number;
+  leftPerSalePaise: number;
+  marginPct: number;
+  health: SampleMakerProfitHealth;
+}
+
+export interface SampleMakerProfitsResponse {
+  sample: true;
+  products: SampleMakerProfit[];
+}
+
+export interface SampleMakerProductCostInput {
+  /**
+     * @minimum 0
+     * @maximum 100000000
+     * @nullable
+     */
+  costPaise: number | null;
+}
+
+export type SampleMakerProductCost = SampleMakerProfit;
+
+export type SampleMakerSettingsPayoutOnboarding = typeof SampleMakerSettingsPayoutOnboarding[keyof typeof SampleMakerSettingsPayoutOnboarding];
+
+
+export const SampleMakerSettingsPayoutOnboarding = {
+  not_configured: 'not_configured',
+} as const;
+
+export interface SampleMakerSettings {
+  sample: true;
+  makerId: string;
+  brand: string;
+  trusted: boolean;
+  /** @minimum 0 */
+  approvedCount: number;
+  gstRegistered: boolean;
+  state: string;
+  payoutOnboarding: SampleMakerSettingsPayoutOnboarding;
+  message: string;
+}
+
+export interface SampleMakerSettingsInput {
+  gstRegistered: boolean;
+  /**
+     * @minLength 2
+     * @maxLength 80
+     */
+  state: string;
+}
+
+export type SampleMakerOpportunityType = typeof SampleMakerOpportunityType[keyof typeof SampleMakerOpportunityType];
+
+
+export const SampleMakerOpportunityType = {
+  corporate: 'corporate',
+  event: 'event',
+} as const;
+
+export type SampleMakerOpportunityStatus = typeof SampleMakerOpportunityStatus[keyof typeof SampleMakerOpportunityStatus];
+
+
+export const SampleMakerOpportunityStatus = {
+  open: 'open',
+  yes: 'yes',
+  no: 'no',
+} as const;
+
+export interface SampleMakerOpportunity {
+  id: string;
+  type: SampleMakerOpportunityType;
+  title: string;
+  detail: string;
+  status: SampleMakerOpportunityStatus;
+}
+
+export interface SampleMakerOpportunitiesResponse {
+  sample: true;
+  opportunities: SampleMakerOpportunity[];
+}
+
+export type SampleMakerOpportunityResponseInputDecision = typeof SampleMakerOpportunityResponseInputDecision[keyof typeof SampleMakerOpportunityResponseInputDecision];
+
+
+export const SampleMakerOpportunityResponseInputDecision = {
+  yes: 'yes',
+  no: 'no',
+} as const;
+
+export interface SampleMakerOpportunityResponseInput {
+  decision: SampleMakerOpportunityResponseInputDecision;
+}
+
+export type SampleMakerMasterclassProposalType = typeof SampleMakerMasterclassProposalType[keyof typeof SampleMakerMasterclassProposalType];
+
+
+export const SampleMakerMasterclassProposalType = {
+  Live_workshop: 'Live workshop',
+  Recorded_class: 'Recorded class',
+} as const;
+
+export type SampleMakerMasterclassProposalStatus = typeof SampleMakerMasterclassProposalStatus[keyof typeof SampleMakerMasterclassProposalStatus];
+
+
+export const SampleMakerMasterclassProposalStatus = {
+  submitted: 'submitted',
+  approved: 'approved',
+  changes: 'changes',
+} as const;
+
+export interface SampleMakerMasterclassProposal {
+  id: string;
+  makerId: string;
+  makerBrand: string;
+  title: string;
+  type: SampleMakerMasterclassProposalType;
+  duration: string;
+  /** @minimum 0 */
+  pricePaise: number;
+  about: string;
+  status: SampleMakerMasterclassProposalStatus;
+  note: string;
+  submittedAt: string;
+}
+
+export type SampleMakerMasterclassProposalInputType = typeof SampleMakerMasterclassProposalInputType[keyof typeof SampleMakerMasterclassProposalInputType];
+
+
+export const SampleMakerMasterclassProposalInputType = {
+  Live_workshop: 'Live workshop',
+  Recorded_class: 'Recorded class',
+} as const;
+
+export interface SampleMakerMasterclassProposalInput {
+  /**
+     * @minLength 5
+     * @maxLength 160
+     */
+  title: string;
+  type: SampleMakerMasterclassProposalInputType;
+  /**
+     * @minLength 2
+     * @maxLength 120
+     */
+  duration: string;
+  /**
+     * @minimum 0
+     * @maximum 100000000
+     */
+  pricePaise: number;
+  /**
+     * @minLength 20
+     * @maxLength 2000
+     */
+  about: string;
+}
+
+export interface SampleAdminMasterclassProposalsResponse {
+  sample: true;
+  proposals: SampleMakerMasterclassProposal[];
+}
+
+export type SampleAdminMasterclassReviewInputDecision = typeof SampleAdminMasterclassReviewInputDecision[keyof typeof SampleAdminMasterclassReviewInputDecision];
+
+
+export const SampleAdminMasterclassReviewInputDecision = {
+  approve: 'approve',
+  changes: 'changes',
+} as const;
+
+export interface SampleAdminMasterclassReviewInput {
+  decision: SampleAdminMasterclassReviewInputDecision;
+  /** @maxLength 1000 */
+  note: string;
+}
+
+export interface SampleAdminPayoutsResponse {
+  sample: true;
+  runs: SamplePayoutRun[];
+  paidRuns: SamplePaidPayout[];
+}
+
+export type SamplePaidPayoutReceipt = SamplePaidPayout & {
+  id: string;
+  message: string;
+};
+
+export interface SampleCheckoutLine {
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  productId: string;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  quantity: number;
+}
+
+export interface SampleDeliveryAddress {
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  name: string;
+  /** @pattern ^[6-9][0-9]{9}$ */
+  phone: string;
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  line1: string;
+  /** @maxLength 200 */
+  line2?: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  state: string;
+  /** @pattern ^[1-9][0-9]{5}$ */
+  pin: string;
+}
+
+export interface SampleCheckoutInput {
+  /**
+     * @minItems 1
+     * @maxItems 20
+     */
+  lines: SampleCheckoutLine[];
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  addressId?: string;
+  deliveryAddress?: SampleDeliveryAddress;
+  /** @maxLength 40 */
+  couponCode?: string;
+  idempotencyKey: string;
+}
+
+export interface SampleCheckoutResult {
+  sample: true;
+  orderId: string;
+  reference: string;
+  /** @minimum 0 */
+  itemsPaise: number;
+  /** @minimum 0 */
+  discountPaise: number;
+  /** @nullable */
+  couponCode: string | null;
+  /** @minimum 0 */
+  shippingPaise: number;
+  /** @minimum 0 */
+  totalPaise: number;
+  message: string;
+}
+
+export type SampleCouponDiscountType = typeof SampleCouponDiscountType[keyof typeof SampleCouponDiscountType];
+
+
+export const SampleCouponDiscountType = {
+  percent: 'percent',
+  fixed: 'fixed',
+} as const;
+
+export interface SampleCoupon {
+  id: string;
+  code: string;
+  discountType: SampleCouponDiscountType;
+  /** @minimum 1 */
+  discountValue: number;
+  /** @minimum 0 */
+  minimumPaise: number;
+  /**
+     * @minimum 0
+     * @nullable
+     */
+  maximumDiscountPaise: number | null;
+  startsAt: string;
+  endsAt: string;
+  /**
+     * @minimum 1
+     * @nullable
+     */
+  usageLimit: number | null;
+  /** @minimum 1 */
+  perShopperLimit: number;
+  /** @minimum 0 */
+  usedCount: number;
+  active: boolean;
+}
+
+export interface SampleCouponsResponse {
+  sample: true;
+  coupons: SampleCoupon[];
+}
+
+export type SampleCouponInputDiscountType = typeof SampleCouponInputDiscountType[keyof typeof SampleCouponInputDiscountType];
+
+
+export const SampleCouponInputDiscountType = {
+  percent: 'percent',
+  fixed: 'fixed',
+} as const;
+
+export interface SampleCouponInput {
+  /** @pattern ^[A-Z0-9_-]{3,40}$ */
+  code: string;
+  discountType: SampleCouponInputDiscountType;
+  /** @minimum 1 */
+  discountValue: number;
+  /** @minimum 0 */
+  minimumPaise: number;
+  /**
+     * @minimum 0
+     * @nullable
+     */
+  maximumDiscountPaise: number | null;
+  startsAt: string;
+  endsAt: string;
+  /**
+     * @minimum 1
+     * @nullable
+     */
+  usageLimit: number | null;
+  /**
+     * @minimum 1
+     * @maximum 100
+     */
+  perShopperLimit: number;
+  active: boolean;
+}
+
+export type SampleBlogPostStatus = typeof SampleBlogPostStatus[keyof typeof SampleBlogPostStatus];
+
+
+export const SampleBlogPostStatus = {
+  draft: 'draft',
+  published: 'published',
+} as const;
+
+export interface SampleBlogPost {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  body: string;
+  author: string;
+  status: SampleBlogPostStatus;
+  createdAt: string;
+  updatedAt: string;
+  /** @nullable */
+  publishedAt: string | null;
+}
+
+export type SampleBlogPostInputStatus = typeof SampleBlogPostInputStatus[keyof typeof SampleBlogPostInputStatus];
+
+
+export const SampleBlogPostInputStatus = {
+  draft: 'draft',
+  published: 'published',
+} as const;
+
+export interface SampleBlogPostInput {
+  /**
+     * @minLength 3
+     * @maxLength 100
+     * @pattern ^[a-z0-9]+(?:-[a-z0-9]+)*$
+     */
+  slug: string;
+  /**
+     * @minLength 3
+     * @maxLength 160
+     */
+  title: string;
+  /**
+     * @minLength 10
+     * @maxLength 500
+     */
+  excerpt: string;
+  /**
+     * @minLength 30
+     * @maxLength 12000
+     */
+  body: string;
+  /**
+     * @minLength 2
+     * @maxLength 120
+     */
+  author: string;
+  status: SampleBlogPostInputStatus;
+}
+
+export interface SampleBlogResponse {
+  sample: true;
+  posts: SampleBlogPost[];
+}
+
+export interface SampleWishlistInput {
+  saved: boolean;
+}
+
+export interface SampleAddressInput {
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  name: string;
+  /** @pattern ^[6-9][0-9]{9}$ */
+  phone: string;
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  line1: string;
+  /** @maxLength 200 */
+  line2: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  city: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  state: string;
+  /** @pattern ^[1-9][0-9]{5}$ */
+  pin: string;
+  isDefault: boolean;
 }
 
 export interface HealthStatus {

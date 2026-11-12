@@ -25,9 +25,14 @@ and warm editorial luxury.
 - The active frontend reproduces `reference/approved/baksa-tales-replit/designs/`,
   extracted from the user's approved ZIP. Do not redesign it or use the older
   storefront as the visual reference.
-- The active frontend intentionally uses labelled browser-only sample state,
-  including simulated sign-in and payment. It does not call the retained API or
-  Supabase implementation. Never mistake demo actions for live transactions.
+- The active approved frontend uses the supplied designs with sample behavior.
+  Most storefront and maker/admin demo actions use browser sample state; shopper
+  accounts, sample checkout, coupons and blog publishing use isolated API-backed
+  sample data. Sample identities do not authenticate against Supabase. Never
+  mistake these flows for live records or transactions.
+- The older React storefront and its Site Studio are retained but are not the
+  active approved frontend. Their settings do not currently edit the approved
+  storefront.
 - Report: `/approved-report.html`. Source templates and demo interaction code:
   `artifacts/baksa-tales/src/demo/`. The previous app remains in its original files.
 - `pnpm --filter @workspace/baksa-tales test` — all frontend regression tests.
