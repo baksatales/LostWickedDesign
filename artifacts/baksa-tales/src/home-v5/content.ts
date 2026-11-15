@@ -50,7 +50,7 @@ export const homeFields: HomeField[] = [
   f('Hero', 'text', 'trunk.alt', 'Trunk image alt text', 'An open embroidered maroon baksa with five compartments'),
   f('Hero', 'text', 'hint', 'First-click hint', 'This one?'),
   f('Hero', 'text', 'moodsMark', 'Gifting Moods mark', 'The five Gifting Moods™'),
-  f('Hero', 'text', 'mood.open', 'Compartment action', 'Open ↗'),
+  f('Hero', 'text', 'mood.open', 'Compartment action', 'Explore →'),
   f('Hero', 'text', 'mood.editLabel', 'Edit label ({mood} = selected name)', 'The {mood} edit'),
   f('Hero', 'text', 'mood.explore', 'Explore text ({mood} = selected name)', 'Explore the {mood} edit ↗'),
   ...MOODS.flatMap(m => {
@@ -121,7 +121,7 @@ export const homeFields: HomeField[] = [
   f('Promise', 'text', 'promise1', 'Promise 1 (title|line)', 'Every maker, met|BT Verified, in person, before they join.'),
   f('Promise', 'text', 'promise2', 'Promise 2 (title|line)', 'Handmade in India|Small batches, made to last.'),
   f('Promise', 'text', 'promise3', 'Promise 3 (title|line)', 'Free delivery over ₹2,500|Anywhere in India.'),
-  f('Promise', 'text', 'promise4', 'Promise 4 (title|line)', 'A person on WhatsApp|Gifting help from our team, [hours].'),
+  f('Promise', 'text', 'promise4', 'Promise 4 (title|line)', 'A person on WhatsApp|Gifting help from our team, 10 am – 7 pm.'),
   f('Footer', 'text', 'foot.hindi', 'Gold Devanagari', 'दिल से दुनिया तक'),
   f('Footer', 'text', 'foot.title', 'Headline (*word* gold italic)', 'Come say *namaste.*'),
   f('Footer', 'text', 'foot.body', 'Paragraph', 'New maker tales, first looks at limited drops, and invites to Kala Samāgam, our craft carnival in Delhi NCR. One WhatsApp a week, at most.'),

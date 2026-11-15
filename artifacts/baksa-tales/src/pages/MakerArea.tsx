@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import { ArrowLeft, ArrowRight, Plus } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
-import { getGetCatalogQueryKey, getGetWorkspaceQueryKey, getGetOperationsQueryKey, useGetOperations, useSaveMakerBrand, useSaveProduct, useSubmitProduct, useSaveProductImages, useDraftEditorial } from '@workspace/api-client-react';
+import { getGetCatalogQueryKey, getGetWorkspaceQueryKey, getGetOperationsQueryKey, useGetOperations, useSaveProduct, useSubmitProduct, useSaveProductImages, useDraftEditorial, useSaveMakerFullProfile } from '@workspace/api-client-react';
 import type { Product, Workspace } from '@workspace/api-client-react';
 import { useSitePage, PageArtwork, Seo, imageUrl, safeImagePath, money, errText } from './storefront-shared';
 import { SpeechDictationButton } from '../components/SpeechDictationButton';
@@ -12,9 +12,11 @@ export default function MakerArea({ path, workspace, verifiedUser, aiAvailable }
   const page=useSitePage('maker');
   const products=workspace?.products||[];
   const orderQuery=useGetOperations({query:{enabled:path==='/maker/orders'||path==='/maker',queryKey:getGetOperationsQueryKey()}});
-  const saveBrand=useSaveMakerBrand();const queryClient=useQueryClient();
-  const [brandDraft,setBrandDraft]=useState({tagline:workspace?.maker?.tagline||'',story:workspace?.maker?.story||'',heroImage:workspace?.maker?.image||''});
-  useEffect(()=>{if(workspace?.maker)setBrandDraft({tagline:workspace.maker.tagline,story:workspace.maker.story,heroImage:workspace.maker.image})},[workspace?.maker?.id]);
+  const queryClient=useQueryClient();
+  const saveBrand=useSaveMakerFullProfile();
+  const mp=workspace?.makerProfile;
+  const [brandDraft,setBrandDraft]=useState({tagline:workspace?.maker?.tagline||'',story:workspace?.maker?.story||'',heroImage:workspace?.maker?.image||'',bio:mp?.bio||'',displayName:mp?.displayName||'',city:mp?.city||'',state:mp?.state||'',instagram:mp?.instagram||'',techniques:mp?.techniques||[] as string[]});
+  useEffect(()=>{if(workspace?.maker){const m=workspace.makerProfile;setBrandDraft({tagline:workspace.maker.tagline,story:workspace.maker.story,heroImage:workspace.maker.image,bio:m?.bio||'',displayName:m?.displayName||'',city:m?.city||'',state:m?.state||'',instagram:m?.instagram||'',techniques:m?.techniques||[]})}},[workspace?.maker?.id]);
   if(path==='/maker/products/new'||path.startsWith('/maker/products/')&&path!=='/maker/products'){
     const editingId=path==='/maker/products/new'?undefined:decodeURIComponent(path.split('/').pop()||'');
     const existing=editingId?products.find(p=>p.id===editingId):undefined;
@@ -29,8 +31,74 @@ export default function MakerArea({ path, workspace, verifiedUser, aiAvailable }
     {section==='earnings'&&<div className="bk-panel"><h2>Earnings are not connected.</h2><p>There is no payout or earnings data in the workspace response. This space will show actual figures when the payout integration is available.</p></div>}
     {section==='opportunities'&&<div className="bk-panel"><h2>Opportunities are coming later.</h2><p>No open briefs or placements are exposed in this workspace yet.</p></div>}
     {section==='growth'&&<><MarginCalculator/><MakerEditorialDraft verifiedUser={verifiedUser} aiAvailable={aiAvailable}/></>}
-    {section==='brand'&&<div className="bk-panel"><h2>{workspace?.maker?.brand||'Brand profile'}</h2>{workspace?.maker?<form className="bk-form" onSubmit={e=>{e.preventDefault();saveBrand.mutate({data:brandDraft},{onSuccess:()=>{void queryClient.invalidateQueries({queryKey:getGetWorkspaceQueryKey()});void queryClient.invalidateQueries({queryKey:getGetCatalogQueryKey()})}})}}><label className="wide">Tagline<input maxLength={240} required value={brandDraft.tagline} onChange={e=>setBrandDraft(x=>({...x,tagline:e.target.value}))}/></label><label className="wide">Maker story<textarea maxLength={6000} required value={brandDraft.story} onChange={e=>setBrandDraft(x=>({...x,story:e.target.value}))}/></label><label className="wide">Hero image path or hosted URL<input maxLength={500} value={brandDraft.heroImage} onChange={e=>setBrandDraft(x=>({...x,heroImage:e.target.value}))} placeholder="/images/baksa/… or https://…"/></label>{saveBrand.isError&&<p className="bk-error">{errText(saveBrand.error)}</p>}{saveBrand.isSuccess&&<p className="bk-success" role="status">Maker profile saved by the service.</p>}<button className="bk-btn" disabled={saveBrand.isPending}>{saveBrand.isPending?'Saving…':'Save profile'}</button></form>:<p>No maker profile was returned for this workspace.</p>}</div>}
+    {section==='brand'&&<MakerBrandCard brandDraft={brandDraft} setBrandDraft={setBrandDraft} saveBrand={saveBrand} queryClient={queryClient} maker={workspace?.maker}/>}
   </section></main>;
+}
+
+const CRAFT_TECHNIQUES=['Dhokra casting','Warli painting','Bidriware','Madhubani','Kalamkari','Block printing','Terracotta','Bamboo weaving','Kantha embroidery','Pashmina','Ikat weaving','Jamdani','Phulkari','Tanjore painting','Pattachitra','Channapatna toys','Blue pottery','Banjara beadwork','Cane & bamboo','Silk weaving','Metalwork','Stone carving','Leather craft','Paper mache','Lacquerware'];
+
+type BrandDraft={tagline:string;story:string;heroImage:string;bio:string;displayName:string;city:string;state:string;instagram:string;techniques:string[]};
+type Maker={brand:string;craft:string;tagline:string;story:string;image:string;id:string};
+
+function makerProfilePct(d:BrandDraft,maker:Maker|undefined):number{
+  if(!maker)return 0;
+  const checks=[!!d.tagline.trim(),!!d.story.trim()&&d.story.trim().length>80,!!d.heroImage.trim(),!!d.bio.trim(),!!d.displayName.trim(),!!d.city.trim(),!!d.instagram.trim(),d.techniques.length>0];
+  return Math.round(checks.filter(Boolean).length/checks.length*100);
+}
+
+function MakerBrandCard({brandDraft,setBrandDraft,saveBrand,queryClient,maker}:{brandDraft:BrandDraft;setBrandDraft:React.Dispatch<React.SetStateAction<BrandDraft>>;saveBrand:{mutate:(args:{data:BrandDraft},opts:{onSuccess:()=>void})=>void;isPending:boolean;isError:boolean;isSuccess:boolean;error:unknown};queryClient:{invalidateQueries:(opts:{queryKey:unknown[]})=>Promise<unknown>};maker:Maker|undefined}){
+  const pct=makerProfilePct(brandDraft,maker);
+  const fields=[
+    {label:'Display name',done:!!brandDraft.displayName.trim()},
+    {label:'Tagline',done:!!brandDraft.tagline.trim()},
+    {label:'Bio',done:!!brandDraft.bio.trim()},
+    {label:'Hero image',done:!!brandDraft.heroImage.trim()},
+    {label:'Maker story',done:!!brandDraft.story.trim()&&brandDraft.story.trim().length>80},
+    {label:'City',done:!!brandDraft.city.trim()},
+    {label:'Instagram',done:!!brandDraft.instagram.trim()},
+    {label:'Craft techniques',done:brandDraft.techniques.length>0},
+  ];
+  const barColor=pct<40?'#f59e0b':pct<75?'#8b5cf6':'#10b981';
+  const handleSave=(e:React.FormEvent)=>{e.preventDefault();saveBrand.mutate({data:brandDraft},{onSuccess:()=>{void queryClient.invalidateQueries({queryKey:getGetWorkspaceQueryKey()});void queryClient.invalidateQueries({queryKey:getGetCatalogQueryKey()})}})};
+  if(!maker)return <div className="bk-panel"><p>No maker profile was returned for this workspace. Contact the Baksa team to check your application status.</p></div>;
+  return <div style={{display:'flex',flexDirection:'column',gap:20}}>
+    <div className="bk-panel" style={{background:'linear-gradient(135deg,#1e1b4b 0%,#312e81 50%,#4c1d95 100%)',color:'#fff',border:'none'}}>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:12}}>
+        <div><span style={{fontSize:11,letterSpacing:2,opacity:.7,textTransform:'uppercase'}}>Brand profile</span><h2 style={{fontSize:28,margin:'4px 0',color:'#fff'}}>{maker.brand}</h2><p style={{opacity:.8,margin:0}}>{maker.craft}</p></div>
+        <div style={{textAlign:'center',background:'rgba(255,255,255,.1)',borderRadius:16,padding:'12px 20px'}}>
+          <div style={{fontSize:36,fontWeight:800,color:pct===100?'#10b981':'#fff'}}>{pct}%</div>
+          <div style={{fontSize:11,opacity:.7}}>complete</div>
+        </div>
+      </div>
+      <div style={{background:'rgba(255,255,255,.15)',borderRadius:999,height:8,overflow:'hidden'}}>
+        <div style={{height:'100%',width:`${pct}%`,background:barColor,borderRadius:999,transition:'width .5s ease'}}/>
+      </div>
+      <div style={{display:'flex',flexWrap:'wrap',gap:6,marginTop:12}}>
+        {fields.map(f=><span key={f.label} style={{fontSize:12,padding:'3px 10px',borderRadius:999,background:f.done?'rgba(16,185,129,.25)':'rgba(255,255,255,.1)',color:f.done?'#6ee7b7':'rgba(255,255,255,.6)',border:`1px solid ${f.done?'rgba(16,185,129,.4)':'rgba(255,255,255,.15)'}`}}>{f.done?'✓':'○'} {f.label}</span>)}
+      </div>
+    </div>
+    <form className="bk-form" onSubmit={handleSave}>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
+        <label>Display name<input maxLength={100} placeholder="How your brand appears to shoppers" value={brandDraft.displayName} onChange={e=>setBrandDraft(x=>({...x,displayName:e.target.value}))}/></label>
+        <label>City<input maxLength={80} placeholder="Where you create" value={brandDraft.city} onChange={e=>setBrandDraft(x=>({...x,city:e.target.value}))}/></label>
+        <label>State<input maxLength={60} placeholder="State / region" value={brandDraft.state} onChange={e=>setBrandDraft(x=>({...x,state:e.target.value}))}/></label>
+        <label>Instagram<input maxLength={60} placeholder="@yourstudio" value={brandDraft.instagram} onChange={e=>setBrandDraft(x=>({...x,instagram:e.target.value}))}/></label>
+      </div>
+      <label className="wide">Tagline<small style={{float:'right',opacity:.5}}>{brandDraft.tagline.length}/240</small><input maxLength={240} placeholder="One powerful line — what makes your craft yours" value={brandDraft.tagline} onChange={e=>setBrandDraft(x=>({...x,tagline:e.target.value}))}/></label>
+      <label className="wide">Brand bio<small style={{float:'right',opacity:.5}}>{brandDraft.bio.length}/500</small><textarea maxLength={500} rows={3} placeholder="Short intro shown on your brand page (2–3 sentences)" value={brandDraft.bio} onChange={e=>setBrandDraft(x=>({...x,bio:e.target.value}))}/></label>
+      <label className="wide">Your maker story<small style={{float:'right',opacity:.5}}>{brandDraft.story.length}/6000</small><textarea maxLength={6000} rows={6} placeholder="Tell shoppers why you make, where you learned, what drives you. The more genuine, the more trust." value={brandDraft.story} onChange={e=>setBrandDraft(x=>({...x,story:e.target.value}))}/></label>
+      <label className="wide">Hero image<input maxLength={500} placeholder="/images/baksa/your-hero.webp or https://…" value={brandDraft.heroImage} onChange={e=>setBrandDraft(x=>({...x,heroImage:e.target.value}))}/></label>
+      <div style={{marginTop:4}}>
+        <span style={{fontSize:13,fontWeight:600,display:'block',marginBottom:8}}>Your craft techniques</span>
+        <div style={{display:'flex',flexWrap:'wrap',gap:6}}>
+          {CRAFT_TECHNIQUES.map(t=>{const sel=brandDraft.techniques.includes(t);return <button type="button" key={t} onClick={()=>setBrandDraft(x=>({...x,techniques:sel?x.techniques.filter(v=>v!==t):[...x.techniques,t]}))} style={{fontSize:12,padding:'5px 12px',borderRadius:999,border:`1.5px solid ${sel?'#8b5cf6':'var(--bk-rule,#e2e2e2)'}`,background:sel?'#f5f3ff':'transparent',color:sel?'#7c3aed':'inherit',cursor:'pointer',transition:'all .15s'}}>{t}</button>})}
+        </div>
+      </div>
+      {saveBrand.isError&&<p className="bk-error">{errText(saveBrand.error)}</p>}
+      {saveBrand.isSuccess&&<p className="bk-success" role="status">Brand profile saved.</p>}
+      <button className="bk-btn" disabled={saveBrand.isPending} style={{marginTop:8}}>{saveBrand.isPending?'Saving…':'Save brand profile'}</button>
+    </form>
+  </div>;
 }
 function MakerEditorialDraft({verifiedUser,aiAvailable}:{verifiedUser:boolean;aiAvailable:boolean}){
   const [facts,setFacts]=useState('');

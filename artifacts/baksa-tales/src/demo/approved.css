@@ -6,6 +6,7 @@ img { max-width: 100%; }
 button, input, select, textarea { min-height: 44px; }
 button { min-width: 44px; }
 input[type="checkbox"], input[type="radio"] { min-height: 0; }
+:focus-visible { outline: 3px solid #EBA937; outline-offset: 2px; border-radius: 4px; }
 [data-bt-scroll] { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 [data-bt-scroll] table { min-width: 640px; }
 .bt-information { box-sizing: border-box; width: min(520px, calc(100% - 36px)); border: 1.5px solid #DCCAB0; border-radius: 28px; padding: 28px; background: #FFFDF4; color: #2B1712; font-family: 'EB Garamond', Georgia, serif; font-size: 20px; }
@@ -199,6 +200,27 @@ input[type="checkbox"], input[type="radio"] { min-height: 0; }
   .bt-bea-popover-head { padding: 14px 16px; }
   .bt-bea-popover-body { padding: 14px 16px 16px; }
 }
+
+/* Bea AI chat — transcript, input row, typing indicator, product deep-link */
+.bt-bea-popover-body { display: flex; flex-direction: column; gap: 0; padding: 0 !important; }
+.bt-bea-transcript { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 16px 20px 8px; }
+.bt-bea-turn { display: flex; flex-direction: column; gap: 6px; }
+.bt-bea-message { align-self: flex-start; max-width: 88%; margin: 0; border: 1px solid rgba(97,24,17,.16); border-radius: 18px 18px 18px 4px; padding: 10px 14px; background: rgba(255,253,244,.9); color: #2B1712; font-size: 16px; line-height: 1.45; white-space: pre-wrap; }
+.bt-bea-reply { align-self: flex-end; max-width: 88%; margin: 0; border-radius: 18px 18px 4px 18px; padding: 10px 14px; background: #611811; color: #FFF8EC; font-size: 16px; line-height: 1.45; white-space: pre-wrap; }
+.bt-bea-product-link { align-self: flex-start; min-height: 36px; border: 1px solid #611811; border-radius: 999px; padding: 0 14px; background: transparent; color: #611811; cursor: pointer; font: 10px Arvo, Georgia, serif; }
+.bt-bea-typing { display: flex; align-items: center; gap: 5px; padding: 12px 16px; }
+.bt-bea-typing span { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #DCCAB0; animation: bt-bea-bounce 1.2s infinite; }
+.bt-bea-typing span:nth-child(2) { animation-delay: .2s; }
+.bt-bea-typing span:nth-child(3) { animation-delay: .4s; }
+@keyframes bt-bea-bounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-5px); } }
+.bt-bea-input-row { flex: 0 0 auto; display: flex; align-items: flex-end; gap: 8px; padding: 8px 14px 12px; border-top: 1px solid #DCCAB0; background: #FFFDF4; }
+.bt-bea-input { flex: 1; min-height: 44px; max-height: 120px; resize: none; border: 1px solid #BBA78E; border-radius: 14px; padding: 10px 12px; background: #FFFEF9; color: #2B1712; font: 16px 'EB Garamond', Georgia, serif; line-height: 1.4; overflow-y: auto; box-sizing: border-box; }
+.bt-bea-input:focus { outline: 3px solid #EBA937; outline-offset: 2px; }
+.bt-bea-send { flex: 0 0 auto; width: 44px; height: 44px; border: 0; border-radius: 50%; background: #611811; color: #FFF8EC; font-size: 20px; cursor: pointer; display: grid; place-items: center; }
+.bt-bea-send:disabled { background: #DCCAB0; cursor: default; }
+.bt-bea-disclosure { flex: 0 0 auto; padding: 4px 14px 10px; margin: 0; color: #A88E7A; font: 9px/1.4 Arvo, Georgia, serif; text-align: center; }
+.bt-bea-new-chat { border: 1px solid rgba(97,24,17,.3); border-radius: 999px; padding: 0 10px; height: 28px; background: transparent; color: #611811; cursor: pointer; font: 9px Arvo, Georgia, serif; white-space: nowrap; }
+.bt-bea-new-chat:hover { background: rgba(97,24,17,.06); }
 
 /* Coupon administration reuses the existing warm team-workspace palette. */
 .bt-admin-coupons { min-width: 0; width: 100%; min-height: 100vh; display: grid; grid-template-columns: minmax(210px, 270px) minmax(0, 1fr); gap: clamp(20px, 4vw, 44px); padding: clamp(18px, 4vw, 48px); box-sizing: border-box; background: #F6F3DF; color: #2B1712; font-family: 'EB Garamond', Georgia, serif; }

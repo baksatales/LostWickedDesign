@@ -1928,6 +1928,24 @@ export const GetWorkspaceResponse = zod.object({
   "story": zod.string(),
   "image": zod.string()
 }).optional(),
+  "makerProfile": zod.object({
+  "bio": zod.string(),
+  "displayName": zod.string(),
+  "city": zod.string(),
+  "state": zod.string(),
+  "instagram": zod.string(),
+  "techniques": zod.array(zod.string()),
+  "gstin": zod.string(),
+  "published": zod.boolean()
+}).optional(),
+  "buyerProfile": zod.object({
+  "fullName": zod.string(),
+  "phone": zod.string(),
+  "avatarUrl": zod.string(),
+  "occasionPrefs": zod.array(zod.string()),
+  "stylePrefs": zod.array(zod.string()),
+  "budgetMaxPaise": zod.number().int().nullable()
+}).optional(),
   "products": zod.array(zod.object({
   "id": zod.string(),
   "slug": zod.string(),

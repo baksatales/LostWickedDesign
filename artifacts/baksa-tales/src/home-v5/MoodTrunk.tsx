@@ -1,4 +1,5 @@
 import { useRef, useState, useSyncExternalStore, type KeyboardEvent } from 'react';
+import { useLocation } from 'wouter';
 import { getState, subscribe } from '../demo/store';
 import { MOODS, nextMood, resolvePicks, type MoodId } from './content';
 import { EditCard } from './ProductCard';
@@ -11,9 +12,11 @@ const NOTCH = ['15.4%', '32.9%', '50.4%', '67.8%', '85.3%'];
 
 export function MoodTrunk({ v, mood, setMood }: { v: V; mood: MoodId; setMood: (m: MoodId) => void }) {
   const [touched, setTouched] = useState(false);
+  const [, navigate] = useLocation();
   const desk = useRef<Record<string, HTMLButtonElement | null>>({});
   const mob = useRef<Record<string, HTMLButtonElement | null>>({});
   const choose = (m: MoodId) => { setMood(m); setTouched(true); };
+  const open = (m: MoodId) => { choose(m); navigate(v(`h5.link.mood.${m}`)); window.scrollTo({ top: 0 }); };
   const onKey = (e: KeyboardEvent, refs: typeof desk) => {
     let to: MoodId | null = null;
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') to = nextMood(mood, 1);
@@ -38,8 +41,8 @@ export function MoodTrunk({ v, mood, setMood }: { v: V; mood: MoodId; setMood: (
             {MOODS.map((m, i) => (
               <button key={m} type="button" ref={el => { desk.current[m] = el; }}
                 className={`tile5 t${i + 1}${m === mood ? ' on' : ''}`} style={{ left: TILE_LEFT[i] }}
-                aria-pressed={m === mood} tabIndex={m === mood ? 0 : -1} data-testid={`mood-${m}`}
-                onClick={() => choose(m)} onKeyDown={e => onKey(e, desk)}>
+                aria-current={m === mood ? 'true' : undefined} tabIndex={m === mood ? 0 : -1} data-testid={`mood-${m}`}
+                onClick={() => open(m)} onKeyDown={e => onKey(e, desk)}>
                 <span style={{ fontSize: 'clamp(14px, 1.75vw, 25px)', fontStyle: 'italic', lineHeight: 1 }}>{name(m)}</span>
                 <span className="ow"><img src={obj(m)} alt={v(`h5.copy.mood.${m}.alt`)} /></span>
                 <span style={{ fontSize: 'clamp(11px, 1.05vw, 15px)', lineHeight: 1.15, color: '#5C463C', fontStyle: 'italic' }}>{line(m)}</span>
@@ -59,8 +62,8 @@ export function MoodTrunk({ v, mood, setMood }: { v: V; mood: MoodId; setMood: (
       <div className="mswipe" role="group" aria-label={group} data-testid="swipe-moods" style={{ gap: 12, overflowX: 'auto', padding: '24px 2px 12px' }}>
         {MOODS.map(m => (
           <button key={m} type="button" ref={el => { mob.current[m] = el; }} className={`mcard${m === mood ? ' on' : ''}`}
-            aria-pressed={m === mood} tabIndex={m === mood ? 0 : -1} data-testid={`swipe-mood-${m}`}
-            onClick={() => choose(m)} onKeyDown={e => onKey(e, mob)}>
+            aria-current={m === mood ? 'true' : undefined} tabIndex={m === mood ? 0 : -1} data-testid={`swipe-mood-${m}`}
+            onClick={() => open(m)} onKeyDown={e => onKey(e, mob)}>
             <span style={{ display: 'block', fontSize: 20, fontStyle: 'italic' }}>{name(m)}</span>
             <img src={obj(m)} alt="" style={{ display: 'block', width: '100%', height: 96, objectFit: 'contain', margin: '8px 0' }} />
             <span style={{ display: 'block', fontSize: 15, color: '#5C463C', fontStyle: 'italic' }}>{line(m)}</span>

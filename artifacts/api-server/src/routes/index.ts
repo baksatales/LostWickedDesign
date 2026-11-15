@@ -7,6 +7,7 @@ import operationsRouter from "./operations";
 import editorialAssistRouter from "./editorial-assist";
 import sampleAccountsRouter from "./sample-accounts";
 import salesRouter from "./sales";
+import beaChatRouter from "./bea-chat";
 
 const router: IRouter = Router();
 
@@ -18,5 +19,6 @@ router.use(operationsRouter);
 router.use(editorialAssistRouter);
 router.use(sampleAccountsRouter);
 router.use(salesRouter);
+router.use(beaChatRouter);
 
 export default router;

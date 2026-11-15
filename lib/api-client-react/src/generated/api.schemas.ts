@@ -547,18 +547,24 @@ export interface FulfilmentInput {
 }
 
 export interface MakerBrandInput {
-  /**
-     * @minLength 1
-     * @maxLength 240
-     */
   tagline: string;
-  /**
-     * @minLength 1
-     * @maxLength 6000
-     */
   story: string;
-  /** @maxLength 500 */
   heroImage: string;
+  bio?: string;
+  displayName?: string;
+  city?: string;
+  state?: string;
+  instagram?: string;
+  techniques?: string[];
+}
+
+export interface BuyerProfileInput {
+  fullName?: string;
+  phone?: string;
+  avatarUrl?: string;
+  occasionPrefs?: string[];
+  stylePrefs?: string[];
+  budgetMaxPaise?: number;
 }
 
 export interface ProductImagesInput {
@@ -786,6 +792,14 @@ export interface Workspace {
   email: string;
   roles: string[];
   maker?: Maker;
+  makerProfile?: {
+    bio: string; displayName: string; city: string; state: string;
+    instagram: string; techniques: string[]; gstin: string; published: boolean;
+  };
+  buyerProfile?: {
+    fullName: string; phone: string; avatarUrl: string;
+    occasionPrefs: string[]; stylePrefs: string[]; budgetMaxPaise: number | null;
+  };
   products: Product[];
   ordersCount: number;
   applicationsCount: number;

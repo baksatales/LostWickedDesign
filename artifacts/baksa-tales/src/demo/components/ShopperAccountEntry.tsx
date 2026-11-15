@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useState, useSyncExternalStore } from 'react';
-import { endSampleSession, getSampleSession } from '@workspace/api-client-react';
+import { useCallback, useEffect, useMemo, useState, useSyncExternalStore } from 'react';
+import { createClient } from '@supabase/supabase-js';
+import { endSampleSession, getSampleSession, useGetRuntime, useGetWorkspace, getGetWorkspaceQueryKey } from '@workspace/api-client-react';
 import { SAMPLE_SESSION_KEY } from '../SampleAccount';
 import { getState, subscribe } from '../store';
 import { ShopperAccountMenu, type ShopperAccountDestination } from './ShopperAccountMenu';
@@ -23,17 +24,37 @@ const destinationPath: Record<ShopperAccountDestination, string> = {
 export function ShopperAccountEntry({ navigate, wishlistCount, className = '' }: ShopperAccountEntryProps) {
   const [shopper, setShopper] = useState<ShopperSample | null>(null);
   const [notice, setNotice] = useState('');
+  const [realUser, setRealUser] = useState<{id:string;email?:string}|null>(null);
   const state = useSyncExternalStore(subscribe, getState);
   const savedCount = wishlistCount ?? state.wishlist.length;
+
+  const runtimeQuery = useGetRuntime();
+  const runtime = runtimeQuery.data;
+  const supabase = useMemo(() => {
+    if (runtime?.auth && runtime.supabaseUrl && runtime.supabaseAnonKey) {
+      return createClient(runtime.supabaseUrl, runtime.supabaseAnonKey);
+    }
+    return null;
+  }, [runtime?.auth, runtime?.supabaseUrl, runtime?.supabaseAnonKey]);
+
+  const workspaceQuery = useGetWorkspace({ query: { queryKey: [...getGetWorkspaceQueryKey(), realUser?.id ?? null], enabled: !!realUser && !!supabase } });
+  const workspace = workspaceQuery.data;
+
+  useEffect(() => {
+    if (!supabase) { setRealUser(null); return; }
+    supabase.auth.getSession().then(({ data }) => {
+      setRealUser(data.session?.user ?? null);
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setRealUser(session?.user ?? null);
+    });
+    return () => subscription.unsubscribe();
+  }, [supabase]);
 
   const refresh = useCallback(async () => {
     let token: string | null = null;
     try { token = localStorage.getItem(SAMPLE_SESSION_KEY); } catch { /* storage may be unavailable */ }
-    if (!token) {
-      setShopper(null);
-      setNotice('');
-      return;
-    }
+    if (!token) { setShopper(null); setNotice(''); return; }
     try {
       const identity = await getSampleSession({ headers: { authorization: `Bearer ${token}` } });
       setShopper(identity.role === 'shopper' ? { token, displayName: identity.displayName } : null);
@@ -57,23 +78,58 @@ export function ShopperAccountEntry({ navigate, wishlistCount, className = '' }:
     };
   }, [refresh]);
 
+  const signOutReal = async () => {
+    if (!supabase) return;
+    await supabase.auth.signOut();
+    setRealUser(null);
+    navigate('/');
+  };
+
   const signOut = async () => {
     if (!shopper) return;
     try {
       await endSampleSession({ headers: { authorization: `Bearer ${shopper.token}` } });
       localStorage.removeItem(SAMPLE_SESSION_KEY);
       window.dispatchEvent(new Event('bt:sample-session-changed'));
-      setShopper(null);
-      setNotice('');
+      setShopper(null); setNotice('');
       navigate('/account');
     } catch {
       setNotice('Could not confirm sign out. Please try again.');
     }
   };
 
+  const roles = workspace?.roles ?? [];
+  const destination = roles.includes('admin') ? '/admin' : roles.includes('maker') ? '/maker' : '/account';
+  const displayName = workspace?.buyerProfile?.fullName
+    ? workspace.buyerProfile.fullName.split(' ')[0]
+    : (realUser?.email?.split('@')[0] ?? 'Account');
+  const avatar = roles.includes('admin') ? '🔑'
+    : roles.includes('maker') ? '🏺'
+    : (workspace?.buyerProfile?.avatarUrl && workspace.buyerProfile.avatarUrl.length <= 4
+        ? workspace.buyerProfile.avatarUrl : '🛍️');
+  const roleLabel = roles.includes('admin') ? 'Admin' : roles.includes('maker') ? 'Studio' : displayName;
+
   return (
     <div className={`bt-account-entry ${className}`.trim()} data-testid="shopper-account-entry">
-      {shopper ? (
+      {realUser ? (
+        <div style={{display:'flex',alignItems:'center',gap:4}}>
+          <a
+            href={destination}
+            className="bt-account-entry__sign-in"
+            onClick={event => { event.preventDefault(); navigate(destination); }}
+            aria-label="Your account"
+            style={{display:'flex',alignItems:'center',gap:6,textDecoration:'none'}}
+          >
+            <span style={{fontSize:18,lineHeight:1}}>{avatar}</span>
+            <span style={{fontSize:13,fontWeight:600}}>{roleLabel}</span>
+          </a>
+          <button
+            onClick={() => void signOutReal()}
+            style={{fontSize:11,opacity:.6,background:'none',border:'none',cursor:'pointer',padding:'2px 6px'}}
+            aria-label="Sign out"
+          >Sign out</button>
+        </div>
+      ) : shopper ? (
         <ShopperAccountMenu
           displayName={shopper.displayName}
           displayState="sample"
@@ -85,9 +141,9 @@ export function ShopperAccountEntry({ navigate, wishlistCount, className = '' }:
         <a
           className="bt-account-entry__sign-in"
           href="/account"
-          onClick={event => { event.preventDefault(); navigate('/account'); }}
+          onClick={event => { event.preventDefault(); navigate('/sign-in'); }}
           data-testid="link-shopper-sign-in"
-          aria-label="Sign in to your shopper account"
+          aria-label="Sign in to your account"
         >
           <svg className="bt-account-menu__person" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7.5" r="3.2" /><path d="M5 20c.6-3.5 3.2-5.5 7-5.5s6.4 2 7 5.5" /></svg>
           <span>Sign in</span>

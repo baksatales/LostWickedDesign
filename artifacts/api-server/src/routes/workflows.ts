@@ -59,12 +59,23 @@ router.get("/workspace", async (req, res): Promise<void> => {
   const { db, user, roles } = await identity(req);
   const admin = roles.includes("admin"), maker = roles.includes("maker");
   let shop = undefined;
+  let makerProfile = undefined;
   let products: ReturnType<typeof mapProduct>[] = [];
   if (maker) {
-    const result = await db.from("makers").select("id,brand,craft,tagline,story,bio,hero_image_url").eq("owner_user_id", user.id).maybeSingle();
+    const result = await db.from("makers").select("id,brand,craft,tagline,story,bio,hero_image_url,display_name,city,state,instagram,techniques,gstin,published").eq("owner_user_id", user.id).maybeSingle();
     checkDb(result.error);
     if (result.data) {
       shop = mapMaker(result.data);
+      makerProfile = {
+        bio: String(result.data.bio ?? ""),
+        displayName: String(result.data.display_name ?? ""),
+        city: String(result.data.city ?? ""),
+        state: String(result.data.state ?? ""),
+        instagram: String(result.data.instagram ?? ""),
+        techniques: Array.isArray(result.data.techniques) ? result.data.techniques as string[] : [],
+        gstin: String(result.data.gstin ?? ""),
+        published: Boolean(result.data.published),
+      };
       const resultProducts = await db.from("products").select("id,slug,maker_id,name,price_paise,stock,dispatch_days,material,story,status,review_note,product_images(url,sort)").eq("maker_id", shop.id).order("created_at", { ascending: false });
       checkDb(resultProducts.error); products = (resultProducts.data ?? []).map(p => mapProduct(p));
     }
@@ -73,6 +84,17 @@ router.get("/workspace", async (req, res): Promise<void> => {
     const result = await db.from("products").select("id,slug,maker_id,name,price_paise,stock,dispatch_days,material,story,status,review_note,product_images(url,sort)").in("status", ["review", "changes"]).order("submitted_at");
     checkDb(result.error); products = (result.data ?? []).map(p => mapProduct(p));
   }
+  // Buyer profile — fetch for all roles
+  const profileResult = await db.from("profiles").select("full_name,phone,avatar_url,occasion_prefs,style_prefs,budget_max_paise").eq("id", user.id).maybeSingle();
+  checkDb(profileResult.error);
+  const buyerProfile = {
+    fullName: String(profileResult.data?.full_name ?? ""),
+    phone: String(profileResult.data?.phone ?? ""),
+    avatarUrl: String(profileResult.data?.avatar_url ?? ""),
+    occasionPrefs: Array.isArray(profileResult.data?.occasion_prefs) ? profileResult.data.occasion_prefs as string[] : [],
+    stylePrefs: Array.isArray(profileResult.data?.style_prefs) ? profileResult.data.style_prefs as string[] : [],
+    budgetMaxPaise: typeof profileResult.data?.budget_max_paise === "number" ? profileResult.data.budget_max_paise : null,
+  };
   let orderQuery = db.from("orders").select("id", { count: "exact", head: true });
   if (!admin) orderQuery = maker && shop ? orderQuery.eq("maker_id", shop.id) : orderQuery.eq("buyer_id", user.id);
   const orders = await orderQuery; checkDb(orders.error);
@@ -80,7 +102,7 @@ router.get("/workspace", async (req, res): Promise<void> => {
   const briefs = admin ? await db.from("corporate_enquiries").select("id", { count: "exact", head: true }).eq("stage", "new") : null;
   if (applications) checkDb(applications.error); if (briefs) checkDb(briefs.error);
   res.json(GetWorkspaceResponse.parse({
-    userId: user.id, email: user.email ?? "", roles, maker: shop, products,
+    userId: user.id, email: user.email ?? "", roles, maker: shop, makerProfile, buyerProfile, products,
     ordersCount: orders.count ?? 0, applicationsCount: applications?.count ?? 0, briefsCount: briefs?.count ?? 0,
   }));
 });

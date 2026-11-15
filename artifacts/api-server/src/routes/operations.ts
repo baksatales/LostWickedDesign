@@ -24,7 +24,7 @@ const rpcError = (error: { code?: string; message: string } | null) => {
   if (error?.code === "PGRST202") throw new HttpError(503, "The reviewed operations migration needs applying. Nothing has been saved.");
   checkDb(error);
 };
-router.use(["/operations", "/admin/applications", "/admin/briefs", "/orders", "/maker/brand", "/maker/products"], (_req, res, next) => {
+router.use(["/operations", "/admin/applications", "/admin/briefs", "/orders", "/maker/brand", "/maker/products", "/buyer/profile"], (_req, res, next) => {
   res.set("Cache-Control", "no-store"); next();
 });
 router.get("/operations", async (req, res) => {
@@ -82,15 +82,38 @@ router.patch("/orders/:id/fulfilment", limits, async (req, res) => {
 router.put("/maker/brand", limits, async (req, res) => {
   const { db, user, roles } = await identity(req);
   if (!roles.includes("maker")) throw new HttpError(403, "An approved maker account is required.");
-  const parsed = SaveMakerBrandBody.safeParse(req.body);
-  if (!parsed.success || !parsed.data.tagline.trim() || !parsed.data.story.trim()) throw new HttpError(400, "Add a tagline and your maker story.");
-  if (!isSafeImage(parsed.data.heroImage)) throw new HttpError(400, "Use an existing asset path or a full https image address.");
-  const { data, error } = await db.from("makers").update({
-    tagline: parsed.data.tagline.trim(), story: parsed.data.story.trim(), hero_image_url: parsed.data.heroImage || null,
-  }).eq("owner_user_id", user.id).select("id").maybeSingle();
+  const p = req.body as Record<string, unknown>;
+  if (!p.tagline || typeof p.tagline !== "string" || !p.tagline.trim()) throw new HttpError(400, "Add a tagline.");
+  if (!p.story || typeof p.story !== "string" || !p.story.trim()) throw new HttpError(400, "Add your maker story.");
+  if (p.heroImage && !isSafeImage(String(p.heroImage))) throw new HttpError(400, "Use an existing asset path or a full https image address.");
+  const update: Record<string, unknown> = {
+    tagline: p.tagline.trim(),
+    story: (p.story as string).trim(),
+    hero_image_url: p.heroImage ? String(p.heroImage) : null,
+  };
+  if (typeof p.bio === "string") update.bio = p.bio.trim();
+  if (typeof p.displayName === "string") update.display_name = p.displayName.trim();
+  if (typeof p.city === "string") update.city = p.city.trim();
+  if (typeof p.instagram === "string") update.instagram = p.instagram.trim() || null;
+  if (Array.isArray(p.techniques)) update.techniques = (p.techniques as unknown[]).filter(t => typeof t === "string").map(t => (t as string).trim()).filter(Boolean);
+  const { data, error } = await db.from("makers").update(update).eq("owner_user_id", user.id).select("id").maybeSingle();
   checkDb(error);
   if (!data) throw new HttpError(403, "No maker shop is linked to this account.");
-  res.json({ id: data.id, message: "Your maker profile is saved. Ownership, tax details and publication permissions were not changed." });
+  res.json({ id: data.id, message: "Your maker profile is saved." });
+});
+router.put("/buyer/profile", limits, async (req, res) => {
+  const { db, user } = await identity(req);
+  const p = req.body as Record<string, unknown>;
+  const update: Record<string, unknown> = { id: user.id };
+  if (typeof p.fullName === "string") update.full_name = p.fullName.trim();
+  if (typeof p.phone === "string") update.phone = p.phone.trim();
+  if (typeof p.avatarUrl === "string") update.avatar_url = p.avatarUrl.trim() || null;
+  if (Array.isArray(p.occasionPrefs)) update.occasion_prefs = p.occasionPrefs.filter((x): x is string => typeof x === "string");
+  if (Array.isArray(p.stylePrefs)) update.style_prefs = p.stylePrefs.filter((x): x is string => typeof x === "string");
+  if (typeof p.budgetMaxPaise === "number") update.budget_max_paise = p.budgetMaxPaise;
+  const { error } = await db.from("profiles").upsert(update, { onConflict: "id" });
+  checkDb(error);
+  res.json({ id: user.id, message: "Profile saved." });
 });
 router.put("/maker/products/:id/images", limits, async (req, res) => {
   const { db, roles } = await identity(req);
