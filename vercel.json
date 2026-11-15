@@ -7,6 +7,10 @@
     "PORT": "3000",
     "BASE_PATH": "/"
   },
+  "buildEnv": {
+    "PORT": "3000",
+    "BASE_PATH": "/"
+  },
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
