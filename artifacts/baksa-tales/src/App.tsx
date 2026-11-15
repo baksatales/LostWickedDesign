@@ -5,6 +5,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { useLocation, Router as WouterRouter } from 'wouter';
 import BaksaApp from '@/demo/ApprovedApp';
+import { CreatureCursor } from '@/components/CreatureCursor';
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ function App() {
           <Router />
         </WouterRouter>
         <Toaster />
+        <CreatureCursor />
       </TooltipProvider>
     </QueryClientProvider>
   );

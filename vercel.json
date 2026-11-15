@@ -1,0 +1,13 @@
+{
+  "buildCommand": "cd artifacts/baksa-tales && pnpm build",
+  "outputDirectory": "artifacts/baksa-tales/dist/public",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "framework": null,
+  "env": {
+    "PORT": "3000",
+    "BASE_PATH": "/"
+  },
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}

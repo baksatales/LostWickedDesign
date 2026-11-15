@@ -28,7 +28,10 @@ app.use(
 );
 app.disable("x-powered-by");
 app.set("trust proxy", 1);
-app.use(cors({ origin: false }));
+const allowedOrigins = process.env["CORS_ORIGIN"]
+  ? process.env["CORS_ORIGIN"].split(",").map(o => o.trim())
+  : false;
+app.use(cors({ origin: allowedOrigins }));
 app.use(express.json({ limit: "220kb" }));
 app.use(express.urlencoded({ extended: true, limit: "100kb" }));
 
