@@ -44,7 +44,8 @@ async function catalogData() {
 router.get("/runtime", async (_req, res): Promise<void> => {
   const cfg = publicConfig();
   const configured = !!cfg.url && !!cfg.anon;
-  const ready = await securityReady();
+  let ready = false;
+  try { ready = await securityReady(); } catch { ready = false; }
   res.json(GetRuntimeResponse.parse({
     database: ready, auth: configured, payments: false, ai: !!(process.env.AI_INTEGRATIONS_OPENAI_BASE_URL && process.env.AI_INTEGRATIONS_OPENAI_API_KEY),
     supabaseUrl: cfg.url, supabaseAnonKey: cfg.anon,
