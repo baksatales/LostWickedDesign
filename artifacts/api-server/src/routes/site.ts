@@ -11,7 +11,9 @@ const emptyDraft = () => ({ document: defaultSite, revision: 0, publishedRevisio
 
 router.get("/site", async (_req, res) => {
   res.set("Cache-Control", "no-cache");
-  if (!(await securityReady())) {
+  let ready = false;
+  try { ready = await securityReady(); } catch { ready = false; }
+  if (!ready) {
     res.json(GetSiteResponse.parse({ document: defaultSite, revision: 0, configured: false, updatedAt: "" }));
     return;
   }

@@ -11,7 +11,9 @@ const publicProductFields = "id,slug,maker_id,name,price_paise,stock,made_to_ord
 const publicMakerFields = "id,brand,craft,tagline,story,bio,hero_image_url,gst_registered,state,published";
 
 async function catalogData() {
-  if (!(await securityReady())) {
+  let ready = false;
+  try { ready = await securityReady(); } catch { ready = false; }
+  if (!ready) {
     const sampleProducts = [...sampleCatalog.products, ...sampleSubmittedCatalogProducts()];
     const catalog = GetCatalogResponse.parse({
       ...sampleCatalog,
