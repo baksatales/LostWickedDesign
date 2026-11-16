@@ -365,20 +365,22 @@ function SignInForm({role,runtime,client,user,workspace,returnTo}:{role:SignInRo
   if(forgot)return <form className="bk-form" onSubmit={submit}><p style={{marginBottom:12,fontSize:14,color:'var(--bk-muted)'}}>Enter your email address and we will send you a link to reset your password.</p><label className="wide">Email address<input required type="email" autoComplete="email" value={email} onChange={e=>setEmail(e.target.value)}/></label>{error&&<p className="bk-error" role="alert">{error}</p>}{message&&<p className="bk-success" role="status">{message}</p>}<button className="bk-btn" disabled={busy}>{busy?'Sending…':'Send reset link'}</button><button type="button" className="bk-btn secondary" onClick={()=>{setForgot(false);setError('');setMessage('')}}>Back to sign in</button></form>;
   return <form className="bk-form" onSubmit={submit}><label className="wide">Email address<input required type="email" autoComplete="email" value={email} onChange={e=>setEmail(e.target.value)}/></label><label className="wide">Password<input required type="password" autoComplete={signup?'new-password':'current-password'} minLength={6} value={password} onChange={e=>setPassword(e.target.value)}/></label>{error&&<p className="bk-error" role="alert">{error}</p>}{message&&<p className="bk-success" role="status">{message}</p>}<button className="bk-btn" disabled={busy}>{busy?'Please wait…':signup?'Create account':'Sign in'}</button>{role==='buyer'&&<button type="button" className="bk-btn secondary" onClick={()=>{setSignup(v=>!v);setError('');setMessage('')}}>{signup?'Already have an account? Sign in':'New here? Create a free account'}</button>}{!signup&&<button type="button" className="bk-btn secondary" style={{fontSize:13}} onClick={()=>{setForgot(true);setError('');setMessage('')}}>Forgot password?</button>}</form>;
 }
-function ResetPasswordPage({client}:{client:SupabaseClient|null}){
+function ResetPasswordPage({client,clientLoading}:{client:SupabaseClient|null;clientLoading:boolean}){
   const [,navigate]=useLocation();
   const [password,setPassword]=useState('');const [confirm,setConfirm]=useState('');const [error,setError]=useState('');const [message,setMessage]=useState('');const [busy,setBusy]=useState(false);const [ready,setReady]=useState(false);
+  // Detect recovery token from hash synchronously — it will be present even before Supabase fires the event
+  const hasRecoveryHash=window.location.hash.includes('type=recovery');
   useEffect(()=>{
     if(!client)return;
-    // Supabase embeds the recovery token in the URL hash. Exchange it for a session.
-    client.auth.onAuthStateChange((event)=>{if(event==='PASSWORD_RECOVERY')setReady(true);});
-    // Also handle the hash directly in case the event already fired
-    const hash=window.location.hash;
-    if(hash.includes('type=recovery'))setReady(true);
+    const {data:{subscription}}=client.auth.onAuthStateChange((event)=>{if(event==='PASSWORD_RECOVERY')setReady(true);});
+    // Supabase auto-exchanges the hash on client creation; if already done, check current session
+    client.auth.getSession().then(({data})=>{if(data.session)setReady(true);});
+    return ()=>subscription.unsubscribe();
   },[client]);
   const submit=async(e:FormEvent)=>{e.preventDefault();setError('');if(!client)return;if(password!==confirm){setError('Passwords do not match.');return;}setBusy(true);try{const result=await client.auth.updateUser({password});if(result.error)throw result.error;setMessage('Your password has been updated. Redirecting to sign in…');setTimeout(()=>navigate('/sign-in'),2000);}catch(e){setError((e as Error).message||'Password could not be updated.')}finally{setBusy(false)}};
   return <main className="bk-formpage" style={{maxWidth:480}}><Seo title="Reset password" description="Set a new password for your Baksa Tales account."/><span className="bk-eyebrow">Password reset</span><h1>Set a new password.</h1>
-    {!client?<p className="bk-errorbox">Authentication is not connected. Contact the marketplace owner.</p>:
+    {clientLoading||(!client&&hasRecoveryHash)?<div className="bk-skeleton"/>:
+    !client?<p className="bk-errorbox">Authentication is not connected. Contact the marketplace owner.</p>:
     !ready?<div className="bk-panel"><p>Looking for your reset link…</p><p style={{fontSize:13,color:'var(--bk-muted)'}}>If you arrived here directly, use the link in your reset email. It expires in 1 hour.</p><Link className="bk-btn secondary" href="/sign-in">Back to sign in</Link></div>:
     message?<p className="bk-success" role="status">{message}</p>:
     <form className="bk-form" onSubmit={submit}><label className="wide">New password<input required type="password" autoComplete="new-password" minLength={6} value={password} onChange={e=>setPassword(e.target.value)}/></label><label className="wide">Confirm new password<input required type="password" autoComplete="new-password" minLength={6} value={confirm} onChange={e=>setConfirm(e.target.value)}/></label>{error&&<p className="bk-error" role="alert">{error}</p>}<button className="bk-btn" disabled={busy}>{busy?'Updating…':'Update password'}</button></form>}
@@ -599,7 +601,7 @@ export default function BaksaApp(){
   else if(route==='/corporate') content=<CorporatePage/>;
   else if(route==='/sell') content=<SellPage user={user} v={sellDraft} setV={setSellDraft} onSignIn={()=>setAuthReturn('/sell')}/>;
   else if(route==='/academy') content=<AcademyPage/>;
-  else if(route==='/reset-password') content=<ResetPasswordPage client={supabase}/>;
+  else if(route==='/reset-password') content=<ResetPasswordPage client={supabase} clientLoading={runtimeQuery.isLoading}/>;
   else if(route==='/sign-in') content=<SignInPage runtime={runtime} runtimeLoading={runtimeQuery.isLoading} client={supabase} user={user} workspace={workspace} returnTo={authReturn}/>;
   else if(route==='/account') content=<SecureGate runtime={runtime} runtimeLoading={runtimeQuery.isLoading} ready={authReady} user={user} workspace={workspace} workspaceLoading={workspaceQuery.isLoading} workspaceError={workspaceQuery.error} retryWorkspace={()=>void workspaceQuery.refetch()} roles={['buyer','maker','admin']}><main className="bk-formpage" style={{maxWidth:720}}><Seo title="Your account" description="Your Baksa Tales account and profile."/><div style={{display:'flex',alignItems:'center',gap:14,marginBottom:24}}><span style={{fontSize:40}}>{workspace?.buyerProfile?.avatarUrl&&workspace.buyerProfile.avatarUrl.length<=4?workspace.buyerProfile.avatarUrl:'🛍️'}</span><div><span className="bk-eyebrow">Welcome back</span><h1 style={{margin:0,fontSize:'clamp(28px,4vw,42px)'}}>{workspace?.buyerProfile?.fullName?`Hey, ${workspace.buyerProfile.fullName.split(' ')[0]}!`:'Your account.'}</h1></div></div><BuyerProfileCard workspace={workspace} user={user} supabase={supabase} setLocation={setLocation}/><BuyerOrderList/></main></SecureGate>;
   else if(route==='/maker'||route.startsWith('/maker/')) content=<SecureGate runtime={runtime} runtimeLoading={runtimeQuery.isLoading} ready={authReady} user={user} workspace={workspace} workspaceLoading={workspaceQuery.isLoading} workspaceError={workspaceQuery.error} retryWorkspace={()=>void workspaceQuery.refetch()} roles={['maker']}><MakerArea path={route} workspace={workspace} verifiedUser={!!user?.email_confirmed_at} aiAvailable={!!runtime?.ai}/></SecureGate>;
