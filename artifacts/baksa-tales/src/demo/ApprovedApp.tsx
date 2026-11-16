@@ -484,7 +484,7 @@ function BagDrawer() {
 }
 export default function ApprovedApp() {
   const [location] = useLocation();
-  if (location === '/sign-in' || location === '/account' || location === '/sell' || location.startsWith('/maker') || location.startsWith('/admin')) return <BaksaApp />;
+  if (location === '/sign-in' || location === '/reset-password' || location === '/account' || location === '/sell' || location.startsWith('/maker') || location.startsWith('/admin')) return <BaksaApp />;
   if (location === '/studio-preview') return <StudioRoute localOnly preview={document => <HomeV5 document={document} />} />;
   return <ApprovedRoutes />;
 }
