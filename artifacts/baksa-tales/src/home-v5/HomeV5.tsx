@@ -59,6 +59,7 @@ export default function HomeV5({ document: doc }: { document?: SiteDocument }) {
           </div>
           <MoodTrunk v={v} mood={mood} setMood={setMood} />
         </section>
+        <Tales v={v} doc={doc} />
         <MostGifted v={v} />
         <MakerSection v={v} />
         <Kala v={v} />
