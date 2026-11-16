@@ -8,15 +8,58 @@ import { AppLink, Em, asset } from './ui';
 type V = (key: string) => string;
 
 const TILE_LEFT = ['6.95%', '24.42%', '41.89%', '59.36%', '76.83%'];
-const NOTCH = ['15.4%', '32.9%', '50.4%', '67.8%', '85.3%'];
+const NOTCH    = ['15.4%', '32.9%',  '50.4%',  '67.8%',  '85.3%'];
 
-export function MoodTrunk({ v, mood, setMood }: { v: V; mood: MoodId; setMood: (m: MoodId) => void }) {
+export function MoodTrunk({ v, mood: moodProp, setMood: setMoodProp }: { v: V; mood: MoodId; setMood: (m: MoodId) => void }) {
   const [touched, setTouched] = useState(false);
+  const [mood, setMood] = useState<MoodId>(moodProp);
+  // boxOpen: whether the trunk box itself is open (tiles visible)
+  const [boxOpen, setBoxOpen] = useState(false);
+  const [boxOpening, setBoxOpening] = useState(false);
+  const [boxClosing, setBoxClosing] = useState(false);
+  // tile open/close state (which tile is lifted)
+  const [tileOpen, setTileOpen] = useState(false);
+  const [tileClosing, setTileClosing] = useState(false);
   const [, navigate] = useLocation();
   const desk = useRef<Record<string, HTMLButtonElement | null>>({});
   const mob = useRef<Record<string, HTMLButtonElement | null>>({});
-  const choose = (m: MoodId) => { setMood(m); setTouched(true); };
-  const open = (m: MoodId) => { choose(m); navigate(v(`h5.link.mood.${m}`)); window.scrollTo({ top: 0 }); };
+
+  const openBox = () => {
+    setTouched(true);
+    setBoxOpening(true);
+    setBoxClosing(false);
+    // After brief "pop" animation on the closed image, swap to open
+    setTimeout(() => {
+      setBoxOpen(true);
+      setBoxOpening(false);
+    }, 350);
+  };
+
+  const closeBox = () => {
+    setBoxClosing(true);
+    setTileOpen(false);
+    setTileClosing(false);
+    setTimeout(() => { setBoxOpen(false); setBoxClosing(false); setTouched(false); }, 500);
+  };
+
+  const doTileClose = () => {
+    setTileClosing(true);
+    setTimeout(() => { setTileOpen(false); setTileClosing(false); }, 400);
+  };
+
+  const pick = (m: MoodId) => {
+    if (!boxOpen) return; // box must be open first
+    if (mood === m && tileOpen) {
+      doTileClose();
+    } else {
+      setMood(m);
+      setMoodProp(m);
+      setTileClosing(false);
+      setTileOpen(true);
+      setTimeout(() => navigate(v(`h5.link.mood.${m}`)), 800);
+    }
+  };
+
   const onKey = (e: KeyboardEvent, refs: typeof desk) => {
     let to: MoodId | null = null;
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') to = nextMood(mood, 1);
@@ -24,7 +67,7 @@ export function MoodTrunk({ v, mood, setMood }: { v: V; mood: MoodId; setMood: (
     if (e.key === 'Home') to = MOODS[0];
     if (e.key === 'End') to = MOODS[MOODS.length - 1];
     if (!to) return;
-    e.preventDefault(); choose(to);
+    e.preventDefault(); pick(to);
     const el = refs.current[to]; el?.focus(); el?.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
   };
   const name = (m: MoodId) => v(`h5.copy.mood.${m}.name`);
@@ -32,38 +75,95 @@ export function MoodTrunk({ v, mood, setMood }: { v: V; mood: MoodId; setMood: (
   const obj = (m: MoodId) => asset(v(`h5.image.mood.${m}`));
   const group = 'Gifting Moods';
 
+  // box is "closed view" = not yet open and not in opening animation
+  const showClosed = !boxOpen && !boxClosing;
+
   return (
     <>
-      <div className="trunk5wrap" style={{ position: 'relative', marginTop: 72 }}>
-        <div className="trunk5" data-testid="trunk-desktop">
-          <img className="bg" src={asset(v('h5.image.trunk'))} alt={v('h5.copy.trunk.alt')} />
-          <div role="group" aria-label={group}>
-            {MOODS.map((m, i) => (
-              <button key={m} type="button" ref={el => { desk.current[m] = el; }}
-                className={`tile5 t${i + 1}${m === mood ? ' on' : ''}`} style={{ left: TILE_LEFT[i] }}
-                aria-current={m === mood ? 'true' : undefined} tabIndex={m === mood ? 0 : -1} data-testid={`mood-${m}`}
-                onClick={() => open(m)} onKeyDown={e => onKey(e, desk)}>
-                <span style={{ fontSize: 'clamp(14px, 1.75vw, 25px)', fontStyle: 'italic', lineHeight: 1 }}>{name(m)}</span>
-                <span className="ow"><img src={obj(m)} alt={v(`h5.copy.mood.${m}.alt`)} /></span>
-                <span style={{ fontSize: 'clamp(11px, 1.05vw, 15px)', lineHeight: 1.15, color: '#5C463C', fontStyle: 'italic' }}>{line(m)}</span>
-                <span style={{ marginTop: 'auto', fontSize: 'clamp(11px, 1.1vw, 16px)', fontStyle: 'italic', color: '#68142F' }}>{v('h5.copy.mood.open')}</span>
-              </button>
-            ))}
+      <div className="trunk5wrap" style={{ position: 'relative', marginTop: 80, overflow: 'visible' }}>
+
+        {/* ── Closed state: standalone image, full natural aspect ratio ─ */}
+        {showClosed && (
+          <div className={`trunk5-closed-wrap${boxOpening ? ' trunk5-popping' : ''}`}
+            style={{ maxWidth: 1180, margin: '0 auto', cursor: 'pointer', position: 'relative' }}
+            onClick={boxOpening ? undefined : openBox}
+            role="button"
+            aria-label="Open the baksa trunk"
+            tabIndex={0}
+            onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openBox(); } }}
+          >
+            <img
+              src={asset(v('h5.image.trunk.closed'))}
+              alt="Click to open the baksa"
+              style={{ display: 'block', width: '100%', height: 'auto' }}
+            />
+            {!touched && (
+              <span className="hint" aria-hidden="true" data-testid="hint-first-click"
+                style={{ position: 'absolute', left: '58%', top: '-18%', pointerEvents: 'none' }}>
+                <span style={{ display: 'block', fontSize: 'clamp(15px, 1.7vw, 22px)', fontStyle: 'italic', color: '#C23A36', transform: 'rotate(-5deg)', whiteSpace: 'nowrap', marginBottom: 6 }}>Lift the lid ✦</span>
+                <svg viewBox="0 0 30 64" style={{ display: 'block', width: 26, height: 54, marginLeft: 6 }}>
+                  <path d="M22 4 C 20 22, 10 40, 6 58" fill="none" stroke="#4A1020" strokeWidth="2.5" strokeLinecap="round"/>
+                  <path d="M2 50 L 6 60 L 13 53" fill="none" stroke="#4A1020" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </span>
+            )}
           </div>
-          {!touched ? (
-            <span className="hint" aria-hidden="true" data-testid="hint-first-click" style={{ position: 'absolute', left: '25%', top: '-20%', display: 'flex', alignItems: 'flex-end', gap: 4, pointerEvents: 'none' }}>
-              <span style={{ fontSize: 'clamp(18px, 2vw, 28px)', fontStyle: 'italic', color: '#C23A36', transform: 'rotate(-8deg)', display: 'inline-block' }}>{v('h5.copy.hint')}</span>
-              <svg viewBox="0 0 40 60" style={{ width: 30, height: 46, marginBottom: -26 }}><path d="M8 4 C 30 10, 34 30, 22 52" fill="none" stroke="#4A1020" strokeWidth="2" strokeLinecap="round" /><path d="M14 46 L 22 54 L 28 44" fill="none" stroke="#4A1020" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-            </span>
-          ) : null}
-        </div>
+        )}
+
+        {/* ── Open state: trunk with tiles ─────────────────────────────── */}
+        {(boxOpen || boxClosing) && (
+          <>
+            <div className={`trunk5${boxClosing ? ' trunk5-closing' : ' trunk5-open'}`} data-testid="trunk-desktop">
+              <img className="bg" src={asset(v('h5.image.trunk'))} alt={v('h5.copy.trunk.alt')} />
+
+              <div role="group" aria-label={group}>
+                {MOODS.map((m, i) => {
+                  const isOn = m === mood && tileOpen;
+                  const isClosing = m === mood && tileClosing;
+                  return (
+                    <button key={m} type="button" ref={el => { desk.current[m] = el; }}
+                      className={`tile5 t${i + 1}${isOn ? ' on' : ''}${isClosing ? ' closing' : ''}${boxClosing ? ' tile5-hiding' : ' tile5-showing'}`}
+                      style={{ left: TILE_LEFT[i] }}
+                      aria-expanded={isOn} tabIndex={m === mood ? 0 : -1} data-testid={`mood-${m}`}
+                      onClick={() => pick(m)} onKeyDown={e => onKey(e, desk)}>
+                      <span style={{ fontSize: 'clamp(14px, 1.75vw, 25px)', fontStyle: 'italic', lineHeight: 1 }}>{name(m)}</span>
+                      <span className="ow"><img src={obj(m)} alt={v(`h5.copy.mood.${m}.alt`)} /></span>
+                      <span style={{ fontSize: 'clamp(11px, 1.05vw, 15px)', lineHeight: 1.15, color: '#5C463C', fontStyle: 'italic' }}>{line(m)}</span>
+                      <span style={{ marginTop: 'auto', fontSize: 'clamp(11px, 1.1vw, 16px)', fontStyle: 'italic', color: '#68142F' }}>
+                        {isOn || isClosing ? 'Close ✕' : 'Peek in'}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Close button — outside trunk5 so it isn't clipped by aspect-ratio container */}
+            {!boxClosing && (
+              <div style={{ textAlign: 'center', marginTop: 10 }}>
+                <button
+                  type="button"
+                  aria-label="Close the trunk"
+                  onClick={closeBox}
+                  style={{
+                    background: 'none', border: 'none', cursor: 'pointer',
+                    fontSize: 'clamp(12px, 1.1vw, 15px)', fontStyle: 'italic', color: '#68142F',
+                    fontFamily: 'inherit', padding: '4px 12px',
+                  }}
+                >
+                  Close trunk ↑
+                </button>
+              </div>
+            )}
+          </>
+        )}
       </div>
 
       <div className="mswipe" role="group" aria-label={group} data-testid="swipe-moods" style={{ gap: 12, overflowX: 'auto', padding: '24px 2px 12px' }}>
         {MOODS.map(m => (
-          <button key={m} type="button" ref={el => { mob.current[m] = el; }} className={`mcard${m === mood ? ' on' : ''}`}
-            aria-current={m === mood ? 'true' : undefined} tabIndex={m === mood ? 0 : -1} data-testid={`swipe-mood-${m}`}
-            onClick={() => open(m)} onKeyDown={e => onKey(e, mob)}>
+          <button key={m} type="button" ref={el => { mob.current[m] = el; }} className={`mcard${m === mood && tileOpen ? ' on' : ''}`}
+            aria-expanded={m === mood && tileOpen} tabIndex={m === mood ? 0 : -1} data-testid={`swipe-mood-${m}`}
+            onClick={() => pick(m)} onKeyDown={e => onKey(e, mob)}>
             <span style={{ display: 'block', fontSize: 20, fontStyle: 'italic' }}>{name(m)}</span>
             <img src={obj(m)} alt="" style={{ display: 'block', width: '100%', height: 96, objectFit: 'contain', margin: '8px 0' }} />
             <span style={{ display: 'block', fontSize: 15, color: '#5C463C', fontStyle: 'italic' }}>{line(m)}</span>
@@ -71,19 +171,21 @@ export function MoodTrunk({ v, mood, setMood }: { v: V; mood: MoodId; setMood: (
         ))}
       </div>
 
-      <div style={{ margin: '30px 0 34px', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '12px 40px', fontSize: 21 }}>
+      <div style={{ margin: '16px 0 20px', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '8px 32px', fontSize: 18 }}>
         <AppLink href={v('h5.link.hero.browse')} testId="link-browse-all" style={{ color: '#4A1020' }}>{v('h5.copy.hero.browse')}</AppLink>
         <AppLink href={v('h5.link.hero.self')} testId="link-for-yourself" style={{ color: '#4A1020' }}>{v('h5.copy.hero.self')}</AppLink>
       </div>
 
-      <div style={{ maxWidth: 1180, margin: '0 auto' }}>
-        <MoodPanel key={mood} v={v} mood={mood} notch={NOTCH[MOODS.indexOf(mood)]} />
-      </div>
+      {tileOpen && (
+        <div style={{ maxWidth: 1180, margin: '0 auto' }}>
+          <MoodPanel key={mood} v={v} mood={mood} notch={NOTCH[MOODS.indexOf(mood)]} navigate={navigate} />
+        </div>
+      )}
     </>
   );
 }
 
-function MoodPanel({ v, mood, notch }: { v: V; mood: MoodId; notch: string }) {
+function MoodPanel({ v, mood, notch, navigate }: { v: V; mood: MoodId; notch: string; navigate: (to: string) => void }) {
   const s = useSyncExternalStore(subscribe, getState);
   const picks = resolvePicks(s.products, v(`h5.picks.mood.${mood}`), 3, mood);
   const nm = v(`h5.copy.mood.${mood}.name`);

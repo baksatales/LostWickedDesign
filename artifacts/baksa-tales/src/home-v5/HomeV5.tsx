@@ -5,8 +5,8 @@ import HomeHeader, { brandAnnouncement } from './HomeHeader';
 import { MoodTrunk } from './MoodTrunk';
 import { Tales } from './Tales';
 import { BaksaWay, Footer, Kala, MakerSection, MostGifted, PromiseRow } from './Sections';
-import { Band } from './ui';
 import './home-v5.css';
+import './premium-homepage.css';
 
 const FONTS = 'https://fonts.googleapis.com/css2?family=Arvo:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Noto+Serif+Devanagari:wght@400;500;600&display=swap';
 
@@ -44,26 +44,23 @@ export default function HomeV5({ document: doc }: { document?: SiteDocument }) {
 
   return (
     <div className="h5" data-bt-page="store" data-testid="page-home-v5">
-      <div data-testid="text-announcement" style={{ background: '#EBA937', color: '#2B1712', fontFamily: 'Arvo, Georgia, serif', fontSize: 13, textAlign: 'center', padding: '11px 20px' }}>{brandAnnouncement(doc) || v('h5.copy.announce')}</div>
+      <div data-testid="text-announcement" style={{ background: '#EBA937', color: '#2B1712', fontFamily: 'Arvo, Georgia, serif', fontSize: 12, textAlign: 'center', padding: '7px 20px', letterSpacing: '.08em' }}>{brandAnnouncement(doc) || v('h5.copy.announce')}</div>
       <HomeHeader document={doc} />
-      <Band />
       <main>
-        <section id="top" aria-labelledby="h5-hero-title" style={{ position: 'relative', maxWidth: 1280, margin: '0 auto', padding: '44px 32px 40px' }}>
-          <p style={{ margin: 0, textAlign: 'center', fontFamily: 'Arvo, Georgia, serif', fontSize: 12, letterSpacing: '.2em', color: '#4A1020', textTransform: 'uppercase' }}>{v('h5.copy.hero.eyebrow')}</p>
-          <h1 id="h5-hero-title" style={{ margin: '16px 0 0', textAlign: 'center', fontSize: 'clamp(48px, 5.6vw, 82px)', lineHeight: 1, fontWeight: 500, letterSpacing: '-.02em', color: '#4A1020' }}>
+        <section id="top" aria-labelledby="h5-hero-title" style={{ position: 'relative', maxWidth: 1280, margin: '0 auto', padding: '20px 32px 16px' }}>
+          <p style={{ margin: 0, textAlign: 'center', fontFamily: 'Arvo, Georgia, serif', fontSize: 11, letterSpacing: '.2em', color: '#4A1020', textTransform: 'uppercase' }}>{v('h5.copy.hero.eyebrow')}</p>
+          <h1 id="h5-hero-title" style={{ margin: '10px 0 0', textAlign: 'center', fontSize: 'clamp(40px, 5vw, 72px)', lineHeight: 1, fontWeight: 500, letterSpacing: '-.02em', color: '#4A1020' }}>
             <HeroTitle text={v('h5.copy.hero.title')} />
           </h1>
-          <div style={{ margin: '22px auto 0', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 22, maxWidth: 760 }}>
+          <div style={{ margin: '14px auto 0', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 22, maxWidth: 760 }}>
             <span style={{ flex: 1, height: 1, background: '#CDB79A' }} />
-            <p style={{ margin: 0, fontSize: 23, fontStyle: 'italic', color: '#5C463C', textAlign: 'center' }}>{v('h5.copy.hero.tagline')}</p>
+            <p style={{ margin: 0, fontSize: 19, fontStyle: 'italic', color: '#5C463C', textAlign: 'center' }}>{v('h5.copy.hero.tagline')}</p>
             <span style={{ flex: 1, height: 1, background: '#CDB79A' }} />
           </div>
           <MoodTrunk v={v} mood={mood} setMood={setMood} />
         </section>
-        <Tales v={v} doc={doc} />
         <MostGifted v={v} />
         <MakerSection v={v} />
-        <BaksaWay v={v} />
         <Kala v={v} />
         <PromiseRow v={v} />
       </main>

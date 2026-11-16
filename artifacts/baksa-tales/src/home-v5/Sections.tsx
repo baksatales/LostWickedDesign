@@ -17,19 +17,19 @@ const linkArvo: CSSProperties = { fontFamily: ARVO, fontSize: 14 };
 
 export function MostGifted({ v }: { v: V }) {
   const s = useSyncExternalStore(subscribe, getState);
-  const picks = resolvePicks(s.products, v('h5.picks.gifted'), 4);
+  const picks = resolvePicks(s.products, v('h5.picks.gifted'), 3);
   const pills = parsePills(v('h5.copy.gifted.pills'));
   const bgs = ['#D5E6DE', '#FBE3B2', '#F7D9CF', '#E9DFF0'];
   return (
-    <section id="shop" aria-labelledby="h5-gifted" style={wrap('96px 32px 24px')}>
-      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'end', gap: 16, marginBottom: 34 }}>
+    <section id="shop" aria-labelledby="h5-gifted" style={wrap('40px 32px 16px')}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'end', gap: 12, marginBottom: 22 }}>
         <div>
-          <h2 id="h5-gifted" style={{ margin: 0, fontSize: 'clamp(40px, 4.4vw, 60px)', fontWeight: 500, lineHeight: 1 }}><Em text={v('h5.copy.gifted.title')} color={ACCENT} /></h2>
-          <p style={{ margin: '8px 0 0', fontSize: 19, color: '#5C463C' }}>{v('h5.copy.gifted.sub')}</p>
+          <h2 id="h5-gifted" style={{ margin: 0, fontSize: 'clamp(34px, 3.8vw, 52px)', fontWeight: 500, lineHeight: 1 }}><Em text={v('h5.copy.gifted.title')} color={ACCENT} /></h2>
+          <p style={{ margin: '6px 0 0', fontSize: 17, color: '#5C463C' }}>{v('h5.copy.gifted.sub')}</p>
         </div>
         <AppLink href={v('h5.link.hero.browse')} testId="link-see-all-gifts" style={linkArvo}>{v('h5.copy.gifted.all')}</AppLink>
       </div>
-      <div data-testid="grid-most-gifted" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 250px), 1fr))', gap: '36px 24px' }}>
+      <div data-testid="grid-most-gifted" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '28px 20px' }}>
         {picks.map((p, i) => <GiftedCard key={p.kind === 'product' ? p.product.id : `pb${i}`} pick={p} v={v} bg={bgs[i % 4]} pill={p.kind === 'product' ? pills[p.product.id] : undefined} />)}
       </div>
     </section>
@@ -45,8 +45,8 @@ export function MakerSection({ v }: { v: V }) {
   const [read, shop] = pair(v('h5.copy.maker.buttons'));
   const href = v('h5.link.maker');
   return (
-    <section id="makers" aria-labelledby="h5-maker" style={wrap('104px 32px 104px')}>
-      <div style={twoCol(420, '48px 88px')}>
+    <section id="makers" aria-labelledby="h5-maker" style={wrap('40px 32px 40px')}>
+      <div style={twoCol(420, '36px 64px')}>
         <div style={{ position: 'relative', maxWidth: 520, width: '100%', justifySelf: 'center', aspectRatio: '1' }}>
           <svg viewBox="0 0 200 200" aria-hidden="true" style={{ position: 'absolute', inset: '-6%', width: '112%', height: '112%' }}>
             <g fill="#F7D9CF" stroke={ACCENT} strokeWidth="1.2">{DOTS.map(([x, y], i) => <circle key={i} cx={x} cy={y} r="4.2" />)}</g>
@@ -125,7 +125,7 @@ export function Kala({ v }: { v: V }) {
   return (
     <section id="kala" aria-labelledby="h5-kala" style={{ position: 'relative', background: '#34514B', color: '#F6EBD3', overflow: 'hidden' }}>
       <p lang="hi" aria-hidden="true" style={{ position: 'absolute', right: -30, top: 30, margin: 0, fontFamily: DEVA, fontSize: 200, lineHeight: 1, color: 'rgba(235,169,55,.12)', whiteSpace: 'nowrap' }}>{v('h5.copy.kala.hindi')}</p>
-      <div style={{ ...wrap('96px 32px 80px'), ...twoCol(420, '48px 72px') }}>
+      <div style={{ ...wrap('64px 32px 56px'), ...twoCol(420, '48px 72px') }}>
         <div>
           <p style={{ margin: 0, fontFamily: ARVO, fontSize: 13, color: '#EBA937' }}>{v('h5.copy.kala.label')}</p>
           <h2 id="h5-kala" style={{ margin: '10px 0 0', fontSize: 'clamp(46px, 5.4vw, 80px)', fontWeight: 500, lineHeight: 1 }}>{v('h5.copy.kala.title')}</h2>
@@ -169,7 +169,7 @@ const PROMISE_ICONS = [
 
 export function PromiseRow({ v }: { v: V }) {
   return (
-    <section aria-label="Our promise" style={{ position: 'relative', padding: '52px 0 68px' }}>
+    <section aria-label="Our promise" style={{ position: 'relative', padding: '36px 0 48px' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 32px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 230px), 1fr))', gap: '24px 32px' }}>
         {[1, 2, 3, 4].map((n, i) => {
           const [t, d] = pair(v(`h5.copy.promise${n}`));
@@ -208,41 +208,36 @@ export function Footer({ v }: { v: V }) {
   const small: CSSProperties = { fontFamily: ARVO, fontSize: 12, color: 'rgba(246,235,211,.8)' };
   const testId = (label: string) => `link-footer-${label.toLowerCase().replace(/[^a-z]+/g, '-')}`;
   return (
-    <footer data-testid="site-footer" style={{ position: 'relative', marginTop: 40, background: '#611811', color: '#F6EBD3' }}>
+    <footer data-testid="site-footer" style={{ position: 'relative', marginTop: 24, background: '#611811', color: '#F6EBD3' }}>
       <svg viewBox="0 0 1440 40" preserveAspectRatio="none" aria-hidden="true" style={{ position: 'absolute', left: 0, top: -39, width: '100%', height: 40, display: 'block' }}><path d={SCALLOP} fill="#611811" /></svg>
-      <div style={{ ...wrap('80px 32px 56px'), ...twoCol(420, '48px 72px') }}>
+      <div style={{ ...wrap('32px 32px 28px'), ...twoCol(420, '32px 56px') }}>
         <div>
-          <p lang="hi" style={{ margin: 0, fontFamily: DEVA, fontSize: 24, color: '#EBA937' }}>{v('h5.copy.foot.hindi')}</p>
-          <h2 style={{ margin: '10px 0 0', fontSize: 'clamp(50px, 5.6vw, 84px)', fontWeight: 500, lineHeight: .98, color: '#FFF8EC' }}><Em text={v('h5.copy.foot.title')} color="#EBA937" /></h2>
-          <p style={{ margin: '20px 0 0', fontSize: 21, lineHeight: 1.55, color: 'rgba(246,235,211,.9)', maxWidth: '26em' }}>{v('h5.copy.foot.body')}</p>
+          <p lang="hi" style={{ margin: 0, fontFamily: DEVA, fontSize: 20, color: '#EBA937' }}>{v('h5.copy.foot.hindi')}</p>
+          <h2 style={{ margin: '8px 0 0', fontSize: 'clamp(38px, 4.4vw, 64px)', fontWeight: 500, lineHeight: .98, color: '#FFF8EC' }}><Em text={v('h5.copy.foot.title')} color="#EBA937" /></h2>
+          <p style={{ margin: '14px 0 0', fontSize: 18, lineHeight: 1.5, color: 'rgba(246,235,211,.9)', maxWidth: '26em' }}>{v('h5.copy.foot.body')}</p>
         </div>
-        <form onSubmit={submit} noValidate data-testid="form-signup" style={{ position: 'relative', background: '#FFFDF4', color: '#2B1712', borderRadius: 18, padding: 34, transform: 'rotate(-1.5deg)', boxShadow: '0 30px 60px -28px rgba(0,0,0,.6)', maxWidth: 560, width: '100%', justifySelf: 'center', boxSizing: 'border-box' }}>
-          <div aria-hidden="true" style={{ position: 'absolute', top: 22, right: 22, width: 92, height: 108, border: '3px dotted #E14B49', borderRadius: 6, background: '#F6F3DF', display: 'flex', alignItems: 'center', justifyContent: 'center', transform: 'rotate(4deg)' }}>
-            <img src={asset(v('h5.image.mark'))} alt="" style={{ width: 72, height: 'auto' }} />
-          </div>
-          <svg viewBox="0 0 120 120" aria-hidden="true" style={{ position: 'absolute', top: 70, right: 92, width: 96, height: 96, opacity: .55 }}><circle cx="60" cy="60" r="50" fill="none" stroke="#611811" strokeWidth="2" /><circle cx="60" cy="60" r="40" fill="none" stroke="#611811" strokeWidth="1" /><path d="M14 54 Q 60 40 106 54 M14 66 Q 60 52 106 66" fill="none" stroke="#611811" strokeWidth="1.5" /></svg>
-          <p style={{ margin: 0, fontFamily: ARVO, fontSize: 12, color: '#611811' }}>{v('h5.copy.foot.card')}</p>
-          <p style={{ margin: '10px 0 0', fontSize: 30, lineHeight: 1.12, maxWidth: '9.5em', fontStyle: 'italic' }}>{v('h5.copy.foot.dear')}</p>
-          <div style={{ marginTop: 26, borderTop: '1.5px solid #DCCAB0', paddingTop: 22 }}>
-            <label htmlFor="h5-wa" style={{ display: 'block', fontFamily: ARVO, fontSize: 12, color: '#5C463C' }}>{v('h5.copy.foot.phoneLabel')}</label>
-            <div style={{ marginTop: 8, display: 'flex', flexWrap: 'wrap', gap: 10 }}>
-              <span style={{ display: 'flex', alignItems: 'center', padding: '0 14px', height: 52, borderRadius: 14, background: '#ECE6CC', fontFamily: ARVO, fontSize: 14 }}>+91</span>
+        <form onSubmit={submit} noValidate data-testid="form-signup" style={{ position: 'relative', background: '#FFFDF4', color: '#2B1712', borderRadius: 14, padding: 20, transform: 'rotate(-1.5deg)', boxShadow: '0 20px 40px -20px rgba(0,0,0,.55)', maxWidth: 480, width: '100%', justifySelf: 'center', boxSizing: 'border-box' }}>
+          <p style={{ margin: 0, fontFamily: ARVO, fontSize: 11, color: '#611811' }}>{v('h5.copy.foot.card')}</p>
+          <p style={{ margin: '8px 0 0', fontSize: 24, lineHeight: 1.12, maxWidth: '9.5em', fontStyle: 'italic' }}>{v('h5.copy.foot.dear')}</p>
+          <div style={{ marginTop: 18, borderTop: '1.5px solid #DCCAB0', paddingTop: 16 }}>
+            <label htmlFor="h5-wa" style={{ display: 'block', fontFamily: ARVO, fontSize: 11, color: '#5C463C' }}>{v('h5.copy.foot.phoneLabel')}</label>
+            <div style={{ marginTop: 8, display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+              <span style={{ display: 'flex', alignItems: 'center', padding: '0 12px', height: 46, borderRadius: 12, background: '#ECE6CC', fontFamily: ARVO, fontSize: 13 }}>+91</span>
               <input id="h5-wa" type="tel" inputMode="numeric" autoComplete="tel-national" placeholder={v('h5.copy.foot.phonePlaceholder')} value={phone}
                 aria-invalid={!!error} aria-describedby={error ? 'h5-wa-err' : notLive ? 'h5-wa-status' : undefined} data-testid="input-signup-whatsapp"
                 onChange={e => { setPhone(e.target.value); setNotLive(false); }}
-                style={{ flex: '1 1 180px', height: 52, borderRadius: 14, border: '1.5px solid #DCCAB0', background: '#FFFDF4', padding: '0 16px', fontFamily: "'EB Garamond', Georgia, serif", fontSize: 19, color: '#2B1712', boxSizing: 'border-box', minWidth: 0 }} />
-              <button type="submit" className="pill" data-testid="button-signup" style={{ height: 52, padding: '0 24px', borderRadius: 14, border: 0, background: '#611811', color: '#FFF8EC', fontFamily: ARVO, fontSize: 14, cursor: 'pointer' }}>{v('h5.copy.foot.button')}</button>
+                style={{ flex: '1 1 160px', height: 46, borderRadius: 12, border: '1.5px solid #DCCAB0', background: '#FFFDF4', padding: '0 14px', fontFamily: "'EB Garamond', Georgia, serif", fontSize: 18, color: '#2B1712', boxSizing: 'border-box', minWidth: 0 }} />
+              <button type="submit" className="pill" data-testid="button-signup" style={{ height: 46, padding: '0 20px', borderRadius: 12, border: 0, background: '#611811', color: '#FFF8EC', fontFamily: ARVO, fontSize: 13, cursor: 'pointer' }}>{v('h5.copy.foot.button')}</button>
             </div>
             {error ? <p id="h5-wa-err" role="alert" className="h5-err" data-testid="error-signup">{error}</p> : null}
             {notLive ? <p id="h5-wa-status" role="status" className="h5-notlive" data-testid="status-signup">{v('h5.copy.foot.notlive')}</p> : null}
-            <p style={{ margin: '12px 0 0', fontSize: 15, color: '#5C463C' }}>{v('h5.copy.foot.nospam')}</p>
           </div>
         </form>
       </div>
 
-      <nav aria-label="Footer" style={{ maxWidth: 1280, margin: '0 auto', padding: '44px 32px', borderTop: '1px solid rgba(246,235,211,.25)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: 32 }}>
+      <nav aria-label="Footer" style={{ maxWidth: 1280, margin: '0 auto', padding: '20px 32px 16px', borderTop: '1px solid rgba(246,235,211,.25)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 160px), 1fr))', gap: '12px 24px' }}>
         {columns.map(c => (
-          <div key={c.h} aria-label={c.h} role="group" style={{ display: 'flex', flexDirection: 'column', gap: 10, fontSize: 19, alignItems: 'flex-start' }}>
+          <div key={c.h} aria-label={c.h} role="group" style={{ display: 'flex', flexDirection: 'column', gap: 8, fontSize: 17, alignItems: 'flex-start' }}>
             {c.links.map(([label, href]) => href.startsWith('/')
               ? <AppLink key={label} href={href} className="flink" testId={testId(label)}>{label}</AppLink>
               : safeExternal(href) ? <a key={label} className="flink" href={href} rel="noopener noreferrer">{label}</a>
@@ -254,15 +249,10 @@ export function Footer({ v }: { v: V }) {
         ))}
       </nav>
 
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '24px 32px 40px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
-        <span lang="hi" style={{ fontFamily: DEVA, fontSize: 22, color: '#EBA937' }}>{v('h5.copy.foot.hindi')}</span>
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '12px 32px 20px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
         <span style={small}>{v('h5.copy.foot.copyright')}</span>
-      </div>
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '24px 32px 28px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
         <span style={small}>{v('h5.copy.foot.payments')}</span>
-        <span style={small} data-testid="sample-note">{v('h5.copy.foot.sample')}</span>
       </div>
-      <Band color="#EBA937" />
     </footer>
   );
 }

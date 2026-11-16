@@ -47,10 +47,11 @@ export const homeFields: HomeField[] = [
   f('Hero', 'text', 'hero.quiz', 'Quiz link text', 'Not sure? Take the 4-question gift finder'),
   f('Hero', 'link', 'hero.quiz', 'Quiz link destination', '/finder'),
   f('Hero', 'image', 'trunk', 'Empty trunk image', `${IMG}homev5-trunk.webp`),
+  f('Hero', 'image', 'trunk.closed', 'Closed trunk image', `${IMG}homev5-trunk-closed.png`),
   f('Hero', 'text', 'trunk.alt', 'Trunk image alt text', 'An open embroidered maroon baksa with five compartments'),
   f('Hero', 'text', 'hint', 'First-click hint', 'This one?'),
   f('Hero', 'text', 'moodsMark', 'Gifting Moods mark', 'The five Gifting Moods™'),
-  f('Hero', 'text', 'mood.open', 'Compartment action', 'Explore →'),
+  f('Hero', 'text', 'mood.open', 'Compartment action', 'Unfold'),
   f('Hero', 'text', 'mood.editLabel', 'Edit label ({mood} = selected name)', 'The {mood} edit'),
   f('Hero', 'text', 'mood.explore', 'Explore text ({mood} = selected name)', 'Explore the {mood} edit ↗'),
   ...MOODS.flatMap(m => {

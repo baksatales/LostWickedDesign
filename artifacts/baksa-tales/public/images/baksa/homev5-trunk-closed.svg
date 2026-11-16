@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" role="img" aria-label="Closed embroidered maroon baksa trunk">
+<defs>
+  <pattern id="flc" width="60" height="60" patternUnits="userSpaceOnUse">
+    <rect width="60" height="60" fill="#F7D9CF"/>
+    <g fill="#C23A36" opacity=".55"><circle cx="15" cy="15" r="5"/><circle cx="9" cy="15" r="3"/><circle cx="21" cy="15" r="3"/><circle cx="15" cy="9" r="3"/><circle cx="15" cy="21" r="3"/></g>
+    <circle cx="45" cy="45" r="4" fill="#EBA937" opacity=".7"/>
+    <path d="M15 24c4 10 18 14 26 18" stroke="#34514B" stroke-width="1.6" fill="none" opacity=".5"/>
+  </pattern>
+  <linearGradient id="wdc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a1f17"/><stop offset="1" stop-color="#4f120d"/></linearGradient>
+  <linearGradient id="lidc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a2520"/><stop offset="1" stop-color="#5a1510"/></linearGradient>
+</defs>
+
+<!-- Body of the box -->
+<rect x="60" y="220" width="1080" height="310" rx="18" fill="url(#wdc)"/>
+<!-- Body inner shadow -->
+<rect x="80" y="238" width="1040" height="274" rx="10" fill="#3d0d09" opacity=".6"/>
+<!-- Decorative embroidery strip on body front -->
+<rect x="100" y="250" width="1000" height="60" rx="6" fill="url(#flc)" opacity=".7"/>
+<rect x="100" y="250" width="1000" height="60" rx="6" fill="none" stroke="#EBA937" stroke-width="2"/>
+
+<!-- Hasp / latch centre -->
+<rect x="540" y="196" width="120" height="50" rx="10" fill="#EBA937"/>
+<path d="M558 210v-18q42-28 84 0v18" stroke="#C99021" stroke-width="8" fill="none" stroke-linecap="round"/>
+<circle cx="600" cy="225" r="10" fill="#611811"/>
+<circle cx="600" cy="225" r="4" fill="#EBA937"/>
+
+<!-- Lid (trapezoid, same as open trunk) -->
+<path d="M120 30h960l60 190H60z" fill="url(#lidc)"/>
+<!-- Lid embroidery fabric -->
+<path d="M148 50h904l48 152H100z" fill="url(#flc)"/>
+<path d="M148 50h904l48 152H100z" fill="none" stroke="#EBA937" stroke-width="3"/>
+<!-- Lid top corner tabs -->
+<path d="M120 30l40 0-20 28zM1080 30l-40 0 20 28z" fill="#EBA937"/>
+<!-- Lid bottom edge highlight -->
+<path d="M60 220h1080" stroke="#EBA937" stroke-width="3" opacity=".5"/>
+
+<!-- Bottom decorative wave on body -->
+<path d="M120 492c60-24 120 16 180-6s110-24 170 0 90 16 130 0M600 486c40 16 70 16 130 0s110-22 170 0 120 18 180 6" stroke="#EBA937" stroke-width="3" fill="none"/>
+<path d="M180 494c-8-10 4-18 12-10-2 8-6 10-12 10z" fill="#EBA937"/>
+<path d="M330 487c-8-10 4-18 12-10-2 8-6 10-12 10z" fill="#EBA937"/>
+<path d="M480 494c-8-10 4-18 12-10-2 8-6 10-12 10z" fill="#EBA937"/>
+<path d="M720 487c-8-10 4-18 12-10-2 8-6 10-12 10z" fill="#EBA937"/>
+<path d="M870 494c-8-10 4-18 12-10-2 8-6 10-12 10z" fill="#EBA937"/>
+<path d="M1020 487c-8-10 4-18 12-10-2 8-6 10-12 10z" fill="#EBA937"/>
+
+<!-- Corner reinforcements -->
+<path d="M60 220h70l-70 56zM1140 220h-70l70 56zM60 530h70l-70-56zM1140 530h-70l70-56z" fill="#EBA937"/>
+</svg>
