@@ -1069,7 +1069,25 @@
     to { opacity: 1; transform: translateY(0); }
   }
 }
-.studio-preview-frame { container-type: inline-size; }
+/*
+ * The scaler renders at fixed desktop width (1200px) so that both @media
+ * and @container queries see the desktop size regardless of how narrow
+ * the pane is. container-type lives here (not on the outer frame) so that
+ * @container breakpoints measure the 1200px scaler, not the 500px pane.
+ */
+.studio-preview-scaler {
+  width: 1200px;
+  container-type: inline-size;
+  transform-origin: top left;
+  /* zoom is set dynamically via JS (ResizeObserver); static fallback: */
+  zoom: 0.45;
+}
+.studio-preview-scaler-mobile {
+  width: 390px;
+  container-type: inline-size;
+  transform-origin: top left;
+  zoom: 1;
+}
 .studio-layout > *,
 .studio-workspace > *,
 .studio-sidebar,

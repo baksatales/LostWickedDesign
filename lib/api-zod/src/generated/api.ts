@@ -204,6 +204,16 @@ export const getSiteResponseDocumentSectionsItemProductIdsItemMax = 100;
 
 export const getSiteResponseDocumentSectionsItemProductIdsMax = 12;
 
+export const getSiteResponseDocumentSectionsItemEventDateMax = 120;
+
+export const getSiteResponseDocumentSectionsItemEventLocationMax = 240;
+
+export const getSiteResponseDocumentSectionsItemBannerColorMax = 30;
+
+export const getSiteResponseDocumentSectionsItemVideoUrlsItemMax = 500;
+
+export const getSiteResponseDocumentSectionsItemVideoUrlsMax = 12;
+
 export const getSiteResponseDocumentSectionsMax = 20;
 
 export const getSiteResponseDocumentStoriesItemAnalyticsKeyRegExp = new RegExp('^[0-9a-f]{32}$');
@@ -312,7 +322,7 @@ export const GetSiteResponse = zod.object({
 })).max(getSiteResponseDocumentFooterLinksMax),
   "sections": zod.array(zod.object({
   "id": zod.string().regex(getSiteResponseDocumentSectionsItemIdRegExp),
-  "type": zod.enum(['hero', 'story', 'products', 'maker', 'quiz', 'invitation']),
+  "type": zod.enum(['hero', 'story', 'products', 'maker', 'quiz', 'invitation', 'event', 'reels']),
   "visible": zod.boolean(),
   "eyebrow": zod.string().max(getSiteResponseDocumentSectionsItemEyebrowMax),
   "title": zod.string().max(getSiteResponseDocumentSectionsItemTitleMax),
@@ -326,7 +336,11 @@ export const GetSiteResponse = zod.object({
   "href": zod.string().min(1).max(getSiteResponseDocumentSectionsItemLinkHrefMax)
 }),
   "storyId": zod.string().max(getSiteResponseDocumentSectionsItemStoryIdMax),
-  "productIds": zod.array(zod.string().max(getSiteResponseDocumentSectionsItemProductIdsItemMax)).max(getSiteResponseDocumentSectionsItemProductIdsMax)
+  "productIds": zod.array(zod.string().max(getSiteResponseDocumentSectionsItemProductIdsItemMax)).max(getSiteResponseDocumentSectionsItemProductIdsMax),
+  "eventDate": zod.string().max(getSiteResponseDocumentSectionsItemEventDateMax).optional(),
+  "eventLocation": zod.string().max(getSiteResponseDocumentSectionsItemEventLocationMax).optional(),
+  "bannerColor": zod.string().max(getSiteResponseDocumentSectionsItemBannerColorMax).optional(),
+  "videoUrls": zod.array(zod.string().max(getSiteResponseDocumentSectionsItemVideoUrlsItemMax)).max(getSiteResponseDocumentSectionsItemVideoUrlsMax).optional()
 })).min(1).max(getSiteResponseDocumentSectionsMax),
   "stories": zod.array(zod.object({
   "analyticsKey": zod.string().regex(getSiteResponseDocumentStoriesItemAnalyticsKeyRegExp).optional().describe('Opaque persistence-owned measurement key. Optional for legacy imports; never editable editorial text.'),
@@ -442,6 +456,16 @@ export const getSiteDraftResponseDocumentSectionsItemProductIdsItemMax = 100;
 
 export const getSiteDraftResponseDocumentSectionsItemProductIdsMax = 12;
 
+export const getSiteDraftResponseDocumentSectionsItemEventDateMax = 120;
+
+export const getSiteDraftResponseDocumentSectionsItemEventLocationMax = 240;
+
+export const getSiteDraftResponseDocumentSectionsItemBannerColorMax = 30;
+
+export const getSiteDraftResponseDocumentSectionsItemVideoUrlsItemMax = 500;
+
+export const getSiteDraftResponseDocumentSectionsItemVideoUrlsMax = 12;
+
 export const getSiteDraftResponseDocumentSectionsMax = 20;
 
 export const getSiteDraftResponseDocumentStoriesItemAnalyticsKeyRegExp = new RegExp('^[0-9a-f]{32}$');
@@ -550,7 +574,7 @@ export const GetSiteDraftResponse = zod.object({
 })).max(getSiteDraftResponseDocumentFooterLinksMax),
   "sections": zod.array(zod.object({
   "id": zod.string().regex(getSiteDraftResponseDocumentSectionsItemIdRegExp),
-  "type": zod.enum(['hero', 'story', 'products', 'maker', 'quiz', 'invitation']),
+  "type": zod.enum(['hero', 'story', 'products', 'maker', 'quiz', 'invitation', 'event', 'reels']),
   "visible": zod.boolean(),
   "eyebrow": zod.string().max(getSiteDraftResponseDocumentSectionsItemEyebrowMax),
   "title": zod.string().max(getSiteDraftResponseDocumentSectionsItemTitleMax),
@@ -564,7 +588,11 @@ export const GetSiteDraftResponse = zod.object({
   "href": zod.string().min(1).max(getSiteDraftResponseDocumentSectionsItemLinkHrefMax)
 }),
   "storyId": zod.string().max(getSiteDraftResponseDocumentSectionsItemStoryIdMax),
-  "productIds": zod.array(zod.string().max(getSiteDraftResponseDocumentSectionsItemProductIdsItemMax)).max(getSiteDraftResponseDocumentSectionsItemProductIdsMax)
+  "productIds": zod.array(zod.string().max(getSiteDraftResponseDocumentSectionsItemProductIdsItemMax)).max(getSiteDraftResponseDocumentSectionsItemProductIdsMax),
+  "eventDate": zod.string().max(getSiteDraftResponseDocumentSectionsItemEventDateMax).optional(),
+  "eventLocation": zod.string().max(getSiteDraftResponseDocumentSectionsItemEventLocationMax).optional(),
+  "bannerColor": zod.string().max(getSiteDraftResponseDocumentSectionsItemBannerColorMax).optional(),
+  "videoUrls": zod.array(zod.string().max(getSiteDraftResponseDocumentSectionsItemVideoUrlsItemMax)).max(getSiteDraftResponseDocumentSectionsItemVideoUrlsMax).optional()
 })).min(1).max(getSiteDraftResponseDocumentSectionsMax),
   "stories": zod.array(zod.object({
   "analyticsKey": zod.string().regex(getSiteDraftResponseDocumentStoriesItemAnalyticsKeyRegExp).optional().describe('Opaque persistence-owned measurement key. Optional for legacy imports; never editable editorial text.'),
@@ -684,6 +712,16 @@ export const saveSiteDraftBodyDocumentSectionsItemProductIdsItemMax = 100;
 
 export const saveSiteDraftBodyDocumentSectionsItemProductIdsMax = 12;
 
+export const saveSiteDraftBodyDocumentSectionsItemEventDateMax = 120;
+
+export const saveSiteDraftBodyDocumentSectionsItemEventLocationMax = 240;
+
+export const saveSiteDraftBodyDocumentSectionsItemBannerColorMax = 30;
+
+export const saveSiteDraftBodyDocumentSectionsItemVideoUrlsItemMax = 500;
+
+export const saveSiteDraftBodyDocumentSectionsItemVideoUrlsMax = 12;
+
 export const saveSiteDraftBodyDocumentSectionsMax = 20;
 
 export const saveSiteDraftBodyDocumentStoriesItemAnalyticsKeyRegExp = new RegExp('^[0-9a-f]{32}$');
@@ -794,7 +832,7 @@ export const SaveSiteDraftBody = zod.object({
 })).max(saveSiteDraftBodyDocumentFooterLinksMax),
   "sections": zod.array(zod.object({
   "id": zod.string().regex(saveSiteDraftBodyDocumentSectionsItemIdRegExp),
-  "type": zod.enum(['hero', 'story', 'products', 'maker', 'quiz', 'invitation']),
+  "type": zod.enum(['hero', 'story', 'products', 'maker', 'quiz', 'invitation', 'event', 'reels']),
   "visible": zod.boolean(),
   "eyebrow": zod.string().max(saveSiteDraftBodyDocumentSectionsItemEyebrowMax),
   "title": zod.string().max(saveSiteDraftBodyDocumentSectionsItemTitleMax),
@@ -808,7 +846,11 @@ export const SaveSiteDraftBody = zod.object({
   "href": zod.string().min(1).max(saveSiteDraftBodyDocumentSectionsItemLinkHrefMax)
 }),
   "storyId": zod.string().max(saveSiteDraftBodyDocumentSectionsItemStoryIdMax),
-  "productIds": zod.array(zod.string().max(saveSiteDraftBodyDocumentSectionsItemProductIdsItemMax)).max(saveSiteDraftBodyDocumentSectionsItemProductIdsMax)
+  "productIds": zod.array(zod.string().max(saveSiteDraftBodyDocumentSectionsItemProductIdsItemMax)).max(saveSiteDraftBodyDocumentSectionsItemProductIdsMax),
+  "eventDate": zod.string().max(saveSiteDraftBodyDocumentSectionsItemEventDateMax).optional(),
+  "eventLocation": zod.string().max(saveSiteDraftBodyDocumentSectionsItemEventLocationMax).optional(),
+  "bannerColor": zod.string().max(saveSiteDraftBodyDocumentSectionsItemBannerColorMax).optional(),
+  "videoUrls": zod.array(zod.string().max(saveSiteDraftBodyDocumentSectionsItemVideoUrlsItemMax)).max(saveSiteDraftBodyDocumentSectionsItemVideoUrlsMax).optional()
 })).min(1).max(saveSiteDraftBodyDocumentSectionsMax),
   "stories": zod.array(zod.object({
   "analyticsKey": zod.string().regex(saveSiteDraftBodyDocumentStoriesItemAnalyticsKeyRegExp).optional().describe('Opaque persistence-owned measurement key. Optional for legacy imports; never editable editorial text.'),
@@ -921,6 +963,16 @@ export const saveSiteDraftResponseDocumentSectionsItemProductIdsItemMax = 100;
 
 export const saveSiteDraftResponseDocumentSectionsItemProductIdsMax = 12;
 
+export const saveSiteDraftResponseDocumentSectionsItemEventDateMax = 120;
+
+export const saveSiteDraftResponseDocumentSectionsItemEventLocationMax = 240;
+
+export const saveSiteDraftResponseDocumentSectionsItemBannerColorMax = 30;
+
+export const saveSiteDraftResponseDocumentSectionsItemVideoUrlsItemMax = 500;
+
+export const saveSiteDraftResponseDocumentSectionsItemVideoUrlsMax = 12;
+
 export const saveSiteDraftResponseDocumentSectionsMax = 20;
 
 export const saveSiteDraftResponseDocumentStoriesItemAnalyticsKeyRegExp = new RegExp('^[0-9a-f]{32}$');
@@ -1029,7 +1081,7 @@ export const SaveSiteDraftResponse = zod.object({
 })).max(saveSiteDraftResponseDocumentFooterLinksMax),
   "sections": zod.array(zod.object({
   "id": zod.string().regex(saveSiteDraftResponseDocumentSectionsItemIdRegExp),
-  "type": zod.enum(['hero', 'story', 'products', 'maker', 'quiz', 'invitation']),
+  "type": zod.enum(['hero', 'story', 'products', 'maker', 'quiz', 'invitation', 'event', 'reels']),
   "visible": zod.boolean(),
   "eyebrow": zod.string().max(saveSiteDraftResponseDocumentSectionsItemEyebrowMax),
   "title": zod.string().max(saveSiteDraftResponseDocumentSectionsItemTitleMax),
@@ -1043,7 +1095,11 @@ export const SaveSiteDraftResponse = zod.object({
   "href": zod.string().min(1).max(saveSiteDraftResponseDocumentSectionsItemLinkHrefMax)
 }),
   "storyId": zod.string().max(saveSiteDraftResponseDocumentSectionsItemStoryIdMax),
-  "productIds": zod.array(zod.string().max(saveSiteDraftResponseDocumentSectionsItemProductIdsItemMax)).max(saveSiteDraftResponseDocumentSectionsItemProductIdsMax)
+  "productIds": zod.array(zod.string().max(saveSiteDraftResponseDocumentSectionsItemProductIdsItemMax)).max(saveSiteDraftResponseDocumentSectionsItemProductIdsMax),
+  "eventDate": zod.string().max(saveSiteDraftResponseDocumentSectionsItemEventDateMax).optional(),
+  "eventLocation": zod.string().max(saveSiteDraftResponseDocumentSectionsItemEventLocationMax).optional(),
+  "bannerColor": zod.string().max(saveSiteDraftResponseDocumentSectionsItemBannerColorMax).optional(),
+  "videoUrls": zod.array(zod.string().max(saveSiteDraftResponseDocumentSectionsItemVideoUrlsItemMax)).max(saveSiteDraftResponseDocumentSectionsItemVideoUrlsMax).optional()
 })).min(1).max(saveSiteDraftResponseDocumentSectionsMax),
   "stories": zod.array(zod.object({
   "analyticsKey": zod.string().regex(saveSiteDraftResponseDocumentStoriesItemAnalyticsKeyRegExp).optional().describe('Opaque persistence-owned measurement key. Optional for legacy imports; never editable editorial text.'),
@@ -1171,6 +1227,16 @@ export const publishSiteResponseDocumentSectionsItemProductIdsItemMax = 100;
 
 export const publishSiteResponseDocumentSectionsItemProductIdsMax = 12;
 
+export const publishSiteResponseDocumentSectionsItemEventDateMax = 120;
+
+export const publishSiteResponseDocumentSectionsItemEventLocationMax = 240;
+
+export const publishSiteResponseDocumentSectionsItemBannerColorMax = 30;
+
+export const publishSiteResponseDocumentSectionsItemVideoUrlsItemMax = 500;
+
+export const publishSiteResponseDocumentSectionsItemVideoUrlsMax = 12;
+
 export const publishSiteResponseDocumentSectionsMax = 20;
 
 export const publishSiteResponseDocumentStoriesItemAnalyticsKeyRegExp = new RegExp('^[0-9a-f]{32}$');
@@ -1279,7 +1345,7 @@ export const PublishSiteResponse = zod.object({
 })).max(publishSiteResponseDocumentFooterLinksMax),
   "sections": zod.array(zod.object({
   "id": zod.string().regex(publishSiteResponseDocumentSectionsItemIdRegExp),
-  "type": zod.enum(['hero', 'story', 'products', 'maker', 'quiz', 'invitation']),
+  "type": zod.enum(['hero', 'story', 'products', 'maker', 'quiz', 'invitation', 'event', 'reels']),
   "visible": zod.boolean(),
   "eyebrow": zod.string().max(publishSiteResponseDocumentSectionsItemEyebrowMax),
   "title": zod.string().max(publishSiteResponseDocumentSectionsItemTitleMax),
@@ -1293,7 +1359,11 @@ export const PublishSiteResponse = zod.object({
   "href": zod.string().min(1).max(publishSiteResponseDocumentSectionsItemLinkHrefMax)
 }),
   "storyId": zod.string().max(publishSiteResponseDocumentSectionsItemStoryIdMax),
-  "productIds": zod.array(zod.string().max(publishSiteResponseDocumentSectionsItemProductIdsItemMax)).max(publishSiteResponseDocumentSectionsItemProductIdsMax)
+  "productIds": zod.array(zod.string().max(publishSiteResponseDocumentSectionsItemProductIdsItemMax)).max(publishSiteResponseDocumentSectionsItemProductIdsMax),
+  "eventDate": zod.string().max(publishSiteResponseDocumentSectionsItemEventDateMax).optional(),
+  "eventLocation": zod.string().max(publishSiteResponseDocumentSectionsItemEventLocationMax).optional(),
+  "bannerColor": zod.string().max(publishSiteResponseDocumentSectionsItemBannerColorMax).optional(),
+  "videoUrls": zod.array(zod.string().max(publishSiteResponseDocumentSectionsItemVideoUrlsItemMax)).max(publishSiteResponseDocumentSectionsItemVideoUrlsMax).optional()
 })).min(1).max(publishSiteResponseDocumentSectionsMax),
   "stories": zod.array(zod.object({
   "analyticsKey": zod.string().regex(publishSiteResponseDocumentStoriesItemAnalyticsKeyRegExp).optional().describe('Opaque persistence-owned measurement key. Optional for legacy imports; never editable editorial text.'),
@@ -1423,6 +1493,16 @@ export const restoreSiteResponseDocumentSectionsItemProductIdsItemMax = 100;
 
 export const restoreSiteResponseDocumentSectionsItemProductIdsMax = 12;
 
+export const restoreSiteResponseDocumentSectionsItemEventDateMax = 120;
+
+export const restoreSiteResponseDocumentSectionsItemEventLocationMax = 240;
+
+export const restoreSiteResponseDocumentSectionsItemBannerColorMax = 30;
+
+export const restoreSiteResponseDocumentSectionsItemVideoUrlsItemMax = 500;
+
+export const restoreSiteResponseDocumentSectionsItemVideoUrlsMax = 12;
+
 export const restoreSiteResponseDocumentSectionsMax = 20;
 
 export const restoreSiteResponseDocumentStoriesItemAnalyticsKeyRegExp = new RegExp('^[0-9a-f]{32}$');
@@ -1531,7 +1611,7 @@ export const RestoreSiteResponse = zod.object({
 })).max(restoreSiteResponseDocumentFooterLinksMax),
   "sections": zod.array(zod.object({
   "id": zod.string().regex(restoreSiteResponseDocumentSectionsItemIdRegExp),
-  "type": zod.enum(['hero', 'story', 'products', 'maker', 'quiz', 'invitation']),
+  "type": zod.enum(['hero', 'story', 'products', 'maker', 'quiz', 'invitation', 'event', 'reels']),
   "visible": zod.boolean(),
   "eyebrow": zod.string().max(restoreSiteResponseDocumentSectionsItemEyebrowMax),
   "title": zod.string().max(restoreSiteResponseDocumentSectionsItemTitleMax),
@@ -1545,7 +1625,11 @@ export const RestoreSiteResponse = zod.object({
   "href": zod.string().min(1).max(restoreSiteResponseDocumentSectionsItemLinkHrefMax)
 }),
   "storyId": zod.string().max(restoreSiteResponseDocumentSectionsItemStoryIdMax),
-  "productIds": zod.array(zod.string().max(restoreSiteResponseDocumentSectionsItemProductIdsItemMax)).max(restoreSiteResponseDocumentSectionsItemProductIdsMax)
+  "productIds": zod.array(zod.string().max(restoreSiteResponseDocumentSectionsItemProductIdsItemMax)).max(restoreSiteResponseDocumentSectionsItemProductIdsMax),
+  "eventDate": zod.string().max(restoreSiteResponseDocumentSectionsItemEventDateMax).optional(),
+  "eventLocation": zod.string().max(restoreSiteResponseDocumentSectionsItemEventLocationMax).optional(),
+  "bannerColor": zod.string().max(restoreSiteResponseDocumentSectionsItemBannerColorMax).optional(),
+  "videoUrls": zod.array(zod.string().max(restoreSiteResponseDocumentSectionsItemVideoUrlsItemMax)).max(restoreSiteResponseDocumentSectionsItemVideoUrlsMax).optional()
 })).min(1).max(restoreSiteResponseDocumentSectionsMax),
   "stories": zod.array(zod.object({
   "analyticsKey": zod.string().regex(restoreSiteResponseDocumentStoriesItemAnalyticsKeyRegExp).optional().describe('Opaque persistence-owned measurement key. Optional for legacy imports; never editable editorial text.'),
@@ -1927,24 +2011,6 @@ export const GetWorkspaceResponse = zod.object({
   "tagline": zod.string(),
   "story": zod.string(),
   "image": zod.string()
-}).optional(),
-  "makerProfile": zod.object({
-  "bio": zod.string(),
-  "displayName": zod.string(),
-  "city": zod.string(),
-  "state": zod.string(),
-  "instagram": zod.string(),
-  "techniques": zod.array(zod.string()),
-  "gstin": zod.string(),
-  "published": zod.boolean()
-}).optional(),
-  "buyerProfile": zod.object({
-  "fullName": zod.string(),
-  "phone": zod.string(),
-  "avatarUrl": zod.string(),
-  "occasionPrefs": zod.array(zod.string()),
-  "stylePrefs": zod.array(zod.string()),
-  "budgetMaxPaise": zod.number().int().nullable()
 }).optional(),
   "products": zod.array(zod.object({
   "id": zod.string(),

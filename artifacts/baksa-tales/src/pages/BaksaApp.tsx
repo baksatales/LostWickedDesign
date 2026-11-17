@@ -2,7 +2,7 @@ import { lazy, useCallback, useContext, useEffect, useMemo, useRef, useState, ty
 import { corporateCopy } from './corporate-copy';
 import { Link, useLocation } from 'wouter';
 import { createClient, type SupabaseClient, type User } from '@supabase/supabase-js';
-import { ArrowRight, BookOpen, Check, Heart, Menu, Minus, Package, Plus, Search, ShoppingBag, X } from 'lucide-react';
+import { ArrowRight, Check, Heart, Home, ListOrdered, LogOut, Menu, Package, Plus, Search, ShoppingBag, User as UserIcon, X } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   getGetWorkspaceQueryKey, getGetOperationsQueryKey,
@@ -13,6 +13,7 @@ import {
 import type { Catalog, GiftMatch, Maker, Product, Runtime, Workspace, SiteDocument, BuyerProfileInput } from '@workspace/api-client-react';
 import { starterDocument } from './starter-document';
 import { SiteDocumentContext, useSitePage, PageArtwork, Seo, imageUrl, money, errText } from './storefront-shared';
+import HomeV5 from '../home-v5/HomeV5';
 import { RouteContent } from '../components/route-content';
 import { commerceDestination, editorialKey, trackEvent } from '../lib/analytics';
 import { resetAccountQueries } from '../lib/account-query-cache';
@@ -20,6 +21,7 @@ import '../baksa.css';
 import '../editorial-refinements.css';
 import '../storefront-density.css';
 import '../baksa-visual-design.css';
+import './role-shells.css';
 
 const base = import.meta.env.BASE_URL;
 const safeSiteHref=(value:string)=>/^\/(?!\/)[a-zA-Z0-9/_?=&%#.,~-]*$/.test(value)||/^https:\/\/[a-zA-Z0-9.-]+(?::443)?(?:\/[^\s<>\\]*)?$/.test(value);
@@ -35,28 +37,28 @@ function readList<T>(key: string, validate: (value: unknown) => value is T, fall
 }
 const validCart = (v: unknown): v is CartItem => !!v && typeof v === 'object' && typeof (v as CartItem).productId === 'string' && Number.isInteger((v as CartItem).quantity) && (v as CartItem).quantity > 0;
 const validString = (v: unknown): v is string => typeof v === 'string';
-function Frame({ children, bagCount, savedCount, onBag, document:siteDoc, user, workspace }: { children: ReactNode; bagCount: number; savedCount: number; onBag: () => void; document:SiteDocument; user:User|null; workspace:Workspace|undefined }) {
+function Frame({ children, bagCount, savedCount, onBag, document:siteDoc, user, workspace, bare }: { children: ReactNode; bagCount: number; savedCount: number; onBag: () => void; document:SiteDocument; user:User|null; workspace:Workspace|undefined; bare?: boolean }) {
   const [menu, setMenu] = useState(false);
   const theme=siteDoc.theme;
   const themeStyle={'--bk-paper':theme.background,'--bk-cream':theme.surface,'--bk-maroon':theme.primary,'--bk-crimson':theme.primary,'--bk-teal':theme.secondary,'--bk-gold':theme.accent,'--bk-ink':theme.ink,'--bk-muted':theme.muted,'--bk-line':theme.primary+'30','--bk-display':theme.headingFont==='georgia'?'Georgia,serif':theme.headingFont==='cormorant'?'Cormorant Garamond,Georgia,serif':"'EB Garamond',Georgia,serif",'--bk-body':theme.bodyFont==='garamond'?"'EB Garamond',Georgia,serif":theme.bodyFont==='system'?'system-ui,sans-serif':theme.bodyFont==='georgia'?'Georgia,serif':"'Arvo',Georgia,serif",'--bk-radius':`${theme.radius}px`,'--bk-space':theme.spacing==='compact'?'48px':theme.spacing==='generous'?'94px':'72px' } as CSSProperties;
   return <SiteDocumentContext.Provider value={siteDoc}><div className={`baksa ${theme.motion?'bk-motion':'bk-still'} ${theme.ornament?'bk-ornament':''}`} style={themeStyle}>
-    <div className="bk-notice">{siteDoc.brand.announcement}</div>
-    <header className="bk-header"><div className="bk-header-main">
+    {!bare && <div className="bk-notice">{siteDoc.brand.announcement}</div>}
+    {!bare && <header className="bk-header"><div className="bk-header-main">
       <Link href="/" className="bk-logo"><img src={imageUrl(siteDoc.brand.mark)} alt="" /><span className="bk-wordmark">{siteDoc.brand.name}<small>{siteDoc.brand.tagline}</small></span></Link>
       <nav className="bk-nav" aria-label="Main navigation">{siteDoc.navigation.map((item,i)=><DocLink key={`${item.href}-${i}`} href={item.href}>{item.label}</DocLink>)}</nav>
       <div className="bk-actions">
         <Link className="bk-iconbtn" href="/wishlist" aria-label={`Wishlist, ${savedCount} saved`}><Heart size={19}/>{savedCount > 0 && <span className="bk-count">{savedCount}</span>}</Link>
         <button className="bk-iconbtn" onClick={onBag} aria-label={`Open bag, ${bagCount} items`}><ShoppingBag size={19}/>{bagCount > 0 && <span className="bk-count">{bagCount}</span>}</button>
-        {user ? <Link href="/account" className="bk-iconbtn" aria-label="Your account" style={{display:'flex',alignItems:'center',gap:6,padding:'4px 10px',borderRadius:999,fontSize:13,fontWeight:600}}><span style={{fontSize:18,lineHeight:1}}>{workspace?.buyerProfile?.avatarUrl&&workspace.buyerProfile.avatarUrl.length<=4?workspace.buyerProfile.avatarUrl:'🛍️'}</span><span className="bk-hide-mobile">{workspace?.buyerProfile?.fullName?workspace.buyerProfile.fullName.split(' ')[0]:'Account'}</span></Link> : <Link href="/sign-in" className="bk-textlink" style={{fontSize:13,fontWeight:600,whiteSpace:'nowrap'}}>Sign in</Link>}
+        {user ? <Link href="/account" className="bk-iconbtn" aria-label="Your account" style={{display:'flex',alignItems:'center',gap:6,padding:'4px 10px',borderRadius:999,fontSize:13,fontWeight:600}}><span style={{fontSize:16,lineHeight:1,fontFamily:'monospace',color:'var(--bk-gold)'}}>{workspace?.buyerProfile?.avatarUrl&&workspace.buyerProfile.avatarUrl.length<=2?workspace.buyerProfile.avatarUrl:'◈'}</span><span className="bk-hide-mobile">{workspace?.buyerProfile?.fullName?workspace.buyerProfile.fullName.split(' ')[0]:'Account'}</span></Link> : <Link href="/sign-in" className="bk-textlink" style={{fontSize:13,fontWeight:600,whiteSpace:'nowrap'}}>Sign in</Link>}
         <button className="bk-iconbtn bk-mobile-menu" onClick={() => setMenu(!menu)} aria-label={menu ? 'Close menu' : 'Open menu'}>{menu ? <X size={20}/> : <Menu size={20}/>}</button>
       </div>
-    </div>{menu && <nav className="bk-mobile-panel">{siteDoc.navigation.map((item,i)=><DocLink key={`${item.href}-${i}`} href={item.href}>{item.label}</DocLink>)}<Link href="/sell">For makers</Link></nav>}</header>
+    </div>{menu && <nav className="bk-mobile-panel">{siteDoc.navigation.map((item,i)=><DocLink key={`${item.href}-${i}`} href={item.href}>{item.label}</DocLink>)}<Link href="/sell">For makers</Link></nav>}</header>}
     {children}
-    <footer className="bk-footer"><div className="bk-footgrid">
+    {!bare && <footer className="bk-footer"><div className="bk-footgrid">
       <div><img className="bk-footmark" src={imageUrl(siteDoc.brand.mark)} alt={`${siteDoc.brand.name} mark`}/><h3>{siteDoc.brand.footerTitle}</h3><p>{siteDoc.brand.footerText}</p><small>{siteDoc.brand.copyright}</small></div>
       <div><h3>Find your way</h3>{siteDoc.footerLinks.slice(0,Math.ceil(siteDoc.footerLinks.length/2)).map((item,i)=><DocLink key={`${item.href}-${i}`} href={item.href}>{item.label}</DocLink>)}</div>
       <div><h3>Make something together</h3>{siteDoc.footerLinks.slice(Math.ceil(siteDoc.footerLinks.length/2)).map((item,i)=><DocLink key={`${item.href}-${i}`} href={item.href}>{item.label}</DocLink>)}{!siteDoc.footerLinks.some(item=>item.href==='/admin/site')&&<Link href="/admin/site">Site Studio</Link>}<Link className="bk-preview-link" href="/studio-preview">Local design playground · unsaved</Link></div>
-    </div></footer>
+    </div></footer>}
   </div></SiteDocumentContext.Provider>;
 }
 function ProductCard({ product, maker, saved, onToggle }: { product: Product; maker?: Maker; saved: boolean; onToggle: () => void }) {
@@ -67,71 +69,6 @@ function ProductGrid({ products, makers, saved, toggle }: { products: Product[];
   if (!products.length) return <div className="bk-empty"><strong style={{font:'27px var(--bk-display)',color:'var(--bk-ink)'}}>Nothing in this edit just yet.</strong><p>Try a different filter or clear your search.</p></div>;
   return <div className="bk-productgrid">{products.map(p => <ProductCard key={p.id} product={p} maker={makers.find(m => m.id === p.makerId)} saved={saved.includes(p.id)} onToggle={() => toggle(p.id)}/>)}</div>;
 }
-function HomePage({ catalog, saved, toggle, catalogError, retryCatalog, document:siteDoc, measure=true }: { catalog?: Catalog; saved: string[]; toggle: (id:string)=>void;catalogError?:string;retryCatalog:()=>void;document:SiteDocument;measure?:boolean }) {
-  const [opened, setOpened] = useState(false);
-  const products = catalog?.products || [];
-  const page=(id:string)=>siteDoc.pages.find(p=>p.id===id);
-  const visibleStories=siteDoc.stories.filter(s=>s.visible);
-  const imageUrlSafe=(v:string)=>imageUrl(v||'baksatales-trunk-mark.png');
-  const renderSection=(section:SiteDocument['sections'][number])=>{
-    const toneClass=`bk-home-section tone-${section.tone} layout-${section.layout}`;
-     if(section.type==='hero') {
-       // Also retire the old illustration from cached content and local drafts.
-       const heroImage=section.image.endsWith('/baksa-painted-garden.webp')?'':section.image;
-       return <section key={section.id} className={`${toneClass} bk-dynamic-hero ${heroImage?'has-art':''}`} aria-labelledby={`home-title-${section.id}`}>
-         {heroImage&&<div className="bk-dynamic-image"><img src={imageUrlSafe(heroImage)} alt={section.imageAlt}/></div>}
-         <div className="bk-dynamic-copy"><span className="bk-eyebrow">{section.eyebrow}</span><h1 id={`home-title-${section.id}`}>{section.title}</h1><p>{section.text}</p><div className="bk-hero-actions"><DocLink className="bk-btn" href={section.link.href}>{section.link.label}<ArrowRight size={16}/></DocLink><span className="bk-hero-note">{siteDoc.labels['hero.note']||'Independent Indian makers · stories worth keeping'}</span></div></div>
-         <div className="bk-trunk-stage"><div className="bk-trunk-caption"><span className="bk-eyebrow">{siteDoc.labels['trunk.eyebrow']||'A little something inside'}</span><p>{siteDoc.labels['trunk.intro']||'Open the baksa; let a story find you.'}</p></div><div className="bk-trunk-area"><div className={`stage ${opened?'open':''}`}><div className="trunk"><div className="cards" aria-hidden={!opened}>{siteDoc.trunkCards.slice(0,3).map((card,i)=><DocLink key={card.id} className={`scard bk-trunk-card ${i===2?'smood':''}`} href={card.link.href} tabIndex={opened?0:-1} aria-label={`${card.link.label}: ${card.title}`} onClick={e=>{if(!opened)e.preventDefault()}}>{card.image&&<img className="art" src={imageUrlSafe(card.image)} alt=""/>}<span className="cap"><b>{card.sponsored?'SPONSORED · LABELLED':siteDoc.brand.name.toUpperCase()}</b><strong>{card.title}</strong><small>{card.caption}</small></span></DocLink>)}</div><div className="inside" aria-hidden="true"/><img className="body" src={imageUrl(siteDoc.brand.logo)} alt={`${siteDoc.brand.name} trunk`}/><img className="lid" src={imageUrl(siteDoc.brand.logo)} alt="" aria-hidden="true"/></div></div><div className="stage-ctl"><button className="bk-btn secondary bk-trunk-toggle" aria-expanded={opened} onClick={()=>setOpened(v=>!v)}>{opened?<><Minus size={15}/> {siteDoc.labels['trunk.close']||'Close the baksa'}</>:<><Plus size={15}/> {siteDoc.labels['trunk.open']||'Open the baksa'}</>}</button></div></div></div>
-       </section>;
-     }
-    if(section.type==='products'){
-      const selected=section.productIds.length?section.productIds.flatMap(id=>products.find(p=>p.id===id)??[]):products.slice(0,4);
-      return <section key={section.id} className={`bk-section ${toneClass}`}><div className="bk-sectionhead"><div><span className="bk-eyebrow">{section.eyebrow}</span><h2>{section.title}</h2><p className="bk-muted">{section.text}</p></div><DocLink className="bk-textlink" href={section.link.href}>{section.link.label}<ArrowRight size={15}/></DocLink></div>{catalog?<ProductGrid products={selected} makers={catalog.makers} saved={saved} toggle={toggle}/>:catalogError?<div className="bk-errorbox"><p>{catalogError}</p><button className="bk-btn secondary" onClick={retryCatalog}>Try again</button></div>:<div className="bk-skeleton"/>}</section>;
-    }
-    if(section.type==='story'){
-      const story=visibleStories.find(s=>s.id===section.storyId)||visibleStories[0];
-      return <section key={section.id} className={`bk-section bk-editorial-story ${toneClass}`}>
-        <div className="bk-tale-copy">
-          <span className="bk-eyebrow">{section.eyebrow||siteDoc.labels['story.today']||'Today’s Tale'}</span>
-          <h2>{section.title}</h2><p>{section.text}</p>
-          <div className="bk-tale-actions">
-            {story&&<Link className="bk-btn bk-tale-read" href={`/stories/${story.id}`}><BookOpen size={16}/>{siteDoc.labels['story.read']||'Read the tale'}<ArrowRight size={16}/></Link>}
-            <DocLink className="bk-textlink" href={section.link.href}>{section.link.label}<ArrowRight size={15}/></DocLink>
-          </div>
-        </div>
-        {story?<Link className="bk-story-stamp bk-tale-art" href={`/stories/${story.id}`} aria-label={`${siteDoc.labels['story.read']||'Read the tale'}: ${story.title}`}>
-          <span className="bk-tale-index">{siteDoc.labels['story.today']||'Today’s Tale'} <i>·</i> {String(visibleStories.indexOf(story)+1).padStart(2,'0')}</span>
-          <img src={imageUrlSafe(section.image||story.image)} alt={section.imageAlt||story.imageAlt}/>
-          <span className="bk-tale-caption"><strong>{story.title}</strong><small>{story.maker} · {story.sponsored?'Sponsored placement':story.sample?'Sample catalogue story':'Maker story'}</small></span>
-        </Link>:<div className="bk-story-stamp bk-tale-art"><img src={imageUrlSafe(section.image||'t-bluelotus.webp')} alt={section.imageAlt}/></div>}
-      </section>;
-    }
-    if(section.type==='maker'){
-      const maker=catalog?.makers[0];
-      return <section key={section.id} className={`bk-section bk-split ${toneClass}`}><img className="bk-storyimg" src={imageUrlSafe(section.image||maker?.image||'t-bluelotus.webp')} alt={section.imageAlt||maker?.brand||''}/><div className="bk-storycopy"><span className="bk-eyebrow">{section.eyebrow}</span><h2>{section.title}</h2><p>{section.text}</p><DocLink className="bk-btn secondary" href={section.link.href}>{section.link.label}<ArrowRight size={16}/></DocLink></div></section>;
-    }
-    if(section.type==='quiz')return <section key={section.id} className={`bk-section ${toneClass}`}><div className="bk-banner"><div><span className="bk-eyebrow">{section.eyebrow}</span><h2>{section.title}</h2><p>{section.text}</p></div><DocLink className="bk-btn" href="/gift-finder">{section.link.label}<ArrowRight size={16}/></DocLink></div></section>;
-    return <section key={section.id} className={`bk-section ${toneClass}`}><div className="bk-banner"><div><span className="bk-eyebrow">{section.eyebrow}</span><h2>{section.title}</h2><p>{section.text}</p></div><DocLink className="bk-btn" href={section.link.href}>{section.link.label}<ArrowRight size={16}/></DocLink></div></section>;
-  };
-  return <main onClickCapture={e=>{
-    if(!measure||e.defaultPrevented||!(e.target instanceof Element))return;
-    if(e.target.closest('.bk-trunk-toggle')&&!opened)trackEvent('trunk_opened',undefined);
-    const card=e.target.closest('.bk-trunk-card');
-    if(!opened||!card)return;
-    const position=Array.from(card.parentElement?.children||[]).indexOf(card);
-    if(siteDoc.trunkCards[position]?.sponsored)trackEvent('sponsored_card_followed',{...editorialKey('card',siteDoc.trunkCards[position].analyticsKey),card_position:position+1});
-  }} className={`bk-home ${siteDoc.theme.motion?'bk-motion':'bk-still'} ${siteDoc.theme.ornament?'bk-ornament':''}`} style={{'--bk-paper':siteDoc.theme.background,'--bk-cream':siteDoc.theme.surface,'--bk-maroon':siteDoc.theme.primary,'--bk-crimson':siteDoc.theme.primary,'--bk-teal':siteDoc.theme.secondary,'--bk-gold':siteDoc.theme.accent,'--bk-ink':siteDoc.theme.ink,'--bk-muted':siteDoc.theme.muted,'--bk-display':siteDoc.theme.headingFont==='georgia'?'Georgia,serif':siteDoc.theme.headingFont==='cormorant'?'Cormorant Garamond,Georgia,serif':"'EB Garamond',Georgia,serif",'--bk-body':siteDoc.theme.bodyFont==='garamond'?"'EB Garamond',Georgia,serif":siteDoc.theme.bodyFont==='system'?'system-ui,sans-serif':siteDoc.theme.bodyFont==='georgia'?'Georgia,serif':"'Arvo',Georgia,serif",'--bk-radius':`${siteDoc.theme.radius}px`,'--bk-space':siteDoc.theme.spacing==='compact'?'48px':siteDoc.theme.spacing==='generous'?'94px':'72px'} as CSSProperties}>
-    <Seo title={page('shop')?.title||'Handmade gifts, found with feeling'} description={page('shop')?.description||'Discover meaningful gifts through the makers and stories behind them.'}/>
-    {siteDoc.sections.filter(s=>s.visible).map(renderSection)}
-  </main>;
-}
-
-function StorefrontPreview({document:doc,catalog,catalogError,retryCatalog,storyId}:{document:SiteDocument;catalog?:Catalog;catalogError?:string;retryCatalog:()=>void;storyId?:string}){
-  const [saved,setSaved]=useState<string[]>([]);const [cart,setCart]=useState<CartItem[]>([]);const [bagOpen,setBagOpen]=useState(false);
-  const toggle=(id:string)=>setSaved(items=>items.includes(id)?items.filter(x=>x!==id):[...items,id]);
-  return <div className="bk-preview-no-nav" onClickCapture={e=>{if((e.target as HTMLElement).closest('a'))e.preventDefault();}}><Frame document={doc} bagCount={cart.reduce((n,item)=>n+item.quantity,0)} savedCount={saved.length} onBag={()=>setBagOpen(true)} user={null} workspace={undefined}>{storyId?<StoryPage id={storyId} document={doc} measure={false}/>:<HomePage catalog={catalog} saved={saved} toggle={toggle} document={doc} catalogError={catalogError} retryCatalog={retryCatalog} measure={false}/>} {catalog&&<BagDrawer open={bagOpen} close={()=>setBagOpen(false)} catalog={catalog} cart={cart} setCart={setCart}/>}</Frame></div>;
-}
-
 function StoryPage({id,document:siteDoc,measure=true}:{id:string;document:SiteDocument;measure?:boolean}){
   const story=siteDoc.stories.find(s=>s.id===id&&s.visible);
   const labels=siteDoc.labels||{};
@@ -388,17 +325,16 @@ function ResetPasswordPage({client,clientLoading}:{client:SupabaseClient|null;cl
 }
 function SignInPage({ runtime, runtimeLoading, client, user, workspace, returnTo }: { runtime?:Runtime;runtimeLoading:boolean;client:SupabaseClient|null;user:User|null;workspace:Workspace|undefined;returnTo:string }) {
   const requestedReturn=validReturnPath(new URLSearchParams(window.location.search).get('returnTo'));
-  const hintRole:SignInRole|null=requestedReturn?.startsWith('/admin')?'admin':requestedReturn?.startsWith('/maker')||requestedReturn==='/sell'?'maker':null;
+  const hintRole:SignInRole|null=requestedReturn?.startsWith('/maker')||requestedReturn==='/sell'?'maker':null;
   const [role,setRole]=useState<SignInRole>(hintRole||(requestedReturn==='/account'?'buyer':'buyer'));
-  const roleConfig:{[K in SignInRole]:{label:string;eyebrow:string;heading:string;desc:string;icon:string}}={
+  const roleConfig:{[K in Exclude<SignInRole,'admin'>]:{label:string;eyebrow:string;heading:string;desc:string;icon:string}}={
     buyer:{label:'Shop',eyebrow:'For shoppers',heading:'Welcome back, shopper.',desc:'Browse gifts, track orders, and save your favourites.', icon:'🛍️'},
     maker:{label:'Sell',eyebrow:'For independent makers',heading:'Maker workspace.',desc:'Manage your products, orders, and brand profile.', icon:'🏺'},
-    admin:{label:'Admin',eyebrow:'Internal only',heading:'Admin portal.',desc:'Manage applications, reviews, orders, and platform settings.', icon:'🔑'},
   };
-  const cfg=roleConfig[role];
+  const cfg=roleConfig[role as Exclude<SignInRole,'admin'>];
   return <main className="bk-formpage" style={{maxWidth:720}}><Seo title="Sign in" description="Sign in to your Baksa Tales account."/>
     <div style={{display:'flex',gap:8,marginBottom:24}}>
-      {(['buyer','maker','admin'] as SignInRole[]).map(r=><button key={r} type="button" onClick={()=>setRole(r)} className={role===r?'bk-btn':'bk-btn secondary'} style={{flex:1,fontSize:13}}>{roleConfig[r].icon} {roleConfig[r].label}</button>)}
+      {(['buyer','maker'] as Exclude<SignInRole,'admin'>[]).map(r=><button key={r} type="button" onClick={()=>setRole(r)} className={role===r?'bk-btn':'bk-btn secondary'} style={{flex:1,fontSize:13}}>{roleConfig[r].icon} {roleConfig[r].label}</button>)}
     </div>
     <span className="bk-eyebrow">{cfg.eyebrow}</span>
     <h1>{cfg.heading}</h1>
@@ -410,22 +346,22 @@ function SignInPage({ runtime, runtimeLoading, client, user, workspace, returnTo
 function AcademyPage(){const page=useSitePage('academy');return <main className="bk-formpage"><Seo title={page?.title||'Baksa Academy'} description={page?.description||'Information about upcoming Baksa Academy classes.'}/><span className="bk-eyebrow">{page?.eyebrow||'Learn, share, make'}</span><h1>{page?.heading||'Baksa Academy.'}</h1><p>{page?.intro||'A future home for practical learning around craft, small creative businesses and the thoughtful work of making.'}</p><PageArtwork page={page}/><div className="bk-panel"><h2>Classes are not open yet.</h2><p>We are shaping the programme. There are no enrolments or scheduled classes to book at this time.</p><Link className="bk-btn secondary" href="/sell">For maker enquiries <ArrowRight size={16}/></Link></div></main>}
 function BuyerOrderList(){const q=useGetOperations({query:{queryKey:getGetOperationsQueryKey()}});return <div className="bk-panel"><h2>Your orders</h2>{q.isLoading?<div className="bk-skeleton"/>:q.isError?<><p className="bk-errorbox">{errText(q.error)}</p><button className="bk-btn secondary" onClick={()=>void q.refetch()}>Retry</button></>:q.data?.orders.length?<><p>Recent order records available to your account; the feed returns up to 100 recent records per category.</p>{q.data.orders.map(o=><article className="bk-account-order" key={o.id}><div><strong>{o.ref}</strong><small>{new Date(o.createdAt).toLocaleDateString()}</small></div><div><span>{o.status}</span><small>Payment: {o.paymentStatus}</small></div><b>{money(o.totalPaise)}</b>{o.trackingNumber&&<small className="tracking">Tracking · {o.carrier} · {o.trackingNumber}</small>}</article>)}</>:<div className="bk-empty"><strong>No order records yet.</strong><p>Orders appear here when the service returns them. A checkout attempt is not treated as a paid order.</p></div>}</div>}
 
-const OCCASION_OPTIONS=['Birthday 🎂','Anniversary 💍','Housewarming 🏡','Baby shower 🍼','Wedding 💒','Just because 🌸','Thank you 🙏','Festival 🪔','Corporate 💼'];
+const OCCASION_OPTIONS=['Birthday','Anniversary','Housewarming','Baby shower','Wedding','Just because','Thank you','Festival','Corporate'];
 const STYLE_OPTIONS=['Handcrafted','Sustainable','Minimal','Colourful','Traditional','Contemporary','Rustic','Luxe'];
-const BUDGET_STEPS=[500,1000,2500,5000,10000,25000,50000];
+const BUDGET_MAX_PAISE=10000000; // ₹1 crore
 
-type AvatarVibe={emoji:string;name:string;desc:string;theme:Record<string,string>};
+type AvatarVibe={icon:string;name:string;desc:string;theme:Record<string,string>};
 const AVATAR_VIBES:AvatarVibe[]=[
-  {emoji:'🎀',name:'The Gifter',desc:'Warm & giving',theme:{'--bk-paper':'#fdf4f0','--bk-cream':'#f9e4dc','--bk-crimson':'#b5343a','--bk-teal':'#7c4a5c','--bk-gold':'#c47a5a','--bk-ink':'#3a1a1a','--bk-line':'#f0d0c5'}},
-  {emoji:'🌸',name:'The Dreamer',desc:'Soft & poetic',theme:{'--bk-paper':'#fdf6f9','--bk-cream':'#f9e8f0','--bk-crimson':'#b5426d','--bk-teal':'#4a6e6a','--bk-gold':'#c47a9a','--bk-ink':'#2e1a2a','--bk-line':'#f0d4e4'}},
-  {emoji:'🦋',name:'The Free Spirit',desc:'Breezy & curious',theme:{'--bk-paper':'#f5f7fd','--bk-cream':'#e8edfa','--bk-crimson':'#3d5bb5','--bk-teal':'#3a7a6e','--bk-gold':'#7a8fc4','--bk-ink':'#1a2040','--bk-line':'#d4daf0'}},
-  {emoji:'✨',name:'The Sparkler',desc:'Bold & radiant',theme:{'--bk-paper':'#fffbf0','--bk-cream':'#fef3cc','--bk-crimson':'#8b6200','--bk-teal':'#4a5e2a','--bk-gold':'#c4a020','--bk-ink':'#2a2000','--bk-line':'#f0e4a0'}},
-  {emoji:'🌿',name:'The Grounded One',desc:'Earthy & calm',theme:{'--bk-paper':'#f4f8f4','--bk-cream':'#e4eed8','--bk-crimson':'#2e6040','--bk-teal':'#4a7a3a','--bk-gold':'#6a9a4a','--bk-ink':'#1a2e1a','--bk-line':'#c8dca8'}},
-  {emoji:'🪷',name:'The Lotus',desc:'Serene & sacred',theme:{'--bk-paper':'#fdf5fb','--bk-cream':'#f5e0f5','--bk-crimson':'#7a3a8a','--bk-teal':'#5a3a7a','--bk-gold':'#b07ac0','--bk-ink':'#2a102a','--bk-line':'#e8c0f0'}},
-  {emoji:'🎨',name:'The Artist',desc:'Creative & vivid',theme:{'--bk-paper':'#fefaf5','--bk-cream':'#faecd8','--bk-crimson':'#c04020','--bk-teal':'#2a6a7a','--bk-gold':'#d47a20','--bk-ink':'#251510','--bk-line':'#e8d4a8'}},
-  {emoji:'🏺',name:'The Craftsperson',desc:'Rooted & textured',theme:{'--bk-paper':'#fbf6ee','--bk-cream':'#f3e8d2','--bk-crimson':'#7a3a1a','--bk-teal':'#34514b','--bk-gold':'#a97820','--bk-ink':'#30251f','--bk-line':'#dfd3c2'}},
-  {emoji:'🌙',name:'The Night Owl',desc:'Mysterious & deep',theme:{'--bk-paper':'#f0f0f8','--bk-cream':'#e0e0f0','--bk-crimson':'#5a3a9a','--bk-teal':'#2a4a7a','--bk-gold':'#9a80c8','--bk-ink':'#0e0e2a','--bk-line':'#c0b8e0'}},
-  {emoji:'⭐',name:'The Shining One',desc:'Bright & warm',theme:{'--bk-paper':'#fffcf0','--bk-cream':'#fff5d0','--bk-crimson':'#9a6a00','--bk-teal':'#3a5a4a','--bk-gold':'#d4a800','--bk-ink':'#1e1800','--bk-line':'#f0e098'}},
+  {icon:'◈',name:'The Gifter',desc:'Warm & generous',theme:{'--bk-paper':'#fdf4f0','--bk-cream':'#f9e4dc','--bk-crimson':'#b5343a','--bk-teal':'#7c4a5c','--bk-gold':'#c47a5a','--bk-ink':'#3a1a1a','--bk-line':'#f0d0c5'}},
+  {icon:'◇',name:'The Dreamer',desc:'Soft & poetic',theme:{'--bk-paper':'#fdf6f9','--bk-cream':'#f9e8f0','--bk-crimson':'#b5426d','--bk-teal':'#4a6e6a','--bk-gold':'#c47a9a','--bk-ink':'#2e1a2a','--bk-line':'#f0d4e4'}},
+  {icon:'◉',name:'The Free Spirit',desc:'Breezy & curious',theme:{'--bk-paper':'#f5f7fd','--bk-cream':'#e8edfa','--bk-crimson':'#3d5bb5','--bk-teal':'#3a7a6e','--bk-gold':'#7a8fc4','--bk-ink':'#1a2040','--bk-line':'#d4daf0'}},
+  {icon:'✦',name:'The Sparkler',desc:'Bold & radiant',theme:{'--bk-paper':'#fffbf0','--bk-cream':'#fef3cc','--bk-crimson':'#8b6200','--bk-teal':'#4a5e2a','--bk-gold':'#c4a020','--bk-ink':'#2a2000','--bk-line':'#f0e4a0'}},
+  {icon:'◬',name:'The Grounded One',desc:'Earthy & calm',theme:{'--bk-paper':'#f4f8f4','--bk-cream':'#e4eed8','--bk-crimson':'#2e6040','--bk-teal':'#4a7a3a','--bk-gold':'#6a9a4a','--bk-ink':'#1a2e1a','--bk-line':'#c8dca8'}},
+  {icon:'⬡',name:'The Lotus',desc:'Serene & sacred',theme:{'--bk-paper':'#fdf5fb','--bk-cream':'#f5e0f5','--bk-crimson':'#7a3a8a','--bk-teal':'#5a3a7a','--bk-gold':'#b07ac0','--bk-ink':'#2a102a','--bk-line':'#e8c0f0'}},
+  {icon:'◭',name:'The Artist',desc:'Creative & vivid',theme:{'--bk-paper':'#fefaf5','--bk-cream':'#faecd8','--bk-crimson':'#c04020','--bk-teal':'#2a6a7a','--bk-gold':'#d47a20','--bk-ink':'#251510','--bk-line':'#e8d4a8'}},
+  {icon:'▣',name:'The Craftsperson',desc:'Rooted & textured',theme:{'--bk-paper':'#fbf6ee','--bk-cream':'#f3e8d2','--bk-crimson':'#7a3a1a','--bk-teal':'#34514b','--bk-gold':'#a97820','--bk-ink':'#30251f','--bk-line':'#dfd3c2'}},
+  {icon:'◑',name:'The Night Owl',desc:'Mysterious & deep',theme:{'--bk-paper':'#f0f0f8','--bk-cream':'#e0e0f0','--bk-crimson':'#5a3a9a','--bk-teal':'#2a4a7a','--bk-gold':'#9a80c8','--bk-ink':'#0e0e2a','--bk-line':'#c0b8e0'}},
+  {icon:'✳',name:'The Shining One',desc:'Bright & warm',theme:{'--bk-paper':'#fffcf0','--bk-cream':'#fff5d0','--bk-crimson':'#9a6a00','--bk-teal':'#3a5a4a','--bk-gold':'#d4a800','--bk-ink':'#1e1800','--bk-line':'#f0e098'}},
 ];
 const DEFAULT_THEME:Record<string,string>={'--bk-paper':'#fbf7ed','--bk-cream':'#f3ead9','--bk-crimson':'#791f2e','--bk-teal':'#34514b','--bk-gold':'#a9781f','--bk-ink':'#30251f','--bk-line':'#dfd3c2'};
 function applyVibeTheme(theme:Record<string,string>){
@@ -456,6 +392,34 @@ function ChipPicker({options,selected,onChange,max}:{options:string[];selected:s
   </div>;
 }
 
+function BudgetSlider({value,onChange}:{value:number|null;onChange:(v:number)=>void}){
+  const paise=value??0;
+  // log scale: 0 → ₹500, 100 → ₹1cr
+  const SLIDER_MIN=50000; // ₹500 min
+  const toSlider=(p:number)=>p<=0?0:Math.round(Math.log(p/SLIDER_MIN)/Math.log(BUDGET_MAX_PAISE/SLIDER_MIN)*100);
+  const fromSlider=(s:number)=>s<=0?SLIDER_MIN:Math.round(SLIDER_MIN*Math.pow(BUDGET_MAX_PAISE/SLIDER_MIN,s/100));
+  const sliderVal=value?toSlider(paise):0;
+  const fmt=(p:number)=>{
+    if(p>=10000000)return '₹1 Cr';
+    if(p>=100000)return `₹${(p/100000).toFixed(p%100000===0?0:1)} L`;
+    if(p>=1000)return `₹${(p/100).toLocaleString('en-IN')}`;
+    return `₹${p/100}`;
+  };
+  return <div style={{marginTop:4}}>
+    <div style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:10}}>
+      <span style={{fontSize:13,color:'var(--bk-muted,#888)'}}>Up to</span>
+      <strong style={{fontSize:22,color:'var(--bk-crimson,#791f2e)',letterSpacing:'-0.5px'}}>{value?fmt(paise):'Not set'}</strong>
+    </div>
+    <input type="range" min={0} max={100} value={sliderVal}
+      onChange={e=>{const v=Number(e.target.value);onChange(v===0?SLIDER_MIN:fromSlider(v));}}
+      style={{width:'100%',accentColor:'var(--bk-gold,#a9781f)',height:4,cursor:'pointer'}}
+    />
+    <div style={{display:'flex',justifyContent:'space-between',fontSize:11,color:'var(--bk-muted,#888)',marginTop:4}}>
+      <span>₹500</span><span>₹5k</span><span>₹50k</span><span>₹5L</span><span>₹1Cr</span>
+    </div>
+  </div>;
+}
+
 function BuyerProfileCard({workspace,user,supabase,setLocation}:{workspace:Workspace|undefined;user:User|null;supabase:SupabaseClient|null;setLocation:(p:string)=>void}){
   const bp=workspace?.buyerProfile;
   const qc=useQueryClient();
@@ -468,17 +432,17 @@ function BuyerProfileCard({workspace,user,supabase,setLocation}:{workspace:Works
   const saveMut=useSaveBuyerProfile();
   useEffect(()=>{if(bp){setDraft({fullName:bp.fullName||'',phone:bp.phone||'',avatarUrl:bp.avatarUrl||'',occasionPrefs:bp.occasionPrefs||[],stylePrefs:bp.stylePrefs||[],budgetMaxPaise:bp.budgetMaxPaise??null})}},[bp?.fullName,bp?.phone,bp?.avatarUrl]);
   useEffect(()=>{
-    const vibe=AVATAR_VIBES.find(v=>v.emoji===bp?.avatarUrl);
+    const vibe=AVATAR_VIBES.find(v=>v.icon===bp?.avatarUrl);
     applyVibeTheme(vibe?vibe.theme:DEFAULT_THEME);
     return ()=>{applyVibeTheme(DEFAULT_THEME)};
   },[bp?.avatarUrl]);
-  const pickAvatar=(emoji:string)=>{
-    setDraft(d=>({...d,avatarUrl:emoji}));
-    const vibe=AVATAR_VIBES.find(v=>v.emoji===emoji);
+  const pickAvatar=(icon:string)=>{
+    setDraft(d=>({...d,avatarUrl:icon}));
+    const vibe=AVATAR_VIBES.find(v=>v.icon===icon);
     applyVibeTheme(vibe?vibe.theme:DEFAULT_THEME);
     qc.setQueriesData<Workspace>({queryKey:getGetWorkspaceQueryKey()},(old)=>{
       if(!old)return old;
-      return {...old,buyerProfile:{...old.buyerProfile,avatarUrl:emoji,fullName:old.buyerProfile?.fullName??null,phone:old.buyerProfile?.phone??null,occasionPrefs:old.buyerProfile?.occasionPrefs??[],stylePrefs:old.buyerProfile?.stylePrefs??[],budgetMaxPaise:old.buyerProfile?.budgetMaxPaise??null}};
+      return {...old,buyerProfile:{...old.buyerProfile,avatarUrl:icon,fullName:old.buyerProfile?.fullName??null,phone:old.buyerProfile?.phone??null,occasionPrefs:old.buyerProfile?.occasionPrefs??[],stylePrefs:old.buyerProfile?.stylePrefs??[],budgetMaxPaise:old.buyerProfile?.budgetMaxPaise??null}};
     });
   };
   const fields=[
@@ -489,47 +453,50 @@ function BuyerProfileCard({workspace,user,supabase,setLocation}:{workspace:Works
     {label:'Budget comfort',done:draft.budgetMaxPaise!=null&&draft.budgetMaxPaise>0},
   ];
   const pct=Math.round(fields.filter(f=>f.done).length/fields.length*100);
-  const budgetLabel=(p:number)=>p>=100000?`₹${p/100}k+`:`₹${(p/100).toLocaleString('en-IN')}`;
-  const activeVibe=AVATAR_VIBES.find(v=>v.emoji===draft.avatarUrl);
+  const activeVibe=AVATAR_VIBES.find(v=>v.icon===draft.avatarUrl);
   return <div>
     <ProfileCompletion pct={pct} fields={fields}/>
-    <form className="bk-form" onSubmit={e=>{e.preventDefault();saveMut.mutate({data:draft},{onSuccess:()=>{setSaved(true);setTimeout(()=>setSaved(false),3000)}});}}>
+    <form className="bk-form" onSubmit={e=>{e.preventDefault();saveMut.mutate({data:draft},{onSuccess:()=>{
+      setSaved(true);
+      setTimeout(()=>{
+        const params=new URLSearchParams();
+        if(draft.budgetMaxPaise)params.set('budget',String(draft.budgetMaxPaise));
+        setLocation(`/shop${params.toString()?'?'+params.toString():''}`);
+      },800);
+    }});}}>
       <div className="wide">
-        <p style={{fontWeight:600,marginBottom:6,color:'var(--bk-ink,#1a1612)'}}>🎭 Who are you today?</p>
-        {activeVibe&&<div style={{display:'inline-flex',alignItems:'center',gap:10,padding:'8px 16px',borderRadius:999,background:'var(--bk-cream)',border:'2px solid var(--bk-gold)',marginBottom:12,transition:'all 0.4s'}}>
-          <span style={{fontSize:26,lineHeight:1}}>{activeVibe.emoji}</span>
-          <div><strong style={{fontSize:14,color:'var(--bk-crimson)'}}>{activeVibe.name}</strong><span style={{fontSize:12,color:'var(--bk-muted)',marginLeft:6}}>{activeVibe.desc}</span></div>
-          <span style={{fontSize:11,color:'var(--bk-gold)',opacity:.8}}>← showing in nav</span>
+        <p style={{fontWeight:600,marginBottom:6,color:'var(--bk-ink,#1a1612)',fontSize:13,textTransform:'uppercase',letterSpacing:'0.08em'}}>Your vibe</p>
+        {activeVibe&&<div style={{display:'inline-flex',alignItems:'center',gap:10,padding:'8px 16px',borderRadius:999,background:'var(--bk-cream)',border:'1px solid var(--bk-gold)',marginBottom:12,transition:'all 0.4s'}}>
+          <span style={{fontSize:18,lineHeight:1,fontFamily:'monospace',color:'var(--bk-gold)'}}>{activeVibe.icon}</span>
+          <div><strong style={{fontSize:13,color:'var(--bk-crimson)',letterSpacing:'0.02em'}}>{activeVibe.name}</strong><span style={{fontSize:12,color:'var(--bk-muted)',marginLeft:8}}>{activeVibe.desc}</span></div>
         </div>}
-        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(110px,1fr))',gap:8,marginTop:4}}>
-          {AVATAR_VIBES.map(v=>{const on=draft.avatarUrl===v.emoji;return <button key={v.emoji} type="button" onClick={()=>pickAvatar(v.emoji)} style={{padding:'10px 8px',borderRadius:10,border:`2px solid ${on?'var(--bk-gold)':'var(--bk-line,#e8e4de)'}`,background:on?'var(--bk-cream)':'transparent',cursor:'pointer',textAlign:'center',transition:'all 0.2s',transform:on?'scale(1.05)':'scale(1)',boxShadow:on?'0 4px 12px #00000018':'none'}}>
-            <div style={{fontSize:26,lineHeight:1,marginBottom:4}}>{v.emoji}</div>
-            <div style={{fontSize:12,fontWeight:600,color:on?'var(--bk-crimson)':'var(--bk-ink)'}}>{v.name}</div>
-            <div style={{fontSize:11,color:'var(--bk-muted)',marginTop:2}}>{v.desc}</div>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(130px,1fr))',gap:6,marginTop:4}}>
+          {AVATAR_VIBES.map(v=>{const on=draft.avatarUrl===v.icon;return <button key={v.icon} type="button" onClick={()=>pickAvatar(v.icon)} style={{padding:'12px 10px',borderRadius:8,border:`1px solid ${on?'var(--bk-gold)':'var(--bk-line,#e8e4de)'}`,background:on?'var(--bk-cream)':'transparent',cursor:'pointer',textAlign:'left',transition:'all 0.15s',boxShadow:on?'0 2px 8px #00000012':'none'}}>
+            <div style={{fontSize:16,lineHeight:1,marginBottom:5,fontFamily:'monospace',color:on?'var(--bk-gold)':'var(--bk-muted)'}}>{v.icon}</div>
+            <div style={{fontSize:12,fontWeight:600,color:on?'var(--bk-crimson)':'var(--bk-ink)',letterSpacing:'0.01em'}}>{v.name}</div>
+            <div style={{fontSize:11,color:'var(--bk-muted)',marginTop:1}}>{v.desc}</div>
           </button>;})}
         </div>
       </div>
       <label className="wide">What should we call you?<input value={draft.fullName||''} onChange={e=>setDraft(d=>({...d,fullName:e.target.value}))} placeholder="Your name" autoComplete="given-name"/></label>
       <label className="wide">Phone (for order updates)<input value={draft.phone||''} onChange={e=>setDraft(d=>({...d,phone:e.target.value}))} placeholder="10-digit mobile" type="tel" autoComplete="tel"/></label>
       <div className="wide" style={{marginTop:20}}>
-        <p style={{fontWeight:600,marginBottom:4,color:'var(--bk-ink,#1a1612)'}}>🎉 What are you gifting for?</p>
+        <p style={{fontWeight:600,marginBottom:4,color:'var(--bk-ink,#1a1612)',fontSize:13,textTransform:'uppercase',letterSpacing:'0.08em'}}>What are you gifting for?</p>
         <p style={{fontSize:13,color:'var(--bk-muted,#888)',marginBottom:0}}>Pick the moments that matter — we'll show you relevant picks.</p>
         <ChipPicker options={OCCASION_OPTIONS} selected={draft.occasionPrefs||[]} onChange={v=>setDraft(d=>({...d,occasionPrefs:v}))}/>
       </div>
       <div className="wide" style={{marginTop:20}}>
-        <p style={{fontWeight:600,marginBottom:4,color:'var(--bk-ink,#1a1612)'}}>✨ How do you like it?</p>
+        <p style={{fontWeight:600,marginBottom:4,color:'var(--bk-ink,#1a1612)',fontSize:13,textTransform:'uppercase',letterSpacing:'0.08em'}}>How do you like it?</p>
         <p style={{fontSize:13,color:'var(--bk-muted,#888)',marginBottom:0}}>Pick up to 4 — helps us surface pieces you'll love.</p>
         <ChipPicker options={STYLE_OPTIONS} selected={draft.stylePrefs||[]} onChange={v=>setDraft(d=>({...d,stylePrefs:v}))} max={4}/>
       </div>
       <div className="wide" style={{marginTop:20}}>
-        <p style={{fontWeight:600,marginBottom:8,color:'var(--bk-ink,#1a1612)'}}>💸 What feels right?&nbsp;<strong style={{color:'#4f46e5'}}>{draft.budgetMaxPaise?budgetLabel(draft.budgetMaxPaise):'Not set'}</strong></p>
-        <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
-          {BUDGET_STEPS.map(s=><button key={s} type="button" onClick={()=>setDraft(d=>({...d,budgetMaxPaise:s}))} style={{padding:'6px 14px',borderRadius:20,border:`1px solid ${draft.budgetMaxPaise===s?'#818cf8':'var(--bk-line,#e8e4de)'}`,background:draft.budgetMaxPaise===s?'#ede9fe':'transparent',cursor:'pointer',fontSize:13,fontWeight:draft.budgetMaxPaise===s?600:400}}>{budgetLabel(s)}</button>)}
-        </div>
+        <p style={{fontWeight:600,marginBottom:8,color:'var(--bk-ink,#1a1612)',fontSize:13,textTransform:'uppercase',letterSpacing:'0.08em'}}>Gift budget</p>
+        <BudgetSlider value={draft.budgetMaxPaise} onChange={v=>setDraft(d=>({...d,budgetMaxPaise:v}))}/>
       </div>
       {saveMut.isError&&<p className="bk-error">{errText(saveMut.error)}</p>}
-      {saved&&<p className="bk-success" role="status">Profile saved ✓</p>}
-      <button className="bk-btn" disabled={saveMut.isPending} style={{marginTop:8}}>{saveMut.isPending?'Saving…':'Save my profile'}</button>
+      {saved&&<p className="bk-success" role="status">Saved — taking you to the shop…</p>}
+      <button className="bk-btn" disabled={saveMut.isPending} style={{marginTop:8}}>{saveMut.isPending?'Saving…':'Save & explore picks'}</button>
     </form>
     <div style={{marginTop:24,paddingTop:16,borderTop:'1px solid var(--bk-line,#e8e4de)',display:'flex',gap:12,flexWrap:'wrap'}}>
       <button className="bk-btn secondary" onClick={async()=>{await supabase?.auth.signOut();setLocation('/');}}>Sign out</button>
@@ -538,9 +505,64 @@ function BuyerProfileCard({workspace,user,supabase,setLocation}:{workspace:Works
 }
 
 
+const buyerLinks = [
+  { label: 'Account',  href: '/account',   icon: Home },
+  { label: 'Orders',   href: '/orders',    icon: ListOrdered },
+  { label: 'Wishlist', href: '/wishlist',  icon: Heart },
+  { label: 'Profile',  href: '/account',   icon: UserIcon },
+];
+
+interface BuyerShellProps {
+  path: string;
+  workspace: Workspace | undefined;
+  user: User | null;
+  onSignOut?: () => void;
+  children: ReactNode;
+}
+
+function BuyerShell({ path, workspace, user, onSignOut, children }: BuyerShellProps) {
+  const active = buyerLinks.find(l => l.href === path)?.label ?? 'Account';
+  const bp = workspace?.buyerProfile;
+  const displayName = bp?.fullName ? bp.fullName.split(' ')[0] : (user?.email?.split('@')[0] ?? 'You');
+  const avatar = bp?.avatarUrl && bp.avatarUrl.length <= 2 ? bp.avatarUrl : '◈';
+  return (
+    <div className="baksa rs-shell rs-shell--buyer">
+      <aside className="rs-sidebar">
+        <div className="rs-sidebar-top">
+          <div className="rs-role-badge">Buyer</div>
+          <p className="rs-brand" style={{fontSize:18}}>{avatar} {displayName}</p>
+          <p className="rs-sub">Your gifting space</p>
+        </div>
+        <nav className="rs-nav">
+          <span className="rs-nav-section">My space</span>
+          {buyerLinks.map(({ label, href, icon: Icon }) => (
+            <Link key={label} href={href} aria-current={active === label ? 'page' : undefined}>
+              <Icon size={16} />
+              {label}
+            </Link>
+          ))}
+        </nav>
+        <div className="rs-sidebar-foot">
+          {onSignOut && (
+            <button className="rs-signout" onClick={onSignOut}>
+              <LogOut size={15} /> Sign out
+            </button>
+          )}
+        </div>
+      </aside>
+      <div className="rs-main">
+        <header className="rs-topbar">
+          <h1 className="rs-page-title">{active}</h1>
+        </header>
+        <div className="rs-content">{children}</div>
+      </div>
+    </div>
+  );
+}
+
 function SecureGate({runtime,runtimeLoading,ready,user,workspace,workspaceLoading,workspaceError,retryWorkspace,roles,children}:{runtime?:Runtime;runtimeLoading:boolean;ready:boolean;user:User|null;workspace:Workspace|undefined;workspaceLoading:boolean;workspaceError:unknown;retryWorkspace:()=>void;roles:string[];children:ReactNode}){
   const [,navigate]=useLocation();
-  useEffect(()=>{if(ready&&!user&&runtime?.auth)navigate(`/sign-in?returnTo=${encodeURIComponent(window.location.pathname)}`)},[ready,user,runtime?.auth,navigate]);
+  useEffect(()=>{if(ready&&!user&&runtime?.auth)navigate(roles.includes('admin')?`/admin/sign-in`:`/sign-in?returnTo=${encodeURIComponent(window.location.pathname)}`)},[ready,user,runtime?.auth,navigate,roles]);
   if(runtimeLoading)return <main className="bk-formpage"><div className="bk-skeleton"/></main>;
   if(!runtime?.auth)return <main className="bk-formpage"><Seo title="Workspace setup" description="Secure workspace access setup information."/><span className="bk-eyebrow">Private workspace</span><h1>Access is not connected.</h1><p>{runtime?.message||'Supabase authentication is not configured for this marketplace.'}</p><div className="bk-panel"><p>Workspace pages remain protected until the owner connects Supabase and assigns real roles. No demo login or role switch is available.</p><Link className="bk-btn secondary" href="/">Return to the shop</Link></div></main>;
   if(!ready||(!user&&runtime?.auth))return <main className="bk-formpage"><div className="bk-skeleton"/></main>;
@@ -587,8 +609,8 @@ export default function BaksaApp(){
   const catContent=()=>catalogQuery.isError?<LoadingError retry={()=>catalogQuery.refetch()}/>:<main className="bk-formpage"><div className="bk-skeleton"/></main>;
   if(siteQuery.isError&&!route.startsWith('/admin')&&route!=='/studio-preview') content=<main className="bk-formpage"><h1>The stories are taking a moment.</h1><p className="bk-errorbox">We could not load the published site content. Your stored content has not been changed or replaced.</p><button className="bk-btn" onClick={()=>void siteQuery.refetch()}>Try again</button></main>;
   else if((route==='/'||route.startsWith('/stories/'))&&!siteQuery.data) content=<main className="bk-formpage" aria-busy="true"><div className="bk-skeleton"/><p>Loading the published stories…</p></main>;
-  else if(route==='/') content=<HomePage catalog={catalog} saved={saved} toggle={toggleSave} document={siteDocument} catalogError={catalogQuery.isError?errText(catalogQuery.error):undefined} retryCatalog={()=>void catalogQuery.refetch()}/>;
-  else if(route==='/studio-preview') content=<SiteStudio localOnly preview={(doc,storyId)=><StorefrontPreview document={doc} storyId={storyId} catalog={catalog} catalogError={catalogQuery.isError?errText(catalogQuery.error):undefined} retryCatalog={()=>void catalogQuery.refetch()}/>}/>;
+  else if(route==='/') content=<HomeV5 document={siteDocument}/>;
+  else if(route==='/studio-preview') content=<SiteStudio localOnly preview={(doc)=><HomeV5 document={doc}/>}/>;
   else if(route.startsWith('/stories/')) content=<StoryPage id={decodeURIComponent(route.slice('/stories/'.length))} document={siteDocument}/>;
   else if(route==='/shop'||route==='/edit') content=catalog? <ShopPage catalog={catalog} saved={saved} toggle={toggleSave}/>:catContent();
   else if(route==='/makers') content=catalog?<MakersPage catalog={catalog}/>:catContent();
@@ -603,9 +625,11 @@ export default function BaksaApp(){
   else if(route==='/academy') content=<AcademyPage/>;
   else if(route==='/reset-password') content=<ResetPasswordPage client={supabase} clientLoading={runtimeQuery.isLoading}/>;
   else if(route==='/sign-in') content=<SignInPage runtime={runtime} runtimeLoading={runtimeQuery.isLoading} client={supabase} user={user} workspace={workspace} returnTo={authReturn}/>;
-  else if(route==='/account') content=<SecureGate runtime={runtime} runtimeLoading={runtimeQuery.isLoading} ready={authReady} user={user} workspace={workspace} workspaceLoading={workspaceQuery.isLoading} workspaceError={workspaceQuery.error} retryWorkspace={()=>void workspaceQuery.refetch()} roles={['buyer','maker','admin']}><main className="bk-formpage" style={{maxWidth:720}}><Seo title="Your account" description="Your Baksa Tales account and profile."/><div style={{display:'flex',alignItems:'center',gap:14,marginBottom:24}}><span style={{fontSize:40}}>{workspace?.buyerProfile?.avatarUrl&&workspace.buyerProfile.avatarUrl.length<=4?workspace.buyerProfile.avatarUrl:'🛍️'}</span><div><span className="bk-eyebrow">Welcome back</span><h1 style={{margin:0,fontSize:'clamp(28px,4vw,42px)'}}>{workspace?.buyerProfile?.fullName?`Hey, ${workspace.buyerProfile.fullName.split(' ')[0]}!`:'Your account.'}</h1></div></div><BuyerProfileCard workspace={workspace} user={user} supabase={supabase} setLocation={setLocation}/><BuyerOrderList/></main></SecureGate>;
-  else if(route==='/maker'||route.startsWith('/maker/')) content=<SecureGate runtime={runtime} runtimeLoading={runtimeQuery.isLoading} ready={authReady} user={user} workspace={workspace} workspaceLoading={workspaceQuery.isLoading} workspaceError={workspaceQuery.error} retryWorkspace={()=>void workspaceQuery.refetch()} roles={['maker']}><MakerArea path={route} workspace={workspace} verifiedUser={!!user?.email_confirmed_at} aiAvailable={!!runtime?.ai}/></SecureGate>;
-  else if(route==='/admin'||route.startsWith('/admin/')) content=<SecureGate runtime={runtime} runtimeLoading={runtimeQuery.isLoading} ready={authReady} user={user} workspace={workspace} workspaceLoading={workspaceQuery.isLoading} workspaceError={workspaceQuery.error} retryWorkspace={()=>void workspaceQuery.refetch()} roles={['admin']}>{route==='/admin/site'?<SiteStudio verifiedUser={!!user?.email_confirmed_at} aiAvailable={!!runtime?.ai} preview={(doc,storyId)=><StorefrontPreview document={doc} storyId={storyId} catalog={catalog} catalogError={catalogQuery.isError?errText(catalogQuery.error):undefined} retryCatalog={()=>void catalogQuery.refetch()}/>} />:<AdminArea path={route} workspace={workspace} catalog={catalog||{sample:true,products:[],makers:[]}}/>}</SecureGate>;
+  else if(route==='/account') content=<SecureGate runtime={runtime} runtimeLoading={runtimeQuery.isLoading} ready={authReady} user={user} workspace={workspace} workspaceLoading={workspaceQuery.isLoading} workspaceError={workspaceQuery.error} retryWorkspace={()=>void workspaceQuery.refetch()} roles={['buyer','maker','admin']}><BuyerShell path={route} workspace={workspace} user={user} onSignOut={async()=>{await supabase?.auth.signOut();setLocation('/')}}><Seo title="Your account" description="Your Baksa Tales account and profile."/><BuyerProfileCard workspace={workspace} user={user} supabase={supabase} setLocation={setLocation}/><BuyerOrderList/></BuyerShell></SecureGate>;
+  else if(route==='/maker'||route.startsWith('/maker/')) content=<SecureGate runtime={runtime} runtimeLoading={runtimeQuery.isLoading} ready={authReady} user={user} workspace={workspace} workspaceLoading={workspaceQuery.isLoading} workspaceError={workspaceQuery.error} retryWorkspace={()=>void workspaceQuery.refetch()} roles={['maker']}><MakerArea path={route} workspace={workspace} verifiedUser={!!user?.email_confirmed_at} aiAvailable={!!runtime?.ai} onSignOut={async()=>{await supabase?.auth.signOut();setLocation('/')}}/></SecureGate>;
+  else if(route==='/admin/sign-in') content=<main className="bk-formpage" style={{maxWidth:480}}><Seo title="Admin sign in" description="Internal sign in for Baksa Tales administrators."/><span className="bk-eyebrow">Internal only</span><h1>Admin portal.</h1><p>Manage applications, reviews, orders, and platform settings.</p>{runtimeQuery.isLoading?<div className="bk-skeleton"/>:<SignInForm role="admin" runtime={runtime} client={supabase} user={user} workspace={workspace} returnTo="/admin"/>}</main>;
+  else if(route==='/admin'||route.startsWith('/admin/')) content=<SecureGate runtime={runtime} runtimeLoading={runtimeQuery.isLoading} ready={authReady} user={user} workspace={workspace} workspaceLoading={workspaceQuery.isLoading} workspaceError={workspaceQuery.error} retryWorkspace={()=>void workspaceQuery.refetch()} roles={['admin']}>{route==='/admin/site'?<SiteStudio verifiedUser={!!user?.email_confirmed_at} aiAvailable={!!runtime?.ai} preview={(doc)=><HomeV5 document={doc}/>} />:<AdminArea path={route} workspace={workspace} catalog={catalog||{sample:true,products:[],makers:[]}} onSignOut={async()=>{await supabase?.auth.signOut();setLocation('/')}}/>}</SecureGate>;
   else content=<main className="bk-formpage"><Seo title="Page not found" description="This Baksa Tales page does not exist."/><span className="bk-eyebrow">A wrong turn</span><h1>This page is not in the baksa.</h1><p>The address may have changed, or the page has not been made available.</p><Link className="bk-btn" href="/">Back to the beginning</Link></main>;
-  return <Frame bagCount={totalItems} savedCount={saved.length} onBag={()=>setBagOpen(true)} document={siteDocument} user={user} workspace={workspace}><RouteContent>{content}</RouteContent>{catalog&&<BagDrawer open={bagOpen} close={()=>setBagOpen(false)} catalog={catalog} cart={cart} setCart={setCart} />}{toast&&<div className="bk-toast" role="status">{toast}</div>}</Frame>;
+  const isRoleDashboard = route === '/account' || route.startsWith('/maker') || (route.startsWith('/admin') && route !== '/admin/sign-in');
+  return <Frame bagCount={totalItems} savedCount={saved.length} onBag={()=>setBagOpen(true)} document={siteDocument} user={user} workspace={workspace} bare={isRoleDashboard}><RouteContent>{content}</RouteContent>{catalog&&<BagDrawer open={bagOpen} close={()=>setBagOpen(false)} catalog={catalog} cart={cart} setCart={setCart} />}{toast&&<div className="bk-toast" role="status">{toast}</div>}</Frame>;
 }

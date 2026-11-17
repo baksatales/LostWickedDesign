@@ -5,6 +5,7 @@ import App from './App';
 import { ErrorBoundary } from '@/components/error-boundary';
 
 import './demo/approved.css';
+import './premium-refinements.css';
 
 const apiUrl = import.meta.env.VITE_API_URL as string | undefined;
 if (apiUrl) setBaseUrl(apiUrl);

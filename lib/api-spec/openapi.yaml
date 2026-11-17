@@ -1149,7 +1149,7 @@ components:
       required: [id, type, visible, eyebrow, title, text, image, imageAlt, tone, layout, link, storyId, productIds]
       properties:
         id: { type: string, pattern: '^[a-z0-9-]{1,60}$' }
-        type: { type: string, enum: [hero, story, products, maker, quiz, invitation] }
+        type: { type: string, enum: [hero, story, products, maker, quiz, invitation, event, reels] }
         visible: { type: boolean }
         eyebrow: { type: string, maxLength: 120 }
         title: { type: string, maxLength: 180 }
@@ -1161,6 +1161,10 @@ components:
         link: { $ref: "#/components/schemas/SiteLink" }
         storyId: { type: string, maxLength: 60 }
         productIds: { type: array, maxItems: 12, items: { type: string, maxLength: 100 } }
+        eventDate: { type: string, maxLength: 120 }
+        eventLocation: { type: string, maxLength: 240 }
+        bannerColor: { type: string, maxLength: 30 }
+        videoUrls: { type: array, maxItems: 12, items: { type: string, maxLength: 500 } }
     SiteTrunkCard:
       type: object
       additionalProperties: false

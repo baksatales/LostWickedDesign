@@ -5,11 +5,21 @@ import { Em, Modal, asset } from './ui';
 
 type V = (key: string) => string;
 interface Chapter { id: string; title: string; body: string; image: string; imageAlt: string }
-export interface Tale { id: string; maker: string; hook: string; image: string; chapters: Chapter[]; sponsored: boolean; sample: boolean; fromDocument: boolean }
+export interface Tale { id: string; maker: string; hook: string; image: string; videoUrl: string; chapters: Chapter[]; sponsored: boolean; sample: boolean; fromDocument: boolean }
 
 type DocStory = { maker?: string; title?: string; image?: string; imageAlt?: string; sponsored?: boolean; sample?: boolean; visible?: boolean; chapters?: { id?: string; title?: string; body?: string; image?: string; imageAlt?: string }[] };
 
-/** Builds the five tales: editable hooks; chapters from document stories when the maker matches, else the editable sample chapter. */
+function toEmbedUrl(url: string): string | null {
+  try {
+    const u = new URL(url);
+    if (u.hostname === 'www.youtube.com' || u.hostname === 'youtube.com') { const v = u.searchParams.get('v'); return v ? `https://www.youtube.com/embed/${v}` : null; }
+    if (u.hostname === 'youtu.be') { const v = u.pathname.slice(1); return v ? `https://www.youtube.com/embed/${v}` : null; }
+    if (u.hostname === 'www.instagram.com' || u.hostname === 'instagram.com') { const m = u.pathname.match(/\/(p|reel|tv)\/([\w-]+)/); return m ? `https://www.instagram.com/${m[1]}/${m[2]}/embed/` : null; }
+  } catch { /* ignore */ }
+  return null;
+}
+
+/** Builds the five tales: editable hooks and video URLs; chapters from document stories when the maker matches. */
 export function buildTales(doc: SiteDocument | undefined, v: V): Tale[] {
   const stories = ((doc as { stories?: DocStory[] } | undefined)?.stories ?? []).filter(s => s.visible !== false);
   return REELS.map((r, i) => {
@@ -17,10 +27,11 @@ export function buildTales(doc: SiteDocument | undefined, v: V): Tale[] {
     const maker = v(`h5.copy.reel${n}.maker`);
     const hook = v(`h5.copy.reel${n}.hook`);
     const image = v(`h5.image.reel${n}`);
+    const videoUrl = v(`h5.link.reel${n}.video`);
     const story = stories.find(s => (s.maker ?? '').trim().toLowerCase() === maker.trim().toLowerCase());
     const chapters = (story?.chapters ?? []).filter(c => c.body).map((c, j) => ({ id: c.id || `c${j}`, title: c.title || hook, body: c.body!, image: c.image || image, imageAlt: c.imageAlt || '' }));
-    if (story && chapters.length) return { id: r.id, maker, hook, image, chapters, sponsored: !!story.sponsored, sample: story.sample !== false, fromDocument: true };
-    return { id: r.id, maker, hook, image, chapters: [{ id: 'sample', title: hook, body: v(`h5.copy.reel${n}.body`), image, imageAlt: '' }], sponsored: false, sample: true, fromDocument: false };
+    if (story && chapters.length) return { id: r.id, maker, hook, image, videoUrl, chapters, sponsored: !!story.sponsored, sample: story.sample !== false, fromDocument: true };
+    return { id: r.id, maker, hook, image, videoUrl, chapters: [], sponsored: false, sample: true, fromDocument: false };
   });
 }
 
@@ -155,28 +166,39 @@ function StoryViewer({ tales, index, onClose, onIndex, v }: { tales: Tale[]; ind
   const [lastIndex, setLastIndex] = useState<number | null>(null);
   if (index !== lastIndex) { setLastIndex(index); setChapter(0); }
   const t = index === null ? null : tales[index];
-  const c = t?.chapters[Math.min(chapter, (t?.chapters.length ?? 1) - 1)];
-  const next = () => { if (!t || index === null) return; if (chapter < t.chapters.length - 1) setChapter(chapter + 1); else if (index < tales.length - 1) onIndex(index + 1); else onClose(); };
-  const prev = () => { if (!t || index === null) return; if (chapter > 0) setChapter(chapter - 1); else if (index > 0) onIndex(index - 1); };
+  const embedUrl = t?.videoUrl ? toEmbedUrl(t.videoUrl) : null;
+  const c = !embedUrl ? t?.chapters[Math.min(chapter, (t?.chapters.length ?? 1) - 1)] : undefined;
+  const next = () => { if (!t || index === null) return; if (!embedUrl && chapter < t.chapters.length - 1) setChapter(chapter + 1); else if (index < tales.length - 1) onIndex(index + 1); else onClose(); };
+  const prev = () => { if (!t || index === null) return; if (!embedUrl && chapter > 0) setChapter(chapter - 1); else if (index > 0) onIndex(index - 1); };
   return (
     <Modal open={!!t} onClose={onClose} label={t ? `${t.maker} tale` : 'Tale'} className="h5-viewer" testId="story-viewer">
-      {t && c ? (
+      {t ? (
         <div onKeyDown={e => { if (e.key === 'ArrowRight') next(); if (e.key === 'ArrowLeft') prev(); }}>
-          <div className="h5-viewer-bars" aria-hidden="true">{t.chapters.map((x, i) => <i key={x.id} className={i <= chapter ? 'on' : ''} />)}</div>
           <div className="h5-viewer-top">
             <span className="h5-avatar">{initials(t.maker)}</span><strong>{t.maker}</strong>
             <button type="button" className="h5-iconbtn" aria-label="Close tale" data-testid="button-story-close" onClick={onClose}>×</button>
           </div>
-          <img className="h5-viewer-img" src={asset(c.image)} alt={c.imageAlt || t.hook} />
-          <h3 data-testid="text-story-title">{c.title}</h3>
-          <p data-testid="text-story-body">{c.body}</p>
-          <p className="h5-disclose" data-testid="text-story-disclosure">
-            {t.sponsored ? 'Paid partnership. ' : ''}{t.fromDocument ? (t.sample ? 'Sample story.' : '') : v('h5.copy.reels.disclosure')}
-          </p>
+          {embedUrl ? (
+            <div className="h5-viewer-video">
+              <iframe src={embedUrl} title={t.hook} allow="autoplay; encrypted-media; picture-in-picture" allowFullScreen loading="lazy" style={{ width: '100%', aspectRatio: '9/16', border: 0, borderRadius: 12 }} />
+            </div>
+          ) : c ? (
+            <>
+              <div className="h5-viewer-bars" aria-hidden="true">{t.chapters.map((x, i) => <i key={x.id} className={i <= chapter ? 'on' : ''} />)}</div>
+              <img className="h5-viewer-img" src={asset(c.image)} alt={c.imageAlt || t.hook} />
+              <h3 data-testid="text-story-title">{c.title}</h3>
+              <p data-testid="text-story-body">{c.body}</p>
+              <p className="h5-disclose" data-testid="text-story-disclosure">
+                {t.sponsored ? 'Paid partnership. ' : ''}{t.fromDocument ? (t.sample ? 'Sample story.' : '') : v('h5.copy.reels.disclosure')}
+              </p>
+            </>
+          ) : (
+            <p className="h5-disclose" style={{ padding: '32px 0' }}>{v('h5.copy.reels.disclosure')}</p>
+          )}
           <div className="h5-viewer-ctrl">
-            <button type="button" className="h5-pill h5-pill--ghost" data-testid="button-story-prev" onClick={prev} disabled={index === 0 && chapter === 0}>Back</button>
+            <button type="button" className="h5-pill h5-pill--ghost" data-testid="button-story-prev" onClick={prev} disabled={index === 0 && (embedUrl ? true : chapter === 0)}>Back</button>
             <span aria-live="polite">{index! + 1} of {tales.length}</span>
-            <button type="button" className="h5-pill" data-testid="button-story-next" onClick={next}>{index === tales.length - 1 && chapter >= t.chapters.length - 1 ? 'Done' : 'Next'}</button>
+            <button type="button" className="h5-pill" data-testid="button-story-next" onClick={next}>{index === tales.length - 1 ? 'Done' : 'Next'}</button>
           </div>
         </div>
       ) : null}

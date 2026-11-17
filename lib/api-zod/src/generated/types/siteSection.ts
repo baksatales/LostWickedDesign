@@ -35,4 +35,15 @@ export interface SiteSection {
      * @items.maxLength 100
      */
   productIds: string[];
+  /** @maxLength 120 */
+  eventDate?: string;
+  /** @maxLength 240 */
+  eventLocation?: string;
+  /** @maxLength 30 */
+  bannerColor?: string;
+  /**
+     * @maxItems 12
+     * @items.maxLength 500
+     */
+  videoUrls?: string[];
 }

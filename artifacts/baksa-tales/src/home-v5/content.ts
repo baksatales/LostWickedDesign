@@ -20,7 +20,7 @@ const f = (group: string, kind: FieldKind, key: string, label: string, value: st
 const IMG = '/images/baksa/';
 
 const MOOD_DEFAULTS: Record<MoodId, { name: string; line: string; headline: string; sub: string; picks: string; alt: string }> = {
-  explorer: { name: 'Explorer', line: 'something they’ve never seen', headline: 'Wait, what *is* this?', sub: 'For the one who’s always first to try something new.', picks: 'sv-divya,popbani,t-bluelotus', alt: 'Compass and map' },
+  explorer: { name: 'Explorer', line: 'something they\'ve never seen', headline: 'Wait, what *is* this?', sub: 'For the one who\'s always first to try something new.', picks: 'sv-divya,popbani,t-bluelotus', alt: 'Compass and map' },
   heart: { name: 'Heart-Giver', line: 'they remember little things', headline: 'Of course *I remembered.*', sub: 'For the person who remembers the little things.', picks: 't-message,t-marigold,sv-divya', alt: 'Gift wrapped in printed cloth' },
   showstopper: { name: 'Showstopper', line: 'when it should get a gasp', headline: 'Make them *gasp.*', sub: 'For the gift that gets opened in front of everyone.', picks: 't-teapot,t-bluelotus,t-lotuspond', alt: 'Golden painted dome' },
   soother: { name: 'Soul Soother', line: 'for a slow, quiet evening', headline: 'Breathe out. *Slowly.*', sub: 'For someone who needs a quiet evening to themselves.', picks: 'an-range,mu-box,sv-divya', alt: 'Tea cup on a book' },
@@ -28,11 +28,11 @@ const MOOD_DEFAULTS: Record<MoodId, { name: string; line: string; headline: stri
 };
 
 export const REELS = [
-  { id: 'tathaastu', maker: 'Tathaastu', hook: 'Watch a lotus come alive, petal by petal', image: 'homev5-p-t-lotuspond.webp', body: 'Sample chapter, no video yet. Tathaastu shapes soy wax petal by petal into lotuses, peonies and sunflowers, then sets them in brass urlis, teapots and sculpted vessels.' },
-  { id: 'anirveda', maker: 'Anirveda', hook: 'Inside a slow Ayurvedic bath ritual', image: 'homev5-p-an-range.webp', body: 'Sample chapter, no video yet. Anirveda draws on old Indian bath rituals: a bath ubtan, a kumkumadi face pack, a saffron face wash and a triphala night cream.' },
-  { id: 'svara', maker: 'Svara', hook: 'Why their fragrance has no alcohol', image: 'homev5-p-sv-divya.webp', body: 'Sample chapter, no video yet. Svara sets Indian botanicals on a magnesium oil base, with no alcohol.' },
-  { id: 'popbani', maker: 'Pop Bani', hook: 'A box you’ll never throw away', image: 'homev5-p-popbani.webp', body: 'Sample chapter, no video yet. Keepsake boxes with Mithila art, made with Pop Bani for Baksa Tales.' },
-  { id: 'mushhk', maker: 'Mushhk', hook: 'Oils, pressed slowly', image: 'homev5-p-mu-box.webp', body: 'Sample chapter, no video yet. Mushhk’s oils, mists, salts and scrubs are made for the ten quiet minutes at either end of a day.' },
+  { id: 'tathaastu', maker: 'Tathaastu', hook: 'Watch a lotus come alive, petal by petal', image: 'homev5-p-t-lotuspond.webp' },
+  { id: 'anirveda', maker: 'Anirveda', hook: 'Inside a slow Ayurvedic bath ritual', image: 'homev5-p-an-range.webp' },
+  { id: 'svara', maker: 'Svara', hook: 'Why their fragrance has no alcohol', image: 'homev5-p-sv-divya.webp' },
+  { id: 'popbani', maker: 'Pop Bani', hook: 'A box you\'ll never throw away', image: 'homev5-p-popbani.webp' },
+  { id: 'mushhk', maker: 'Mushhk', hook: 'Oils, pressed slowly', image: 'homev5-p-mu-box.webp' },
 ] as const;
 
 export const homeFields: HomeField[] = [
@@ -68,18 +68,18 @@ export const homeFields: HomeField[] = [
     ];
   }),
   f('Mood cards', 'text', 'popbani', 'Pop Bani card: maker|name|price placeholder', 'Pop Bani|Mithila keepsake box|[₹ price]'),
-  f('Today’s tales', 'text', 'reels.label', 'Label', 'New this week'),
-  f('Today’s tales', 'text', 'reels.title', 'Headline (*word* coral italic)', 'Today’s *tales*'),
-  f('Today’s tales', 'text', 'reels.sub', 'Subline', 'Step into the workshops. Under a minute each.'),
-  f('Today’s tales', 'text', 'reels.all', 'All tales link', 'All tales →'),
+  f('Today\'s tales', 'text', 'reels.label', 'Label', 'New this week'),
+  f('Today\'s tales', 'text', 'reels.title', 'Headline (*word* coral italic)', 'Today\'s *tales*'),
+  f('Today\'s tales', 'text', 'reels.sub', 'Subline', 'Step into the workshops. Under a minute each.'),
+  f('Today\'s tales', 'text', 'reels.all', 'All tales link', 'All tales →'),
   ...REELS.flatMap((r, i) => [
-    f('Today’s tales', 'text', `reel${i + 1}.maker`, `Tale ${i + 1} maker`, r.maker),
-    f('Today’s tales', 'text', `reel${i + 1}.hook`, `Tale ${i + 1} hook`, r.hook),
-    f('Today’s tales', 'image', `reel${i + 1}`, `Tale ${i + 1} image`, `${IMG}${r.image}`),
-    f('Today’s tales', 'text', `reel${i + 1}.body`, `Tale ${i + 1} chapter (used when no story exists)`, r.body),
+    f('Today\'s tales', 'text', `reel${i + 1}.maker`, `Tale ${i + 1} maker`, r.maker),
+    f('Today\'s tales', 'text', `reel${i + 1}.hook`, `Tale ${i + 1} hook`, r.hook),
+    f('Today\'s tales', 'image', `reel${i + 1}`, `Tale ${i + 1} image`, `${IMG}${r.image}`),
+    f('Today\'s tales', 'link', `reel${i + 1}.video`, `Tale ${i + 1} video URL (YouTube or Instagram)`, ''),
   ]),
-  f('Today’s tales', 'text', 'reels.disclosure', 'Sample tale disclosure', 'Sample tale. Written from the catalogue; no video is claimed.'),
-  f('Today’s tales', 'text', 'reels.status', 'Tale badges (seen|sample|sponsorship|sample sponsorship)', 'Seen|Sample|Paid partnership|Sample sponsored placement'),
+  f('Today\'s tales', 'text', 'reels.disclosure', 'Sample tale disclosure', 'Sample tale. No video added yet.'),
+  f('Today\'s tales', 'text', 'reels.status', 'Tale badges (seen|sample|sponsorship|sample sponsorship)', 'Seen|Sample|Paid partnership|Sample sponsored placement'),
   f('Most gifted', 'text', 'gifted.title', 'Headline', 'Most gifted *this week*'),
   f('Most gifted', 'text', 'gifted.sub', 'Subline', 'The pieces gifters keep coming back for.'),
   f('Most gifted', 'text', 'gifted.all', 'See all link', 'See all gifts →'),
@@ -99,9 +99,9 @@ export const homeFields: HomeField[] = [
   f('Baksa way', 'text', 'way.pill', 'Tilted pill', 'Baksa Tales × Pop Bani'),
   f('Baksa way', 'text', 'way.label', 'Label', 'The Baksa way to give'),
   f('Baksa way', 'text', 'way.title', 'Headline', 'Wrapped in a *story.*'),
-  f('Baksa way', 'text', 'way.row1', 'Row 1 (title|line)', 'A gift note, on us|Your words at checkout, plus the maker’s story card.'),
+  f('Baksa way', 'text', 'way.row1', 'Row 1 (title|line)', 'A gift note, on us|Your words at checkout, plus the maker\'s story card.'),
   f('Baksa way', 'text', 'way.row2', 'Row 2 (title|line)', 'Keepsake boxes with Mithila art|Made with Pop Bani. Too lovely to throw away.'),
-  f('Baksa way', 'text', 'way.row3', 'Row 3 (title|line)', 'Gifting for teams and clients|Your logo on the box, a maker’s story inside.'),
+  f('Baksa way', 'text', 'way.row3', 'Row 3 (title|line)', 'Gifting for teams and clients|Your logo on the box, a maker\'s story inside.'),
   f('Baksa way', 'text', 'way.cta', 'Brief button', 'Start a brief'),
   f('Baksa way', 'link', 'way.cta', 'Brief destination', '/corporate#brief'),
   f('Kala Samāgam', 'text', 'kala.hindi', 'Background Devanagari', 'कला समागम'),
@@ -112,13 +112,13 @@ export const homeFields: HomeField[] = [
   f('Kala Samāgam', 'text', 'kala.next', 'Ticket label', 'Next edition'),
   f('Kala Samāgam', 'text', 'kala.dates', 'Dates and venue', '[Dates to be announced] · [venue], Delhi NCR'),
   f('Kala Samāgam', 'text', 'kala.cta', 'Ticket button', 'Tell me when tickets open'),
-  f('Kala Samāgam', 'text', 'kala.notlive', 'Not-live message', 'Ticket alerts aren’t switched on yet, so nothing was saved. Watch this page for the dates.'),
+  f('Kala Samāgam', 'text', 'kala.notlive', 'Not-live message', 'Ticket alerts aren\'t switched on yet, so nothing was saved. Watch this page for the dates.'),
   f('Founder conversations', 'text', 'dsdt.hindi', 'Gold Devanagari', 'दिल से दुनिया तक'),
   f('Founder conversations', 'text', 'dsdt.title', 'Title', 'Founder conversations'),
   f('Founder conversations', 'text', 'dsdt.body', 'Line incl. episode', 'The people behind the pieces, in their own words. Latest: [episode title]'),
   f('Founder conversations', 'text', 'dsdt.cta', 'Link text', 'Watch and listen →'),
   f('Founder conversations', 'link', 'dsdt', 'Episode URL (https, blank = not yet available)', ''),
-  f('Founder conversations', 'text', 'dsdt.unavailable', 'Unavailable message', 'The first episode isn’t published yet. When it is, this link will open it.'),
+  f('Founder conversations', 'text', 'dsdt.unavailable', 'Unavailable message', 'The first episode isn\'t published yet. When it is, this link will open it.'),
   f('Promise', 'text', 'promise1', 'Promise 1 (title|line)', 'Every maker, met|BT Verified, in person, before they join.'),
   f('Promise', 'text', 'promise2', 'Promise 2 (title|line)', 'Handmade in India|Small batches, made to last.'),
   f('Promise', 'text', 'promise3', 'Promise 3 (title|line)', 'Free delivery over ₹2,500|Anywhere in India.'),
@@ -129,17 +129,17 @@ export const homeFields: HomeField[] = [
   f('Footer', 'text', 'foot.card', 'Postcard title', 'Join the Baksa circle'),
   f('Footer', 'text', 'foot.phoneLabel', 'WhatsApp field label', 'Your WhatsApp number'),
   f('Footer', 'text', 'foot.phonePlaceholder', 'WhatsApp field placeholder', '98765 43210'),
-  f('Footer', 'text', 'foot.dear', 'Postcard greeting', 'Dear friend, we’d love to write to you.'),
+  f('Footer', 'text', 'foot.dear', 'Postcard greeting', 'Dear friend, we\'d love to write to you.'),
   f('Footer', 'text', 'foot.button', 'Button', 'Count me in'),
   f('Footer', 'text', 'foot.nospam', 'Small print', 'No spam. Leave any time by replying STOP.'),
-  f('Footer', 'text', 'foot.notlive', 'Not-live message', 'WhatsApp sign-ups aren’t switched on yet, so your number was not saved.'),
+  f('Footer', 'text', 'foot.notlive', 'Not-live message', 'WhatsApp sign-ups aren\'t switched on yet, so your number was not saved.'),
   f('Footer', 'text', 'foot.sample', 'Single sample disclosure', 'Sample storefront: prices, tales and dates are samples. Nothing is sold, sent or charged yet.'),
   f('Footer', 'text', 'foot.payments', 'Payments line', 'UPI, cards, net banking and cash on delivery'),
   f('Footer', 'text', 'foot.copyright', 'Copyright', '© 2026 Baksa Tales, made with love in Delhi NCR'),
   f('Footer', 'image', 'mark', 'Ticket and postcard trunk logo', `${IMG}homev5-mark.webp`),
   f('Footer links', 'text', 'foot.column1', 'Shop column (heading | label=>destination)', 'Shop|Shop gifts=>/shop|Gift finder=>/finder|Our makers=>/makers/tathaastu'),
   f('Footer links', 'text', 'foot.column2', 'Gifting column', 'Gifting|Gifting for teams=>/corporate|Keepsake boxes=>/corporate|Kala Samāgam=>#kala'),
-  f('Footer links', 'text', 'foot.column3', 'Maker column', 'Stories and makers|Dil Se Duniya Tak=>#dsdt|Sell with Baksa=>/maker|Makers’ Academy=>/academy'),
+  f('Footer links', 'text', 'foot.column3', 'Maker column', 'Stories and makers|Dil Se Duniya Tak=>#dsdt|Sell with Baksa=>/maker|Makers\' Academy=>/academy'),
   f('Footer links', 'text', 'foot.column4', 'Help column', 'Help|Track my order=>#orders|Shipping and returns=>#returns|Talk to us=>#whatsapp'),
   ...['t-message','t-marigold','sv-divya','t-teapot','t-bluelotus','t-lotuspond','an-range','mu-box'].map(id =>
     f('Product photography', 'image', `product.${id}`, `Homepage photo: ${id}`, `${IMG}homev5-p-${id}.webp`)),
@@ -163,7 +163,10 @@ export function homeValue(document: SiteDocument | null | undefined, key: string
   if (!v) return def;
   const k = KINDS[key] ?? (key.startsWith('h5.image.') ? 'image' : key.startsWith('h5.link.') ? 'link' : 'text');
   if (k === 'image') return safeImage(v) ? v : def;
-  if (k === 'link') return safeHomepageLink(v) ? v : def;
+  if (k === 'link') {
+    if (key.endsWith('.video')) return safeExternal(v) ? v : def;
+    return safeHomepageLink(v) ? v : def;
+  }
   return v;
 }
 

@@ -277,3 +277,95 @@
   .studio-preview-frame .bk-home .bk-trunk-caption { text-align: center; padding: 4px 0; }
   .studio-preview-frame .bk-home .bk-trunk-caption p { max-width: none; font-size: 23px; }
 }
+
+/* ── Studio preview: restore desktop layout for narrow container ─────── */
+/*
+ * @media breakpoints fire on viewport width. The preview pane is ~400px
+ * wide even on a desktop screen, so every @media (max-width: 800px) rule
+ * collapses grid layouts inside it. These @container overrides undo that
+ * for sections that would otherwise look nothing like the live storefront.
+ */
+@container (min-width: 500px) {
+  /* Hero — restore the two-column desktop layout */
+  .studio-preview-frame .bk-home .bk-dynamic-hero {
+    display: grid;
+    grid-template-columns: minmax(200px, .84fr) minmax(280px, 1.16fr);
+    align-items: center;
+    gap: 18px;
+    padding: 28px 24px 26px;
+  }
+  .studio-preview-frame .bk-home .bk-dynamic-copy,
+  .studio-preview-frame .bk-home .bk-dynamic-hero.has-art .bk-dynamic-copy {
+    max-width: none;
+    padding: 12px 0;
+    text-align: left;
+  }
+  .studio-preview-frame .bk-home .bk-dynamic-copy h1 {
+    font-size: clamp(28px, 5cqi, 44px);
+    margin-inline: 0;
+  }
+  .studio-preview-frame .bk-home .bk-dynamic-copy > p { margin-inline: 0; }
+  .studio-preview-frame .bk-home .bk-hero-actions { flex-direction: row; justify-content: flex-start; }
+  .studio-preview-frame .bk-home .bk-trunk-stage {
+    grid-column: 2;
+    grid-row: 1;
+    grid-template-columns: minmax(80px, .58fr) minmax(160px, 1.42fr);
+    padding: 16px 14px 12px;
+  }
+  .studio-preview-frame .bk-home .bk-trunk-caption { text-align: left; padding: 8px 8px 20px 0; }
+  .studio-preview-frame .bk-home .bk-trunk-caption p { max-width: 175px; font-size: clamp(16px, 2.5cqi, 22px); }
+  .studio-preview-frame .bk-home .bk-trunk-caption::after { margin: 9px 0 0; }
+
+  /* Story section — restore the editorial split grid */
+  .studio-preview-frame .bk-home .bk-editorial-story {
+    display: grid;
+    grid-template-columns: .9fr 1.1fr;
+    align-items: center;
+    gap: clamp(20px, 5cqi, 80px);
+    padding: 56px 32px;
+  }
+  .studio-preview-frame .bk-home .bk-story-stamp { margin: 0; }
+
+  /* Maker + invitation — restore split grid */
+  .studio-preview-frame .bk-home .bk-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 36px;
+  }
+
+  /* Product grid — keep 2-col instead of collapsing to 1 */
+  .studio-preview-frame .bk-productgrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 12px;
+  }
+
+  /* Nav — show the desktop nav bar inside the preview */
+  .studio-preview-frame .bk-nav { display: flex !important; }
+  .studio-preview-frame .bk-mobile-menu { display: none !important; }
+  .studio-preview-frame .bk-header-main { padding: 8px 20px; gap: 12px; }
+
+  /* Section padding — don't over-compress */
+  .studio-preview-frame .bk-home > .bk-section { padding-block: 48px; }
+  .studio-preview-frame .bk-section { padding: 48px 24px; }
+
+  /* Banner — restore flex row */
+  .studio-preview-frame .bk-banner {
+    display: flex;
+    padding: 36px 32px;
+  }
+  .studio-preview-frame .bk-banner .bk-btn { margin-top: 0; }
+
+  /* Event banner — restore side-by-side */
+  .studio-preview-frame .bk-event-banner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 56px 32px;
+    gap: 40px;
+  }
+
+  /* Reels grid — at least 2 cols */
+  .studio-preview-frame .bk-reels-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

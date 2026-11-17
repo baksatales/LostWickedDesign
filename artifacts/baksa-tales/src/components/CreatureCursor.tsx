@@ -1,6 +1,20 @@
 import { useEffect, useRef, useCallback } from 'react';
 
-const SIZE = 28;
+// Arrow cursor SVG is drawn in a 54×60 viewBox tilted to match the reference image.
+// Hot-spot is the top-left tip of the arrow (approx 0,0 in SVG coords after tilt).
+const VW = 54;
+const VH = 60;
+// DOM element is sized to contain the whole tilted arrow including the grip tail.
+const SIZE_W = 54;
+const SIZE_H = 60;
+
+// Eye centre in the arrow body (SVG coords, before any runtime transform).
+const EYE_CX = 20;
+const EYE_CY = 22;
+const EYE_R = 5.5;   // white sclera radius
+const PUPIL_R = 2.8; // dark pupil radius
+const DOT_CX = 28;
+const DOT_CY = 32;
 
 export function CreatureCursor() {
   const elRef = useRef<HTMLDivElement | null>(null);
@@ -19,72 +33,111 @@ export function CreatureCursor() {
     const s = state.current;
 
     const speed = Math.sqrt(s.vx * s.vx + s.vy * s.vy);
-    const stretch = Math.min(1 + speed * 0.045, 1.7);
+
+    // Stretch along movement direction, squish perpendicular — same as bee.
+    const stretch = Math.min(1 + speed * 0.035, 1.5);
     const squish = 1 / stretch;
-    const angle = speed > 1 ? Math.atan2(s.vy, s.vx) * (180 / Math.PI) + 90 : 0;
+    // Tilt the cursor to face the direction of travel (offset 45° for arrow tip).
+    const angle = speed > 1.5 ? Math.atan2(s.vy, s.vx) * (180 / Math.PI) - 45 : -45;
 
     let scaleX = squish;
     let scaleY = stretch;
-    if (s.clicking) { scaleX = 1.4; scaleY = 0.6; }
-    else if (s.excited) { scaleX = 1.15; scaleY = 1.15; }
+    if (s.clicking) { scaleX = 1.3; scaleY = 0.7; }
+    else if (s.excited) { scaleX = 1.1; scaleY = 1.1; }
 
-    el.style.transform = `translate(${s.x - SIZE / 2}px, ${s.y - SIZE / 2}px) rotate(${angle}deg) scale(${scaleX}, ${scaleY})`;
+    // Position so the hot-spot (tip of arrow ≈ top-left) is under the real pointer.
+    el.style.transform = `translate(${s.x - 4}px, ${s.y - 4}px) rotate(${angle}deg) scale(${scaleX}, ${scaleY})`;
 
-    const eyeMaxOffset = 3;
+    // Pupil follows movement direction (capped to stay inside sclera).
+    const maxOff = EYE_R - PUPIL_R - 0.5;
     const norm = speed > 0.5 ? speed : 1;
-    const ex = speed > 0.5 ? (s.vx / norm) * eyeMaxOffset : 0;
-    const ey = speed > 0.5 ? (s.vy / norm) * eyeMaxOffset : 0;
+    const ex = speed > 0.5 ? Math.max(-maxOff, Math.min(maxOff, (s.vx / norm) * maxOff)) : 0;
+    const ey = speed > 0.5 ? Math.max(-maxOff, Math.min(maxOff, (s.vy / norm) * maxOff)) : 0;
 
-    const pupils = el.querySelectorAll<SVGCircleElement>('.creature-pupil');
-    pupils.forEach((p, i) => {
-      p.setAttribute('cx', String((i === 0 ? 9 : 19) + ex));
-      p.setAttribute('cy', String(13 + ey));
-    });
-
-    const mouth = el.querySelector<SVGPathElement>('.creature-mouth');
-    if (mouth) {
-      if (s.clicking) mouth.setAttribute('d', 'M10 20 Q14 17 18 20');
-      else if (s.excited) mouth.setAttribute('d', 'M10 19 Q14 24 18 19');
-      else mouth.setAttribute('d', 'M10 20 Q14 22 18 20');
+    const pupil = el.querySelector<SVGCircleElement>('.cursor-pupil');
+    if (pupil) {
+      pupil.setAttribute('cx', String(EYE_CX + ex));
+      pupil.setAttribute('cy', String(EYE_CY + ey));
+    }
+    const glint = el.querySelector<SVGCircleElement>('.cursor-glint');
+    if (glint) {
+      glint.setAttribute('cx', String(EYE_CX + ex - 1.2));
+      glint.setAttribute('cy', String(EYE_CY + ey - 1.2));
     }
 
     s.raf = requestAnimationFrame(render);
   }, []);
 
   useEffect(() => {
+    if (!window.matchMedia('(pointer: fine)').matches) return;
+
     const el = document.createElement('div');
     el.style.cssText = [
       'position:fixed',
       'top:0',
       'left:0',
-      'width:' + SIZE + 'px',
-      'height:' + SIZE + 'px',
+      `width:${SIZE_W}px`,
+      `height:${SIZE_H}px`,
       'pointer-events:none',
       'z-index:999999',
       'will-change:transform',
       'user-select:none',
+      // Rotate origin at the arrow tip so tilt pivots correctly.
+      'transform-origin:4px 4px',
     ].join(';');
 
+    // SVG: hand-drawn arrow cursor with one round eye + one dot.
+    // Arrow body is the main filled triangle, grip is the rectangular tail at bottom-right.
+    // Stroke only (line-art), fill light cream — matches reference image aesthetic.
     el.innerHTML = `
-      <svg width="${SIZE}" height="${SIZE}" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg" overflow="visible">
-        <ellipse cx="14" cy="27" rx="7" ry="2" fill="#00000018"/>
-        <ellipse cx="14" cy="15" rx="10" ry="11" fill="#f0c040" stroke="#b07000" stroke-width="1.2"/>
-        <ellipse cx="14" cy="18" rx="6" ry="5" fill="#fde880" opacity="0.6"/>
-        <circle cx="9" cy="13" r="4" fill="white" stroke="#b07000" stroke-width="0.8"/>
-        <circle cx="19" cy="13" r="4" fill="white" stroke="#b07000" stroke-width="0.8"/>
-        <circle class="creature-pupil" cx="9" cy="13" r="2.2" fill="#1a0a00"/>
-        <circle class="creature-pupil" cx="19" cy="13" r="2.2" fill="#1a0a00"/>
-        <circle cx="10" cy="12" r="0.8" fill="white"/>
-        <circle cx="20" cy="12" r="0.8" fill="white"/>
-        <path class="creature-mouth" d="M10 20 Q14 22 18 20" fill="none" stroke="#b07000" stroke-width="1.2" stroke-linecap="round"/>
-        <line x1="9" y1="4" x2="6" y2="0" stroke="#b07000" stroke-width="1" stroke-linecap="round"/>
-        <circle cx="6" cy="0" r="1.5" fill="#f04040"/>
-        <line x1="19" y1="4" x2="22" y2="0" stroke="#b07000" stroke-width="1" stroke-linecap="round"/>
-        <circle cx="22" cy="0" r="1.5" fill="#f04040"/>
-        <ellipse cx="8" cy="25" rx="3.5" ry="2" fill="#d09000" stroke="#b07000" stroke-width="0.8"/>
-        <ellipse cx="20" cy="25" rx="3.5" ry="2" fill="#d09000" stroke="#b07000" stroke-width="0.8"/>
+      <svg width="${SIZE_W}" height="${SIZE_H}" viewBox="0 0 ${VW} ${VH}"
+           xmlns="http://www.w3.org/2000/svg" overflow="visible">
+        <style>
+          @keyframes cursor-blink {
+            0%,90%,100% { transform: scaleY(1); }
+            93%          { transform: scaleY(0.08); }
+          }
+          .cursor-eyelid-group {
+            transform-origin: ${EYE_CX}px ${EYE_CY}px;
+            animation: cursor-blink 4s ease-in-out infinite;
+          }
+        </style>
+
+        <!-- Main arrow shape: rounded triangular body + rectangular grip (matches reference) -->
+        <path d="M5 5
+                 C5 5 6 5 8 7
+                 L14 44
+                 C14 46 16 48 18 46
+                 L22 36
+                 L32 50
+                 C33 52 37 52 38 50
+                 L42 46
+                 C44 44 43 41 41 40
+                 L28 26
+                 L42 20
+                 C44 19 44 16 42 15
+                 L8 5
+                 C7 4 5 4 5 5 Z"
+              fill="#fffdf7" stroke="#1a1a1a" stroke-width="2.4"
+              stroke-linejoin="round" stroke-linecap="round"/>
+
+        <!-- Eye sclera -->
+        <circle cx="${EYE_CX}" cy="${EYE_CY}" r="${EYE_R}"
+                fill="white" stroke="#1a1a1a" stroke-width="1.8"/>
+
+        <!-- Blinking eyelid group: pupil + glint -->
+        <g class="cursor-eyelid-group">
+          <circle class="cursor-pupil" cx="${EYE_CX}" cy="${EYE_CY}" r="${PUPIL_R}"
+                  fill="#1a1a1a"/>
+          <circle class="cursor-glint" cx="${EYE_CX - 1.2}" cy="${EYE_CY - 1.2}" r="0.9"
+                  fill="white"/>
+        </g>
+
+        <!-- Small dot detail -->
+        <circle cx="${DOT_CX}" cy="${DOT_CY}" r="1.6" fill="#1a1a1a"/>
       </svg>
     `;
+
     elRef.current = el;
     document.body.appendChild(el);
 

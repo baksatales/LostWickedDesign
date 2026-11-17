@@ -16,4 +16,6 @@ export const SiteSectionType = {
   maker: 'maker',
   quiz: 'quiz',
   invitation: 'invitation',
+  event: 'event',
+  reels: 'reels',
 } as const;
