@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState, useSyncExternalStore } from 'react';
+import { useLocation } from 'wouter';
 import { createClient } from '@supabase/supabase-js';
 import { endSampleSession, getSampleSession, useGetRuntime, useGetWorkspace, getGetWorkspaceQueryKey } from '@workspace/api-client-react';
 import { SAMPLE_SESSION_KEY } from '../SampleAccount';
@@ -27,6 +28,11 @@ export function ShopperAccountEntry({ navigate, wishlistCount, className = '' }:
   const [realUser, setRealUser] = useState<{id:string;email?:string}|null>(null);
   const state = useSyncExternalStore(subscribe, getState);
   const savedCount = wishlistCount ?? state.wishlist.length;
+  const [currentPath] = useLocation();
+  const RETURNABLE = ['/sell', '/maker', '/admin', '/account'];
+  const signInHref = RETURNABLE.some(p => currentPath === p || currentPath.startsWith(p + '/'))
+    ? `/sign-in?returnTo=${encodeURIComponent(currentPath)}`
+    : '/sign-in';
 
   const runtimeQuery = useGetRuntime();
   const runtime = runtimeQuery.data;
@@ -140,8 +146,8 @@ export function ShopperAccountEntry({ navigate, wishlistCount, className = '' }:
       ) : (
         <a
           className="bt-account-entry__sign-in"
-          href="/account"
-          onClick={event => { event.preventDefault(); navigate('/sign-in'); }}
+          href={signInHref}
+          onClick={event => { event.preventDefault(); history.pushState(null, '', signInHref); window.dispatchEvent(new PopStateEvent('popstate')); }}
           data-testid="link-shopper-sign-in"
           aria-label="Sign in to your account"
         >

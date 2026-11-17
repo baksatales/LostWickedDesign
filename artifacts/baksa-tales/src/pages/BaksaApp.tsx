@@ -1,6 +1,6 @@
 import { lazy, useCallback, useContext, useEffect, useMemo, useRef, useState, type AnchorHTMLAttributes, type CSSProperties, type Dispatch, type FormEvent, type ReactNode, type SetStateAction } from 'react';
 import { corporateCopy } from './corporate-copy';
-import { Link, useLocation } from 'wouter';
+import { Link, useLocation, useSearch } from 'wouter';
 import { createClient, type SupabaseClient, type User } from '@supabase/supabase-js';
 import { ArrowRight, Check, Heart, Home, ListOrdered, LogOut, Menu, Package, Plus, Search, ShoppingBag, User as UserIcon, X } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
@@ -39,6 +39,8 @@ const validCart = (v: unknown): v is CartItem => !!v && typeof v === 'object' &&
 const validString = (v: unknown): v is string => typeof v === 'string';
 function Frame({ children, bagCount, savedCount, onBag, document:siteDoc, user, workspace, bare }: { children: ReactNode; bagCount: number; savedCount: number; onBag: () => void; document:SiteDocument; user:User|null; workspace:Workspace|undefined; bare?: boolean }) {
   const [menu, setMenu] = useState(false);
+  const [currentPath]=useLocation();
+  const signInHref=validReturnPath(currentPath)?`/sign-in?returnTo=${encodeURIComponent(currentPath)}`:'/sign-in';
   const theme=siteDoc.theme;
   const themeStyle={'--bk-paper':theme.background,'--bk-cream':theme.surface,'--bk-maroon':theme.primary,'--bk-crimson':theme.primary,'--bk-teal':theme.secondary,'--bk-gold':theme.accent,'--bk-ink':theme.ink,'--bk-muted':theme.muted,'--bk-line':theme.primary+'30','--bk-display':theme.headingFont==='georgia'?'Georgia,serif':theme.headingFont==='cormorant'?'Cormorant Garamond,Georgia,serif':"'EB Garamond',Georgia,serif",'--bk-body':theme.bodyFont==='garamond'?"'EB Garamond',Georgia,serif":theme.bodyFont==='system'?'system-ui,sans-serif':theme.bodyFont==='georgia'?'Georgia,serif':"'Arvo',Georgia,serif",'--bk-radius':`${theme.radius}px`,'--bk-space':theme.spacing==='compact'?'48px':theme.spacing==='generous'?'94px':'72px' } as CSSProperties;
   return <SiteDocumentContext.Provider value={siteDoc}><div className={`baksa ${theme.motion?'bk-motion':'bk-still'} ${theme.ornament?'bk-ornament':''}`} style={themeStyle}>
@@ -49,7 +51,7 @@ function Frame({ children, bagCount, savedCount, onBag, document:siteDoc, user, 
       <div className="bk-actions">
         <Link className="bk-iconbtn" href="/wishlist" aria-label={`Wishlist, ${savedCount} saved`}><Heart size={19}/>{savedCount > 0 && <span className="bk-count">{savedCount}</span>}</Link>
         <button className="bk-iconbtn" onClick={onBag} aria-label={`Open bag, ${bagCount} items`}><ShoppingBag size={19}/>{bagCount > 0 && <span className="bk-count">{bagCount}</span>}</button>
-        {user ? <Link href="/account" className="bk-iconbtn" aria-label="Your account" style={{display:'flex',alignItems:'center',gap:6,padding:'4px 10px',borderRadius:999,fontSize:13,fontWeight:600}}><span style={{fontSize:16,lineHeight:1,fontFamily:'monospace',color:'var(--bk-gold)'}}>{workspace?.buyerProfile?.avatarUrl&&workspace.buyerProfile.avatarUrl.length<=2?workspace.buyerProfile.avatarUrl:'◈'}</span><span className="bk-hide-mobile">{workspace?.buyerProfile?.fullName?workspace.buyerProfile.fullName.split(' ')[0]:'Account'}</span></Link> : <Link href="/sign-in" className="bk-textlink" style={{fontSize:13,fontWeight:600,whiteSpace:'nowrap'}}>Sign in</Link>}
+        {user ? <Link href="/account" className="bk-iconbtn" aria-label="Your account" style={{display:'flex',alignItems:'center',gap:6,padding:'4px 10px',borderRadius:999,fontSize:13,fontWeight:600}}><span style={{fontSize:16,lineHeight:1,fontFamily:'monospace',color:'var(--bk-gold)'}}>{workspace?.buyerProfile?.avatarUrl&&workspace.buyerProfile.avatarUrl.length<=2?workspace.buyerProfile.avatarUrl:'◈'}</span><span className="bk-hide-mobile">{workspace?.buyerProfile?.fullName?workspace.buyerProfile.fullName.split(' ')[0]:'Account'}</span></Link> : <Link href={signInHref} className="bk-textlink" style={{fontSize:13,fontWeight:600,whiteSpace:'nowrap'}}>Sign in</Link>}
         <button className="bk-iconbtn bk-mobile-menu" onClick={() => setMenu(!menu)} aria-label={menu ? 'Close menu' : 'Open menu'}>{menu ? <X size={20}/> : <Menu size={20}/>}</button>
       </div>
     </div>{menu && <nav className="bk-mobile-panel">{siteDoc.navigation.map((item,i)=><DocLink key={`${item.href}-${i}`} href={item.href}>{item.label}</DocLink>)}<Link href="/sell">For makers</Link></nav>}</header>}
@@ -258,14 +260,14 @@ function CorporatePage() {
     </div>
   </main>;
 }
-function SellPage({user,v,setV,onSignIn}:{user:User|null;v:SellValues;setV:Dispatch<SetStateAction<SellValues>>;onSignIn:()=>void}) {
+function SellPage({user,v,setV}:{user:User|null;v:SellValues;setV:Dispatch<SetStateAction<SellValues>>}) {
   const page=useSitePage('sell');
   const apply=useApplyToSell();const [done,setDone]=useState<{id:string;message:string}|null>(null);
   const [authError,setAuthError]=useState('');
   const up=(key:keyof typeof v,value:string|boolean)=>setV(x=>({...x,[key]:value}));
   const submit=(e:FormEvent)=>{e.preventDefault();setAuthError('');if(!user?.email_confirmed_at){setAuthError('A verified sign-in is required before submitting a maker application. Your entries are still here.');return;}apply.mutate({data:{brand:v.brand,contactName:v.contactName,phone:v.phone,craft:v.craft,city:v.city,state:v.state,gstRegistered:v.gstRegistered,gstin:v.gstin||undefined,link:v.link||undefined}},{onSuccess:r=>setDone(r)});};
   return <main className="bk-formpage"><Seo title={page?.title||'Sell with Baksa Tales'} description={page?.description||'Introduce your handmade work to Baksa Tales.'}/><span className="bk-eyebrow">{page?.eyebrow||'For independent makers'}</span><h1>{page?.heading||'Introduce your work.'}</h1><p>{page?.intro||'Tell us a little about your practice. This is an application for consideration, not a promise of acceptance or a live seller account.'}</p><PageArtwork page={page}/>{done?<div className="bk-success" role="status"><h2>Application received</h2><p>{done.message}</p><small>Reference {done.id}</small></div>:<form className="bk-form" onSubmit={submit}>
-    <label>Brand or studio name<input required maxLength={150} value={v.brand} onChange={e=>up('brand',e.target.value)}/></label><label>Your name<input required maxLength={150} value={v.contactName} onChange={e=>up('contactName',e.target.value)}/></label><label>Phone number<input required pattern="[6-9][0-9]{9}" inputMode="numeric" value={v.phone} onChange={e=>up('phone',e.target.value)} placeholder="10 digit Indian mobile number"/></label><label>Craft or practice<input required maxLength={200} value={v.craft} onChange={e=>up('craft',e.target.value)}/></label><label>City<input required maxLength={100} value={v.city} onChange={e=>up('city',e.target.value)}/></label><label>State<input required maxLength={100} value={v.state} onChange={e=>up('state',e.target.value)}/></label><label className="bk-check wide"><input type="checkbox" checked={v.gstRegistered} onChange={e=>up('gstRegistered',e.target.checked)}/> GST registered</label>{v.gstRegistered&&<label>GSTIN<input maxLength={15} value={v.gstin} onChange={e=>up('gstin',e.target.value)}/></label>}<label className="wide">Website or portfolio link (optional)<input type="url" maxLength={400} value={v.link} onChange={e=>up('link',e.target.value)} placeholder="https://"/></label>{(!user?.email_confirmed_at)&&<p className="bk-panel wide">Maker applications require a verified account. <Link href="/sign-in" onClick={onSignIn}>Sign in or create an account</Link>, then return to send this form.</p>}{authError&&<p className="bk-error" role="alert">{authError}</p>}{apply.isError&&<p className="bk-error" role="alert">{errText(apply.error)}</p>}<button className="bk-btn" disabled={apply.isPending}>{apply.isPending?'Sending application…':'Send application'} <ArrowRight size={16}/></button></form>}</main>;
+    <label>Brand or studio name<input required maxLength={150} value={v.brand} onChange={e=>up('brand',e.target.value)}/></label><label>Your name<input required maxLength={150} value={v.contactName} onChange={e=>up('contactName',e.target.value)}/></label><label>Phone number<input required pattern="[6-9][0-9]{9}" inputMode="numeric" value={v.phone} onChange={e=>up('phone',e.target.value)} placeholder="10 digit Indian mobile number"/></label><label>Craft or practice<input required maxLength={200} value={v.craft} onChange={e=>up('craft',e.target.value)}/></label><label>City<input required maxLength={100} value={v.city} onChange={e=>up('city',e.target.value)}/></label><label>State<input required maxLength={100} value={v.state} onChange={e=>up('state',e.target.value)}/></label><label className="bk-check wide"><input type="checkbox" checked={v.gstRegistered} onChange={e=>up('gstRegistered',e.target.checked)}/> GST registered</label>{v.gstRegistered&&<label>GSTIN<input maxLength={15} value={v.gstin} onChange={e=>up('gstin',e.target.value)}/></label>}<label className="wide">Website or portfolio link (optional)<input type="url" maxLength={400} value={v.link} onChange={e=>up('link',e.target.value)} placeholder="https://"/></label>{(!user?.email_confirmed_at)&&<p className="bk-panel wide">Maker applications require a verified account. <Link href="/sign-in?returnTo=/sell">Sign in or create an account</Link>, then return to send this form.</p>}{authError&&<p className="bk-error" role="alert">{authError}</p>}{apply.isError&&<p className="bk-error" role="alert">{errText(apply.error)}</p>}<button className="bk-btn" disabled={apply.isPending}>{apply.isPending?'Sending application…':'Send application'} <ArrowRight size={16}/></button></form>}</main>;
 }
 
 function BagView({ catalog, cart, setCart, checkout = false, runtime }: { catalog: Catalog; cart: CartItem[]; setCart:(items:CartItem[])=>void; checkout?:boolean; runtime?:Runtime }) {
@@ -289,9 +291,10 @@ function BagDrawer({ open, close, catalog, cart, setCart }: { open:boolean;close
 const validReturnPath=(p:string|null)=>p&&(p.startsWith('/maker')||p.startsWith('/admin')||p==='/sell'||p==='/account')?p:null;
 type SignInRole='buyer'|'maker'|'admin';
 function SignInForm({role,runtime,client,user,workspace,returnTo}:{role:SignInRole;runtime?:Runtime;client:SupabaseClient|null;user:User|null;workspace:Workspace|undefined;returnTo:string}){
-  const requestedReturn=validReturnPath(new URLSearchParams(window.location.search).get('returnTo'));
-  const roleDestination=workspace?.roles.includes('admin')?'/admin':workspace?.roles.includes('maker')?'/maker/sahayak':'/account';
-  const destination=requestedReturn||(user&&workspace?roleDestination:null)||returnTo;
+  const search=useSearch();
+  const requestedReturn=validReturnPath(new URLSearchParams(search).get('returnTo'));
+  const roleDestination=workspace?.roles.includes('maker')?'/maker/sahayak':workspace?.roles.includes('admin')?'/admin':'/account';
+  const destination=requestedReturn||returnTo||(user&&workspace?roleDestination:null)||'/account';
   const [,navigate]=useLocation();const [signup,setSignup]=useState(role==='buyer');const [forgot,setForgot]=useState(false);const [email,setEmail]=useState('');const [password,setPassword]=useState('');const [error,setError]=useState('');const [message,setMessage]=useState('');const [busy,setBusy]=useState(false);
   useEffect(()=>{if(user&&(workspace!==undefined||!runtime?.auth))navigate(destination)},[user,workspace,runtime?.auth,navigate,destination]);
   const submit=async(e:FormEvent)=>{e.preventDefault();setError('');setMessage('');if(!client)return;setBusy(true);try{
@@ -300,7 +303,7 @@ function SignInForm({role,runtime,client,user,workspace,returnTo}:{role:SignInRo
   }catch(e){setError((e as Error).message||'Authentication could not be completed.')}finally{setBusy(false)}};
   if(!runtime?.auth||!client)return <div className="bk-panel"><h2>Sign-in is not connected yet.</h2><p>{runtime?.message||'The marketplace owner needs to connect Supabase authentication before accounts can be created.'}</p><span className="bk-status">No demo account or simulated login</span></div>;
   if(forgot)return <form className="bk-form" onSubmit={submit}><p style={{marginBottom:12,fontSize:14,color:'var(--bk-muted)'}}>Enter your email address and we will send you a link to reset your password.</p><label className="wide">Email address<input required type="email" autoComplete="email" value={email} onChange={e=>setEmail(e.target.value)}/></label>{error&&<p className="bk-error" role="alert">{error}</p>}{message&&<p className="bk-success" role="status">{message}</p>}<button className="bk-btn" disabled={busy}>{busy?'Sending…':'Send reset link'}</button><button type="button" className="bk-btn secondary" onClick={()=>{setForgot(false);setError('');setMessage('')}}>Back to sign in</button></form>;
-  return <form className="bk-form" onSubmit={submit}><label className="wide">Email address<input required type="email" autoComplete="email" value={email} onChange={e=>setEmail(e.target.value)}/></label><label className="wide">Password<input required type="password" autoComplete={signup?'new-password':'current-password'} minLength={6} value={password} onChange={e=>setPassword(e.target.value)}/></label>{error&&<p className="bk-error" role="alert">{error}</p>}{message&&<p className="bk-success" role="status">{message}</p>}<button className="bk-btn" disabled={busy}>{busy?'Please wait…':signup?'Create account':'Sign in'}</button>{role==='buyer'&&<button type="button" className="bk-btn secondary" onClick={()=>{setSignup(v=>!v);setError('');setMessage('')}}>{signup?'Already have an account? Sign in':'New here? Create a free account'}</button>}{!signup&&<button type="button" className="bk-btn secondary" style={{fontSize:13}} onClick={()=>{setForgot(true);setError('');setMessage('')}}>Forgot password?</button>}</form>;
+  return <form className="bk-form" onSubmit={submit}><label className="wide">Email address<input required type="email" autoComplete="email" value={email} onChange={e=>setEmail(e.target.value)}/></label><label className="wide">Password<input required type="password" autoComplete={signup?'new-password':'current-password'} minLength={6} value={password} onChange={e=>setPassword(e.target.value)}/></label>{error&&<p className="bk-error" role="alert">{error}</p>}{message&&<p className="bk-success" role="status">{message}</p>}<button className="bk-btn" disabled={busy}>{busy?'Please wait…':signup?'Create account':'Sign in'}</button>{role!=='admin'&&<button type="button" className="bk-btn secondary" onClick={()=>{setSignup(v=>!v);setError('');setMessage('')}}>{signup?'Already have an account? Sign in':'New here? Create a free account'}</button>}{!signup&&<button type="button" className="bk-btn secondary" style={{fontSize:13}} onClick={()=>{setForgot(true);setError('');setMessage('')}}>Forgot password?</button>}</form>;
 }
 function ResetPasswordPage({client,clientLoading}:{client:SupabaseClient|null;clientLoading:boolean}){
   const [,navigate]=useLocation();
@@ -324,7 +327,8 @@ function ResetPasswordPage({client,clientLoading}:{client:SupabaseClient|null;cl
   </main>;
 }
 function SignInPage({ runtime, runtimeLoading, client, user, workspace, returnTo }: { runtime?:Runtime;runtimeLoading:boolean;client:SupabaseClient|null;user:User|null;workspace:Workspace|undefined;returnTo:string }) {
-  const requestedReturn=validReturnPath(new URLSearchParams(window.location.search).get('returnTo'));
+  const search=useSearch();
+  const requestedReturn=validReturnPath(new URLSearchParams(search).get('returnTo'));
   const hintRole:SignInRole|null=requestedReturn?.startsWith('/maker')||requestedReturn==='/sell'?'maker':null;
   const [role,setRole]=useState<SignInRole>(hintRole||(requestedReturn==='/account'?'buyer':'buyer'));
   const roleConfig:{[K in Exclude<SignInRole,'admin'>]:{label:string;eyebrow:string;heading:string;desc:string;icon:string}}={
@@ -574,7 +578,7 @@ function SecureGate({runtime,runtimeLoading,ready,user,workspace,workspaceLoadin
 function LoadingError({retry}:{retry:()=>void}){return <div className="bk-formpage"><Seo title="Catalogue unavailable" description="Catalogue data could not be loaded."/><div className="bk-errorbox"><h2>The catalogue is taking a moment.</h2><p>We could not load the current marketplace catalogue. No substitute products have been added.</p><button className="bk-btn secondary" onClick={retry}>Try again</button></div></div>}
 
 export default function BaksaApp(){
-  const [path,setLocation]=useLocation();const queryClient=useQueryClient();
+  const [path,setLocation]=useLocation();const search=useSearch();const queryClient=useQueryClient();
   const runtimeQuery=useGetRuntime();const runtime=runtimeQuery.data;
   const catalogQuery=useGetCatalog();const catalog=catalogQuery.data;
   const siteQuery=useGetSite();
@@ -585,7 +589,7 @@ export default function BaksaApp(){
   const [bagOpen,setBagOpen]=useState(false);
   const [toast,setToast]=useState('');
   const [user,setUser]=useState<User|null>(null);const [authReady,setAuthReady]=useState(false);
-  const [authReturn,setAuthReturn]=useState(()=>validReturnPath(new URLSearchParams(window.location.search).get('returnTo'))??'/account');
+  const authReturn=validReturnPath(new URLSearchParams(search).get('returnTo'))??'/account';
   const previousId=useRef<string|null|undefined>(undefined);
   const supabase=useMemo(()=>runtime?.auth&&runtime.supabaseUrl&&runtime.supabaseAnonKey?createClient(runtime.supabaseUrl,runtime.supabaseAnonKey):null,[runtime?.auth,runtime?.supabaseUrl,runtime?.supabaseAnonKey]);
   useEffect(()=>{localStorage.setItem('baksa-cart',JSON.stringify(cart))},[cart]);
@@ -621,7 +625,7 @@ export default function BaksaApp(){
   else if(route==='/bag') content=catalog?<BagView catalog={catalog} cart={cart} setCart={setCart}/>:catContent();
   else if(route==='/checkout') content=<BagView catalog={catalog||{sample:true,products:[],makers:[]}} cart={cart} setCart={setCart} checkout runtime={runtime}/>;
   else if(route==='/corporate') content=<CorporatePage/>;
-  else if(route==='/sell') content=<SellPage user={user} v={sellDraft} setV={setSellDraft} onSignIn={()=>setAuthReturn('/sell')}/>;
+  else if(route==='/sell') content=<SellPage user={user} v={sellDraft} setV={setSellDraft}/>;
   else if(route==='/academy') content=<AcademyPage/>;
   else if(route==='/reset-password') content=<ResetPasswordPage client={supabase} clientLoading={runtimeQuery.isLoading}/>;
   else if(route==='/sign-in') content=<SignInPage runtime={runtime} runtimeLoading={runtimeQuery.isLoading} client={supabase} user={user} workspace={workspace} returnTo={authReturn}/>;
