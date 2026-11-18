@@ -1,0 +1,549 @@
+/* ─────────────────────────────────────────────────────────────
+   Premium refinements — Baksa Tales
+   Loads last, overrides the base system site-wide.
+   Design ethos: Paul Smith / Finery London gallery restraint.
+   Near-white base, maximum contrast, type does the work.
+   ───────────────────────────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap');
+
+/* ── 1. Token overrides ─────────────────────────────────────── */
+.baksa {
+  /* Gallery-white base — cleaner, more luxury than warm paper */
+  --bk-paper:   #fafaf8;
+  --bk-cream:   #f3f0e8;
+  --bk-pink:    #f0ddd3;
+  /* Richer crimson */
+  --bk-crimson: #6a1620;
+  --bk-maroon:  #6a1620;
+  --bk-red:     #c03030;
+  /* Gold — antique, not bright */
+  --bk-gold:    #a97820;
+  /* Near-black ink — maximum contrast */
+  --bk-ink:     #141210;
+  --bk-muted:   #6b6058;
+  --bk-line:    #e4ddd0;
+  /* Display font: Cormorant Garamond */
+  --bk-display: 'Cormorant Garamond', 'EB Garamond', Georgia, serif;
+  /* UI font: DM Sans for nav, labels, buttons */
+  --bk-ui:      'DM Sans', system-ui, sans-serif;
+}
+
+/* ── 2. Base typography ─────────────────────────────────────── */
+
+/* All body copy stays EB Garamond — warm, readable */
+.baksa {
+  font-family: 'EB Garamond', Georgia, serif;
+  background: var(--bk-paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Headlines: Cormorant Garamond, light weight = luxury */
+.baksa h1, .baksa h2, .baksa h3 {
+  font-family: var(--bk-display);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+}
+
+.baksa h1 { font-size: clamp(44px, 5.5vw, 78px); font-weight: 300; }
+.baksa h2 { font-size: clamp(36px, 4vw, 58px); }
+.baksa h3 { font-size: clamp(24px, 2.5vw, 32px); font-weight: 400; }
+
+/* UI text — DM Sans for nav, labels, buttons, metadata */
+.bk-nav a,
+.bk-btn,
+.bk-eyebrow,
+.bk-wordmark small,
+.bk-cardprice,
+.bk-cardcopy p,
+.bk-form label,
+.bk-dashnav a,
+.bk-status,
+.bk-step,
+.bk-toolbar label,
+.bk-select,
+.bk-footer small,
+.bk-notice {
+  font-family: var(--bk-ui);
+}
+
+/* ── 3. Header ──────────────────────────────────────────────── */
+.bk-header {
+  background: var(--bk-paper);
+  border-bottom: 1px solid color-mix(in srgb, var(--bk-line) 70%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: color-mix(in srgb, var(--bk-paper) 92%, transparent);
+}
+
+.bk-wordmark {
+  font-family: var(--bk-display);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  font-size: 28px;
+}
+
+.bk-wordmark small {
+  font-family: var(--bk-ui);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--bk-muted);
+}
+
+.bk-nav a {
+  font-family: var(--bk-ui);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--bk-ink);
+  padding: 13px 0;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.bk-nav a:hover {
+  color: var(--bk-crimson);
+  border-color: color-mix(in srgb, var(--bk-gold) 60%, transparent);
+}
+
+/* ── 4. Buttons ─────────────────────────────────────────────── */
+.bk-btn {
+  font-family: var(--bk-ui);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  min-height: 48px;
+  padding: 0 28px;
+  background: var(--bk-crimson);
+  border-color: var(--bk-crimson);
+  transition: background 0.25s, transform 0.2s, box-shadow 0.2s;
+}
+
+.bk-btn:hover {
+  background: color-mix(in srgb, var(--bk-crimson) 80%, black);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--bk-crimson) 28%, transparent);
+}
+
+.bk-btn.secondary {
+  background: transparent;
+  color: var(--bk-crimson);
+  border: 1px solid color-mix(in srgb, var(--bk-crimson) 55%, transparent);
+}
+
+.bk-btn.secondary:hover {
+  background: color-mix(in srgb, var(--bk-crimson) 6%, transparent);
+  transform: translateY(-1px);
+  box-shadow: none;
+}
+
+/* Hero CTA pills */
+.bk-home .bk-hero-actions .bk-btn {
+  border-radius: 2px;
+  letter-spacing: 0.1em;
+}
+
+/* ── 5. Section spacing — more air ──────────────────────────── */
+.bk-section {
+  padding: 88px clamp(28px, 5vw, 72px);
+}
+
+.bk-home .bk-section {
+  padding: clamp(72px, 9vw, 124px) clamp(24px, 5vw, 72px);
+}
+
+.bk-sectionhead {
+  margin-bottom: 38px;
+}
+
+.bk-sectionhead h2 {
+  margin-top: 10px;
+  letter-spacing: -0.03em;
+}
+
+/* ── 6. Eyebrow label ───────────────────────────────────────── */
+.bk-eyebrow {
+  font-family: var(--bk-ui);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bk-gold);
+}
+
+/* ── 7. Product cards ───────────────────────────────────────── */
+.bk-card {
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+.bk-card:hover {
+  transform: translateY(-4px);
+}
+
+.bk-cardmedia {
+  background: color-mix(in srgb, var(--bk-cream) 85%, var(--bk-gold) 4%);
+  overflow: hidden;
+}
+
+.bk-cardmedia img {
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.bk-card:hover .bk-cardmedia img {
+  transform: scale(1.04);
+}
+
+.bk-cardcopy {
+  padding: 14px 0 0;
+}
+
+.bk-cardcopy h3 {
+  font-family: var(--bk-display);
+  font-weight: 400;
+  font-size: clamp(20px, 1.8vw, 24px);
+  letter-spacing: -0.02em;
+  margin-bottom: 3px;
+  color: var(--bk-ink);
+  line-height: 1.1;
+}
+
+/* Maker name — clean DM Sans, not serif */
+.bk-cardcopy p {
+  font-family: var(--bk-ui);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--bk-muted);
+  text-transform: uppercase;
+}
+
+.bk-cardprice {
+  font-family: var(--bk-ui);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--bk-crimson);
+  margin-top: 8px;
+  letter-spacing: 0.01em;
+}
+
+/* No cheap badge — muted, bottom-aligned tag */
+.bk-cardtag {
+  font-family: var(--bk-ui);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: color-mix(in srgb, var(--bk-paper) 90%, transparent);
+  color: var(--bk-muted);
+  border: 1px solid color-mix(in srgb, var(--bk-line) 80%, transparent);
+  padding: 4px 8px;
+}
+
+/* Wishlist heart — subtle */
+.bk-heart {
+  background: color-mix(in srgb, var(--bk-paper) 88%, transparent);
+  backdrop-filter: blur(6px);
+  border: 1px solid color-mix(in srgb, var(--bk-line) 60%, transparent);
+  transition: background 0.2s, color 0.2s;
+}
+
+/* ── 8. Homepage hero ───────────────────────────────────────── */
+.bk-home .bk-dynamic-copy h1 {
+  font-family: var(--bk-display);
+  font-weight: 300;
+  letter-spacing: -0.045em;
+  line-height: 0.92;
+}
+
+.bk-home .bk-dynamic-copy > p {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: clamp(16px, 1.4vw, 19px);
+  line-height: 1.65;
+  color: var(--bk-muted);
+}
+
+/* ── 9. Page header ─────────────────────────────────────────── */
+.bk-pagehead h1 {
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 0.94;
+}
+
+.bk-pagehead p {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 18px;
+  line-height: 1.65;
+  color: var(--bk-muted);
+}
+
+/* ── 10. Product detail page ────────────────────────────────── */
+.bk-product-info h1 {
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 0.94;
+}
+
+.bk-product-price {
+  font-family: var(--bk-ui);
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--bk-crimson);
+  letter-spacing: -0.01em;
+}
+
+.bk-product-desc {
+  font-size: 18px;
+  line-height: 1.75;
+  color: color-mix(in srgb, var(--bk-muted) 90%, var(--bk-ink));
+}
+
+.bk-product-detailrow {
+  font-family: var(--bk-ui);
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  color: var(--bk-muted);
+}
+
+/* ── 11. Forms & inputs ─────────────────────────────────────── */
+.bk-form input,
+.bk-form textarea,
+.bk-form select,
+.bk-field,
+.bk-select,
+.bk-input,
+.bk-search {
+  background: color-mix(in srgb, var(--bk-paper) 96%, white);
+  border-color: var(--bk-line);
+  border-radius: 2px;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 16px;
+  color: var(--bk-ink);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.bk-form input:focus,
+.bk-form textarea:focus,
+.bk-form select:focus,
+.bk-field:focus,
+.bk-select:focus,
+.bk-input:focus {
+  border-color: color-mix(in srgb, var(--bk-gold) 70%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--bk-gold) 14%, transparent);
+  outline: none;
+}
+
+.bk-form label {
+  font-family: var(--bk-ui);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--bk-muted);
+}
+
+/* ── 12. Editorial story sections ───────────────────────────── */
+.bk-editorial-story h2 {
+  font-weight: 300;
+  letter-spacing: -0.04em;
+}
+
+.bk-storycopy p {
+  font-size: 17px;
+  line-height: 1.8;
+  color: var(--bk-muted);
+}
+
+.bk-story-chapter h2 {
+  font-weight: 300;
+  letter-spacing: -0.04em;
+}
+
+.bk-story-chapter p {
+  font-size: 17px;
+  line-height: 1.85;
+}
+
+.bk-story-chapter blockquote {
+  font-family: var(--bk-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 30px;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--bk-maroon);
+  border-left: 1.5px solid var(--bk-gold);
+}
+
+/* ── 13. Footer ─────────────────────────────────────────────── */
+.bk-footer h3 {
+  font-family: var(--bk-display);
+  font-weight: 400;
+  font-size: 26px;
+  letter-spacing: -0.02em;
+}
+
+.bk-footer a,
+.bk-footer p {
+  font-family: var(--bk-ui);
+  font-size: 13px;
+  letter-spacing: 0.01em;
+}
+
+/* ── 14. Dashboard & maker area ─────────────────────────────── */
+.bk-dashnav a {
+  font-family: var(--bk-ui);
+  font-size: 12px;
+  letter-spacing: 0.03em;
+}
+
+.bk-panel h2 {
+  font-family: var(--bk-display);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+}
+
+.bk-status {
+  font-family: var(--bk-ui);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ── 15. Value band / proposition strips ────────────────────── */
+.bk-value b {
+  font-family: var(--bk-display);
+  font-weight: 400;
+  font-size: 26px;
+  letter-spacing: -0.02em;
+}
+
+.bk-value span {
+  font-family: var(--bk-ui);
+  font-size: 13px;
+  color: var(--bk-muted);
+}
+
+/* ── 16. Categories ─────────────────────────────────────────── */
+.bk-cat span {
+  font-family: var(--bk-display);
+  font-weight: 400;
+  font-size: 30px;
+  letter-spacing: -0.02em;
+}
+
+.bk-cat small {
+  font-family: var(--bk-ui);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ── 17. Gift Finder ────────────────────────────────────────── */
+.bk-finder-intro h1 {
+  font-weight: 300;
+  letter-spacing: -0.04em;
+}
+
+.bk-finder-content h2 {
+  font-weight: 300;
+  letter-spacing: -0.03em;
+}
+
+.bk-option {
+  font-family: var(--bk-ui);
+  font-size: 13px;
+  letter-spacing: 0.01em;
+  border-radius: 2px;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+/* ── 18. Story tiles (homepage editorial grid) ──────────────── */
+.bk-story-tile {
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.3, 1), border-color 0.2s;
+}
+
+.bk-story-tile:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--bk-gold) 60%, transparent);
+}
+
+.bk-story-tile-copy strong {
+  font-family: var(--bk-display);
+  font-weight: 400;
+  font-size: 23px;
+  letter-spacing: -0.015em;
+}
+
+.bk-story-tile-copy small {
+  font-family: var(--bk-ui);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ── 19. Notice bar ─────────────────────────────────────────── */
+.bk-notice {
+  font-family: var(--bk-ui);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--bk-teal);
+}
+
+/* ── 20. Skeleton loading — warmer ──────────────────────────── */
+.bk-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bk-cream),
+    var(--bk-paper),
+    var(--bk-cream)
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite;
+}
+
+/* ── 21. Cart drawer ────────────────────────────────────────── */
+.bk-drawerhead h2 {
+  font-family: var(--bk-display);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+}
+
+.bk-draweritem p {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 17px;
+}
+
+/* ── 22. Banner / CTA strip ─────────────────────────────────── */
+.bk-banner h2 {
+  font-weight: 300;
+  letter-spacing: -0.04em;
+}
+
+.bk-banner p {
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+/* ── 23. Account / profile page ─────────────────────────────── */
+.bk-formpage h1 {
+  font-weight: 300;
+  letter-spacing: -0.04em;
+}
+
+/* ── 24. Reduced motion safety net ──────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .bk-card,
+  .bk-story-tile,
+  .bk-btn {
+    transition: none !important;
+    transform: none !important;
+  }
+}

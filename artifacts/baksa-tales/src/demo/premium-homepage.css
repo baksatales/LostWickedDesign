@@ -1,0 +1,705 @@
+/* ─────────────────────────────────────────────────────────────
+   Premium homepage override — Baksa Tales
+   Applied after homepage-v5.css. No TSX changes required.
+   Design language: Paul Smith / Finery London editorial restraint.
+   One story per section. Massive whitespace. Type does the work.
+   ───────────────────────────────────────────────────────────── */
+
+/* ── Tokens ─────────────────────────────────────────────────── */
+.bt-homev5 {
+  --bt-paper:       #faf7f0;
+  --bt-paper-light: #fffcf5;
+  --bt-ink:         #1e1410;
+  --bt-maroon:      #5e1210;
+  --bt-wine:        #5e1210;
+  --bt-muted:       #7a6b5c;
+  --bt-sun:         #c9901e;
+  --bt-line:        #ddd0b8;
+  --bt-green:       #3d5246;
+  --ph-display:     'Cormorant Garamond', 'EB Garamond', Georgia, serif;
+  --ph-ui:          'DM Sans', system-ui, sans-serif;
+  font-size: 17px;
+  background: var(--bt-paper);
+}
+
+/* ── Global type ─────────────────────────────────────────────── */
+.bt-homev5 :is(h1, h2, h3, h4) {
+  font-family: var(--ph-display);
+  font-weight: 300;
+  letter-spacing: -0.04em;
+}
+
+/* ── Announcement bar — thinner, ink on cream ─────────────────── */
+.bt-homev5__announcement {
+  min-height: 30px;
+  padding: 5px 16px;
+  background: var(--bt-ink);
+  color: var(--bt-paper);
+  font-family: var(--ph-ui);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* ── Header — minimal, barely there ─────────────────────────── */
+.bt-homev5__header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: color-mix(in srgb, var(--bt-paper) 93%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid color-mix(in srgb, var(--bt-line) 50%, transparent);
+  padding: 0 40px;
+  height: 64px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+}
+
+.bt-homev5__brand span {
+  font-family: var(--ph-display);
+  font-weight: 400;
+  font-size: 26px;
+  letter-spacing: -0.03em;
+  color: var(--bt-ink);
+}
+
+.bt-homev5__brand img {
+  width: 32px;
+  height: 32px;
+}
+
+.bt-homev5__nav a,
+.bt-homev5__nav-action {
+  font-family: var(--ph-ui);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--bt-ink);
+  opacity: 0.75;
+  transition: opacity 0.2s;
+  text-decoration: none !important;
+}
+
+.bt-homev5__nav a:hover,
+.bt-homev5__nav-action:hover {
+  opacity: 1;
+  color: var(--bt-maroon) !important;
+  text-decoration: none !important;
+}
+
+.bt-homev5__icon-btn svg {
+  color: var(--bt-ink);
+}
+
+.bt-homev5__bag {
+  background: var(--bt-ink);
+  border-radius: 2px;
+  width: 40px;
+  height: 40px;
+}
+
+/* ── Dot pattern — remove, feels cluttered ───────────────────── */
+.bt-homev5__pattern {
+  display: none;
+}
+
+/* ── Hero — full viewport, trunk as hero image ───────────────── */
+.bt-homev5__hero {
+  min-height: calc(100dvh - 94px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: clamp(48px, 7vh, 80px);
+  padding-bottom: clamp(40px, 6vh, 72px);
+}
+
+.bt-homev5__eyebrow {
+  font-family: var(--ph-ui);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  color: var(--bt-sun);
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.bt-homev5__hero h1 {
+  font-family: var(--ph-display);
+  font-weight: 300;
+  font-size: clamp(56px, 6.5vw, 96px);
+  letter-spacing: -0.05em;
+  line-height: 0.9;
+  color: var(--bt-ink);
+  text-align: center;
+  margin: 0;
+}
+
+.bt-homev5__hero h1 em {
+  color: var(--bt-maroon);
+  font-style: italic;
+}
+
+.bt-homev5__subhead {
+  margin-top: 24px;
+  margin-bottom: 0;
+}
+
+.bt-homev5__subhead p {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: clamp(17px, 1.5vw, 21px);
+  font-style: italic;
+  color: var(--bt-muted);
+  line-height: 1.5;
+}
+
+/* Trunk: bigger, more breathing room */
+.bt-homev5__trunk {
+  width: min(100%, 1100px);
+  margin-top: clamp(48px, 7vh, 80px);
+}
+
+/* Mood doors — cleaner, less border noise */
+.bt-homev5__door {
+  border-radius: 3px;
+  border-color: color-mix(in srgb, var(--bt-line) 70%, transparent);
+  background: color-mix(in srgb, var(--bt-paper-light) 95%, var(--bt-sun) 3%);
+  box-shadow: none;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 0.25s;
+}
+
+.bt-homev5__door:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 32px -10px color-mix(in srgb, var(--bt-maroon) 22%, transparent);
+}
+
+.bt-homev5__door--active {
+  border: 2px solid var(--bt-maroon);
+  transform: translateY(-8px);
+  box-shadow: 0 18px 40px -12px color-mix(in srgb, var(--bt-maroon) 30%, transparent),
+              0 0 0 4px color-mix(in srgb, var(--bt-sun) 22%, transparent);
+}
+
+.bt-homev5__door-title {
+  font-family: var(--ph-display);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.bt-homev5__door-copy {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-style: italic;
+  color: var(--bt-muted);
+}
+
+.bt-homev5__browse {
+  font-family: var(--ph-display);
+  font-size: 20px;
+  font-style: italic;
+  margin-top: 28px;
+  margin-bottom: 40px;
+}
+
+.bt-homev5__browse a {
+  text-decoration: none !important;
+  border-bottom: 1px solid color-mix(in srgb, var(--bt-maroon) 40%, transparent);
+  padding-bottom: 1px;
+  transition: border-color 0.2s;
+}
+
+.bt-homev5__browse a:hover {
+  border-color: var(--bt-maroon);
+}
+
+/* Edit panel — planner board feel */
+.bt-homev5__edit-panel {
+  border-radius: 4px;
+  border-color: var(--bt-line);
+  border-width: 1px;
+  background: color-mix(in srgb, var(--bt-paper-light) 98%, var(--bt-sun) 2%);
+  padding: 36px 36px 30px;
+  box-shadow: 0 2px 16px color-mix(in srgb, var(--bt-ink) 6%, transparent);
+}
+
+.bt-homev5__edit-panel::before {
+  border-color: var(--bt-line);
+  background: color-mix(in srgb, var(--bt-paper-light) 98%, var(--bt-sun) 2%);
+  width: 14px;
+  height: 14px;
+}
+
+.bt-homev5__edit-copy p:first-child {
+  font-family: var(--ph-ui);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--bt-sun);
+}
+
+.bt-homev5__edit-copy h2 {
+  font-family: var(--ph-display);
+  font-weight: 300;
+  font-size: clamp(34px, 3.5vw, 52px);
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  color: var(--bt-ink);
+}
+
+.bt-homev5__edit-copy h2 em {
+  color: var(--bt-maroon);
+  font-style: italic;
+}
+
+.bt-homev5__inline-link {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 18px;
+  color: var(--bt-maroon);
+}
+
+/* ── Product cards ───────────────────────────────────────────── */
+.bt-homev5__product-media {
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--bt-paper-light) 92%, var(--bt-sun) 3%);
+}
+
+.bt-homev5__product-image-button img {
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.bt-homev5__product:hover .bt-homev5__product-image-button img {
+  transform: scale(1.05);
+}
+
+.bt-homev5__product-meta {
+  font-family: var(--ph-ui);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bt-muted);
+  margin-top: 12px;
+}
+
+.bt-homev5__product-name {
+  font-family: var(--ph-display);
+  font-weight: 400;
+  font-size: clamp(20px, 1.8vw, 24px);
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  margin-top: 3px;
+}
+
+.bt-homev5__product-price {
+  font-family: var(--ph-ui);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--bt-maroon);
+  letter-spacing: 0.01em;
+  margin-top: 7px;
+}
+
+.bt-homev5__wish {
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--bt-paper) 90%, transparent);
+  backdrop-filter: blur(8px);
+  border: 1px solid color-mix(in srgb, var(--bt-line) 60%, transparent);
+}
+
+/* Gift grid — larger gap, more air */
+.bt-homev5__gift-grid {
+  gap: 28px;
+}
+
+.bt-homev5__gift-grid .bt-homev5__product-media {
+  border-radius: 4px;
+}
+
+.bt-homev5__gift-grid .bt-homev5__product-name {
+  font-size: clamp(20px, 1.8vw, 26px);
+}
+
+/* ── Section headings ────────────────────────────────────────── */
+.bt-homev5__section {
+  padding-top: clamp(72px, 10vh, 108px);
+  padding-bottom: clamp(24px, 4vh, 48px);
+}
+
+.bt-homev5__section-heading {
+  margin-bottom: 36px;
+}
+
+.bt-homev5__section-heading h2 {
+  font-family: var(--ph-display);
+  font-weight: 300;
+  font-size: clamp(48px, 5.5vw, 72px);
+  letter-spacing: -0.05em;
+  line-height: 0.9;
+  color: var(--bt-ink);
+  margin: 0;
+}
+
+.bt-homev5__section-heading p {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 18px;
+  font-style: italic;
+  color: var(--bt-muted);
+  line-height: 1.5;
+  margin-top: 10px;
+}
+
+.bt-homev5__new-label {
+  font-family: var(--ph-ui);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--bt-sun);
+  margin-bottom: 6px;
+}
+
+.bt-homev5__new-label::before {
+  background: var(--bt-sun);
+  width: 6px;
+  height: 6px;
+}
+
+.bt-homev5__text-link {
+  font-family: var(--ph-ui);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--bt-maroon);
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.bt-homev5__text-link:hover {
+  opacity: 1;
+}
+
+/* ── Reels — horizontal story strip ─────────────────────────── */
+.bt-homev5__reels {
+  gap: 14px;
+  padding-bottom: 12px;
+}
+
+.bt-homev5__reel {
+  flex-basis: 180px;
+  border-radius: 4px;
+  box-shadow: 0 8px 24px -10px color-mix(in srgb, var(--bt-ink) 35%, transparent);
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 0.25s;
+}
+
+.bt-homev5__reel:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 38px -12px color-mix(in srgb, var(--bt-ink) 40%, transparent);
+}
+
+.bt-homev5__reel-maker {
+  font-family: var(--ph-ui);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-style: normal;
+}
+
+.bt-homev5__reel-title {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 18px;
+  font-style: italic;
+  line-height: 1.2;
+}
+
+.bt-homev5__reel-play {
+  background: rgba(255, 253, 244, 0.95);
+  width: 44px;
+  height: 44px;
+}
+
+/* ── Maker section — editorial magazine layout ───────────────── */
+.bt-homev5__maker {
+  padding-top: clamp(80px, 12vh, 120px);
+  padding-bottom: clamp(72px, 10vh, 108px);
+  gap: clamp(48px, 7vw, 96px);
+}
+
+.bt-homev5__maker-art img {
+  border-radius: 4px;
+  object-position: center top;
+}
+
+.bt-homev5__maker-stamp {
+  font-family: var(--ph-ui);
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  border-radius: 2px;
+  border-color: color-mix(in srgb, var(--bt-maroon) 35%, transparent);
+  background: var(--bt-paper);
+  color: var(--bt-maroon);
+  padding: 8px 14px;
+  transform: rotate(-6deg);
+}
+
+.bt-homev5__maker-copy > p:first-child {
+  font-family: var(--ph-ui);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--bt-sun);
+}
+
+.bt-homev5__maker-copy h2 {
+  font-family: var(--ph-display);
+  font-weight: 300;
+  font-size: clamp(48px, 5.5vw, 72px);
+  letter-spacing: -0.05em;
+  line-height: 0.9;
+  color: var(--bt-ink);
+  margin-top: 12px;
+}
+
+.bt-homev5__maker-copy h2 em {
+  color: var(--bt-maroon);
+  font-style: italic;
+}
+
+.bt-homev5__maker-copy > p:nth-of-type(2) {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 19px;
+  line-height: 1.7;
+  color: var(--bt-muted);
+  margin-top: 20px;
+}
+
+/* ── Button — clean rectangle, no pill ──────────────────────── */
+.bt-homev5__button {
+  font-family: var(--ph-ui);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  min-height: 50px;
+  padding: 0 28px;
+  background: var(--bt-ink);
+  border-color: var(--bt-ink);
+  color: var(--bt-paper) !important;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.bt-homev5__button:hover {
+  background: var(--bt-maroon);
+  border-color: var(--bt-maroon);
+  transform: translateY(-1px);
+}
+
+/* ── Corporate section — dark full-bleed ─────────────────────── */
+.bt-homev5__corp-card {
+  border-radius: 4px;
+  background: var(--bt-ink);
+  overflow: hidden;
+}
+
+.bt-homev5__corp-copy {
+  padding: clamp(40px, 6vw, 72px);
+}
+
+.bt-homev5__corp-copy > p:first-child {
+  font-family: var(--ph-ui);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--bt-sun) 80%, transparent);
+}
+
+.bt-homev5__corp-copy h2 {
+  font-family: var(--ph-display);
+  font-weight: 300;
+  font-size: clamp(44px, 5vw, 68px);
+  letter-spacing: -0.05em;
+  line-height: 0.92;
+  color: var(--bt-paper);
+  margin-top: 10px;
+}
+
+.bt-homev5__corp-copy h2 em {
+  color: var(--bt-sun);
+  font-style: italic;
+}
+
+.bt-homev5__corp-copy > p:nth-of-type(2) {
+  color: color-mix(in srgb, var(--bt-paper) 72%, transparent);
+  font-size: 18px;
+  line-height: 1.65;
+  margin-top: 20px;
+}
+
+.bt-homev5__corp-copy .bt-homev5__button {
+  background: var(--bt-paper);
+  border-color: var(--bt-paper);
+  color: var(--bt-ink) !important;
+  margin-top: 28px;
+}
+
+.bt-homev5__corp-copy .bt-homev5__button:hover {
+  background: var(--bt-sun);
+  border-color: var(--bt-sun);
+}
+
+/* ── Event section — tighter, more refined ───────────────────── */
+.bt-homev5__event {
+  background: var(--bt-green);
+  padding-block: clamp(48px, 7vh, 80px);
+}
+
+.bt-homev5__event h2 {
+  font-family: var(--ph-display);
+  font-weight: 300;
+  font-size: clamp(44px, 5vw, 66px);
+  letter-spacing: -0.05em;
+  line-height: 0.9;
+}
+
+.bt-homev5__utility {
+  font-family: var(--ph-ui);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--bt-sun) 80%, transparent);
+  margin-bottom: 12px;
+  display: block;
+}
+
+.bt-homev5__event p {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 19px;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--bt-paper) 80%, transparent);
+}
+
+.bt-homev5__event-note {
+  border-radius: 3px;
+  background: var(--bt-paper-light);
+  box-shadow: 0 8px 28px -8px color-mix(in srgb, var(--bt-ink) 30%, transparent);
+  transform: rotate(0.8deg);
+  padding: 24px 24px;
+}
+
+.bt-homev5__event-note strong {
+  font-family: var(--ph-display);
+  font-weight: 400;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+  color: var(--bt-ink);
+}
+
+.bt-homev5__event-note span {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 16px;
+  color: var(--bt-muted);
+  line-height: 1.5;
+}
+
+.bt-homev5__event .bt-homev5__button {
+  background: var(--bt-paper);
+  border-color: var(--bt-paper);
+  color: var(--bt-ink) !important;
+  margin-top: 28px;
+}
+
+.bt-homev5__event .bt-homev5__button:hover {
+  background: var(--bt-sun);
+  border-color: var(--bt-sun);
+}
+
+/* ── Promises bar — slim, typographic ───────────────────────── */
+.bt-homev5__promises {
+  padding-block: 28px;
+  border-top: 1px solid var(--bt-line);
+  border-bottom: 1px solid var(--bt-line);
+  background: var(--bt-paper);
+}
+
+.bt-homev5__promise {
+  font-family: var(--ph-ui);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--bt-muted);
+  gap: 10px;
+  justify-content: center;
+}
+
+.bt-homev5__promise svg {
+  color: var(--bt-sun);
+}
+
+/* ── Search overlay ──────────────────────────────────────────── */
+.bt-homev5__search input {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 17px;
+  border-radius: 2px;
+  border-color: var(--bt-line);
+  background: var(--bt-paper-light);
+}
+
+.bt-homev5__search button {
+  border-radius: 2px;
+  font-family: var(--ph-ui);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--bt-ink);
+}
+
+/* ── Responsive: mobile ──────────────────────────────────────── */
+@media (max-width: 720px) {
+  .bt-homev5__header {
+    padding: 0 18px;
+    height: 58px;
+  }
+
+  .bt-homev5__hero h1 {
+    font-size: clamp(48px, 12vw, 64px);
+    line-height: 0.93;
+  }
+
+  .bt-homev5__section-heading h2 {
+    font-size: clamp(42px, 11vw, 56px);
+  }
+
+  .bt-homev5__maker-copy h2 {
+    font-size: clamp(44px, 11vw, 56px);
+  }
+
+  .bt-homev5__corp-copy h2 {
+    font-size: clamp(38px, 10vw, 50px);
+  }
+
+  .bt-homev5__event h2 {
+    font-size: clamp(38px, 10vw, 50px);
+  }
+
+  .bt-homev5__gift-grid {
+    gap: 16px 12px;
+  }
+}
+
+/* ── Reduced motion ──────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .bt-homev5__door,
+  .bt-homev5__reel,
+  .bt-homev5__button,
+  .bt-homev5__product-image-button img {
+    transition: none !important;
+    transform: none !important;
+  }
+}
