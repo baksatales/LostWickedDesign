@@ -61,7 +61,7 @@ export function hydrateCheckout(ctx: Ctx) {
     });
     if (!lines.length) {
       const r = document.createElement('p'); r.setAttribute('data-row', ''); tid(r, 'empty-bag-summary');
-      r.setAttribute('style', 'margin: 0; font-size: 18px; color: #5C463C');
+      r.setAttribute('style', 'margin: 0; font-size: 18px; color: #71645E');
       r.innerHTML = 'Your bag is empty. <a href="#shop">Browse the Edit</a>';
       totals.insertAdjacentElement('beforebegin', r);
     }
@@ -69,7 +69,7 @@ export function hydrateCheckout(ctx: Ctx) {
     const vals = $$(totals, ':scope > div > span:last-child');
     vals[0].textContent = formatINR(t.itemsPaise);
     vals[1].textContent = t.shippingPaise ? formatINR(t.shippingPaise) : 'Free';
-    vals[1].style.color = t.shippingPaise ? '#2B1712' : '#2C4640';
+    vals[1].style.color = t.shippingPaise ? '#352C2B' : '#2C4640';
     vals[2].textContent = formatINR(t.totalPaise);
     if (done && s.checkout.lastOrder!.discountPaise > 0) {
       const row = document.createElement('div');
@@ -157,9 +157,9 @@ export function hydrateCheckout(ctx: Ctx) {
     if (step === 'payment') {
       const t = bagTotals(s); const a = s.checkout.address;
       const opts = (Object.keys(PAYMENT_LABEL) as (keyof typeof PAYMENT_LABEL)[]).map(k =>
-        `<label style="grid-column: 1 / -1; display: flex; gap: 12px; align-items: center; min-height: 52px; padding: 0 16px; border-radius: 16px; border: 1.5px solid ${s.checkout.payment === k ? '#611811' : '#DCCAB0'}; background: #FFFFFF; font-size: 19px; cursor: pointer"><input type="radio" name="pay" value="${k}" data-testid="radio-pay-${k}" ${s.checkout.payment === k ? 'checked' : ''} style="width: 20px; height: 20px; accent-color: #611811">${PAYMENT_LABEL[k]}</label>`).join('');
+        `<label style="grid-column: 1 / -1; display: flex; gap: 12px; align-items: center; min-height: 52px; padding: 0 16px; border-radius: 16px; border: 1.5px solid ${s.checkout.payment === k ? '#752F43' : '#E8DDD1'}; background: #FFFFFF; font-size: 19px; cursor: pointer"><input type="radio" name="pay" value="${k}" data-testid="radio-pay-${k}" ${s.checkout.payment === k ? 'checked' : ''} style="width: 20px; height: 20px; accent-color: #752F43">${PAYMENT_LABEL[k]}</label>`).join('');
         panel.innerHTML = `<h1 style="${S.h1}">How would you like to pay?</h1><p style="${S.p}">Delivering to ${esc(a.name)}, ${esc(a.house)}, ${esc(a.road)}, ${esc(stateFromPincode(a.pin) ?? '')} ${esc(a.pin)}. <a href="#address" data-testid="link-change-address">Change</a></p>
-       <div style="${S.card}">${opts}<label for="sample-coupon" style="${S.label}">Coupon code</label><input id="sample-coupon" data-testid="input-sample-coupon" maxlength="40" autocomplete="off" value="${esc(couponCodeDraft)}" placeholder="Try WELCOME10" style="${S.input}"><p style="grid-column: 1 / -1; margin: 0; font-size: 16px; color: #5C463C">Sample checkout: no money moves. Coupons are checked by the sample service.</p></div>
+       <div style="${S.card}">${opts}<label for="sample-coupon" style="${S.label}">Coupon code</label><input id="sample-coupon" data-testid="input-sample-coupon" maxlength="40" autocomplete="off" value="${esc(couponCodeDraft)}" placeholder="Try WELCOME10" style="${S.input}"><p style="grid-column: 1 / -1; margin: 0; font-size: 16px; color: #71645E">Sample checkout: no money moves. Coupons are checked by the sample service.</p></div>
        <button type="button" data-testid="button-pay" style="${S.btn}">Place sample order · no charge</button>`;
        const couponInput = $<HTMLInputElement>(panel, '#sample-coupon')!;
        couponInput.addEventListener('input', () => { couponCodeDraft = couponInput.value; });
@@ -231,10 +231,10 @@ export function hydrateCheckout(ctx: Ctx) {
     }
 
     const o = s.checkout.lastOrder!;
-    panel.innerHTML = `<h1 style="${S.h1}">Thank you, <em style="color: #C23A36">${esc(o.address.name.split(' ')[0])}.</em></h1>
+    panel.innerHTML = `<h1 style="${S.h1}">Thank you, <em style="color: #752F43">${esc(o.address.name.split(' ')[0])}.</em></h1>
       <p style="${S.p}" data-testid="text-order-ref">Sample order ${o.ref} was saved. No payment was collected. This is not a real purchase. The sample account can show its order history.${o.couponCode ? ` Coupon ${o.couponCode} saved you ${formatINR(o.discountPaise)}.` : ''}</p>
     <div style="${S.card}"><p style="grid-column: 1 / -1; margin: 0; font-size: 19px">This sample walkthrough ends here. No maker received a real order and nothing will be shipped.</p>
-    <p style="grid-column: 1 / -1; margin: 0; font-size: 17px; color: #5C463C">Delivering to ${esc(o.address.name)}, ${esc(o.address.house)}, ${esc(o.address.road)}, ${esc(stateFromPincode(o.address.pin) ?? '')} ${esc(o.address.pin)}.</p></div>
+    <p style="grid-column: 1 / -1; margin: 0; font-size: 17px; color: #71645E">Delivering to ${esc(o.address.name)}, ${esc(o.address.house)}, ${esc(o.address.road)}, ${esc(stateFromPincode(o.address.pin) ?? '')} ${esc(o.address.pin)}.</p></div>
     <a href="#shop" data-testid="button-keep-shopping" style="${S.btn}; display: inline-flex; align-items: center; text-decoration: none">Keep browsing the Edit</a>`;
     $(panel, 'a')!.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); update(st => ({ ...st, checkout: { ...st.checkout, step: 'address', lastOrder: null } })); ctx.navigate('/shop'); });
   };

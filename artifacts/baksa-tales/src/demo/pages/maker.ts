@@ -370,7 +370,7 @@ export function hydrateMakerProducts(ctx: Ctx) {
       const info = $(r, 'p')!.parentElement!;
       let low = $$(info, 'span').find(x => /left$|^Out of stock$/.test(norm(x.textContent)));
       if (p.stock <= 3) {
-        if (!low) { low = document.createElement('span'); low.setAttribute('style', 'margin-left: 6px; background: #F7D9CF; color: #8E2A22; border-radius: 999px; padding: 4px 10px; font-family: Arvo, Georgia, serif; font-size: 11px'); info.appendChild(document.createTextNode(' ')); info.appendChild(low); }
+        if (!low) { low = document.createElement('span'); low.setAttribute('style', 'margin-left: 6px; background: #F7D9CF; color: #8E2A22; border-radius: 999px; padding: 4px 10px; font-family: Jost, Georgia, serif; font-size: 11px'); info.appendChild(document.createTextNode(' ')); info.appendChild(low); }
         low.textContent = p.stock === 0 ? 'Out of stock' : `Only ${p.stock} left`; tid(low, `status-stock-${p.id}`);
       } else low?.remove();
     });
@@ -468,7 +468,7 @@ export function hydrateMakerAddProduct(ctx: Ctx) {
         () => `${title('Its ', 'size')}${L('Size or weight', 'size', 'text', 'For example, 18 cm across, or 100 ml.')}`,
         () => '',
         () => `${title('Its ', 'story')}<label style="${labStyle}">A few lines in your voice<textarea data-k="story" data-testid="input-draft-story" rows="5" style="${inStyle}; height: auto; padding: 12px 14px">${esc(draft.story)}</textarea><span style="${hintStyle}">Who made it, how, and why it matters.</span></label>`,
-        () => `${title('Check and ', 'send')}<div data-testid="draft-summary" style="font-size: 19px; display: flex; flex-direction: column; gap: 6px"><p style="margin: 0"><b>${esc(draft.name || 'No name yet')}</b></p><p style="margin: 0">${esc([draft.kind, draft.material, draft.technique, draft.size].filter(Boolean).join(', ') || 'No details yet')}</p><p style="margin: 0">${draft.price ? formatINR(Math.round(Number(draft.price) * 100)) : 'No price yet'} incl. GST, ${draft.madeToOrder ? 'made to order' : `${draft.stock || 0} ready`}, dispatched within ${draft.dispatch} days</p><p style="margin: 0; color: #5C463C">${esc(draft.story || 'No story yet')}</p></div><label style="${labStyle}; display:flex; align-items:flex-start; gap:10px"><input type="checkbox" data-testid="checkbox-confirm-product-facts" style="margin-top:5px"><span>I confirm the product details, materials, price, stock and story are accurate.</span></label><div data-testid="draft-result"></div>`,
+        () => `${title('Check and ', 'send')}<div data-testid="draft-summary" style="font-size: 19px; display: flex; flex-direction: column; gap: 6px"><p style="margin: 0"><b>${esc(draft.name || 'No name yet')}</b></p><p style="margin: 0">${esc([draft.kind, draft.material, draft.technique, draft.size].filter(Boolean).join(', ') || 'No details yet')}</p><p style="margin: 0">${draft.price ? formatINR(Math.round(Number(draft.price) * 100)) : 'No price yet'} incl. GST, ${draft.madeToOrder ? 'made to order' : `${draft.stock || 0} ready`}, dispatched within ${draft.dispatch} days</p><p style="margin: 0; color: #71645E">${esc(draft.story || 'No story yet')}</p></div><label style="${labStyle}; display:flex; align-items:flex-start; gap:10px"><input type="checkbox" data-testid="checkbox-confirm-product-facts" style="margin-top:5px"><span>I confirm the product details, materials, price, stock and story are accurate.</span></label><div data-testid="draft-result"></div>`,
       ][step]();
       form.innerHTML = body + nav();
       const file = $<HTMLInputElement>(form, 'input[type="file"]');
@@ -516,7 +516,7 @@ export function hydrateMakerAddProduct(ctx: Ctx) {
       }
       const out = $(form, '[data-testid="draft-result"]')!;
       if (!factConfirmed) {
-        out.innerHTML = '<p role="alert" style="margin: 6px 0 0; font-size: 17px; color: #C23A36">Confirm the product facts before submitting.</p>';
+        out.innerHTML = '<p role="alert" style="margin: 6px 0 0; font-size: 17px; color: #752F43">Confirm the product facts before submitting.</p>';
         return;
       }
       if (!(await saveNow())) return;
@@ -530,7 +530,7 @@ export function hydrateMakerAddProduct(ctx: Ctx) {
         $(form, 'button')!.addEventListener('click', () => ctx.navigate('/maker/products'));
       } catch (error) {
         next.disabled = false;
-        out.innerHTML = `<p role="alert" style="margin: 6px 0 0; font-size: 17px; color: #C23A36">${esc(error instanceof Error ? error.message : 'The product was not submitted.')}</p>`;
+        out.innerHTML = `<p role="alert" style="margin: 6px 0 0; font-size: 17px; color: #752F43">${esc(error instanceof Error ? error.message : 'The product was not submitted.')}</p>`;
       }
     };
     paintPreview();
@@ -689,7 +689,7 @@ export function hydrateMakerGrowth(ctx: Ctx) {
     const g = growthHealth({ pricePaise: v[0] * 100, materialsPaise: v[1] * 100, packagingPaise: v[2] * 100, shippingPaise: v[3] * 100, monthlyFixedPaise: v[4] * 100, demand: v[5], hoursPerPiece: 5, hoursPerWeek: 40, people: 2 });
     let err = $(health, '[data-testid="error-growth"]');
     if (!g.ok) {
-      if (!err) { err = document.createElement('p'); tid(err, 'error-growth'); err.setAttribute('role', 'alert'); err.setAttribute('style', 'margin: 0; font-size: 17px; color: #C23A36; grid-column: 1 / -1'); boxes[0].insertAdjacentElement('beforebegin', err); }
+      if (!err) { err = document.createElement('p'); tid(err, 'error-growth'); err.setAttribute('role', 'alert'); err.setAttribute('style', 'margin: 0; font-size: 17px; color: #752F43; grid-column: 1 / -1'); boxes[0].insertAdjacentElement('beforebegin', err); }
       err.textContent = g.error; return;
     }
     err?.remove();
@@ -882,7 +882,7 @@ export function hydrateMakerOpportunities(ctx: Ctx) {
       const status = serverOpportunityStatus.get(o.id) ?? o.status;
       if (status !== 'open') {
         yes.style.display = 'none'; no.style.display = 'none';
-        if (!st) { st = document.createElement('p'); st.setAttribute('data-opp-status', ''); st.setAttribute('style', 'margin: 12px 0 0; font-family: Arvo, Georgia, serif; font-size: 13px; color: #2C4640'); a.appendChild(st); }
+        if (!st) { st = document.createElement('p'); st.setAttribute('data-opp-status', ''); st.setAttribute('style', 'margin: 12px 0 0; font-family: Jost, Georgia, serif; font-size: 13px; color: #2C4640'); a.appendChild(st); }
         tid(st, `status-opp-${o.id}`);
         st.textContent = status === 'yes' ? 'You said yes. The Baksa team will call you with the details.' : 'Not this time. Thanks for letting us know.';
       } else { yes.style.display = ''; no.style.display = ''; st?.remove(); }
@@ -897,7 +897,7 @@ export function hydrateMakerOpportunities(ctx: Ctx) {
         const [yes, no] = $$<HTMLButtonElement>(a, 'button');
         $$(a, '[data-opp-status]').forEach(x => x.remove());
         if (o.status === 'open') { yes.style.display = ''; no.style.display = ''; yes.onclick = () => { void respond(o.id, 'yes'); }; no.onclick = () => { void respond(o.id, 'no'); }; }
-        else { yes.remove(); no.remove(); const p = document.createElement('p'); p.setAttribute('style', 'margin: 12px 0 0; font-family: Arvo, Georgia, serif; font-size: 13px; color: #2C4640'); p.textContent = o.status === 'yes' ? 'You said yes.' : 'Not this time.'; a.appendChild(p); }
+        else { yes.remove(); no.remove(); const p = document.createElement('p'); p.setAttribute('style', 'margin: 12px 0 0; font-family: Jost, Georgia, serif; font-size: 13px; color: #2C4640'); p.textContent = o.status === 'yes' ? 'You said yes.' : 'Not this time.'; a.appendChild(p); }
         host.appendChild(a);
       });
     }

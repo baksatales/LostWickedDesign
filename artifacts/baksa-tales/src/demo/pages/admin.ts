@@ -73,12 +73,12 @@ export function hydrateAdminOverview(ctx: Ctx) {
       host.replaceChildren();
       if (!attention.length) {
         const empty = document.createElement('p'); empty.textContent = 'Nothing needs attention right now.';
-        empty.setAttribute('style', 'margin:12px 0;font-size:18px;color:#5C463C'); host.appendChild(empty); return;
+        empty.setAttribute('style', 'margin:12px 0;font-size:18px;color:#71645E'); host.appendChild(empty); return;
       }
       attention.forEach((item, index) => {
         const row = cloneEl(rowTemplate); tid(row, `row-attention-${item.kind}-${item.id}`);
         const dot = row.firstElementChild as HTMLElement | null;
-        if (dot) dot.style.background = item.kind === 'order' ? '#C23A36' : item.kind === 'review' ? '#EBA937' : '#34514B';
+        if (dot) dot.style.background = item.kind === 'order' ? '#752F43' : item.kind === 'review' ? '#B08A55' : '#34514B';
         const label = row.children[1] as HTMLElement | undefined; if (label) label.textContent = item.label;
         const link = row.querySelector<HTMLAnchorElement>('a');
         if (link) {
@@ -144,7 +144,7 @@ export function hydrateAdminReviews(ctx: Ctx) {
       return b;
     }));
     if (!items.length) {
-      const e = document.createElement('p'); tid(e, 'empty-reviews'); e.setAttribute('style', 'margin: 0; font-size: 19px; color: #5C463C; background: #FFFDF4; border-radius: 20px; padding: 16px');
+      const e = document.createElement('p'); tid(e, 'empty-reviews'); e.setAttribute('style', 'margin: 0; font-size: 19px; color: #71645E; background: #FFFDF9; border-radius: 20px; padding: 16px');
       e.textContent = flash || (tab === 1 ? 'No spot checks waiting.' : 'Nothing waiting for review.'); listCol.appendChild(e);
     }
     detail.style.display = selected ? '' : 'none';
@@ -271,7 +271,7 @@ export function hydrateAdminReviews(ctx: Ctx) {
       $(el, 'h3')!.textContent = a.brand;
       const chip = $(el, 'h3 + span') as HTMLElement; tid(chip, `status-application-${a.id}`);
       chip.textContent = { pending: 'New', call: 'Call booked', approved: 'Approved, invite sent', declined: 'Declined' }[status];
-      setStyle(chip, status === 'pending' ? chipNew : status === 'approved' ? chipNew.replace('#F7D9CF', '#D5E6DE').replace('#611811', '#2C4640') : callChip);
+      setStyle(chip, status === 'pending' ? chipNew : status === 'approved' ? chipNew.replace('#F7D9CF', '#D5E6DE').replace('#752F43', '#2C4640') : callChip);
       $(el, 'p')!.textContent = `${a.name}, ${a.place}. ${a.craft}. GST: ${a.gst}`;
       const btnRow = $(el, 'p + div') as HTMLElement; const tplBtns = $$<HTMLButtonElement>(btnRow, 'button');
       const mk = (label: string, decision: 'approve' | 'book_call' | 'decline', k: string) => {
@@ -485,13 +485,13 @@ export function hydrateAdminEnquiries(ctx: Ctx) {
     const n = (k: string) => all.filter(x => x === k).length + (k === 'new' ? extraNew : 0);
     ['new', 'contacted', 'quote', 'won'].forEach((k, i) => { const ps = $$(stats[i], 'p'); ps[1].textContent = String(n(k)); tid(ps[1], `text-stage-count-${k}`); });
     stageChip.textContent = STAGE_LABEL[e.stage];
-    setStyle(stageChip, chipStyles[e.stage] ?? (e.stage === 'won' ? chipStyles.contacted.replace('#FBE3B2', '#D5E6DE').replace('#7A5517', '#2C4640') : e.stage === 'lost' ? chipStyles.contacted.replace('#FBE3B2', '#ECE6CC').replace('#7A5517', '#5C463C') : chipStyles.contacted.replace('#FBE3B2', '#D5E6DE').replace('#7A5517', '#2C4640')));
+    setStyle(stageChip, chipStyles[e.stage] ?? (e.stage === 'won' ? chipStyles.contacted.replace('#FBE3B2', '#D5E6DE').replace('#7A5517', '#2C4640') : e.stage === 'lost' ? chipStyles.contacted.replace('#FBE3B2', '#ECE6CC').replace('#7A5517', '#71645E') : chipStyles.contacted.replace('#FBE3B2', '#D5E6DE').replace('#7A5517', '#2C4640')));
     sel.value = e.stage;
     boxes.forEach((b, i) => (b.checked = e.matched.includes(makerIds[i])));
     yesP.innerHTML = '';
     e.saidYes.forEach(id => { const c = document.createElement('span'); c.setAttribute('style', yesChipStyle + '; margin-right: 6px'); c.textContent = `${makerById(s, id)!.brand} said yes`; yesP.appendChild(c); });
     const waiting = e.sentTo.filter(id => !e.saidYes.includes(id));
-    if (waiting.length) { const t = document.createElement('span'); t.style.fontSize = '16px'; t.style.color = '#5C463C'; t.textContent = ` Sent to ${waiting.map(id => makerById(s, id)!.brand).join(', ')}, waiting.`; yesP.appendChild(t); }
+    if (waiting.length) { const t = document.createElement('span'); t.style.fontSize = '16px'; t.style.color = '#71645E'; t.textContent = ` Sent to ${waiting.map(id => makerById(s, id)!.brand).join(', ')}, waiting.`; yesP.appendChild(t); }
     tid(yesP, 'text-maker-replies');
     if (document.activeElement !== quote) quote.value = e.quotePaise ? String(e.quotePaise / 100) : '';
     let m = $(fs[1], '[data-testid="text-quote-status"]');
@@ -515,14 +515,14 @@ export function hydrateAdminEnquiries(ctx: Ctx) {
       };
       if (x.stage !== 'new') l.remove();
       const controls = document.createElement('div');
-      controls.setAttribute('style', 'margin-top:14px;padding-top:12px;border-top:1px solid #DCCAB0;display:grid;gap:10px');
+      controls.setAttribute('style', 'margin-top:14px;padding-top:12px;border-top:1px solid #E8DDD1;display:grid;gap:10px');
       const stageSelect = document.createElement('select');
       const dynamicStages: DemoEnquiry['stage'][] = ['new', 'contacted', 'quote', 'won', 'lost'];
       dynamicStages.forEach(stage => {
         const option = document.createElement('option'); option.value = stage; option.textContent = STAGE_LABEL[stage]; stageSelect.appendChild(option);
       });
       stageSelect.value = x.stage; tid(stageSelect, `select-stage-${x.ref}`);
-      stageSelect.setAttribute('style', 'min-height:42px;border:1px solid #DCCAB0;border-radius:10px;padding:0 10px;background:#FFFDF4;color:#2B1712');
+      stageSelect.setAttribute('style', 'min-height:42px;border:1px solid #E8DDD1;border-radius:10px;padding:0 10px;background:#FFFDF9;color:#352C2B');
       stageSelect.onchange = () => {
         const stage = stageSelect.value as DemoEnquiry['stage'];
         void sampleApi(`/sample/admin/enquiries/${encodeURIComponent(x.ref)}/stage`, { method: 'PATCH', body: JSON.stringify({ stage }) })
@@ -530,7 +530,7 @@ export function hydrateAdminEnquiries(ctx: Ctx) {
           .catch(error => { msg = error instanceof Error ? error.message : 'Stage was not saved.'; render(); });
       };
       const matchLabel = document.createElement('p'); matchLabel.textContent = 'Match sample makers';
-      matchLabel.setAttribute('style', 'margin:0;font-family:Arvo,Georgia,serif;font-size:12px;color:#5C463C');
+      matchLabel.setAttribute('style', 'margin:0;font-family:Arvo,Georgia,serif;font-size:12px;color:#71645E');
       const matchWrap = document.createElement('div'); matchWrap.setAttribute('style', 'display:flex;gap:12px;flex-wrap:wrap');
       const matchBoxes = ['m1', 'm2'].map(id => {
         const label = document.createElement('label'); label.setAttribute('style', 'display:flex;gap:6px;align-items:center;font-size:15px');
@@ -551,10 +551,10 @@ export function hydrateAdminEnquiries(ctx: Ctx) {
         finally { matchButton.disabled = false; }
       };
       const quoteField = document.createElement('input'); quoteField.type = 'number'; quoteField.min = '1'; quoteField.placeholder = 'Quote total (₹)'; quoteField.value = x.quotePaise ? String(x.quotePaise / 100) : '';
-      quoteField.setAttribute('style', 'min-height:42px;max-width:220px;border:1px solid #DCCAB0;border-radius:10px;padding:0 10px;background:#FFFDF4');
+      quoteField.setAttribute('style', 'min-height:42px;max-width:220px;border:1px solid #E8DDD1;border-radius:10px;padding:0 10px;background:#FFFDF9');
       tid(quoteField, `input-quote-${x.ref}`);
       const quoteButton = document.createElement('button'); quoteButton.type = 'button'; quoteButton.textContent = 'Save quote';
-      quoteButton.setAttribute('style', 'min-height:42px;width:max-content;border:1px solid #DCCAB0;border-radius:999px;background:#FFFDF4;color:#2B1712;padding:0 16px;font:12px Arvo,Georgia,serif;cursor:pointer');
+      quoteButton.setAttribute('style', 'min-height:42px;width:max-content;border:1px solid #E8DDD1;border-radius:999px;background:#FFFDF9;color:#352C2B;padding:0 16px;font:12px Arvo,Georgia,serif;cursor:pointer');
       tid(quoteButton, `button-quote-${x.ref}`);
       quoteButton.onclick = async () => {
         const quotePaise = Math.round(Number(quoteField.value) * 100);
@@ -568,7 +568,7 @@ export function hydrateAdminEnquiries(ctx: Ctx) {
       };
       const quoteRow = document.createElement('div'); quoteRow.setAttribute('style', 'display:flex;gap:8px;flex-wrap:wrap'); quoteRow.append(quoteField, quoteButton);
       const privacyNote = document.createElement('small'); privacyNote.textContent = 'Only Tathaastu and Mushhk sample accounts are available for matching; maker briefs hide the company and buyer contact.';
-      privacyNote.setAttribute('style', 'font-size:12px;color:#5C463C');
+      privacyNote.setAttribute('style', 'font-size:12px;color:#71645E');
       controls.append(stageSelect, matchLabel, matchWrap, matchButton, quoteRow, privacyNote); a.appendChild(controls);
       host.insertBefore(a, acme);
     });
@@ -676,7 +676,7 @@ export function hydrateAdminAcademy(ctx: Ctx) {
     table.innerHTML = '<thead><tr><th style="text-align:left">Date</th><th style="text-align:left">Course</th><th style="text-align:left">Learner</th><th style="text-align:right">Amount</th><th style="text-align:left">Status</th></tr></thead>';
     const body = document.createElement('tbody'); tid(body, 'tbody-academy-sales');
     result.sales.forEach(sale => {
-      const row = document.createElement('tr'); tid(row, `row-academy-sale-${sale.id}`); row.setAttribute('style', 'border-top:1px solid #DCCAB0');
+      const row = document.createElement('tr'); tid(row, `row-academy-sale-${sale.id}`); row.setAttribute('style', 'border-top:1px solid #E8DDD1');
       const values = [sale.date, sale.course, sale.learner, formatINR(sale.amountPaise), sale.status === 'paid' ? 'Paid' : sale.status];
       values.forEach((value, index) => {
         const cell = document.createElement('td'); cell.textContent = value;
@@ -722,22 +722,22 @@ export function hydrateAdminAcademy(ctx: Ctx) {
         else if (staticProposal?.status === 'changes') status(`Changes requested: ${staticProposal.note}`);
         proposals.filter(proposal => proposal.id !== 'proposal-sample-lotus').forEach(proposal => {
           const card = document.createElement('article');
-          card.setAttribute('style', 'border:1px solid #DCCAB0;border-radius:18px;padding:16px;background:#F6F3DF');
+          card.setAttribute('style', 'border:1px solid #E8DDD1;border-radius:18px;padding:16px;background:#F6F3DF');
           tid(card, `card-class-proposal-${proposal.id}`);
           const title = document.createElement('h3'); title.textContent = proposal.title;
           title.setAttribute('style', 'margin:0;font-size:22px;font-weight:500');
           const details = document.createElement('p'); details.textContent = `${proposal.makerBrand} · ${proposal.type} · ${proposal.duration} · ${formatINR(proposal.pricePaise)}`;
-          details.setAttribute('style', 'margin:6px 0;font-size:15px;color:#5C463C');
+          details.setAttribute('style', 'margin:6px 0;font-size:15px;color:#71645E');
           const about = document.createElement('p'); about.textContent = proposal.about; about.setAttribute('style', 'margin:0;font-size:17px');
           const note = document.createElement('textarea'); note.placeholder = 'Note for the maker (required when asking for changes)'; note.rows = 2;
-          note.setAttribute('style', 'width:100%;margin-top:10px;border:1px solid #DCCAB0;border-radius:10px;padding:10px;font:14px Arvo,Georgia,serif;box-sizing:border-box');
+          note.setAttribute('style', 'width:100%;margin-top:10px;border:1px solid #E8DDD1;border-radius:10px;padding:10px;font:14px Arvo,Georgia,serif;box-sizing:border-box');
           tid(note, `input-class-proposal-note-${proposal.id}`);
           const state = document.createElement('p'); state.setAttribute('role', 'status'); state.textContent = proposal.status === 'submitted' ? 'Awaiting review' : proposal.status === 'approved' ? 'Approved' : `Changes requested: ${proposal.note}`;
           state.setAttribute('style', 'margin:8px 0;font-size:15px;color:#34514B'); tid(state, `status-class-proposal-${proposal.id}`);
           const actions = document.createElement('div'); actions.setAttribute('style', 'display:flex;gap:8px;flex-wrap:wrap;margin-top:8px');
           const approve = document.createElement('button'); approve.type = 'button'; approve.textContent = 'Approve and list';
           const changes = document.createElement('button'); changes.type = 'button'; changes.textContent = 'Ask for changes';
-          [approve, changes].forEach(btn => btn.setAttribute('style', 'min-height:42px;padding:0 16px;border-radius:999px;border:1px solid #DCCAB0;background:#FFFDF4;color:#2B1712;font:12px Arvo,Georgia,serif;cursor:pointer'));
+          [approve, changes].forEach(btn => btn.setAttribute('style', 'min-height:42px;padding:0 16px;border-radius:999px;border:1px solid #E8DDD1;background:#FFFDF9;color:#352C2B;font:12px Arvo,Georgia,serif;cursor:pointer'));
           tid(approve, `button-approve-class-proposal-${proposal.id}`); tid(changes, `button-changes-class-proposal-${proposal.id}`);
           const review = async (decision: 'approve' | 'changes') => {
             approve.disabled = changes.disabled = true;

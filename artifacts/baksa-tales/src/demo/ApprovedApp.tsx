@@ -11,14 +11,11 @@ import { hydrateCheckout } from './pages/checkout';
 import { hydrateMakerAddProduct, hydrateMakerEarnings, hydrateMakerGrowth, hydrateMakerHome, hydrateMakerOpportunities, hydrateMakerOrders, hydrateMakerProducts, hydrateMakerSettings } from './pages/maker';
 import { hydrateAdminAcademy, hydrateAdminEnquiries, hydrateAdminOrders, hydrateAdminOverview, hydrateAdminReviews } from './pages/admin';
 import InformationDialog, { openDemoInformation } from './InformationDialog';
-import HomeV5 from '../home-v5/HomeV5';
 import StudioRoute from '../home-studio/StudioRoute';
 import SampleNote from './SampleNote';
-import SampleAccount, { SampleDashboardGate } from './SampleAccount';
-import SampleAdminCoupons from './SampleAdminCoupons';
-import { SampleAdminBlog, SampleBlog } from './SampleBlog';
-import { BeaWidget } from './BeaPopover';
+import { SampleBlog } from './SampleBlog';
 import BaksaApp from '../pages/BaksaApp';
+import { BeaWidget } from './BeaPopover';
 import { CorporatePackagingGallery, ShopperAccountEntry, StorefrontFooter } from './components';
 import { starterDocument } from '../pages/starter-document';
 
@@ -59,32 +56,23 @@ interface RouteDef { tpl: TemplateName; kind: Kind; hydrate?: (c: Ctx) => void; 
 
 interface RouteDef { tpl: TemplateName; kind: Kind; hydrate?: (c: Ctx) => void; params?: Record<string, string> }
 
-interface RouteDef { tpl: TemplateName; kind: Kind; hydrate?: (c: Ctx) => void; params?: Record<string, string> }
-
-interface RouteDef { tpl: TemplateName; kind: Kind; hydrate?: (c: Ctx) => void; params?: Record<string, string> }
-
-interface RouteDef { tpl: TemplateName; kind: Kind; hydrate?: (c: Ctx) => void; params?: Record<string, string> }
-
-interface RouteDef { tpl: TemplateName; kind: Kind; hydrate?: (c: Ctx) => void; params?: Record<string, string> }
-
-interface RouteDef { tpl: TemplateName; kind: Kind; hydrate?: (c: Ctx) => void; params?: Record<string, string> }
-
-interface RouteDef { tpl: TemplateName; kind: Kind; hydrate?: (c: Ctx) => void; params?: Record<string, string> }
-
-interface RouteDef { tpl: TemplateName; kind: Kind; hydrate?: (c: Ctx) => void; params?: Record<string, string> }
-
 function resolve(path: string): RouteDef | null {
   const p = path.replace(/\/+$/, '') || '/';
   const fixed: Record<string, RouteDef> = {
-    '/': { tpl: 'Main', kind: 'none', hydrate: hydrateMain },
+    '/': { tpl: 'Landing', kind: 'none' },
+    '/home': { tpl: 'Home', kind: 'store' },
+    '/about': { tpl: 'About', kind: 'none' },
     '/shop': { tpl: 'Shop', kind: 'store', hydrate: hydrateShop },
     '/product': { tpl: 'Product', kind: 'store', hydrate: hydrateProduct, params: { slug: 'blue-lotus-pond' } },
+    '/corporate': { tpl: 'Corporate', kind: 'store', hydrate: hydrateCorporate },
+    '/sell': { tpl: 'Sell', kind: 'none' },
+    '/buzz-lab': { tpl: 'BuzzLab', kind: 'none' },
+    '/journal': { tpl: 'Journal', kind: 'none' },
+    '/makers/tathaastu': { tpl: 'Maker', kind: 'store', hydrate: hydrateMakerStory },
+    '/checkout': { tpl: 'Checkout', kind: 'none', hydrate: hydrateCheckout },
     '/bea': { tpl: 'Finder', kind: 'store', hydrate: hydrateFinder },
     '/finder': { tpl: 'Finder', kind: 'store', hydrate: hydrateFinder },
     '/results': { tpl: 'Results', kind: 'store', hydrate: hydrateResults },
-    '/checkout': { tpl: 'Checkout', kind: 'none', hydrate: hydrateCheckout },
-    '/makers/tathaastu': { tpl: 'Maker', kind: 'store', hydrate: hydrateMakerStory },
-    '/corporate': { tpl: 'Corporate', kind: 'store', hydrate: hydrateCorporate },
     '/academy': { tpl: 'Academy', kind: 'store', hydrate: hydrateAcademy },
     '/maker': { tpl: 'MakerHome', kind: 'maker', hydrate: hydrateMakerHome },
     '/maker/orders': { tpl: 'MakerOrders', kind: 'maker', hydrate: hydrateMakerOrders },
@@ -109,13 +97,20 @@ function resolve(path: string): RouteDef | null {
   if (fixed[p]) return fixed[p];
   const m = p.match(/^\/product\/([^/]+)$/);
   if (m) return { tpl: 'Product', kind: 'store', hydrate: hydrateProduct, params: { slug: decodeURIComponent(m[1]) } };
+  const mk = p.match(/^\/makers\/([^/]+)$/);
+  if (mk) return { tpl: 'Maker', kind: 'store', hydrate: hydrateMakerStory, params: { slug: decodeURIComponent(mk[1]) } };
+  const jl = p.match(/^\/journal\/([^/]+)$/);
+  if (jl) return { tpl: 'JournalStory', kind: 'none', params: { slug: decodeURIComponent(jl[1]) } };
   return null;
 }
 
 const HASH_MAP: Record<string, string> = {
-  shop: '/shop', product: '/product/blue-lotus-pond', story: '/makers/tathaastu', maker: '/makers/tathaastu', account: '/account',
-  wishlist: '/shop?wishlist=1', studio: '/maker', sell: '/maker', corporate: '/corporate', boxes: '/corporate', weddings: '/corporate',
-  academy: '/academy', class: '/academy', brief: '/corporate#brief', finder: '/bea', results: '/results', checkout: '/checkout',
+  shop: '/shop', home: '/home', about: '/about', product: '/product/blue-lotus-pond',
+  story: '/makers/tathaastu', maker: '/makers/tathaastu', account: '/account',
+  wishlist: '/shop?wishlist=1', studio: '/maker', sell: '/sell', corporate: '/corporate',
+  boxes: '/corporate', weddings: '/corporate', academy: '/academy', 'buzz-lab': '/buzz-lab',
+  journal: '/journal', class: '/academy', brief: '/corporate#brief',
+  finder: '/bea', results: '/results', checkout: '/checkout',
 };
 
 const STARTER_SITE_DOCUMENT = starterDocument();
@@ -149,11 +144,11 @@ function readLocalSitePreview(): SiteDocument | null {
 }
 
 function siteFont(value: string, kind: 'heading' | 'body') {
-  if (value === 'cormorant') return "'Cormorant Garamond', Georgia, serif";
+  if (value === 'cormorant') return "'Bodoni Moda', Georgia, serif";
   if (value === 'georgia') return 'Georgia, serif';
   if (value === 'inter') return 'Inter, Arial, sans-serif';
   if (value === 'system') return 'system-ui, sans-serif';
-  return kind === 'heading' ? "'EB Garamond', Georgia, serif" : "'EB Garamond', Georgia, serif";
+  return kind === 'heading' ? "'Bodoni Moda', Georgia, serif" : "'Bodoni Moda', Georgia, serif";
 }
 
 function siteThemeStyle(document: SiteDocument, enabled: boolean): CSSProperties {
@@ -186,14 +181,14 @@ function styleTemplateWithDocument(html: string, document: SiteDocument) {
   const theme = document.theme;
   const colors = new Map<string, string>([
     ['#F6F3DF', theme.background], ['#FCF7EE', theme.background], ['#FBF4EA', theme.background],
-    ['#FFFDF4', theme.surface], ['#FFFBF0', theme.surface], ['#FFF8EC', theme.surface], ['#FFFFFF', theme.surface],
-    ['#611811', theme.primary], ['#3E0F0B', theme.primary],
-    ['#34514B', theme.secondary], ['#68142F', theme.secondary], ['#2C4640', theme.secondary], ['#2C3A36', theme.secondary], ['#4E5B3A', theme.secondary],
-    ['#EBA937', theme.accent], ['#C23A36', theme.accent], ['#A9781F', theme.accent], ['#7A5517', theme.accent], ['#E14B49', theme.accent],
-    ['#2B1712', theme.ink], ['#34251F', theme.ink], ['#3A2A24', theme.ink],
-    ['#5C463C', theme.muted], ['#746B5B', theme.muted],
-    ['#DCCAB0', `color-mix(in srgb, ${theme.muted} 25%, ${theme.surface})`],
-    ['#F6EBD3', theme.background],
+    ['#FFFDF9', theme.surface], ['#FFFBF0', theme.surface], ['#FAF6EF', theme.surface], ['#FFFFFF', theme.surface],
+    ['#752F43', theme.primary], ['#3E0F0B', theme.primary],
+    ['#34514B', theme.secondary], ['#6B1F2E', theme.secondary], ['#2C4640', theme.secondary], ['#2C3A36', theme.secondary], ['#4E5B3A', theme.secondary],
+    ['#B08A55', theme.accent], ['#752F43', theme.accent], ['#A9781F', theme.accent], ['#7A5517', theme.accent], ['#E14B49', theme.accent],
+    ['#352C2B', theme.ink], ['#34251F', theme.ink], ['#3A2A24', theme.ink],
+    ['#71645E', theme.muted], ['#746B5B', theme.muted],
+    ['#E8DDD1', `color-mix(in srgb, ${theme.muted} 25%, ${theme.surface})`],
+    ['#FAF6EF', theme.background],
     ['#ECE6CC', `color-mix(in srgb, ${theme.background} 60%, ${theme.surface})`],
     ['#F1F7F4', `color-mix(in srgb, ${theme.secondary} 10%, ${theme.surface})`],
     ['#F3F1E2', `color-mix(in srgb, ${theme.background} 50%, ${theme.surface})`],
@@ -204,8 +199,8 @@ function styleTemplateWithDocument(html: string, document: SiteDocument) {
   ]);
   return html
     .replace(/#[0-9a-f]{6}/gi, color => colors.get(color.toUpperCase()) ?? color)
-    .replace(/'EB Garamond', Georgia, serif/g, 'var(--site-body-font)')
-    .replace(/Arvo, Georgia, serif/g, 'var(--site-body-font)');
+    .replace(/'Bodoni Moda', Georgia, serif/g, 'var(--site-body-font)')
+    .replace(/Jost, Georgia, serif/g, 'var(--site-body-font)');
 }
 
 function sitePageId(path: string) {
@@ -308,7 +303,7 @@ function TemplatePage({ path, search, siteDocument, siteSettingsActive }: { path
     try { route.hydrate?.(ctx); } catch (e) { console.error('hydrate failed', route.tpl, e); }
     const sourceTitle = rawTemplate(route.tpl).match(/<title>([\s\S]*?)<\/title>/i)?.[1];
     const parsedTitle = sourceTitle ? new DOMParser().parseFromString(sourceTitle, 'text/html').body.textContent || 'Baksa Tales' : 'Baksa Tales';
-    document.title = route.tpl === 'Finder' ? 'Bea · Gifting Concierge' : route.tpl === 'Results' ? 'Bea’s Gift Picks' : parsedTitle;
+    document.title = route.tpl === 'Finder' ? 'Bea · Gifting Concierge' : route.tpl === 'Results' ? "Bea's Gift Picks" : parsedTitle;
 
     const onClick = (e: MouseEvent) => {
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey) return;
@@ -380,7 +375,7 @@ function TemplatePage({ path, search, siteDocument, siteSettingsActive }: { path
     }
     const sourceTitle = rawTemplate(route.tpl).match(/<title>([\s\S]*?)<\/title>/i)?.[1];
     const parsedTitle = sourceTitle ? new DOMParser().parseFromString(sourceTitle, 'text/html').body.textContent || 'Baksa Tales' : 'Baksa Tales';
-    document.title = pageCopy.title || (route.tpl === 'Finder' ? 'Bea · Gifting Concierge' : route.tpl === 'Results' ? 'Bea’s Gift Picks' : parsedTitle);
+    document.title = pageCopy.title || (route.tpl === 'Finder' ? 'Bea · Gifting Concierge' : route.tpl === 'Results' ? "Bea's Gift Picks" : parsedTitle);
     const description = pageCopy.description || `${root.querySelector('h1')?.textContent?.trim() || document.title} — Baksa Tales. Sample frontend demonstration.`;
     for (const [attribute, key, content] of [
       ['name', 'description', description],
@@ -414,9 +409,9 @@ function TemplatePage({ path, search, siteDocument, siteSettingsActive }: { path
 function NotFound() {
   const [, navigate] = useLocation();
   return (
-    <div data-testid="page-not-found" style={{ minHeight: '100dvh', background: '#F6F3DF', color: '#2B1712', fontFamily: "'EB Garamond', Georgia, serif", display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, padding: 24, textAlign: 'center' }}>
-      <h1 style={{ margin: 0, fontSize: 48, fontWeight: 500 }}>This page isn’t <em style={{ color: '#C23A36' }}>here.</em></h1>
-      <button type="button" data-testid="button-home" onClick={() => navigate('/')} style={{ height: 50, padding: '0 22px', borderRadius: 999, border: 0, background: '#611811', color: '#FFF8EC', fontFamily: 'Arvo, Georgia, serif', fontSize: 13, cursor: 'pointer' }}>Back to Baksa Tales</button>
+    <div data-testid="page-not-found" style={{ minHeight: '100dvh', background: '#FAF6EF', color: '#352C2B', fontFamily: "'Jost', system-ui, sans-serif", display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, padding: 24, textAlign: 'center' }}>
+      <h1 style={{ margin: 0, fontSize: 48, fontWeight: 500, fontFamily: "'Bodoni Moda', Georgia, serif", WebkitTextStroke: '.012em currentColor' }}>This page isn't <em style={{ color: '#B2365B' }}>here.</em></h1>
+      <button type="button" data-testid="button-home" onClick={() => navigate('/')} style={{ height: 50, padding: '0 28px', borderRadius: 2, border: 0, background: '#752F43', color: '#FFFDF9', fontFamily: "'Jost', system-ui, sans-serif", fontSize: 11, fontWeight: 500, letterSpacing: '.26em', textTransform: 'uppercase', cursor: 'pointer' }}>Back to Baksa Tales</button>
     </div>
   );
 }
@@ -482,10 +477,15 @@ function BagDrawer() {
     </div>
   );
 }
+function HomePreview() {
+  const html = prepareTemplate('Home');
+  if (!html) return <p style={{color:'red',padding:'20px',fontSize:'18px'}}>Home template is empty — check import.meta.glob</p>;
+  return <div dangerouslySetInnerHTML={{ __html: html }} />;
+}
+
 export default function ApprovedApp() {
   const [location] = useLocation();
-  if (location === '/sign-in' || location === '/reset-password' || location === '/account' || location === '/sell' || location.startsWith('/maker') || location.startsWith('/admin')) return <BaksaApp />;
-  if (location === '/studio-preview') return <StudioRoute localOnly preview={document => <HomeV5 document={document} />} />;
+  if (location === '/studio-preview') return <StudioRoute localOnly preview={_doc => <HomePreview />} />;
   return <ApprovedRoutes />;
 }
 
@@ -561,27 +561,20 @@ function ApprovedRoutes() {
     if (directBea) navigate('/');
   }, [directBea, navigate]);
 
-  if (location === '/account' || location.startsWith('/account/')) {
-    return <div className="bt-site-theme" style={publicTheme} {...siteThemeAttributes(siteDocument, siteSettingsActive)}><PublicPageHeader navigate={navigate} siteDocument={siteDocument} siteSettingsActive={siteSettingsActive} /><SampleAccount path={location} /><PublicFooter navigate={navigate} siteDocument={siteDocument} siteSettingsActive={siteSettingsActive} /><BeaWidget /><InformationDialog /></div>;
+  if (
+    location === '/sign-in' || location === '/reset-password' ||
+    location === '/account' || location.startsWith('/account/') ||
+    location === '/admin/sign-in' ||
+    location.startsWith('/maker') || location.startsWith('/admin')
+  ) {
+    return <BaksaApp />;
   }
   if (location === '/blog' || location.startsWith('/blog/')) {
     return <div className="bt-site-theme" style={publicTheme} {...siteThemeAttributes(siteDocument, siteSettingsActive)}><PublicPageHeader navigate={navigate} siteDocument={siteDocument} siteSettingsActive={siteSettingsActive} /><SampleBlog path={location} /><PublicFooter navigate={navigate} siteDocument={siteDocument} siteSettingsActive={siteSettingsActive} /><BeaWidget /><InformationDialog /></div>;
   }
-  if (location === '/admin/blog') {
-    return <><SampleDashboardGate role="admin"><SampleAdminBlog /></SampleDashboardGate><InformationDialog /></>;
-  }
-  if (location === '/admin/coupons') {
-    return <><SampleDashboardGate role="admin"><SampleAdminCoupons /></SampleDashboardGate><InformationDialog /></>;
-  }
-  const dashboardKind = resolve(location)?.kind;
-  if (dashboardKind === 'maker' || dashboardKind === 'admin') {
-    return <><SampleDashboardGate role={dashboardKind}><TemplatePage path={location} search={search} siteDocument={siteDocument} siteSettingsActive={false} /><BagDrawer /><InformationDialog /></SampleDashboardGate></>;
-  }
   return (
     <div className="bt-site-theme" style={publicTheme} {...siteThemeAttributes(siteDocument, siteSettingsActive)}>
-      {pageLocation === '/'
-        ? <HomeV5 document={remoteSiteActive ? siteQuery.data?.document : undefined} />
-        : <TemplatePage key={pageLocation} path={pageLocation} search={directBea ? '' : search} siteDocument={siteDocument} siteSettingsActive={siteSettingsActive} />}
+      <TemplatePage key={pageLocation} path={pageLocation} search={directBea ? '' : search} siteDocument={siteDocument} siteSettingsActive={siteSettingsActive} />
       <BagDrawer />
       <BeaWidget autoOpenKey={autoOpenKey} autoOpenDetail={autoOpenDetail} />
       <InformationDialog />

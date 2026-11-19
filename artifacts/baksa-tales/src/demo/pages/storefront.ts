@@ -88,13 +88,13 @@ export function hydrateShop(ctx: Ctx) {
   let countP = byText(root, 'p', /handmade pieces from/);
   if (!countP && intro) {
     countP = document.createElement('p');
-    countP.setAttribute('style', 'margin: 0; font-family: Arvo, Georgia, serif; font-size: 13px; color: #34514B');
+    countP.setAttribute('style', 'margin: 0; font-family: Jost, Georgia, serif; font-size: 13px; color: #34514B');
     intro.before(countP);
   }
   tid(countP, 'text-shop-count');
   const emptyBox = document.createElement('div');
   emptyBox.setAttribute('data-testid', 'empty-shop');
-  emptyBox.setAttribute('style', 'grid-column: 1 / -1; background: #FFFDF4; border-radius: 28px; padding: 36px; text-align: center; font-size: 20px; color: #5C463C');
+  emptyBox.setAttribute('style', 'grid-column: 1 / -1; background: #FFFDF9; border-radius: 28px; padding: 36px; text-align: center; font-size: 20px; color: #71645E');
 
   const requestedFeel = ctx.search.get('feel') ?? 'all';
   const initialFeel = SHOP_FEELS.find(option => option.feel === requestedFeel)?.feel ?? 'all';
@@ -212,7 +212,7 @@ export function hydrateProduct(ctx: Ctx) {
   });
 
   // photo thumbnails
-  const activeT = styleOf(thumbs[0]); const idleT = styleOf(thumbs[1]) || activeT.replace('3px solid #611811', '3px solid transparent');
+  const activeT = styleOf(thumbs[0]); const idleT = styleOf(thumbs[1]) || activeT.replace('3px solid #752F43', '3px solid transparent');
   thumbs.forEach((t, i) => {
     tid(t, `button-photo-${i + 1}`);
     on(ctx, t, 'click', () => {
@@ -253,12 +253,12 @@ export function hydrateProduct(ctx: Ctx) {
   on(ctx, check, 'click', () => {
     if (!pin || !msg) return;
     const st = stateFromPincode(pin.value.trim());
-    if (!st) { msg.textContent = 'Enter a valid 6-digit PIN code.'; msg.style.color = '#C23A36'; return; }
+    if (!st) { msg.textContent = 'Enter a valid 6-digit PIN code.'; msg.style.color = '#752F43'; return; }
     msg.style.color = okColor;
     msg.textContent = canDeliver(m, st)
       ? `Delivers to ${st}. Usually dispatched within ${p.dispatchDays} days; the courier confirms the date at checkout.`
       : `Sorry, ${m.brand} can’t deliver to ${st} yet.`;
-    if (!canDeliver(m, st)) msg.style.color = '#C23A36';
+    if (!canDeliver(m, st)) msg.style.color = '#752F43';
   });
   on(ctx, pin, 'keydown', e => { if ((e as KeyboardEvent).key === 'Enter') check?.click(); });
 }
@@ -298,7 +298,7 @@ export function hydrateFinder(ctx: Ctx) {
   });
   const back = document.createElement('button');
   back.type = 'button'; back.textContent = 'Back'; tid(back, 'button-finder-back');
-  back.setAttribute('style', 'min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1.5px solid #611811; background: transparent; color: #611811; font-family: Arvo, Georgia, serif; font-size: 13px; cursor: pointer; margin-bottom: 12px');
+  back.setAttribute('style', 'min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1.5px solid #752F43; background: transparent; color: #752F43; font-family: Jost, Georgia, serif; font-size: 13px; cursor: pointer; margin-bottom: 12px');
   foot?.prepend(back);
   if (foot) foot.style.display = 'flex', foot.style.flexDirection = 'column', foot.style.alignItems = 'flex-start';
 
@@ -365,7 +365,7 @@ export function hydrateFinder(ctx: Ctx) {
         const sp = $$(b, 'span'); sp[0].textContent = String(i + 1); sp[sp.length - 1].textContent = label;
         tid(b, `button-option-${value}`);
         b.setAttribute('aria-pressed', String(ans[st.key] === value));
-        if (ans[st.key] === value) { b.style.outline = '3px solid #611811'; b.style.outlineOffset = '-3px'; }
+        if (ans[st.key] === value) { b.style.outline = '3px solid #752F43'; b.style.outlineOffset = '-3px'; }
         b.addEventListener('click', () => {
           update(s => setFinderAnswer(s, st.key, value));
           if (step < 3) { step += 1; render(); }
@@ -450,8 +450,8 @@ export function hydrateResults(ctx: Ctx) {
       ul.replaceChildren(...rec.reasons.map(reason => {
         const li = cloneEl(liTpl); const [dot, txt] = $$(li, 'span');
         txt.textContent = reason.text;
-        if (reason.kind === 'partial') { dot.style.background = '#EBA937'; dot.style.borderColor = '#EBA937'; }
-        if (reason.kind === 'info') { dot.style.background = 'transparent'; dot.style.borderColor = '#34514B'; txt.style.color = '#5C463C'; }
+        if (reason.kind === 'partial') { dot.style.background = '#B08A55'; dot.style.borderColor = '#B08A55'; }
+        if (reason.kind === 'info') { dot.style.background = 'transparent'; dot.style.borderColor = '#34514B'; txt.style.color = '#71645E'; }
         return li;
       }));
       const [add, details] = $$<HTMLAnchorElement>(art, 'a');
@@ -461,7 +461,7 @@ export function hydrateResults(ctx: Ctx) {
     }));
     if (!recs.length) {
       const box = document.createElement('div'); tid(box, 'empty-results');
-      box.setAttribute('style', 'background: #FFFDF4; border-radius: 28px; padding: 36px; font-size: 20px; color: #5C463C');
+      box.setAttribute('style', 'background: #FFFDF9; border-radius: 28px; padding: 36px; font-size: 20px; color: #71645E');
       box.textContent = 'Nothing fits all of that yet. Try a wider budget or no rush, or browse the whole Edit.';
       list.appendChild(box);
     }
@@ -521,7 +521,7 @@ export function hydrateCorporate(ctx: Ctx) {
     tid(box, 'brief-confirmation');
     box.setAttribute('role', 'status');
     box.setAttribute('style', 'grid-column: 1 / -1; background: #D5E6DE; border-radius: 28px; padding: 32px; color: #2C4640');
-    box.innerHTML = `<p style="margin: 0; font-family: Arvo, Georgia, serif; font-size: 13px">Brief received, ${ref}</p><h3 style="margin: 8px 0 0; font-size: 34px; font-weight: 500; color: #2B1712">Thank you, ${input.name.trim().replace(/[<>&]/g, '')}.</h3><p style="margin: 8px 0 0; font-size: 19px">Our gifting team will call you to talk it through. ${input.qty} gifts at about ${formatINR(Math.round(Number(input.budget) * 100))} each.</p>`;
+    box.innerHTML = `<p style="margin: 0; font-family: Jost, Georgia, serif; font-size: 13px">Brief received, ${ref}</p><h3 style="margin: 8px 0 0; font-size: 34px; font-weight: 500; color: #352C2B">Thank you, ${input.name.trim().replace(/[<>&]/g, '')}.</h3><p style="margin: 8px 0 0; font-size: 19px">Our gifting team will call you to talk it through. ${input.qty} gifts at about ${formatINR(Math.round(Number(input.budget) * 100))} each.</p>`;
     const again = document.createElement('button'); again.type = 'button'; again.textContent = 'Send another brief'; again.setAttribute('style', BTN_OUTLINE + '; margin-top: 18px'); tid(again, 'button-brief-again');
     again.onclick = () => { box.remove(); Array.from(form.children).forEach(c => ((c as HTMLElement).style.display = '')); get('b5').value = ''; get('b6').value = ''; get('b7').value = ''; paintBig(); };
     box.appendChild(again);

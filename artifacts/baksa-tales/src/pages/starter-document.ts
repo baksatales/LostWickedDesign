@@ -3,7 +3,7 @@ import type { SiteDocument } from '@workspace/api-client-react';
 // Shared data only: importing the storefront defaults must not load Site Studio.
 export const starterDocument = (): SiteDocument => ({
   brand:{name:'Baksa Tales',tagline:'Dil Se Duniya Tak',logo:'/images/baksa/baksatales-logo-transparent.png',mark:'/images/baksa/baksatales-trunk-mark.png',announcement:'Every piece is handmade in India, by a maker you can meet',footerTitle:'Come say namaste.',footerText:'New maker stories, first looks at limited drops and invitations to Kala Samāgam.',copyright:'Baksa Tales · made with love in Delhi NCR'},
-  theme:{background:'#F6F3DF',surface:'#EFEBD2',primary:'#611811',secondary:'#34514B',accent:'#EBA937',ink:'#34251F',muted:'#746B5B',headingFont:'garamond',bodyFont:'garamond',radius:18,spacing:'compact',motion:true,ornament:true},
+  theme:{background:'#F6F3DF',surface:'#EFEBD2',primary:'#752F43',secondary:'#34514B',accent:'#B08A55',ink:'#34251F',muted:'#746B5B',headingFont:'garamond',bodyFont:'garamond',radius:18,spacing:'compact',motion:true,ornament:true},
   navigation:[{label:'Gift finder',href:'/gift-finder'},{label:'The BT Edit',href:'/shop'},{label:'Makers',href:'/makers'},{label:'Corporate gifting',href:'/corporate'},{label:'Academy',href:'/academy'}],
   footerLinks:[{label:'Gift finder',href:'/gift-finder'},{label:'The BT Edit',href:'/shop'},{label:'Our makers',href:'/makers'},{label:'Wishlist',href:'/wishlist'},{label:'Corporate gifting',href:'/corporate'},{label:'Sell with Baksa',href:'/sell'},{label:'Makers’ Academy',href:'/academy'},{label:'Sign in',href:'/sign-in'}],
   sections:[],

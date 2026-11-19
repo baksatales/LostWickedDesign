@@ -7,17 +7,17 @@
 
 /* ── Tokens ─────────────────────────────────────────────────── */
 .bt-homev5 {
-  --bt-paper:       #faf7f0;
-  --bt-paper-light: #fffcf5;
-  --bt-ink:         #1e1410;
-  --bt-maroon:      #5e1210;
-  --bt-wine:        #5e1210;
-  --bt-muted:       #7a6b5c;
-  --bt-sun:         #c9901e;
-  --bt-line:        #ddd0b8;
-  --bt-green:       #3d5246;
-  --ph-display:     'Cormorant Garamond', 'EB Garamond', Georgia, serif;
-  --ph-ui:          'DM Sans', system-ui, sans-serif;
+  --bt-paper:       #FAF6EF;
+  --bt-paper-light: #FFFDF9;
+  --bt-ink:         #352C2B;
+  --bt-maroon:      #752F43;
+  --bt-wine:        #6B1F2E;
+  --bt-muted:       #71645E;
+  --bt-sun:         #B08A55;
+  --bt-line:        #E8DDD1;
+  --bt-green:       #34514B;
+  --ph-display:     'Bodoni Moda', Georgia, serif;
+  --ph-ui:          'Jost', system-ui, sans-serif;
   font-size: 17px;
   background: var(--bt-paper);
 }
@@ -148,7 +148,7 @@
 }
 
 .bt-homev5__subhead p {
-  font-family: 'EB Garamond', Georgia, serif;
+  font-family: 'Bodoni Moda', Georgia, serif;
   font-size: clamp(17px, 1.5vw, 21px);
   font-style: italic;
   color: var(--bt-muted);
@@ -189,7 +189,7 @@
 }
 
 .bt-homev5__door-copy {
-  font-family: 'EB Garamond', Georgia, serif;
+  font-family: 'Bodoni Moda', Georgia, serif;
   font-style: italic;
   color: var(--bt-muted);
 }
@@ -253,7 +253,7 @@
 }
 
 .bt-homev5__inline-link {
-  font-family: 'EB Garamond', Georgia, serif;
+  font-family: 'Bodoni Moda', Georgia, serif;
   font-style: italic;
   font-size: 18px;
   color: var(--bt-maroon);
@@ -342,7 +342,7 @@
 }
 
 .bt-homev5__section-heading p {
-  font-family: 'EB Garamond', Georgia, serif;
+  font-family: 'Bodoni Moda', Georgia, serif;
   font-size: 18px;
   font-style: italic;
   color: var(--bt-muted);
@@ -408,7 +408,7 @@
 }
 
 .bt-homev5__reel-title {
-  font-family: 'EB Garamond', Georgia, serif;
+  font-family: 'Bodoni Moda', Georgia, serif;
   font-size: 18px;
   font-style: italic;
   line-height: 1.2;
@@ -470,7 +470,7 @@
 }
 
 .bt-homev5__maker-copy > p:nth-of-type(2) {
-  font-family: 'EB Garamond', Georgia, serif;
+  font-family: 'Bodoni Moda', Georgia, serif;
   font-size: 19px;
   line-height: 1.7;
   color: var(--bt-muted);
@@ -579,7 +579,7 @@
 }
 
 .bt-homev5__event p {
-  font-family: 'EB Garamond', Georgia, serif;
+  font-family: 'Bodoni Moda', Georgia, serif;
   font-size: 19px;
   line-height: 1.6;
   color: color-mix(in srgb, var(--bt-paper) 80%, transparent);
@@ -602,7 +602,7 @@
 }
 
 .bt-homev5__event-note span {
-  font-family: 'EB Garamond', Georgia, serif;
+  font-family: 'Bodoni Moda', Georgia, serif;
   font-size: 16px;
   color: var(--bt-muted);
   line-height: 1.5;
@@ -644,7 +644,7 @@
 
 /* ── Search overlay ──────────────────────────────────────────── */
 .bt-homev5__search input {
-  font-family: 'EB Garamond', Georgia, serif;
+  font-family: 'Bodoni Moda', Georgia, serif;
   font-size: 17px;
   border-radius: 2px;
   border-color: var(--bt-line);

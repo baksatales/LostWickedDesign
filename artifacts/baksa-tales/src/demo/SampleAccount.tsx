@@ -105,25 +105,41 @@ export default function SampleAccount({ path }: { path: string }) {
   if (!session || !account) return (
     <main className="bt-account">
       <header className="bt-account-intro"><span className="bt-account-eyebrow">Sample account · shopper</span><h1>Your place at <em>Baksa Tales.</em></h1><p>Try the account pages with isolated sample records. This does not create a real account or send an SMS.</p></header>
-      <form className="bt-account-card bt-account-form" onSubmit={signIn}>
-        <h2>Sign in to the sample account</h2>
-        <label>Mobile number
-          <input data-testid="account-input-phone" inputMode="numeric" autoComplete="tel" value={phone} onChange={event => setPhone(event.target.value.replace(/\D/g, "").slice(0, 10))} placeholder="10-digit mobile number" required />
-        </label>
-        <label>Sample code
-          <input data-testid="account-input-code" inputMode="numeric" autoComplete="one-time-code" value={code} onChange={event => setCode(event.target.value.replace(/\D/g, "").slice(0, 6))} placeholder="Use 246810" required />
-        </label>
-        <label>Sample shopper
-          <select value={identity} onChange={event => setIdentity(event.target.value as SampleIdentity)}>
-            <option value="shopper">Aarav · sample account with records</option>
-            <option value="shopper-other">Mira · separate empty sample account</option>
-          </select>
-        </label>
-        <p className="bt-account-disclosure">The fixed code is a simulation. Live mobile sign-in needs verified phone authentication and an SMS provider. Sample records are held by this development server and are not live orders.</p>
-        {error && <p className="bt-account-error" data-testid="account-error" role="alert">{error}</p>}
-        <button data-testid="account-button-submit" className="bt-account-primary" disabled={busy}>{busy ? "Opening sample account…" : "Continue with sample code"}</button>
-        <button type="button" className="bt-account-secondary" onClick={() => navigate("/")}>Return to the shop</button>
-      </form>
+      <div style={{ maxWidth: 880, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20 }}>
+        <form className="bt-account-card bt-account-form" onSubmit={signIn}>
+          <h2>Shopper sign in</h2>
+          <label>Mobile number
+            <input data-testid="account-input-phone" inputMode="numeric" autoComplete="tel" value={phone} onChange={event => setPhone(event.target.value.replace(/\D/g, "").slice(0, 10))} placeholder="10-digit mobile number" required />
+          </label>
+          <label>Sample code
+            <input data-testid="account-input-code" inputMode="numeric" autoComplete="one-time-code" value={code} onChange={event => setCode(event.target.value.replace(/\D/g, "").slice(0, 6))} placeholder="Use 246810" required />
+          </label>
+          <label>Sample shopper
+            <select value={identity} onChange={event => setIdentity(event.target.value as SampleIdentity)}>
+              <option value="shopper">Aarav · sample account with records</option>
+              <option value="shopper-other">Mira · separate empty sample account</option>
+            </select>
+          </label>
+          <p className="bt-account-disclosure">The fixed code is a simulation. Sample records are held by this development server and are not live orders.</p>
+          {error && <p className="bt-account-error" data-testid="account-error" role="alert">{error}</p>}
+          <button data-testid="account-button-submit" className="bt-account-primary" disabled={busy}>{busy ? "Opening sample account…" : "Continue with sample code"}</button>
+          <button type="button" className="bt-account-secondary" onClick={() => navigate("/")}>Return to the shop</button>
+        </form>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div className="bt-account-card" style={{ flex: 1 }}>
+            <span className="bt-account-eyebrow" style={{ marginBottom: 10, display: 'block' }}>For makers</span>
+            <h3 style={{ margin: '0 0 8px', fontSize: 20 }}>Maker workspace</h3>
+            <p style={{ margin: '0 0 16px', fontSize: 14, fontWeight: 300 }}>Manage products, orders, earnings and your brand profile.</p>
+            <button type="button" className="bt-account-secondary" style={{ width: '100%' }} onClick={() => navigate("/maker")}>Maker sign in →</button>
+          </div>
+          <div className="bt-account-card" style={{ flex: 1 }}>
+            <span className="bt-account-eyebrow" style={{ marginBottom: 10, display: 'block' }}>For the Baksa team</span>
+            <h3 style={{ margin: '0 0 8px', fontSize: 20 }}>Admin workspace</h3>
+            <p style={{ margin: '0 0 16px', fontSize: 14, fontWeight: 300 }}>Review orders, makers, enquiries and the Academy.</p>
+            <button type="button" className="bt-account-secondary" style={{ width: '100%' }} onClick={() => navigate("/admin")}>Admin sign in →</button>
+          </div>
+        </div>
+      </div>
     </main>
   );
 

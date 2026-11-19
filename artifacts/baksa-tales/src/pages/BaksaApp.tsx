@@ -13,7 +13,6 @@ import {
 import type { Catalog, GiftMatch, Maker, Product, Runtime, Workspace, SiteDocument, BuyerProfileInput } from '@workspace/api-client-react';
 import { starterDocument } from './starter-document';
 import { SiteDocumentContext, useSitePage, PageArtwork, Seo, imageUrl, money, errText } from './storefront-shared';
-import HomeV5 from '../home-v5/HomeV5';
 import { RouteContent } from '../components/route-content';
 import { commerceDestination, editorialKey, trackEvent } from '../lib/analytics';
 import { resetAccountQueries } from '../lib/account-query-cache';
@@ -42,7 +41,7 @@ function Frame({ children, bagCount, savedCount, onBag, document:siteDoc, user, 
   const [currentPath]=useLocation();
   const signInHref=validReturnPath(currentPath)?`/sign-in?returnTo=${encodeURIComponent(currentPath)}`:'/sign-in';
   const theme=siteDoc.theme;
-  const themeStyle={'--bk-paper':theme.background,'--bk-cream':theme.surface,'--bk-maroon':theme.primary,'--bk-crimson':theme.primary,'--bk-teal':theme.secondary,'--bk-gold':theme.accent,'--bk-ink':theme.ink,'--bk-muted':theme.muted,'--bk-line':theme.primary+'30','--bk-display':theme.headingFont==='georgia'?'Georgia,serif':theme.headingFont==='cormorant'?'Cormorant Garamond,Georgia,serif':"'EB Garamond',Georgia,serif",'--bk-body':theme.bodyFont==='garamond'?"'EB Garamond',Georgia,serif":theme.bodyFont==='system'?'system-ui,sans-serif':theme.bodyFont==='georgia'?'Georgia,serif':"'Arvo',Georgia,serif",'--bk-radius':`${theme.radius}px`,'--bk-space':theme.spacing==='compact'?'48px':theme.spacing==='generous'?'94px':'72px' } as CSSProperties;
+  const themeStyle={'--bk-paper':theme.background,'--bk-cream':theme.surface,'--bk-maroon':theme.primary,'--bk-crimson':theme.primary,'--bk-teal':theme.secondary,'--bk-gold':theme.accent,'--bk-ink':theme.ink,'--bk-muted':theme.muted,'--bk-line':theme.primary+'30','--bk-display':theme.headingFont==='georgia'?'Georgia,serif':theme.headingFont==='cormorant'?'Cormorant Garamond,Georgia,serif':"'Bodoni Moda',Georgia,serif",'--bk-body':theme.bodyFont==='garamond'?"'Bodoni Moda',Georgia,serif":theme.bodyFont==='system'?'system-ui,sans-serif':theme.bodyFont==='georgia'?'Georgia,serif':"'Jost',Georgia,serif",'--bk-radius':`${theme.radius}px`,'--bk-space':theme.spacing==='compact'?'48px':theme.spacing==='generous'?'94px':'72px' } as CSSProperties;
   return <SiteDocumentContext.Provider value={siteDoc}><div className={`baksa ${theme.motion?'bk-motion':'bk-still'} ${theme.ornament?'bk-ornament':''}`} style={themeStyle}>
     {!bare && <div className="bk-notice">{siteDoc.brand.announcement}</div>}
     {!bare && <header className="bk-header"><div className="bk-header-main">
@@ -59,7 +58,7 @@ function Frame({ children, bagCount, savedCount, onBag, document:siteDoc, user, 
     {!bare && <footer className="bk-footer"><div className="bk-footgrid">
       <div><img className="bk-footmark" src={imageUrl(siteDoc.brand.mark)} alt={`${siteDoc.brand.name} mark`}/><h3>{siteDoc.brand.footerTitle}</h3><p>{siteDoc.brand.footerText}</p><small>{siteDoc.brand.copyright}</small></div>
       <div><h3>Find your way</h3>{siteDoc.footerLinks.slice(0,Math.ceil(siteDoc.footerLinks.length/2)).map((item,i)=><DocLink key={`${item.href}-${i}`} href={item.href}>{item.label}</DocLink>)}</div>
-      <div><h3>Make something together</h3>{siteDoc.footerLinks.slice(Math.ceil(siteDoc.footerLinks.length/2)).map((item,i)=><DocLink key={`${item.href}-${i}`} href={item.href}>{item.label}</DocLink>)}{!siteDoc.footerLinks.some(item=>item.href==='/admin/site')&&<Link href="/admin/site">Site Studio</Link>}<Link className="bk-preview-link" href="/studio-preview">Local design playground · unsaved</Link></div>
+      <div><h3>Make something together</h3>{siteDoc.footerLinks.slice(Math.ceil(siteDoc.footerLinks.length/2)).map((item,i)=><DocLink key={`${item.href}-${i}`} href={item.href}>{item.label}</DocLink>)}</div>
     </div></footer>}
   </div></SiteDocumentContext.Provider>;
 }
@@ -292,9 +291,11 @@ const validReturnPath=(p:string|null)=>p&&(p.startsWith('/maker')||p.startsWith(
 type SignInRole='buyer'|'maker'|'admin';
 function SignInForm({role,runtime,client,user,workspace,returnTo}:{role:SignInRole;runtime?:Runtime;client:SupabaseClient|null;user:User|null;workspace:Workspace|undefined;returnTo:string}){
   const search=useSearch();
-  const requestedReturn=validReturnPath(new URLSearchParams(search).get('returnTo'));
   const roleDestination=workspace?.roles.includes('maker')?'/maker/sahayak':workspace?.roles.includes('admin')?'/admin':'/account';
-  const destination=requestedReturn||returnTo||(user&&workspace?roleDestination:null)||'/account';
+  const rawReturn=validReturnPath(new URLSearchParams(search).get('returnTo'));
+  // /sell and /account are not role-specific destinations — always defer to roleDestination when workspace loads
+  const requestedReturn=(rawReturn==='/sell'||rawReturn==='/account')?null:rawReturn;
+  const destination=requestedReturn||(user&&workspace?roleDestination:null)||returnTo||'/account';
   const [,navigate]=useLocation();const [signup,setSignup]=useState(role==='buyer');const [forgot,setForgot]=useState(false);const [email,setEmail]=useState('');const [password,setPassword]=useState('');const [error,setError]=useState('');const [message,setMessage]=useState('');const [busy,setBusy]=useState(false);
   useEffect(()=>{if(user&&(workspace!==undefined||!runtime?.auth))navigate(destination)},[user,workspace,runtime?.auth,navigate,destination]);
   const submit=async(e:FormEvent)=>{e.preventDefault();setError('');setMessage('');if(!client)return;setBusy(true);try{
@@ -613,8 +614,8 @@ export default function BaksaApp(){
   const catContent=()=>catalogQuery.isError?<LoadingError retry={()=>catalogQuery.refetch()}/>:<main className="bk-formpage"><div className="bk-skeleton"/></main>;
   if(siteQuery.isError&&!route.startsWith('/admin')&&route!=='/studio-preview') content=<main className="bk-formpage"><h1>The stories are taking a moment.</h1><p className="bk-errorbox">We could not load the published site content. Your stored content has not been changed or replaced.</p><button className="bk-btn" onClick={()=>void siteQuery.refetch()}>Try again</button></main>;
   else if((route==='/'||route.startsWith('/stories/'))&&!siteQuery.data) content=<main className="bk-formpage" aria-busy="true"><div className="bk-skeleton"/><p>Loading the published stories…</p></main>;
-  else if(route==='/') content=<HomeV5 document={siteDocument}/>;
-  else if(route==='/studio-preview') content=<SiteStudio localOnly preview={(doc)=><HomeV5 document={doc}/>}/>;
+  else if(route==='/') content=null;
+  else if(route==='/studio-preview') content=null;
   else if(route.startsWith('/stories/')) content=<StoryPage id={decodeURIComponent(route.slice('/stories/'.length))} document={siteDocument}/>;
   else if(route==='/shop'||route==='/edit') content=catalog? <ShopPage catalog={catalog} saved={saved} toggle={toggleSave}/>:catContent();
   else if(route==='/makers') content=catalog?<MakersPage catalog={catalog}/>:catContent();
@@ -629,10 +630,10 @@ export default function BaksaApp(){
   else if(route==='/academy') content=<AcademyPage/>;
   else if(route==='/reset-password') content=<ResetPasswordPage client={supabase} clientLoading={runtimeQuery.isLoading}/>;
   else if(route==='/sign-in') content=<SignInPage runtime={runtime} runtimeLoading={runtimeQuery.isLoading} client={supabase} user={user} workspace={workspace} returnTo={authReturn}/>;
-  else if(route==='/account') content=<SecureGate runtime={runtime} runtimeLoading={runtimeQuery.isLoading} ready={authReady} user={user} workspace={workspace} workspaceLoading={workspaceQuery.isLoading} workspaceError={workspaceQuery.error} retryWorkspace={()=>void workspaceQuery.refetch()} roles={['buyer','maker','admin']}><BuyerShell path={route} workspace={workspace} user={user} onSignOut={async()=>{await supabase?.auth.signOut();setLocation('/')}}><Seo title="Your account" description="Your Baksa Tales account and profile."/><BuyerProfileCard workspace={workspace} user={user} supabase={supabase} setLocation={setLocation}/><BuyerOrderList/></BuyerShell></SecureGate>;
+  else if(route==='/account') content=<SecureGate runtime={runtime} runtimeLoading={runtimeQuery.isLoading} ready={authReady} user={user} workspace={workspace} workspaceLoading={workspaceQuery.isLoading} workspaceError={workspaceQuery.error} retryWorkspace={()=>void workspaceQuery.refetch()} roles={['buyer','maker']}><BuyerShell path={route} workspace={workspace} user={user} onSignOut={async()=>{await supabase?.auth.signOut();setLocation('/')}}><Seo title="Your account" description="Your Baksa Tales account and profile."/><BuyerProfileCard workspace={workspace} user={user} supabase={supabase} setLocation={setLocation}/><BuyerOrderList/></BuyerShell></SecureGate>;
   else if(route==='/maker'||route.startsWith('/maker/')) content=<SecureGate runtime={runtime} runtimeLoading={runtimeQuery.isLoading} ready={authReady} user={user} workspace={workspace} workspaceLoading={workspaceQuery.isLoading} workspaceError={workspaceQuery.error} retryWorkspace={()=>void workspaceQuery.refetch()} roles={['maker']}><MakerArea path={route} workspace={workspace} verifiedUser={!!user?.email_confirmed_at} aiAvailable={!!runtime?.ai} onSignOut={async()=>{await supabase?.auth.signOut();setLocation('/')}}/></SecureGate>;
   else if(route==='/admin/sign-in') content=<main className="bk-formpage" style={{maxWidth:480}}><Seo title="Admin sign in" description="Internal sign in for Baksa Tales administrators."/><span className="bk-eyebrow">Internal only</span><h1>Admin portal.</h1><p>Manage applications, reviews, orders, and platform settings.</p>{runtimeQuery.isLoading?<div className="bk-skeleton"/>:<SignInForm role="admin" runtime={runtime} client={supabase} user={user} workspace={workspace} returnTo="/admin"/>}</main>;
-  else if(route==='/admin'||route.startsWith('/admin/')) content=<SecureGate runtime={runtime} runtimeLoading={runtimeQuery.isLoading} ready={authReady} user={user} workspace={workspace} workspaceLoading={workspaceQuery.isLoading} workspaceError={workspaceQuery.error} retryWorkspace={()=>void workspaceQuery.refetch()} roles={['admin']}>{route==='/admin/site'?<SiteStudio verifiedUser={!!user?.email_confirmed_at} aiAvailable={!!runtime?.ai} preview={(doc)=><HomeV5 document={doc}/>} />:<AdminArea path={route} workspace={workspace} catalog={catalog||{sample:true,products:[],makers:[]}} onSignOut={async()=>{await supabase?.auth.signOut();setLocation('/')}}/>}</SecureGate>;
+  else if(route==='/admin'||route.startsWith('/admin/')) content=<SecureGate runtime={runtime} runtimeLoading={runtimeQuery.isLoading} ready={authReady} user={user} workspace={workspace} workspaceLoading={workspaceQuery.isLoading} workspaceError={workspaceQuery.error} retryWorkspace={()=>void workspaceQuery.refetch()} roles={['admin']}>{route==='/admin/site'?<SiteStudio verifiedUser={!!user?.email_confirmed_at} aiAvailable={!!runtime?.ai} preview={()=>null} />:<AdminArea path={route} workspace={workspace} catalog={catalog||{sample:true,products:[],makers:[]}} onSignOut={async()=>{await supabase?.auth.signOut();setLocation('/')}}/>}</SecureGate>;
   else content=<main className="bk-formpage"><Seo title="Page not found" description="This Baksa Tales page does not exist."/><span className="bk-eyebrow">A wrong turn</span><h1>This page is not in the baksa.</h1><p>The address may have changed, or the page has not been made available.</p><Link className="bk-btn" href="/">Back to the beginning</Link></main>;
   const isRoleDashboard = route === '/account' || route.startsWith('/maker') || (route.startsWith('/admin') && route !== '/admin/sign-in');
   return <Frame bagCount={totalItems} savedCount={saved.length} onBag={()=>setBagOpen(true)} document={siteDocument} user={user} workspace={workspace} bare={isRoleDashboard}><RouteContent>{content}</RouteContent>{catalog&&<BagDrawer open={bagOpen} close={()=>setBagOpen(false)} catalog={catalog} cart={cart} setCart={setCart} />}{toast&&<div className="bk-toast" role="status">{toast}</div>}</Frame>;

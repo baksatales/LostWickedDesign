@@ -202,7 +202,7 @@ function sampleId(value: unknown) {
 router.post("/sample/session", signInLimit, (req, res): void => {
   const parsed = CreateSampleSessionBody.safeParse(req.body);
   if (!parsed.success) {
-    res.status(400).json({ error: "Choose a sample identity, enter a valid mobile number and use the fixed simulation code 246810." });
+    res.status(400).json({ error: "Choose a sample identity." });
     return;
   }
   const result = createSampleSession(parsed.data.identity as SampleIdentityKey);

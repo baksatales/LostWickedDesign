@@ -1,185 +1,105 @@
 /* ─────────────────────────────────────────────────────────────
-   Premium refinements — Baksa Tales
-   Loads last, overrides the base system site-wide.
-   Design ethos: Paul Smith / Finery London gallery restraint.
-   Near-white base, maximum contrast, type does the work.
+   Baksa Tales design system — final
+   Bodoni Moda headings · Jost body/UI · new colour palette
    ───────────────────────────────────────────────────────────── */
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..600;1,6..96,400..600&family=Jost:wght@300;400;500&family=Noto+Serif+Devanagari:wght@400&display=swap');
 
-/* ── 1. Token overrides ─────────────────────────────────────── */
-.baksa {
-  /* Gallery-white base — cleaner, more luxury than warm paper */
-  --bk-paper:   #fafaf8;
-  --bk-cream:   #f3f0e8;
-  --bk-pink:    #f0ddd3;
-  /* Richer crimson */
-  --bk-crimson: #6a1620;
-  --bk-maroon:  #6a1620;
-  --bk-red:     #c03030;
-  /* Gold — antique, not bright */
-  --bk-gold:    #a97820;
-  /* Near-black ink — maximum contrast */
-  --bk-ink:     #141210;
-  --bk-muted:   #6b6058;
-  --bk-line:    #e4ddd0;
-  /* Display font: Cormorant Garamond */
-  --bk-display: 'Cormorant Garamond', 'EB Garamond', Georgia, serif;
-  /* UI font: DM Sans for nav, labels, buttons */
-  --bk-ui:      'DM Sans', system-ui, sans-serif;
+/* ── 1. Design tokens ───────────────────────────────────────── */
+:root {
+  --bk-brand:      #752F43;
+  --bk-deep:       #6B1F2E;
+  --bk-raspberry:  #B2365B;
+  --bk-bg:         #FAF6EF;
+  --bk-surface:    #FFFDF9;
+  --bk-text:       #352C2B;
+  --bk-muted:      #71645E;
+  --bk-gold:       #B08A55;
+  --bk-line:       #E8DDD1;
+
+  --bk-blush:      #F8ECE7;
+  --bk-butter:     #FAF1D6;
+  --bk-sage:       #E9EDE2;
+  --bk-lilac:      #EEEAF3;
+
+  --bk-display: 'Bodoni Moda', Georgia, serif;
+  --bk-ui:      'Jost', system-ui, sans-serif;
+  --bk-dev:     'Noto Serif Devanagari', serif;
 }
 
-/* ── 2. Base typography ─────────────────────────────────────── */
-
-/* All body copy stays EB Garamond — warm, readable */
-.baksa {
-  font-family: 'EB Garamond', Georgia, serif;
-  background: var(--bk-paper);
+/* ── 2. Base ────────────────────────────────────────────────── */
+.baksa, .bt-site-theme {
+  font-family: var(--bk-ui);
+  font-weight: 300;
+  background: var(--bk-bg);
+  color: var(--bk-text);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-/* Headlines: Cormorant Garamond, light weight = luxury */
-.baksa h1, .baksa h2, .baksa h3 {
+/* ── 3. Headings (Bodoni Moda with hairline thickening) ─────── */
+.baksa h1, .baksa h2, .baksa h3,
+.bt-site-theme h1, .bt-site-theme h2, .bt-site-theme h3 {
   font-family: var(--bk-display);
-  font-weight: 400;
-  letter-spacing: -0.03em;
-  line-height: 0.95;
-}
-
-.baksa h1 { font-size: clamp(44px, 5.5vw, 78px); font-weight: 300; }
-.baksa h2 { font-size: clamp(36px, 4vw, 58px); }
-.baksa h3 { font-size: clamp(24px, 2.5vw, 32px); font-weight: 400; }
-
-/* UI text — DM Sans for nav, labels, buttons, metadata */
-.bk-nav a,
-.bk-btn,
-.bk-eyebrow,
-.bk-wordmark small,
-.bk-cardprice,
-.bk-cardcopy p,
-.bk-form label,
-.bk-dashnav a,
-.bk-status,
-.bk-step,
-.bk-toolbar label,
-.bk-select,
-.bk-footer small,
-.bk-notice {
-  font-family: var(--bk-ui);
-}
-
-/* ── 3. Header ──────────────────────────────────────────────── */
-.bk-header {
-  background: var(--bk-paper);
-  border-bottom: 1px solid color-mix(in srgb, var(--bk-line) 70%, transparent);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  background: color-mix(in srgb, var(--bk-paper) 92%, transparent);
-}
-
-.bk-wordmark {
-  font-family: var(--bk-display);
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  font-size: 28px;
-}
-
-.bk-wordmark small {
-  font-family: var(--bk-ui);
-  font-size: 9px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--bk-muted);
-}
-
-.bk-nav a {
-  font-family: var(--bk-ui);
-  font-size: 12px;
-  font-weight: 400;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--bk-ink);
-  padding: 13px 0;
-  border-bottom: 1px solid transparent;
-  transition: color 0.2s, border-color 0.2s;
-}
-
-.bk-nav a:hover {
-  color: var(--bk-crimson);
-  border-color: color-mix(in srgb, var(--bk-gold) 60%, transparent);
-}
-
-/* ── 4. Buttons ─────────────────────────────────────────────── */
-.bk-btn {
-  font-family: var(--bk-ui);
-  font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.08em;
+  -webkit-text-stroke: .012em currentColor;
+}
+
+.baksa h4, .baksa h5, .baksa h6,
+.bt-site-theme h4, .bt-site-theme h5, .bt-site-theme h6 {
+  font-family: var(--bk-display);
+  font-weight: 500;
+  -webkit-text-stroke: .008em currentColor;
+}
+
+/* ── 4. Labels / buttons — Jost 500 uppercase ───────────────── */
+.bk-label, .bk-eyebrow, .bk-btn,
+.bk-nav a, .bk-footer a {
+  font-family: var(--bk-ui);
+  font-weight: 500;
   text-transform: uppercase;
-  border-radius: 2px;
+  letter-spacing: .22em;
+}
+
+/* ── 5. Buttons ─────────────────────────────────────────────── */
+.bk-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  letter-spacing: .26em;
   min-height: 48px;
   padding: 0 28px;
-  background: var(--bk-crimson);
-  border-color: var(--bk-crimson);
-  transition: background 0.25s, transform 0.2s, box-shadow 0.2s;
+  background: var(--bk-brand);
+  color: var(--bk-surface);
+  border: 1px solid var(--bk-brand);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background .2s, transform .15s, box-shadow .2s;
 }
 
 .bk-btn:hover {
-  background: color-mix(in srgb, var(--bk-crimson) 80%, black);
+  background: var(--bk-deep);
+  border-color: var(--bk-deep);
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px color-mix(in srgb, var(--bk-crimson) 28%, transparent);
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--bk-brand) 25%, transparent);
 }
 
-.bk-btn.secondary {
+.bk-btn-outline {
   background: transparent;
-  color: var(--bk-crimson);
-  border: 1px solid color-mix(in srgb, var(--bk-crimson) 55%, transparent);
+  color: var(--bk-brand);
+  border-color: color-mix(in srgb, var(--bk-brand) 55%, transparent);
 }
 
-.bk-btn.secondary:hover {
-  background: color-mix(in srgb, var(--bk-crimson) 6%, transparent);
+.bk-btn-outline:hover {
+  background: color-mix(in srgb, var(--bk-brand) 6%, transparent);
   transform: translateY(-1px);
   box-shadow: none;
 }
 
-/* Hero CTA pills */
-.bk-home .bk-hero-actions .bk-btn {
-  border-radius: 2px;
-  letter-spacing: 0.1em;
-}
-
-/* ── 5. Section spacing — more air ──────────────────────────── */
-.bk-section {
-  padding: 88px clamp(28px, 5vw, 72px);
-}
-
-.bk-home .bk-section {
-  padding: clamp(72px, 9vw, 124px) clamp(24px, 5vw, 72px);
-}
-
-.bk-sectionhead {
-  margin-bottom: 38px;
-}
-
-.bk-sectionhead h2 {
-  margin-top: 10px;
-  letter-spacing: -0.03em;
-}
-
-/* ── 6. Eyebrow label ───────────────────────────────────────── */
-.bk-eyebrow {
-  font-family: var(--bk-ui);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--bk-gold);
-}
-
-/* ── 7. Product cards ───────────────────────────────────────── */
+/* ── 6. Product cards ───────────────────────────────────────── */
 .bk-card {
-  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.3, 1);
+  transition: transform .3s cubic-bezier(.2,.8,.3,1);
 }
 
 .bk-card:hover {
@@ -187,363 +107,426 @@
 }
 
 .bk-cardmedia {
-  background: color-mix(in srgb, var(--bk-cream) 85%, var(--bk-gold) 4%);
+  background: color-mix(in srgb, var(--bk-bg) 80%, var(--bk-line));
   overflow: hidden;
 }
 
 .bk-cardmedia img {
-  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition: transform .6s cubic-bezier(.2,.7,.2,1);
 }
 
 .bk-card:hover .bk-cardmedia img {
   transform: scale(1.04);
 }
 
-.bk-cardcopy {
-  padding: 14px 0 0;
-}
-
 .bk-cardcopy h3 {
   font-family: var(--bk-display);
-  font-weight: 400;
-  font-size: clamp(20px, 1.8vw, 24px);
-  letter-spacing: -0.02em;
-  margin-bottom: 3px;
-  color: var(--bk-ink);
-  line-height: 1.1;
-}
-
-/* Maker name — clean DM Sans, not serif */
-.bk-cardcopy p {
-  font-family: var(--bk-ui);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  color: var(--bk-muted);
-  text-transform: uppercase;
+  font-weight: 500;
+  -webkit-text-stroke: .008em currentColor;
 }
 
 .bk-cardprice {
   font-family: var(--bk-ui);
-  font-size: 14px;
   font-weight: 500;
-  color: var(--bk-crimson);
-  margin-top: 8px;
-  letter-spacing: 0.01em;
+  color: var(--bk-brand);
 }
 
-/* No cheap badge — muted, bottom-aligned tag */
-.bk-cardtag {
-  font-family: var(--bk-ui);
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  background: color-mix(in srgb, var(--bk-paper) 90%, transparent);
-  color: var(--bk-muted);
-  border: 1px solid color-mix(in srgb, var(--bk-line) 80%, transparent);
-  padding: 4px 8px;
+/* ── 7. Header ──────────────────────────────────────────────── */
+.bk-header {
+  background: color-mix(in srgb, var(--bk-surface) 92%, transparent);
+  border-bottom: 1px solid var(--bk-line);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
-/* Wishlist heart — subtle */
-.bk-heart {
-  background: color-mix(in srgb, var(--bk-paper) 88%, transparent);
-  backdrop-filter: blur(6px);
-  border: 1px solid color-mix(in srgb, var(--bk-line) 60%, transparent);
-  transition: background 0.2s, color 0.2s;
+/* ── 8. Homepage section bands ──────────────────────────────── */
+.bk-band-cream   { background: var(--bk-bg); }
+.bk-band-blush   { background: var(--bk-blush); }
+.bk-band-butter  { background: var(--bk-butter); }
+.bk-band-sage    { background: var(--bk-sage); }
+.bk-band-lilac   { background: var(--bk-lilac); }
+
+/* ── 9. Eyebrow label ───────────────────────────────────────── */
+.bk-eyebrow {
+  font-size: 10px;
+  color: var(--bk-gold);
 }
 
-/* ── 8. Homepage hero ───────────────────────────────────────── */
-.bk-home .bk-dynamic-copy h1 {
-  font-family: var(--bk-display);
-  font-weight: 300;
-  letter-spacing: -0.045em;
-  line-height: 0.92;
-}
-
-.bk-home .bk-dynamic-copy > p {
-  font-family: 'EB Garamond', Georgia, serif;
-  font-size: clamp(16px, 1.4vw, 19px);
-  line-height: 1.65;
-  color: var(--bk-muted);
-}
-
-/* ── 9. Page header ─────────────────────────────────────────── */
-.bk-pagehead h1 {
-  font-weight: 300;
-  letter-spacing: -0.04em;
-  line-height: 0.94;
-}
-
-.bk-pagehead p {
-  font-family: 'EB Garamond', Georgia, serif;
-  font-size: 18px;
-  line-height: 1.65;
-  color: var(--bk-muted);
-}
-
-/* ── 10. Product detail page ────────────────────────────────── */
-.bk-product-info h1 {
-  font-weight: 300;
-  letter-spacing: -0.04em;
-  line-height: 0.94;
-}
-
-.bk-product-price {
-  font-family: var(--bk-ui);
-  font-size: 22px;
-  font-weight: 400;
-  color: var(--bk-crimson);
-  letter-spacing: -0.01em;
-}
-
-.bk-product-desc {
-  font-size: 18px;
-  line-height: 1.75;
-  color: color-mix(in srgb, var(--bk-muted) 90%, var(--bk-ink));
-}
-
-.bk-product-detailrow {
-  font-family: var(--bk-ui);
-  font-size: 12px;
-  letter-spacing: 0.03em;
-  color: var(--bk-muted);
-}
-
-/* ── 11. Forms & inputs ─────────────────────────────────────── */
-.bk-form input,
-.bk-form textarea,
-.bk-form select,
-.bk-field,
-.bk-select,
-.bk-input,
-.bk-search {
-  background: color-mix(in srgb, var(--bk-paper) 96%, white);
-  border-color: var(--bk-line);
+/* ── 10. Forms ──────────────────────────────────────────────── */
+.bk-input, .bk-field, .bk-select, .bk-search {
+  background: var(--bk-surface);
+  border: 1px solid var(--bk-line);
   border-radius: 2px;
-  font-family: 'EB Garamond', Georgia, serif;
-  font-size: 16px;
-  color: var(--bk-ink);
-  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: var(--bk-ui);
+  font-weight: 300;
+  font-size: 15px;
+  color: var(--bk-text);
+  transition: border-color .2s, box-shadow .2s;
 }
 
-.bk-form input:focus,
-.bk-form textarea:focus,
-.bk-form select:focus,
-.bk-field:focus,
-.bk-select:focus,
-.bk-input:focus {
+.bk-input:focus, .bk-field:focus, .bk-select:focus {
   border-color: color-mix(in srgb, var(--bk-gold) 70%, transparent);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--bk-gold) 14%, transparent);
   outline: none;
 }
 
-.bk-form label {
-  font-family: var(--bk-ui);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--bk-muted);
+/* ── 11. Footer ─────────────────────────────────────────────── */
+.bk-footer {
+  background: var(--bk-deep);
+  color: var(--bk-surface);
 }
 
-/* ── 12. Editorial story sections ───────────────────────────── */
-.bk-editorial-story h2 {
-  font-weight: 300;
-  letter-spacing: -0.04em;
-}
-
-.bk-storycopy p {
-  font-size: 17px;
-  line-height: 1.8;
-  color: var(--bk-muted);
-}
-
-.bk-story-chapter h2 {
-  font-weight: 300;
-  letter-spacing: -0.04em;
-}
-
-.bk-story-chapter p {
-  font-size: 17px;
-  line-height: 1.85;
-}
-
-.bk-story-chapter blockquote {
-  font-family: var(--bk-display);
-  font-style: italic;
-  font-weight: 300;
-  font-size: 30px;
-  line-height: 1.25;
-  letter-spacing: -0.02em;
-  color: var(--bk-maroon);
-  border-left: 1.5px solid var(--bk-gold);
-}
-
-/* ── 13. Footer ─────────────────────────────────────────────── */
 .bk-footer h3 {
   font-family: var(--bk-display);
-  font-weight: 400;
-  font-size: 26px;
-  letter-spacing: -0.02em;
-}
-
-.bk-footer a,
-.bk-footer p {
-  font-family: var(--bk-ui);
-  font-size: 13px;
-  letter-spacing: 0.01em;
-}
-
-/* ── 14. Dashboard & maker area ─────────────────────────────── */
-.bk-dashnav a {
-  font-family: var(--bk-ui);
-  font-size: 12px;
-  letter-spacing: 0.03em;
-}
-
-.bk-panel h2 {
-  font-family: var(--bk-display);
-  font-weight: 400;
-  letter-spacing: -0.025em;
-}
-
-.bk-status {
-  font-family: var(--bk-ui);
-  font-size: 10px;
   font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  -webkit-text-stroke: .01em currentColor;
 }
 
-/* ── 15. Value band / proposition strips ────────────────────── */
-.bk-value b {
+/* ── 12. Bag drawer ─────────────────────────────────────────── */
+.bt-drawer {
+  background: var(--bk-surface);
+  font-family: var(--bk-ui);
+}
+
+.bt-drawer-head h2 {
   font-family: var(--bk-display);
-  font-weight: 400;
-  font-size: 26px;
-  letter-spacing: -0.02em;
+  font-weight: 500;
+  -webkit-text-stroke: .012em currentColor;
 }
 
-.bk-value span {
+/* ── 13. Not-found page ─────────────────────────────────────── */
+.bk-notfound {
+  min-height: 100dvh;
+  background: var(--bk-bg);
+  color: var(--bk-text);
   font-family: var(--bk-ui);
-  font-size: 13px;
-  color: var(--bk-muted);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px;
+  text-align: center;
 }
 
-/* ── 16. Categories ─────────────────────────────────────────── */
-.bk-cat span {
+.bk-notfound h1 {
   font-family: var(--bk-display);
-  font-weight: 400;
-  font-size: 30px;
-  letter-spacing: -0.02em;
+  font-weight: 500;
+  -webkit-text-stroke: .012em currentColor;
+  font-size: clamp(40px, 5vw, 72px);
 }
 
-.bk-cat small {
-  font-family: var(--bk-ui);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+.bk-notfound em {
+  color: var(--bk-raspberry);
+  font-style: italic;
 }
 
-/* ── 17. Gift Finder ────────────────────────────────────────── */
-.bk-finder-intro h1 {
-  font-weight: 300;
-  letter-spacing: -0.04em;
-}
-
-.bk-finder-content h2 {
-  font-weight: 300;
-  letter-spacing: -0.03em;
-}
-
-.bk-option {
-  font-family: var(--bk-ui);
-  font-size: 13px;
-  letter-spacing: 0.01em;
-  border-radius: 2px;
-  transition: border-color 0.15s, background 0.15s;
-}
-
-/* ── 18. Story tiles (homepage editorial grid) ──────────────── */
-.bk-story-tile {
-  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.3, 1), border-color 0.2s;
-}
-
-.bk-story-tile:hover {
-  transform: translateY(-3px);
-  border-color: color-mix(in srgb, var(--bk-gold) 60%, transparent);
-}
-
-.bk-story-tile-copy strong {
-  font-family: var(--bk-display);
-  font-weight: 400;
-  font-size: 23px;
-  letter-spacing: -0.015em;
-}
-
-.bk-story-tile-copy small {
-  font-family: var(--bk-ui);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-/* ── 19. Notice bar ─────────────────────────────────────────── */
-.bk-notice {
-  font-family: var(--bk-ui);
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  background: var(--bk-teal);
-}
-
-/* ── 20. Skeleton loading — warmer ──────────────────────────── */
-.bk-skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--bk-cream),
-    var(--bk-paper),
-    var(--bk-cream)
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.6s infinite;
-}
-
-/* ── 21. Cart drawer ────────────────────────────────────────── */
-.bk-drawerhead h2 {
-  font-family: var(--bk-display);
-  font-weight: 400;
-  letter-spacing: -0.025em;
-}
-
-.bk-draweritem p {
-  font-family: 'EB Garamond', Georgia, serif;
-  font-size: 17px;
-}
-
-/* ── 22. Banner / CTA strip ─────────────────────────────────── */
-.bk-banner h2 {
-  font-weight: 300;
-  letter-spacing: -0.04em;
-}
-
-.bk-banner p {
-  font-size: 17px;
-  line-height: 1.65;
-}
-
-/* ── 23. Account / profile page ─────────────────────────────── */
-.bk-formpage h1 {
-  font-weight: 300;
-  letter-spacing: -0.04em;
-}
-
-/* ── 24. Reduced motion safety net ──────────────────────────── */
+/* ── 14. Reduced motion ─────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  .bk-card,
-  .bk-story-tile,
-  .bk-btn {
+  .bk-card, .bk-btn {
     transition: none !important;
     transform: none !important;
   }
 }
+
+/* ── 15. bt-* component overrides — new design tokens ────────── */
+
+/* Site shell */
+.bt-site-theme {
+  background: var(--bk-bg) !important;
+  color: var(--bk-text) !important;
+  font-family: var(--bk-ui) !important;
+}
+.bt-site-theme :is(h1, h2, h3, h4) {
+  font-family: var(--bk-display) !important;
+  font-weight: 500 !important;
+}
+.bt-site-theme :is(p, a, button, input, label, span, li, select) {
+  font-family: var(--bk-ui) !important;
+}
+
+/* Public header */
+.bt-public-header {
+  background: color-mix(in srgb, var(--bk-surface) 92%, transparent) !important;
+  color: var(--bk-text) !important;
+  font-family: var(--bk-ui) !important;
+  border-bottom-color: var(--bk-line) !important;
+}
+.bt-public-header__brand {
+  color: var(--bk-brand) !important;
+  font-family: var(--bk-display) !important;
+  font-weight: 500 !important;
+}
+.bt-public-header__nav a {
+  color: var(--bk-text) !important;
+  font-family: var(--bk-ui) !important;
+  font-weight: 300 !important;
+  font-size: 14px !important;
+}
+.bt-public-header__nav a:hover { color: var(--bk-brand) !important; }
+
+/* Account pages */
+.bt-account {
+  background: var(--bk-bg) !important;
+  color: var(--bk-text) !important;
+  font-family: var(--bk-ui) !important;
+}
+.bt-account-eyebrow {
+  color: var(--bk-gold) !important;
+  font-family: var(--bk-ui) !important;
+  font-weight: 500 !important;
+  letter-spacing: .22em !important;
+}
+.bt-account-intro h1 {
+  font-family: var(--bk-display) !important;
+  font-weight: 500 !important;
+  -webkit-text-stroke: .012em currentColor !important;
+}
+.bt-account-intro h1 em { color: var(--bk-raspberry) !important; }
+.bt-account-intro > p { color: var(--bk-muted) !important; font-weight: 300 !important; }
+.bt-account-nav {
+  background: var(--bk-surface) !important;
+  border-color: var(--bk-line) !important;
+  border-radius: 2px !important;
+}
+.bt-account-nav nav a {
+  color: var(--bk-muted) !important;
+  font-family: var(--bk-ui) !important;
+  font-size: 14px !important;
+  border-bottom-color: var(--bk-line) !important;
+}
+.bt-account-nav nav a[aria-current="page"] { color: var(--bk-brand) !important; }
+.bt-account-heading h2 {
+  font-family: var(--bk-display) !important;
+  font-weight: 500 !important;
+}
+.bt-account-card {
+  background: var(--bk-surface) !important;
+  border-color: var(--bk-line) !important;
+  border-radius: 2px !important;
+}
+.bt-account-form h2, .bt-account-form h3 {
+  font-family: var(--bk-display) !important;
+  font-weight: 500 !important;
+}
+.bt-account-form label {
+  color: var(--bk-muted) !important;
+  font-family: var(--bk-ui) !important;
+  font-weight: 500 !important;
+  font-size: 11px !important;
+  letter-spacing: .18em !important;
+  text-transform: uppercase !important;
+}
+.bt-account-form input,
+.bt-account-form select {
+  background: var(--bk-surface) !important;
+  border-color: var(--bk-line) !important;
+  color: var(--bk-text) !important;
+  font-family: var(--bk-ui) !important;
+  font-size: 15px !important;
+  font-weight: 300 !important;
+  border-radius: 2px !important;
+}
+.bt-account-form input:focus,
+.bt-account-form select:focus {
+  border-color: var(--bk-gold) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--bk-gold) 14%, transparent) !important;
+}
+.bt-account-primary {
+  background: var(--bk-brand) !important;
+  border-color: var(--bk-brand) !important;
+  color: var(--bk-surface) !important;
+  font-family: var(--bk-ui) !important;
+  font-weight: 500 !important;
+  font-size: 11px !important;
+  letter-spacing: .26em !important;
+  text-transform: uppercase !important;
+  border-radius: 2px !important;
+}
+.bt-account-primary:hover:not(:disabled) {
+  background: var(--bk-deep) !important;
+  border-color: var(--bk-deep) !important;
+}
+.bt-account-secondary {
+  background: transparent !important;
+  border-color: color-mix(in srgb, var(--bk-brand) 50%, transparent) !important;
+  color: var(--bk-brand) !important;
+  font-family: var(--bk-ui) !important;
+  font-weight: 500 !important;
+  font-size: 11px !important;
+  letter-spacing: .22em !important;
+  text-transform: uppercase !important;
+  border-radius: 2px !important;
+}
+.bt-account-disclosure { color: var(--bk-muted) !important; font-size: 12px !important; }
+.bt-account-error { color: var(--bk-raspberry) !important; }
+.bt-account-footnote { color: var(--bk-muted) !important; font-size: 12px !important; }
+
+/* Bag drawer */
+.bt-drawer {
+  background: var(--bk-surface) !important;
+  color: var(--bk-text) !important;
+  font-family: var(--bk-ui) !important;
+}
+.bt-drawer-head h2 {
+  font-family: var(--bk-display) !important;
+  font-weight: 500 !important;
+}
+.bt-btn {
+  background: var(--bk-brand) !important;
+  color: var(--bk-surface) !important;
+  font-family: var(--bk-ui) !important;
+  border-radius: 2px !important;
+}
+.bt-btn-outline {
+  background: transparent !important;
+  border-color: color-mix(in srgb, var(--bk-brand) 55%, transparent) !important;
+  color: var(--bk-brand) !important;
+}
+.bt-link { color: var(--bk-brand) !important; font-family: var(--bk-ui) !important; }
+.bt-total { font-family: var(--bk-ui) !important; border-top-color: var(--bk-line) !important; }
+.bt-icon-btn { border-color: var(--bk-line) !important; color: var(--bk-text) !important; }
+
+/* Sample note banner */
+.bt-sample {
+  background: var(--bk-deep) !important;
+  color: var(--bk-surface) !important;
+  font-family: var(--bk-ui) !important;
+}
+.bt-sample button { border-color: var(--bk-gold) !important; color: var(--bk-gold) !important; }
+
+/* Info dialog */
+.bt-information {
+  background: var(--bk-surface) !important;
+  color: var(--bk-text) !important;
+  font-family: var(--bk-ui) !important;
+  border-color: var(--bk-line) !important;
+  border-radius: 4px !important;
+}
+.bt-information-note { color: var(--bk-muted) !important; font-family: var(--bk-ui) !important; }
+
+/* Account entry sign-in link */
+.bt-account-entry__sign-in { font-family: var(--bk-ui) !important; color: var(--bk-text) !important; }
+.bt-account-entry__sign-in span { font-family: var(--bk-ui) !important; }
+
+/* ── 16. BaksaApp (.baksa) — remap to new brand tokens ──────────── */
+/*
+   BaksaApp uses the .baksa class with its own token namespace (--bk-crimson,
+   --bk-display, --bk-body, etc.) defined in baksa.css / baksa-visual-design.css.
+   These overrides remap those tokens to the new brand without touching BaksaApp.tsx.
+   Only the brand identity tokens change; layout/spacing tokens are left alone.
+*/
+.baksa {
+  --bk-crimson:   #752F43 !important;   /* primary CTA colour → new brand */
+  --bk-maroon:    #6B1F2E !important;   /* hover / deep variant */
+  --bk-red:       #B2365B !important;   /* accent / raspberry */
+  --bk-gold:      #B08A55 !important;   /* gold — same new value */
+  --bk-paper:     #FAF6EF !important;   /* page background */
+  --bk-cream:     #FFFDF9 !important;   /* surface / card */
+  --bk-ink:       #352C2B !important;   /* body text */
+  --bk-muted:     #71645E !important;   /* secondary text */
+  --bk-line:      #E8DDD1 !important;   /* borders */
+  --bk-display:   'Bodoni Moda', Georgia, serif !important;
+  --bk-body:      'Jost', system-ui, sans-serif !important;
+}
+
+/* Headings inside BaksaApp: Bodoni Moda with hairline thickening */
+.baksa h1, .baksa h2, .baksa h3 {
+  font-family: 'Bodoni Moda', Georgia, serif !important;
+  font-weight: 500 !important;
+  -webkit-text-stroke: .012em currentColor !important;
+}
+.baksa h4, .baksa h5, .baksa h6 {
+  font-family: 'Bodoni Moda', Georgia, serif !important;
+  font-weight: 500 !important;
+}
+
+/* Body copy, labels, buttons, inputs inside BaksaApp: Jost */
+.baksa p, .baksa label, .baksa input, .baksa select, .baksa textarea,
+.baksa button, .baksa a, .baksa span, .baksa li {
+  font-family: 'Jost', system-ui, sans-serif !important;
+}
+
+/* Eyebrow labels */
+.baksa .bk-eyebrow {
+  color: #B08A55 !important;
+  font-family: 'Jost', system-ui, sans-serif !important;
+  font-weight: 500 !important;
+  letter-spacing: .22em !important;
+}
+
+/* Primary button */
+.baksa .bk-btn:not(.secondary) {
+  background: #752F43 !important;
+  border-color: #752F43 !important;
+  color: #FFFDF9 !important;
+  font-family: 'Jost', system-ui, sans-serif !important;
+  font-weight: 500 !important;
+  letter-spacing: .18em !important;
+  font-size: 11px !important;
+  text-transform: uppercase !important;
+  border-radius: 2px !important;
+}
+.baksa .bk-btn:not(.secondary):hover:not(:disabled) {
+  background: #6B1F2E !important;
+  border-color: #6B1F2E !important;
+}
+
+/* Secondary / outline button */
+.baksa .bk-btn.secondary {
+  background: transparent !important;
+  border-color: color-mix(in srgb, #752F43 50%, transparent) !important;
+  color: #752F43 !important;
+  font-family: 'Jost', system-ui, sans-serif !important;
+  font-weight: 500 !important;
+  letter-spacing: .18em !important;
+  font-size: 11px !important;
+  text-transform: uppercase !important;
+  border-radius: 2px !important;
+}
+.baksa .bk-btn.secondary:hover:not(:disabled) {
+  background: color-mix(in srgb, #752F43 6%, transparent) !important;
+}
+
+/* Form inputs inside BaksaApp */
+.baksa .bk-form input,
+.baksa .bk-form textarea,
+.baksa .bk-form select {
+  background: #FFFDF9 !important;
+  border-color: #E8DDD1 !important;
+  color: #352C2B !important;
+  font-family: 'Jost', system-ui, sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 300 !important;
+  border-radius: 2px !important;
+}
+.baksa .bk-form input:focus,
+.baksa .bk-form textarea:focus,
+.baksa .bk-form select:focus {
+  border-color: #B08A55 !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, #B08A55 14%, transparent) !important;
+  outline: none !important;
+}
+
+/* Header inside BaksaApp */
+.baksa .bk-header {
+  background: color-mix(in srgb, #FFFDF9 92%, transparent) !important;
+  border-bottom-color: #E8DDD1 !important;
+}
+.baksa .bk-logo .bk-wordmark {
+  font-family: 'Bodoni Moda', Georgia, serif !important;
+  color: #752F43 !important;
+}
+
+/* Role shells (maker/admin dark sidebar) — keep sidebar dark, update accent */
+.baksa .rs-shell,
+.rs-shell {
+  --rs-accent: #B08A55 !important;
+  --rs-accent-faint: color-mix(in srgb, #B08A55 12%, transparent) !important;
+}
+.rs-brand {
+  font-family: 'Bodoni Moda', Georgia, serif !important;
+  font-weight: 500 !important;
+}
+

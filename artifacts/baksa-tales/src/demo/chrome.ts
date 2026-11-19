@@ -105,7 +105,7 @@ export function hydrateChrome(ctx: Ctx, kind: 'store' | 'maker' | 'admin' | 'non
       btn.setAttribute('aria-expanded', 'false');
       btn.setAttribute('aria-label', 'Open menu');
       tid(btn, 'button-sidebar-menu');
-      btn.setAttribute('style', `display: none; align-items: center; gap: 8px; height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid ${kind === 'admin' ? '#5C463C' : '#DCCAB0'}; background: transparent; color: inherit; font-family: ${ARVO}; font-size: 13px; cursor: pointer`);
+      btn.setAttribute('style', `display: none; align-items: center; gap: 8px; height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid ${kind === 'admin' ? '#71645E' : '#E8DDD1'}; background: transparent; color: inherit; font-family: ${ARVO}; font-size: 13px; cursor: pointer`);
       btn.innerHTML = `${MENU_SVG}<span>Menu</span>`;
       nav.insertAdjacentElement('beforebegin', btn);
       on(ctx, btn, 'click', () => {
@@ -167,7 +167,7 @@ export function hydrateChrome(ctx: Ctx, kind: 'store' | 'maker' | 'admin' | 'non
       btn.setAttribute('aria-expanded', 'false');
       btn.setAttribute('aria-label', 'Open menu');
       tid(btn, 'button-mobile-menu');
-      btn.setAttribute('style', 'display: none; width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid #DCCAB0; background: #FFFDF4; color: #2B1712; align-items: center; justify-content: center; cursor: pointer');
+      btn.setAttribute('style', 'display: none; width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid #E8DDD1; background: #FFFDF9; color: #352C2B; align-items: center; justify-content: center; cursor: pointer');
       btn.innerHTML = MENU_SVG;
       nav.insertAdjacentElement('beforebegin', btn);
       on(ctx, btn, 'click', () => {

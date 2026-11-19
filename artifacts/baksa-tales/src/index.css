@@ -113,8 +113,8 @@
   --chart-3: 40 81% 58%;
   --chart-4: 2 59% 49%;
   --chart-5: 22 17% 39%;
-  --app-font-sans: 'Arvo', Georgia, serif;
-  --app-font-serif: 'EB Garamond', Georgia, serif;
+  --app-font-sans: 'Jost', Georgia, serif;
+  --app-font-serif: 'Bodoni Moda', Georgia, serif;
   --app-font-mono: 'DM Mono', monospace;
   --radius: 0.5rem; /* 8px */
   --shadow-2xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0); /*replace with H S L */

@@ -3,224 +3,190 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Blue Lotus Pond, product page</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Arvo:wght@400;700&amp;family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=Noto+Serif+Devanagari:wght@500;600&amp;display=swap" rel="stylesheet">
+<title>Baksa Tales · Product page</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..600;1,6..96,400..600&amp;family=Jost:wght@300;400;500&amp;family=Noto+Serif+Devanagari:wght@400&amp;display=swap" rel="stylesheet">
 <style>
-body{margin:0;background:#F6F3DF}
-a{color:#611811}a:hover{color:#3E0F0B}
+body{margin:0;background:#FAF6EF}
+a{color:#752F43}
+.nav a{color:#352C2B;text-decoration:none;padding:6px 0;border-bottom:1px solid transparent;transition:border-color .25s ease,color .25s ease}
+.nav a:hover{color:#752F43;border-bottom-color:#752F43}
+.ib{color:#352C2B;transition:color .25s ease}.ib:hover{color:#752F43}
+.ul{display:inline-block;font-family:Jost, Futura, system-ui, sans-serif;font-size:11.5px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;text-decoration:none;padding-bottom:7px;border-bottom:1px solid currentColor;transition:opacity .25s ease}
+.ul:hover{opacity:.65}
+.fb{transition:background .3s ease}.fb:hover{background:#6B1F2E}
+.charm{transform-origin:50% 0;animation:sway 7s ease-in-out infinite}
+@keyframes sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+.charm .ring{transition:transform .4s cubic-bezier(.3,1.4,.5,1),box-shadow .4s ease}
+.charm:hover .ring{transform:scale(1.08)}
+.charm .rf{transition:fill .3s ease}
+.charm.on .rf{fill:#EED9D9}
+.charm.on .ring{box-shadow:0 0 0 6px rgba(247,217,122,.35),0 0 26px 6px rgba(247,217,122,.55)}
+.charm.on .cn{color:#752F43}
+.parrot{transition:transform .4s cubic-bezier(.3,1.5,.5,1)}.parrot:hover{transform:rotate(-6deg) translateY(-3px)}
+.door:hover + span{}
+.pop{animation:pop .45s cubic-bezier(.3,1.4,.5,1) both;box-shadow:0 18px 40px -26px rgba(53,44,43,.45)}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.96)}}
+.psst{animation:psst 3.6s ease-in-out infinite}@keyframes psst{0%,100%{opacity:.35}50%{opacity:1}}
+.kite{animation:kite 8s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes kite{0%,100%{transform:translate(0,0) rotate(-4deg)}50%{transform:translate(10px,-14px) rotate(5deg)}}
+.tw{animation:tw 5s ease-in-out infinite}@keyframes tw{0%,100%{opacity:.2;transform:scale(.8)}50%{opacity:1;transform:scale(1)}}
+.lp img,.tale img,.ed img{transition:transform 1.1s cubic-bezier(.2,.7,.2,1)}
+.lp:hover img,.tale:hover img,.ed:hover img{transform:scale(1.04)}
+.lp .tag{transform:translateY(100%);transition:transform .45s cubic-bezier(.2,.7,.2,1)}.lp:hover .tag{transform:none}
+.lp:hover .pn{color:#752F43}
+.gbox .glid{transition:transform .55s cubic-bezier(.3,1.4,.5,1)}.gbox .gnote{transition:transform .55s cubic-bezier(.3,1.4,.5,1) .05s;transform:rotate(-4deg)}
+.gbox:hover .glid{transform:translate(14px,-30px) rotate(16deg)}.gbox:hover .gnote{transform:translateY(-40px) rotate(-6deg)}
+.glow{animation:glow 4s ease-in-out infinite}@keyframes glow{0%,100%{opacity:.6}50%{opacity:1}}
+.fly{animation:fly 6s ease-in-out infinite}@keyframes fly{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-12px) rotate(-4deg)}}
+.zz{animation:zz 3s ease-in-out infinite}@keyframes zz{0%{opacity:0;transform:translate(0,0)}40%{opacity:1}100%{opacity:0;transform:translate(10px,-18px)}}
+.reveal{animation:rv .55s ease both}@keyframes rv{from{opacity:0;transform:translateY(10px)}}
+.fl{color:#FAF6EF;text-decoration:none;opacity:.78;transition:opacity .25s ease}.fl:hover{opacity:1}
+input:focus-visible,a:focus-visible,button:focus-visible{outline:1px solid #752F43;outline-offset:4px}
+@media (prefers-reduced-motion: reduce){.charm,.kite,.tw,.psst,.glow,.fly,.zz,.pop,.reveal{animation:none}.charm .ring,.parrot,.lp img,.tale img,.ed img,.lp .tag,.gbox .glid,.gbox .gnote{transition:none}}
+.charm{animation:sway 7s ease-in-out infinite}
+.charm .ph{transition:box-shadow .4s ease,transform .4s cubic-bezier(.3,1.4,.5,1)}
+.charm:hover .ph{transform:scale(1.05)}
+.charm.on .ph{box-shadow:0 0 0 6px rgba(247,217,122,.5),0 0 30px 10px rgba(247,217,122,.6)}
+.charm .tg{transition:background .3s ease}.charm.on .tg{background:#EED9D9}
+.flight{animation:flight 18s ease-in-out infinite}
+@keyframes flight{0%{transform:translate(520px,330px)}25%{transform:translate(360px,420px)}50%{transform:translate(110px,330px)}62%{transform:translate(160px,520px)}80%{transform:translate(420px,250px)}100%{transform:translate(520px,330px)}}
+.flight .face{animation:face 18s linear infinite}
+@keyframes face{0%,49.9%{transform:scaleX(-1)}50%,56%{transform:scaleX(1)}56.1%,61.9%{transform:scaleX(1)}62%,100%{transform:scaleX(1)}}
+.flight:hover,.flight:hover .face{animation-play-state:paused}
+.wa{animation:wa .22s steps(1) infinite}.wb{animation:wb .22s steps(1) infinite}
+@keyframes wa{0%{opacity:1}50%{opacity:0}}@keyframes wb{0%{opacity:0}50%{opacity:1}}
+.hover-bob{animation:bob 2.8s ease-in-out infinite}@keyframes bob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-9px) rotate(4deg)}}
+.drift{animation:drift 10s ease-in-out infinite}@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,-16px)}}
+.wheel{animation:spin 40s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.zz{animation:zz 3.2s ease-in-out infinite}@keyframes zz{0%{opacity:0;transform:translate(0,6px) scale(.7)}30%{opacity:1}100%{opacity:0;transform:translate(16px,-26px) scale(1.15)}}
+.breathe{animation:breathe 3.2s ease-in-out infinite;transform-origin:50% 80%}@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.04,1.06)}}
+.flame{animation:flame 1.4s ease-in-out infinite alternate;transform-origin:50% 100%}@keyframes flame{to{transform:scaleY(1.18) rotate(3deg)}}
+.tk{transition:transform .5s cubic-bezier(.3,1.4,.5,1)}.tk:hover{transform:rotate(0deg) translateY(-4px)}
+.pc{transition:transform .5s cubic-bezier(.3,1.4,.5,1)}.pc:hover{transform:rotate(0deg)}
+@media (prefers-reduced-motion: reduce){.flight,.flight .face,.wa,.wb,.hover-bob,.drift,.wheel,.zz,.breathe,.flame,.charm{animation:none}.wb{opacity:0}.charm .ph,.tk,.pc{transition:none}}
+.charm .hv{transition:transform .4s cubic-bezier(.3,1.4,.5,1),filter .4s ease}
+.charm:hover .hv{transform:scale(1.05)}
+.charm.on .hv{filter:drop-shadow(0 0 14px rgba(247,217,122,.95))}
+.charm.on .win{box-shadow:0 0 0 2px #B08A55,0 0 0 6px #EED9D9 !important}
+@keyframes flight{0%{transform:translate(520px,250px)}25%{transform:translate(360px,360px)}50%{transform:translate(100px,240px)}62%{transform:translate(150px,420px)}80%{transform:translate(420px,170px)}100%{transform:translate(520px,250px)}}
+.chip{transition:background .2s ease,border-color .2s ease}.chip:hover{border-color:#752F43 !important}
+.ob{transition:background .25s ease,color .25s ease}.ob:hover{background:#352C2B !important;color:#FAF6EF !important}
+details.acc summary{list-style:none;cursor:pointer}details.acc summary::-webkit-details-marker{display:none}
+details.acc[open] .pm{transform:rotate(45deg)}.pm{display:inline-block;transition:transform .25s ease}
+.thumb{transition:box-shadow .2s ease}.thumb:hover{box-shadow:0 0 0 1px #752F43}
+input::placeholder,textarea::placeholder{color:#A79A92}
+
+.arch{transition:transform .45s cubic-bezier(.3,1.4,.5,1),box-shadow .3s ease,border-color .3s ease}.arch:hover{transform:translateY(-4px);box-shadow:0 18px 30px -24px rgba(117,47,67,.45)}
+.steam path{stroke-dasharray:4 4;animation:steam 3s linear infinite}@keyframes steam{to{stroke-dashoffset:-16}}
+@media (prefers-reduced-motion: reduce){.steam path{animation:none}}
+
+/* headings: Bodoni Moda at 500, with a hair more ink on the hairlines so nothing needs squinting */
+h1,h2,h3{font-weight:500 !important;-webkit-text-stroke:.012em currentColor}h1 em,h2 em,h3 em{font-weight:500}
+[style*="Bodoni Moda"]:not(h1):not(h2):not(h3){-webkit-text-stroke:.008em currentColor}
 </style>
-
-
-<link href="https://fonts.googleapis.com/css2?family=Arvo:wght@400;700&amp;family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=Noto+Serif+Devanagari:wght@500;600&amp;display=swap" rel="stylesheet">
-<style>
-body{margin:0}
-</style>
-
+<style>[data-if]{display:contents}[data-if][hidden]{display:none !important}</style>
 </head>
 <body>
+<div style="font-family: Jost, Futura, system-ui, sans-serif; color: #352C2B; background: #FAF6EF; min-width: 0; overflow: hidden">
+<header style="max-width: 1440px; margin: 0 auto; padding: 0 48px; box-sizing: border-box">
+<p style="margin: 0; padding: 12px 0 0; text-align: center; font-family: Jost, Futura, system-ui, sans-serif; font-size: 10.5px; letter-spacing: .24em; text-transform: uppercase; color: #71645E">Free delivery across India over ₹2,500</p>
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 24px; min-height: 92px">
+<div style="display: flex; align-items: center; gap: 6px">
 
-
-<div style="font-family: 'EB Garamond', Georgia, serif; color: #2B1712; background: #F6F3DF; overflow: hidden">
-
-
-<div style="font-family: 'EB Garamond', Georgia, serif; color: #2B1712; background: #F6F3DF">
-<div style="background: #611811; color: #F6EBD3; font-family: Arvo, Georgia, serif; font-size: 13px; letter-spacing: .02em; padding: 10px 24px; display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: center; align-items: center">
-<span>Every piece is handmade in India, by a maker you can meet</span>
-<span style="color: #EBA937">✦</span>
-<span>Free delivery on orders over ₹2,500</span>
+<a href="#search" class="ib" aria-label="Search" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16l4.5 4.5"></path></svg></a>
 </div>
-<header style="max-width: 1280px; margin: 0 auto; padding: 18px 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px">
-<a href="Main.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none">
-<img src="images/logo-mark.webp" alt="" style="height: 40px; width: auto">
-<span style="font-size: 30px; font-weight: 600; color: #611811">Baksa Tales</span>
+<a href="#top" aria-label="Baksa Tales, home" style="display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #752F43">
+<span style="font-family: 'Bodoni Moda', Didot, Georgia, serif; font-size: 30px; letter-spacing: .32em; line-height: 1; padding-left: .32em">BAKSA TALES</span>
+<span style="margin-top: 8px; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-style: italic; font-size: 13px; color: #B08A55">Dil Se Duniya Tak</span>
 </a>
-<nav aria-label="Main" style="display: flex; flex-wrap: wrap; gap: 6px 26px; font-family: Arvo, Georgia, serif; font-size: 14px; flex: 1 1 420px">
-<a href="Finder.html" style="text-decoration: none; color: #2B1712">Gift finder</a>
-<a href="Shop.html" style="text-decoration: none; color: #2B1712">The BT Edit</a>
-<a href="Maker.html" style="text-decoration: none; color: #2B1712">Makers</a>
-<a href="Corporate.html" style="text-decoration: none; color: #2B1712">Corporate gifting</a>
-<a href="Academy.html" style="text-decoration: none; color: #2B1712">Academy</a>
+<div style="display: flex; align-items: center; justify-content: flex-end; gap: 2px">
+<a href="#account" class="ib" aria-label="Account" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="3.6"></circle><path d="M5 20c1.2-3.8 4-5.5 7-5.5s5.8 1.7 7 5.5"></path></svg></a>
+<a href="#wishlist" class="ib" aria-label="Wishlist" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"></path></svg></a>
+<a href="#bag" class="ib" aria-label="Bag, 2 items" style="position: relative; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 8h13l-1 12h-11z M9 8V6.5a3 3 0 0 1 6 0V8"></path></svg><span style="position: absolute; top: 10px; right: 6px; font-size: 9.5px; color: #752F43">2</span></a>
+</div>
+</div>
+<nav class="nav" aria-label="Main" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 44px; padding: 2px 0 20px; border-bottom: 1px solid #E8DDD1; font-family: Jost, Futura, system-ui, sans-serif; font-size: 11px; letter-spacing: .26em; text-transform: uppercase; white-space: nowrap">
+<a href="#home">Home</a><a href="#edit" aria-current="page" style="color: #752F43; border-bottom-color: #752F43">The Baksa Edit</a><a href="#makers">Meet the Makers</a><a href="#gifting">Gifting Studio</a><a href="#academy">The Buzz Lab</a><a href="#journal">The Journal</a>
 </nav>
-<div style="display: flex; align-items: center; gap: 10px">
-<label for="hq" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Search</label>
-<input id="hq" type="search" placeholder="Search lotus, oils, gifts…" style="font-family: 'EB Garamond', Georgia, serif; font-size: 16px; width: 220px; height: 44px; border-radius: 999px; border: 1.5px solid #DCCAB0; background: #FFFDF4; padding: 0 18px; color: #2B1712; box-sizing: border-box">
-<a href="Checkout.html" style="font-family: Arvo, Georgia, serif; font-size: 13px; color: #2B1712; text-decoration: none; padding: 0 10px; height: 44px; display: flex; align-items: center">Sign in</a>
-<a href="Shop.html" aria-label="Wishlist" style="width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #2B1712">
-<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="none" stroke="currentColor" stroke-width="1.7"></path></svg>
-</a>
-<a href="Checkout.html" aria-label="Bag, 2 items" style="position: relative; width: 44px; height: 44px; border-radius: 50%; background: #611811; display: flex; align-items: center; justify-content: center; color: #FFF8EC">
-<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8zM9 8V6a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="1.7"></path></svg>
-<span style="position: absolute; top: -3px; right: -3px; min-width: 20px; height: 20px; border-radius: 10px; background: #EBA937; color: #2B1712; font-family: Arvo, Georgia, serif; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center">2</span>
-</a>
-</div>
-</header>
-</div>
-
-
-<nav aria-label="Breadcrumb" style="max-width: 1280px; margin: 0 auto; padding: 18px 32px 0; font-family: Arvo, Georgia, serif; font-size: 13px; color: #5C463C"><a href="Shop.html" style="color: #5C463C">The BT Edit</a> <span aria-hidden="true">/</span> <a href="Maker.html" style="color: #5C463C">Tathaastu</a> <span aria-hidden="true">/</span> Blue Lotus Pond</nav>
-
-<section style="max-width: 1280px; margin: 0 auto; padding: 24px 32px 80px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 500px), 1fr)); gap: 56px; align-items: start">
-<div style="display: flex; flex-direction: column; gap: 16px">
-<div style="position: relative">
-<img src="images/t-bluelotus.webp" alt="Blue Lotus Pond by Tathaastu" style="width: 100%; aspect-ratio: 5 / 6; object-fit: cover; border-radius: 999px 999px 32px 32px; display: block">
-<span style="position: absolute; left: 22px; bottom: 22px; background: #FFFDF4; color: #611811; border-radius: 999px; padding: 8px 14px; font-family: Arvo, Georgia, serif; font-size: 12px; transform: rotate(-3deg)">Shaped petal by petal</span>
-</div>
-<div style="display: flex; gap: 12px">
-
-<button type="button" aria-label="Photo 1" style="width: 96px; height: 96px; padding: 0; border-radius: 20px; overflow: hidden; border: 3px solid #611811; background: #FFFDF4; cursor: pointer"><img src="images/t-bluelotus.webp" alt="" style="width: 100%; height: 100%; object-fit: cover; display: block"></button>
-
-<button type="button" aria-label="Photo 2" style="width: 96px; height: 96px; padding: 0; border-radius: 20px; overflow: hidden; border: 1.5px solid #DCCAB0; background: #FFFDF4; cursor: pointer"><img src="images/t-lotuspond.webp" alt="" style="width: 100%; height: 100%; object-fit: cover; display: block"></button>
-
-<button type="button" aria-label="Photo 3" style="width: 96px; height: 96px; padding: 0; border-radius: 20px; overflow: hidden; border: 1.5px solid #DCCAB0; background: #FFFDF4; cursor: pointer"><img src="images/t-marigold.webp" alt="" style="width: 100%; height: 100%; object-fit: cover; display: block"></button>
-
-</div>
-</div>
-
+</header><section style="max-width: 1280px; margin: 0 auto; padding-left: 64px; padding-right: 64px; box-sizing: border-box; padding-top: 32px"><nav aria-label="Breadcrumb" style="font-size: 11px; letter-spacing: .2em; text-transform: uppercase; display: flex; gap: 12px; flex-wrap: wrap"><a href="#top" style="color: #71645E; text-decoration: none">Home</a> <span style="color: #B08A55">✦</span> <a href="#shop" style="color: #71645E; text-decoration: none">The Baksa Edit</a> <span style="color: #B08A55">✦</span> <a href="#mood" style="color: #71645E; text-decoration: none">Showstopper</a> <span style="color: #B08A55">✦</span> <span aria-current="page" style="color: #352C2B">Blue Lotus Pond</span></nav>
+<div style="margin-top: 36px; display: grid; grid-template-columns: 100px minmax(0, 1fr) minmax(0, 520px); gap: 28px 56px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 12px"><button type="button" class="thumb" aria-label="Photo 1" style="width: 84px; height: 104px; padding: 0; border: 0; background: #EEEAF3; cursor: pointer; box-shadow: 0 0 0 1px #752F43"><img src="images/t-bluelotus.webp" alt="" style="width: 100%; height: 100%; object-fit: cover; display: block"></button><button type="button" class="thumb" aria-label="Photo 2" style="width: 84px; height: 104px; padding: 0; border: 0; background: #EEEAF3; cursor: pointer; "><span style="font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #71645E">Photo<br>to come</span></button><button type="button" class="thumb" aria-label="Photo 3" style="width: 84px; height: 104px; padding: 0; border: 0; background: #EEEAF3; cursor: pointer; "><span style="font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #71645E">Photo<br>to come</span></button><button type="button" class="thumb" aria-label="Photo 4" style="width: 84px; height: 104px; padding: 0; border: 0; background: #EEEAF3; cursor: pointer; "><span style="font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #71645E">Photo<br>to come</span></button></div>
+<div class="ed" style="position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: #EEEAF3; border-radius: 4px"><img src="images/t-bluelotus.webp" alt="Blue Lotus Pond by Tathaastu" style="width: 100%; height: 100%; object-fit: cover; display: block">
+<span style="position: absolute; left: 16px; top: 16px; display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px 6px 6px; background: rgba(255,253,249,.92); font-family: 'Bodoni Moda', Didot, Georgia, serif; font-style: italic; font-size: 14px"><span aria-hidden="true" style="display: inline-block; flex: none"><svg aria-hidden="true" width="22" height="17" viewBox="0 0 64 50" style="display: block; overflow: visible"><rect x="7" y="20" width="50" height="26" rx="2" fill="#7E2941" stroke="#C99A45" stroke-width="1.6"></rect><g transform="translate(0 4)"><path d="M10 6 H54 L58 14 H6 Z" fill="#9A3A55" stroke="#C99A45" stroke-width="1.6"></path><rect x="5" y="14" width="54" height="6" fill="#5E1A2E" stroke="#C99A45" stroke-width="1.6"></rect></g><rect x="28" y="18" width="8" height="10" rx="1.5" fill="#EBC77A" stroke="#C99A45" stroke-width="1"></rect><g class="bl"><ellipse cx="16.0" cy="30.5" rx="2.3" ry="1.8" transform="rotate(0 16.0 30.5)" fill="#F4A9BC" stroke="#D9728F" stroke-width=".7"></ellipse><ellipse cx="18.4" cy="32.2" rx="2.3" ry="1.8" transform="rotate(72 18.4 32.2)" fill="#F4A9BC" stroke="#D9728F" stroke-width=".7"></ellipse><ellipse cx="17.5" cy="35.0" rx="2.3" ry="1.8" transform="rotate(144 17.5 35.0)" fill="#F4A9BC" stroke="#D9728F" stroke-width=".7"></ellipse><ellipse cx="14.5" cy="35.0" rx="2.3" ry="1.8" transform="rotate(216 14.5 35.0)" fill="#F4A9BC" stroke="#D9728F" stroke-width=".7"></ellipse><ellipse cx="13.6" cy="32.2" rx="2.3" ry="1.8" transform="rotate(288 13.6 32.2)" fill="#F4A9BC" stroke="#D9728F" stroke-width=".7"></ellipse><circle cx="16" cy="33" r="1.2" fill="#F6D36B" stroke="#C99A45" stroke-width=".5"></circle><circle cx="16.9" cy="33.0" r=".7" fill="#D9728F"></circle><circle cx="15.6" cy="33.8" r=".7" fill="#D9728F"></circle><circle cx="15.5" cy="32.2" r=".7" fill="#D9728F"></circle></g><g class="bl"><ellipse cx="49.2" cy="30.9" rx="2.3" ry="1.8" transform="rotate(30 49.2 30.9)" fill="#F4A9BC" stroke="#D9728F" stroke-width=".7"></ellipse><ellipse cx="50.4" cy="33.5" rx="2.3" ry="1.8" transform="rotate(102 50.4 33.5)" fill="#F4A9BC" stroke="#D9728F" stroke-width=".7"></ellipse><ellipse cx="48.3" cy="35.5" rx="2.3" ry="1.8" transform="rotate(174 48.3 35.5)" fill="#F4A9BC" stroke="#D9728F" stroke-width=".7"></ellipse><ellipse cx="45.7" cy="34.0" rx="2.3" ry="1.8" transform="rotate(246 45.7 34.0)" fill="#F4A9BC" stroke="#D9728F" stroke-width=".7"></ellipse><ellipse cx="46.3" cy="31.2" rx="2.3" ry="1.8" transform="rotate(318 46.3 31.2)" fill="#F4A9BC" stroke="#D9728F" stroke-width=".7"></ellipse><circle cx="48" cy="33" r="1.2" fill="#F6D36B" stroke="#C99A45" stroke-width=".5"></circle><circle cx="48.9" cy="33.0" r=".7" fill="#D9728F"></circle><circle cx="47.5" cy="33.8" r=".7" fill="#D9728F"></circle><circle cx="47.5" cy="32.2" r=".7" fill="#D9728F"></circle></g></svg></span>Showstopper</span></div>
 <div>
-<div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center">
-<a href="Maker.html" style="display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: #2B1712; font-family: Arvo, Georgia, serif; font-size: 13px"><img src="images/t-lotuspond.webp" alt="" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover">Tathaastu</a>
-<span style="background: #4E5B3A; color: #F3F1E2; border-radius: 999px; padding: 6px 12px; font-family: Arvo, Georgia, serif; font-size: 11px">Olive Green Entrepreneur</span>
+<a href="#maker" style="font-size: 11px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: #71645E; text-decoration: none">Tathaastu</a>
+<h1 style="margin: 12px 0 0; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-size: 46px; font-weight: 400; line-height: 1.08">Blue Lotus Pond</h1>
+<p style="margin: 14px 0 0; font-size: 20px; font-weight: 300">₹2,400 <span style="font-size: 12.5px; color: #71645E">including GST</span></p>
+<p style="margin: 22px 0 0; font-size: 16px; font-weight: 300; line-height: 1.75; color: #71645E">Cobalt wax lotuses floating in a brass urli. A centrepiece that makes the whole room pause.</p>
+<div style="margin-top: 28px; padding: 22px; background: #F4E7E5">
+<p style="margin: 0; font-family: Jost, Futura, system-ui, sans-serif; font-size: 19px; font-weight: 300; color: #71645E">Make it a gift</p>
+<label style="margin-top: 14px; display: flex; gap: 12px; align-items: flex-start; font-size: 14.5px; font-weight: 300; cursor: pointer"><input type="checkbox" checked style="margin: 3px 0 0; width: 16px; height: 16px; accent-color: #752F43">Add a handwritten-style note</label>
+<textarea rows="2" placeholder="Your words…" style="margin-top: 10px; width: 100%; box-sizing: border-box; padding: 12px 14px; border: 1px solid #E8DDD1; background: #FFFDF9; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-style: italic; font-size: 16px; color: #352C2B; resize: vertical"></textarea>
+<label style="margin-top: 12px; display: flex; gap: 12px; align-items: flex-start; font-size: 14.5px; font-weight: 300; cursor: pointer"><input type="checkbox" style="margin: 3px 0 0; width: 16px; height: 16px; accent-color: #752F43">Keepsake box with Mithila art, by Pop Bani <span style="color: #71645E">+ [₹ price]</span></label>
 </div>
-<h1 style="margin: 18px 0 0; font-size: clamp(46px, 5vw, 72px); font-weight: 500; line-height: 1">Blue Lotus Pond</h1>
-<p style="margin: 14px 0 0; display: flex; align-items: baseline; gap: 10px"><span style="font-family: Arvo, Georgia, serif; font-size: 26px; color: #611811">₹2,400</span><span style="font-size: 16px; color: #5C463C">including GST</span></p>
-<p style="margin: 18px 0 0; font-size: 23px; line-height: 1.45; font-style: italic; color: #3A2A24">Cobalt lotuses in brass. Every Tathaastu piece supports war widows and army wives as they rebuild their lives.</p>
-<div style="margin-top: 22px; display: flex; flex-wrap: wrap; gap: 8px; font-family: Arvo, Georgia, serif; font-size: 12px">
-<span style="background: #ECE6CC; border-radius: 999px; padding: 8px 14px">Soy wax, brass urli</span>
-<span style="background: #ECE6CC; border-radius: 999px; padding: 8px 14px">Hand-shaped petal by petal</span>
-<span style="background: #D5E6DE; color: #2C4640; border-radius: 999px; padding: 8px 14px">Dispatched within 4 days</span>
+<div style="margin-top: 24px; display: flex; gap: 12px; align-items: stretch">
+<div style="display: flex; align-items: center; border: 1px solid #E8DDD1; background: #FFFDF9"><button type="button" aria-label="One fewer" style="width: 44px; height: 50px; border: 0; background: transparent; font-size: 18px; cursor: pointer">−</button><span style="width: 28px; text-align: center">1</span><button type="button" aria-label="One more" style="width: 44px; height: 50px; border: 0; background: transparent; font-size: 18px; cursor: pointer">+</button></div>
+<a href="#bag" class="fb" style="flex: 1; display: flex; align-items: center; justify-content: center; height: 52px; background: #752F43; color: #FAF6EF; text-decoration: none; font-size: 11.5px; font-weight: 500; letter-spacing: .24em; text-transform: uppercase">Add to bag</a>
+<button type="button" aria-label="Save to wishlist" style="width: 52px; border: 1px solid #E8DDD1; background: #FFFDF9; color: #752F43; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="none" stroke="currentColor" stroke-width="1.2"></path></svg></button>
 </div>
-
-<div style="margin-top: 30px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center">
-<div style="display: flex; align-items: center; height: 58px; border-radius: 999px; border: 1.5px solid #DCCAB0; background: #FFFDF4">
-<button type="button" aria-label="One fewer" style="width: 52px; height: 52px; border: 0; background: none; font-size: 24px; color: #2B1712; cursor: pointer">−</button>
-<span style="min-width: 28px; text-align: center; font-family: Arvo, Georgia, serif; font-size: 16px">1</span>
-<button type="button" aria-label="One more" style="width: 52px; height: 52px; border: 0; background: none; font-size: 24px; color: #2B1712; cursor: pointer">+</button>
-</div>
-<a href="Checkout.html" style="flex: 1 1 220px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: 58px; border-radius: 999px; background: #611811; color: #FFF8EC; text-decoration: none; font-family: Arvo, Georgia, serif; font-size: 15px">Add to bag, ₹2,400</a>
-<button type="button" aria-label="Save to wishlist" style="width: 58px; height: 58px; border-radius: 50%; border: 1.5px solid #611811; background: #FFFDF4; color: #611811; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="none" stroke="currentColor" stroke-width="1.8"></path></svg></button>
-</div>
-
-<div style="margin-top: 24px; background: #FFFDF4; border-radius: 24px; padding: 20px 22px; border: 1.5px solid #DCCAB0">
-<label for="pin" style="font-family: Arvo, Georgia, serif; font-size: 12px; color: #5C463C">Check delivery</label>
-<div style="margin-top: 8px; display: flex; gap: 10px; flex-wrap: wrap">
-<input id="pin" type="text" inputmode="numeric" maxlength="6" placeholder="Your PIN code" style="flex: 1 1 160px; height: 48px; border-radius: 14px; border: 1.5px solid #DCCAB0; background: #FFFFFF; padding: 0 14px; font-family: 'EB Garamond', Georgia, serif; font-size: 18px; color: #2B1712; box-sizing: border-box; min-width: 0">
-<button type="button" style="height: 48px; padding: 0 20px; border-radius: 14px; border: 1.5px solid #611811; background: #FFFDF4; color: #611811; font-family: Arvo, Georgia, serif; font-size: 13px; cursor: pointer">Check</button>
-</div>
-<p style="margin: 10px 0 0; font-size: 16px; color: #2C4640">Delivers to Delhi. Usually dispatched within 4 days; the courier confirms the date at checkout.</p>
-</div>
-
-<a href="Corporate.html" style="margin-top: 16px; display: flex; align-items: center; gap: 16px; background: #FBE3B2; border-radius: 24px; padding: 14px 18px 14px 14px; text-decoration: none; color: #2B1712">
-<img src="images/popbani-rigid-box.webp" alt="" style="width: 64px; height: 64px; border-radius: 16px; object-fit: cover">
-<span style="flex: 1"><span style="display: block; font-size: 20px">Make it a keepsake</span><span style="font-family: Arvo, Georgia, serif; font-size: 12px; color: #7A5517">Add a Pop Bani keepsake box, [price to confirm]</span></span>
-<span style="font-family: Arvo, Georgia, serif; font-size: 13px; color: #611811">Add →</span>
-</a>
-
-<div style="margin-top: 22px; display: flex; flex-wrap: wrap; gap: 10px 22px; font-family: Arvo, Georgia, serif; font-size: 12px; color: #5C463C">
-<span>Made by hand in India</span><span aria-hidden="true" style="color: #EBA937">✦</span><span>Gift note at checkout</span><span aria-hidden="true" style="color: #EBA937">✦</span><span>Returns: [your policy in one line]</span>
+<div style="margin-top: 18px; display: flex; gap: 10px; align-items: flex-end"><label style="display: block"><span style="display: block; font-size: 10.5px; font-weight: 500; letter-spacing: .24em; text-transform: uppercase; color: #71645E">Check delivery</span><span style="margin-top: 8px; display: flex; align-items: center; border-bottom: 1px solid #352C2B"><input type="text" placeholder="Your PIN code" style="flex: 1; min-width: 0; height: 46px; border: 0; background: transparent; font-family: Jost, Futura, system-ui, sans-serif; font-size: 16px; font-weight: 300; color: #352C2B"></span></label><button type="button" class="ob" style="height: 46px; padding: 0 18px; border: 1px solid #352C2B; background: transparent; font-family: Jost, Futura, system-ui, sans-serif; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; cursor: pointer">Check</button></div>
+<p style="margin: 22px 0 0; display: flex; gap: 10px 20px; flex-wrap: wrap; font-size: 12.5px; font-weight: 300; color: #71645E"><span>✦ Handmade, so each one is unique</span><span>✦ Story card available as a gift option</span></p>
+<div style="margin-top: 30px; border-bottom: 1px solid #E8DDD1"><details class="acc" open style="border-top: 1px solid #E8DDD1"><summary style="min-height: 56px; display: flex; justify-content: space-between; align-items: center; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-size: 19px">The details<span class="pm" aria-hidden="true" style="font-family: Jost, Futura, system-ui, sans-serif; font-size: 20px; color: #B08A55">+</span></summary><div style="padding-bottom: 20px; font-size: 15px; font-weight: 300; line-height: 1.75; color: #71645E">Hand-shaped soy wax lotuses that float in a brass urli. Size, weight and burn time: [to be added by the maker].</div></details><details class="acc"  style="border-top: 1px solid #E8DDD1"><summary style="min-height: 56px; display: flex; justify-content: space-between; align-items: center; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-size: 19px">Made by Tathaastu<span class="pm" aria-hidden="true" style="font-family: Jost, Futura, system-ui, sans-serif; font-size: 20px; color: #B08A55">+</span></summary><div style="padding-bottom: 20px; font-size: 15px; font-weight: 300; line-height: 1.75; color: #71645E">Tathaastu shapes soy wax into lotuses and marigolds, one petal at a time, and sets them in brass. <a href="#maker">Meet Tathaastu</a></div></details><details class="acc"  style="border-top: 1px solid #E8DDD1"><summary style="min-height: 56px; display: flex; justify-content: space-between; align-items: center; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-size: 19px">Care<span class="pm" aria-hidden="true" style="font-family: Jost, Futura, system-ui, sans-serif; font-size: 20px; color: #B08A55">+</span></summary><div style="padding-bottom: 20px; font-size: 15px; font-weight: 300; line-height: 1.75; color: #71645E">[Care instructions from the maker]</div></details><details class="acc"  style="border-top: 1px solid #E8DDD1"><summary style="min-height: 56px; display: flex; justify-content: space-between; align-items: center; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-size: 19px">Delivery and returns<span class="pm" aria-hidden="true" style="font-family: Jost, Futura, system-ui, sans-serif; font-size: 20px; color: #B08A55">+</span></summary><div style="padding-bottom: 20px; font-size: 15px; font-weight: 300; line-height: 1.75; color: #71645E">Dispatched by the maker in [x] days. Free delivery across India over ₹2,500. [Returns policy]</div></details></div>
 </div>
 </div>
-</section>
-
-<section style="max-width: 1280px; margin: 0 auto; padding: 0 32px 80px">
-<div style="background: #D5E6DE; border-radius: 40px; padding: clamp(28px, 5vw, 60px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 40px; align-items: center">
-<div>
-<p style="margin: 0; font-family: Arvo, Georgia, serif; font-size: 13px; color: #2C4640">The story behind it</p>
-<h2 style="margin: 10px 0 0; font-size: clamp(36px, 3.6vw, 52px); font-weight: 500; line-height: 1.05">Petal by petal, <em>in a brass urli.</em></h2>
-</div>
-<div style="font-size: 20px; line-height: 1.6; color: #2C3A36">
-<p style="margin: 0">Soy wax is shaped petal by petal into lotuses, peonies and sunflowers, then set in brass urlis, teapots and sculpted vessels.</p>
-<p style="margin: 14px 0 0">Every Tathaastu piece supports war widows and army wives as they rebuild their lives and become financially independent.</p>
-<a href="Maker.html" style="display: inline-block; margin-top: 16px; font-family: Arvo, Georgia, serif; font-size: 14px; color: #2C4640">Read Tathaastu’s full story →</a>
-</div>
-</div>
-</section>
-
-<section style="max-width: 1280px; margin: 0 auto; padding: 0 32px 40px">
-<h2 style="margin: 0 0 24px; font-size: 40px; font-weight: 500">Pairs beautifully with</h2>
-<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 20px">
-
-<a href="Product.html" style="background: #FFFDF4; border-radius: 24px; overflow: hidden; text-decoration: none; color: #2B1712">
-<span style="display: block; background: #FBE3B2; aspect-ratio: 1"><img src="images/t-marigold.webp" alt="Marigold Urli" style="width: 100%; height: 100%; object-fit: cover; display: block"></span>
-<span style="display: block; padding: 14px 16px 18px"><span style="display: block; font-family: Arvo, Georgia, serif; font-size: 12px; color: #5C463C">Tathaastu</span><span style="display: block; font-size: 21px; line-height: 1.1">Marigold Urli</span><span style="display: block; margin-top: 6px; font-family: Arvo, Georgia, serif; font-size: 14px; color: #611811">₹1,200</span></span>
-</a>
-
-<a href="Product.html" style="background: #FFFDF4; border-radius: 24px; overflow: hidden; text-decoration: none; color: #2B1712">
-<span style="display: block; background: #F7D9CF; aspect-ratio: 1"><img src="images/sv-divya.webp" alt="Svara Divya" style="width: 100%; height: 100%; object-fit: cover; display: block"></span>
-<span style="display: block; padding: 14px 16px 18px"><span style="display: block; font-family: Arvo, Georgia, serif; font-size: 12px; color: #5C463C">Svara</span><span style="display: block; font-size: 21px; line-height: 1.1">Svara Divya</span><span style="display: block; margin-top: 6px; font-family: Arvo, Georgia, serif; font-size: 14px; color: #611811">₹1,800</span></span>
-</a>
-
-<a href="Product.html" style="background: #FFFDF4; border-radius: 24px; overflow: hidden; text-decoration: none; color: #2B1712">
-<span style="display: block; background: #E9DFF0; aspect-ratio: 1"><img src="images/an-range.webp" alt="The Anirveda Ritual Set" style="width: 100%; height: 100%; object-fit: cover; display: block"></span>
-<span style="display: block; padding: 14px 16px 18px"><span style="display: block; font-family: Arvo, Georgia, serif; font-size: 12px; color: #5C463C">Anirveda</span><span style="display: block; font-size: 21px; line-height: 1.1">The Anirveda Ritual Set</span><span style="display: block; margin-top: 6px; font-family: Arvo, Georgia, serif; font-size: 14px; color: #611811">₹3,500</span></span>
-</a>
-
-<a href="Product.html" style="background: #FFFDF4; border-radius: 24px; overflow: hidden; text-decoration: none; color: #2B1712">
-<span style="display: block; background: #FBE3B2; aspect-ratio: 1"><img src="images/mu-box.webp" alt="The Mushhk Essential Box" style="width: 100%; height: 100%; object-fit: cover; display: block"></span>
-<span style="display: block; padding: 14px 16px 18px"><span style="display: block; font-family: Arvo, Georgia, serif; font-size: 12px; color: #5C463C">Mushhk</span><span style="display: block; font-size: 21px; line-height: 1.1">The Mushhk Essential Box</span><span style="display: block; margin-top: 6px; font-family: Arvo, Georgia, serif; font-size: 14px; color: #611811">₹3,200</span></span>
-</a>
-
-</div>
-</section>
-
-
-
-<div style="font-family: 'EB Garamond', Georgia, serif; background: #F6F3DF; padding-top: 40px">
-<footer style="position: relative; background: #611811; color: #F6EBD3">
-<svg viewBox="0 0 1440 40" preserveAspectRatio="none" aria-hidden="true" style="position: absolute; left: 0; top: -39px; width: 100%; height: 40px; display: block"><path d="M0 40 Q 30 0 60 40 Q 90 0 120 40 Q 150 0 180 40 Q 210 0 240 40 Q 270 0 300 40 Q 330 0 360 40 Q 390 0 420 40 Q 450 0 480 40 Q 510 0 540 40 Q 570 0 600 40 Q 630 0 660 40 Q 690 0 720 40 Q 750 0 780 40 Q 810 0 840 40 Q 870 0 900 40 Q 930 0 960 40 Q 990 0 1020 40 Q 1050 0 1080 40 Q 1110 0 1140 40 Q 1170 0 1200 40 Q 1230 0 1260 40 Q 1290 0 1320 40 Q 1350 0 1380 40 Q 1410 0 1440 40 Z" fill="#611811"></path></svg>
-<div style="max-width: 1280px; margin: 0 auto; padding: 72px 32px 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 56px; align-items: center">
-<div>
-<p lang="hi" style="margin: 0; font-family: 'Noto Serif Devanagari', serif; font-size: 26px; color: #EBA937">दिल से दुनिया तक</p>
-<h2 style="margin: 10px 0 0; font-size: clamp(54px, 6vw, 92px); font-weight: 500; line-height: .95; color: #FFF8EC">Come say <em style="color: #EBA937">namaste.</em></h2>
-<p style="margin: 22px 0 0; font-size: 21px; line-height: 1.55; max-width: 26em">New maker stories, first looks at limited drops and invitations to Kala Samāgam. On WhatsApp, one message a week at most.</p>
-<div style="margin-top: 26px; display: flex; flex-wrap: wrap; gap: 12px">
-<a href="#instagram" aria-label="Baksa Tales on Instagram" style="width: 52px; height: 52px; border-radius: 50%; background: rgba(246,235,211,.12); color: #F6EBD3; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="1.7"></rect><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.7"></circle><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor"></circle></svg></a>
-<a href="#whatsapp" aria-label="Message Baksa Tales on WhatsApp" style="width: 52px; height: 52px; border-radius: 50%; background: rgba(246,235,211,.12); color: #F6EBD3; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.3-4A8 8 0 1 1 8.4 19z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path><path d="M9 9.2c.3 2.6 2.4 4.8 5 5.4l1.1-1.3-1.8-.9-.8.7c-.9-.4-1.7-1.2-2.1-2.1l.7-.8-.9-1.8z" fill="currentColor"></path></svg></a>
-<a href="#email" aria-label="Email Baksa Tales" style="width: 52px; height: 52px; border-radius: 50%; background: rgba(246,235,211,.12); color: #F6EBD3; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"></rect><path d="M4 7l8 6 8-6" fill="none" stroke="currentColor" stroke-width="1.7"></path></svg></a>
-</div>
-</div>
-<div style="position: relative; background: #FFFDF4; color: #2B1712; border-radius: 18px; padding: 34px; transform: rotate(-1.5deg); box-shadow: 0 30px 60px -28px rgba(0,0,0,.6); max-width: 560px; width: 100%; justify-self: center; box-sizing: border-box">
-<div style="position: absolute; top: 22px; right: 22px; width: 92px; height: 108px; border: 3px dotted #E14B49; border-radius: 6px; background: #F6F3DF; display: flex; align-items: center; justify-content: center; transform: rotate(4deg)">
-<img src="images/logo-mark.webp" alt="" style="width: 72px; height: auto">
-</div>
-<svg viewBox="0 0 120 120" aria-hidden="true" style="position: absolute; top: 70px; right: 92px; width: 96px; height: 96px; opacity: .55"><circle cx="60" cy="60" r="50" fill="none" stroke="#611811" stroke-width="2"></circle><circle cx="60" cy="60" r="40" fill="none" stroke="#611811" stroke-width="1"></circle><path d="M14 54 Q 60 40 106 54 M14 66 Q 60 52 106 66" fill="none" stroke="#611811" stroke-width="1.5"></path></svg>
-<p style="margin: 0; font-family: Arvo, Georgia, serif; font-size: 12px; color: #611811">Join the Baksa circle</p>
-<p style="margin: 10px 0 0; font-size: 30px; line-height: 1.12; max-width: 9.5em; font-style: italic">Dear friend, we’d love to write to you.</p>
-<div style="margin-top: 26px; border-top: 1.5px solid #DCCAB0; padding-top: 22px">
-<label for="fwa" style="display: block; font-family: Arvo, Georgia, serif; font-size: 12px; color: #5C463C">Your WhatsApp number</label>
-<div style="margin-top: 8px; display: flex; flex-wrap: wrap; gap: 10px">
-<span style="display: flex; align-items: center; padding: 0 14px; height: 52px; border-radius: 14px; background: #ECE6CC; font-family: Arvo, Georgia, serif; font-size: 14px">+91</span>
-<input id="fwa" type="tel" inputmode="numeric" placeholder="98765 43210" style="flex: 1 1 180px; height: 52px; border-radius: 14px; border: 1.5px solid #DCCAB0; background: #FFFFFF; padding: 0 16px; font-family: 'EB Garamond', Georgia, serif; font-size: 19px; color: #2B1712; box-sizing: border-box; min-width: 0">
-<button type="button" style="height: 52px; padding: 0 24px; border-radius: 14px; border: 0; background: #611811; color: #FFF8EC; font-family: Arvo, Georgia, serif; font-size: 14px; cursor: pointer">Count me in</button>
-</div>
-<p style="margin: 12px 0 0; font-size: 15px; color: #5C463C">No spam. Leave any time by replying STOP.</p>
-</div>
-</div>
-</div>
-<div style="max-width: 1280px; margin: 0 auto; padding: 72px 32px 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); gap: 32px; border-bottom: 1px solid rgba(246,235,211,.18)">
-<div><p style="margin: 0 0 14px; font-family: Arvo, Georgia, serif; font-size: 13px; color: #EBA937">Shop</p>
-<div style="display: flex; flex-direction: column; gap: 10px; font-size: 19px"><a href="Finder.html" style="color: #F6EBD3; text-decoration: none">Gift finder</a><a href="Shop.html" style="color: #F6EBD3; text-decoration: none">The BT Edit</a><a href="Maker.html" style="color: #F6EBD3; text-decoration: none">Our makers</a><a href="Shop.html" style="color: #F6EBD3; text-decoration: none">Wishlist</a></div></div>
-<div><p style="margin: 0 0 14px; font-family: Arvo, Georgia, serif; font-size: 13px; color: #EBA937">Gifting</p>
-<div style="display: flex; flex-direction: column; gap: 10px; font-size: 19px"><a href="Corporate.html" style="color: #F6EBD3; text-decoration: none">Corporate gifting</a><a href="Corporate.html" style="color: #F6EBD3; text-decoration: none">Keepsake boxes</a><a href="Corporate.html" style="color: #F6EBD3; text-decoration: none">Wedding gifting</a><a href="Main.html" style="color: #F6EBD3; text-decoration: none">Kala Samāgam</a></div></div>
-<div><p style="margin: 0 0 14px; font-family: Arvo, Georgia, serif; font-size: 13px; color: #EBA937">For makers</p>
-<div style="display: flex; flex-direction: column; gap: 10px; font-size: 19px"><a href="#sell" style="color: #F6EBD3; text-decoration: none">Sell with Baksa</a><a href="Academy.html" style="color: #F6EBD3; text-decoration: none">Makers’ Academy</a><a href="#studio" style="color: #F6EBD3; text-decoration: none">Maker sign in</a></div></div>
-<div><p style="margin: 0 0 14px; font-family: Arvo, Georgia, serif; font-size: 13px; color: #EBA937">Help</p>
-<div style="display: flex; flex-direction: column; gap: 10px; font-size: 19px"><a href="#orders" style="color: #F6EBD3; text-decoration: none">Track my order</a><a href="#returns" style="color: #F6EBD3; text-decoration: none">Shipping and returns</a><a href="#faq" style="color: #F6EBD3; text-decoration: none">Questions</a><a href="#contact" style="color: #F6EBD3; text-decoration: none">Talk to us</a></div></div>
-</div>
-<div style="max-width: 1280px; margin: 0 auto; padding: 36px 32px 44px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px">
-<div style="display: flex; align-items: center; gap: 16px">
-<img src="images/logo-full.webp" alt="Baksa Tales, Dil Se Duniya Tak" style="height: 64px; width: auto; background: #F6F3DF; border-radius: 10px; padding: 8px 12px">
-<p style="margin: 0; font-size: 18px; font-style: italic; max-width: 22em; color: #F6EBD3">Storytelling is the identity. Discovery is the experience. Commerce is the outcome.</p>
-</div>
-<div style="font-family: Arvo, Georgia, serif; font-size: 12px; color: rgba(246,235,211,.75); display: flex; flex-wrap: wrap; gap: 8px 22px">
-<span>UPI, cards, net banking and cash on delivery</span>
-<span>© 2026 Baksa Tales, made with love in Delhi NCR</span>
+</section><section style="margin-top: 136px; background: #E9EDE2"><svg aria-hidden="true" width="100%" height="24" style="display: block; background: #E9EDE2"><defs><pattern id="pst" width="40" height="24" patternUnits="userSpaceOnUse"><path d="M12 18 C 6 16, 6 7, 13 6 C 18 6, 19 12, 15 13 C 13 13.5, 12 12, 13.5 11" fill="none" stroke="#752F43" stroke-width="1"></path><circle cx="28" cy="12" r="1.8" fill="#D18A6E"></circle><circle cx="34" cy="8" r="1" fill="#752F43"></circle><circle cx="34" cy="16" r="1" fill="#752F43"></circle></pattern></defs><path d="M0 2.5 H3000 M0 21.5 H3000" stroke="#752F43" stroke-width=".6" opacity=".55"></path><rect y="0" width="100%" height="24" fill="url(#pst)" opacity=".8"></rect></svg><div style="max-width: 1280px; margin: 0 auto; padding-left: 64px; padding-right: 64px; box-sizing: border-box; padding-top: 72px; padding-bottom: 80px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 48px 96px; align-items: center">
+<div style="position: relative; aspect-ratio: 4 / 3; background: #FFFDF9; display: flex; align-items: center; justify-content: center"><span style="font-size: 10.5px; letter-spacing: .26em; text-transform: uppercase; color: #71645E">Workshop photo, to come</span><span style="position: absolute; right: -20px; top: -24px"><span class="hover-bob" aria-hidden="true" style="display: inline-block; width: 60px; height: 67px; transform: rotate(6deg)"><svg viewBox="0 0 84 94" width="100%" height="100%" aria-hidden="true" style="overflow: visible; display: block"><g class="wa"><path d="M0 3 C -5 -4, -12 1, 0 11 C 12 1, 5 -4, 0 3 Z" transform="translate(36 20) rotate(-28) scale(1.55)" fill="rgba(255,253,249,.88)" stroke="#B08A55" stroke-width="0.58" stroke-linejoin="round"></path><path d="M0 3 C -5 -4, -12 1, 0 11 C 12 1, 5 -4, 0 3 Z" transform="translate(51 18) rotate(22) scale(1.35)" fill="rgba(255,253,249,.88)" stroke="#B08A55" stroke-width="0.67" stroke-linejoin="round"></path></g><g class="wb"><path d="M0 3 C -5 -4, -12 1, 0 11 C 12 1, 5 -4, 0 3 Z" transform="translate(34 27) rotate(-62) scale(1.45)" fill="rgba(255,253,249,.88)" stroke="#B08A55" stroke-width="0.62" stroke-linejoin="round"></path><path d="M0 3 C -5 -4, -12 1, 0 11 C 12 1, 5 -4, 0 3 Z" transform="translate(53 25) rotate(58) scale(1.25)" fill="rgba(255,253,249,.88)" stroke="#B08A55" stroke-width="0.72" stroke-linejoin="round"></path></g><defs><clipPath id="bzpt"><ellipse cx="44" cy="46" rx="25" ry="21"></ellipse></clipPath></defs><ellipse cx="44" cy="46" rx="25" ry="21" fill="#F7D97A"></ellipse><g clip-path="url(#bzpt)"><path d="M22 22 C 17 36, 17 56, 22 70 L29 70 C 24 56, 24 36, 29 22 Z M34 22 C 29 36, 29 56, 34 70 L41 70 C 36 56, 36 36, 41 22 Z" fill="#752F43"></path><ellipse cx="56" cy="36" rx="9" ry="5" fill="#FFF1C2" opacity=".7"></ellipse></g><ellipse cx="44" cy="46" rx="25" ry="21" fill="none" stroke="#4A3B33" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round"></ellipse><path d="M19.5 46 l-6 2 l6 2" fill="#752F43" stroke="#4A3B33" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round"></path><path d="M54 27 C 52 19, 49 14, 46 11 M62 28 C 64 20, 68 15, 72 13" fill="none" stroke="#4A3B33" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round"></path><circle cx="45.5" cy="10.5" r="2.6" fill="#752F43"></circle><circle cx="72.5" cy="12.5" r="2.6" fill="#752F43"></circle><ellipse cx="55" cy="43" rx="2.9" ry="3.8" fill="#2A211D"></ellipse><circle cx="56" cy="41.6" r="1.1" fill="#FFFFFF"></circle><ellipse cx="64" cy="43" rx="2.9" ry="3.8" fill="#2A211D"></ellipse><circle cx="65" cy="41.6" r="1.1" fill="#FFFFFF"></circle><ellipse cx="51.5" cy="50" rx="3.2" ry="2.1" fill="#F2A7A7" opacity=".8"></ellipse><ellipse cx="68" cy="50" rx="3" ry="2" fill="#F2A7A7" opacity=".8"></ellipse><path d="M57.5 50 q2.2 2.4 4.4 0" fill="none" stroke="#2A211D" stroke-width="1.1" stroke-linecap="round"></path><path d="M36 65 l-2 5 M45 67 v5 M54 65 l2 5" fill="none" stroke="#4A3B33" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round"></path><path d="M45 67 v8" stroke="#B08A55" stroke-width=".8"></path><g transform="translate(35 75) rotate(-5 10 7)"><rect width="20" height="15" fill="#FFFDF9" stroke="#B08A55" stroke-width=".9"></rect><path d="M10 0 V15 M0 7 H20" stroke="#752F43" stroke-width="1.2"></path><circle cx="10" cy="7" r="2.2" fill="#752F43"></circle></g></svg></span></span></div>
+<div><p style="margin: 0px 0 0; font-family: Jost, Futura, system-ui, sans-serif; font-size: 11px; font-weight: 500; letter-spacing: .3em; text-transform: uppercase; color: #752F43">The tale behind it</p><p style="margin: 18px 0 0; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-style: italic; font-size: 30px; line-height: 1.3">“[A line from the maker, in their own words.]”</p><p style="margin: 16px 0 0; font-size: 15px; font-weight: 300; color: #71645E">Tathaastu</p><div style="margin-top: 28px"><a href="#maker" class="ul" style="color: #352C2B">Read their story</a></div></div>
+</div><svg aria-hidden="true" width="100%" height="24" style="display: block; background: #E9EDE2"><defs><pattern id="psb" width="40" height="24" patternUnits="userSpaceOnUse"><path d="M12 18 C 6 16, 6 7, 13 6 C 18 6, 19 12, 15 13 C 13 13.5, 12 12, 13.5 11" fill="none" stroke="#752F43" stroke-width="1"></path><circle cx="28" cy="12" r="1.8" fill="#D18A6E"></circle><circle cx="34" cy="8" r="1" fill="#752F43"></circle><circle cx="34" cy="16" r="1" fill="#752F43"></circle></pattern></defs><path d="M0 2.5 H3000 M0 21.5 H3000" stroke="#752F43" stroke-width=".6" opacity=".55"></path><rect y="0" width="100%" height="24" fill="url(#psb)" opacity=".8"></rect></svg></section>
+<section style="max-width: 1280px; margin: 0 auto; padding-left: 64px; padding-right: 64px; box-sizing: border-box; padding-top: 136px; padding-bottom: 168px"><h2 style="margin: 0; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-size: 44px; font-weight: 400">You may also <em style="color: #752F43">love</em></h2>
+<div style="margin-top: 48px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px"><div class="lp" style="position: relative; min-width: 0; text-align: center"><div style="position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: #EEEAF3; border-radius: 4px"><a href="#product" tabindex="-1" aria-hidden="true" style="position: absolute; inset: 0; display: block"><img src="images/t-teapot.webp" alt="" style="width: 100%; height: 100%; object-fit: cover; display: block"></a><span class="tag" aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 0; padding: 14px 64px 14px 18px; background: rgba(255,253,249,.95); font-family: 'Bodoni Moda', Didot, Georgia, serif; font-style: italic; font-size: 14px; color: #752F43; text-align: left; pointer-events: none">read its story</span><button type="button" aria-label="Save Large Teapot Bouquet to wishlist" style="position: absolute; right: 8px; bottom: 6px; width: 44px; height: 44px; border: 0; background: transparent; color: #752F43; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="none" stroke="currentColor" stroke-width="1.2"></path></svg></button></div><a href="#product" style="display: block; text-decoration: none; color: #352C2B"><span style="display: block; margin-top: 22px; font-family: Jost, Futura, system-ui, sans-serif; font-size: 10.5px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: #71645E">Tathaastu</span><span class="pn" style="display: block; margin-top: 9px; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-size: 20px; line-height: 1.3">Large Teapot Bouquet</span><span style="display: block; margin-top: 6px; font-family: Jost, Futura, system-ui, sans-serif; font-size: 14px; font-weight: 300">₹3,200</span></a></div><div class="lp" style="position: relative; min-width: 0; text-align: center"><div style="position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: #FAF1D6; border-radius: 4px"><a href="#product" tabindex="-1" aria-hidden="true" style="position: absolute; inset: 0; display: block"><img src="images/t-lotuspond.webp" alt="" style="width: 100%; height: 100%; object-fit: cover; display: block"></a><span class="tag" aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 0; padding: 14px 64px 14px 18px; background: rgba(255,253,249,.95); font-family: 'Bodoni Moda', Didot, Georgia, serif; font-style: italic; font-size: 14px; color: #752F43; text-align: left; pointer-events: none">read its story</span><button type="button" aria-label="Save Lotus Pond Candle Set to wishlist" style="position: absolute; right: 8px; bottom: 6px; width: 44px; height: 44px; border: 0; background: transparent; color: #752F43; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="none" stroke="currentColor" stroke-width="1.2"></path></svg></button></div><a href="#product" style="display: block; text-decoration: none; color: #352C2B"><span style="display: block; margin-top: 22px; font-family: Jost, Futura, system-ui, sans-serif; font-size: 10.5px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: #71645E">Tathaastu</span><span class="pn" style="display: block; margin-top: 9px; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-size: 20px; line-height: 1.3">Lotus Pond Candle Set</span><span style="display: block; margin-top: 6px; font-family: Jost, Futura, system-ui, sans-serif; font-size: 14px; font-weight: 300">₹2,400</span></a></div><div class="lp" style="position: relative; min-width: 0; text-align: center"><div style="position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: #F4E7E5; border-radius: 4px"><a href="#product" tabindex="-1" aria-hidden="true" style="position: absolute; inset: 0; display: block"><img src="images/t-marigold.webp" alt="" style="width: 100%; height: 100%; object-fit: cover; display: block"></a><span class="tag" aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 0; padding: 14px 64px 14px 18px; background: rgba(255,253,249,.95); font-family: 'Bodoni Moda', Didot, Georgia, serif; font-style: italic; font-size: 14px; color: #752F43; text-align: left; pointer-events: none">read its story</span><button type="button" aria-label="Save Marigold Urli to wishlist" style="position: absolute; right: 8px; bottom: 6px; width: 44px; height: 44px; border: 0; background: transparent; color: #752F43; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="none" stroke="currentColor" stroke-width="1.2"></path></svg></button></div><a href="#product" style="display: block; text-decoration: none; color: #352C2B"><span style="display: block; margin-top: 22px; font-family: Jost, Futura, system-ui, sans-serif; font-size: 10.5px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: #71645E">Tathaastu</span><span class="pn" style="display: block; margin-top: 9px; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-size: 20px; line-height: 1.3">Marigold Urli</span><span style="display: block; margin-top: 6px; font-family: Jost, Futura, system-ui, sans-serif; font-size: 14px; font-weight: 300">₹1,200</span></a></div><div class="lp" style="position: relative; min-width: 0; text-align: center"><div style="position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: #E9EDE2; border-radius: 4px"><a href="#product" tabindex="-1" aria-hidden="true" style="position: absolute; inset: 0; display: block"><img src="images/sv-divya.webp" alt="" style="width: 100%; height: 100%; object-fit: cover; display: block"></a><span class="tag" aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 0; padding: 14px 64px 14px 18px; background: rgba(255,253,249,.95); font-family: 'Bodoni Moda', Didot, Georgia, serif; font-style: italic; font-size: 14px; color: #752F43; text-align: left; pointer-events: none">read its story</span><button type="button" aria-label="Save Svara Divya to wishlist" style="position: absolute; right: 8px; bottom: 6px; width: 44px; height: 44px; border: 0; background: transparent; color: #752F43; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="none" stroke="currentColor" stroke-width="1.2"></path></svg></button></div><a href="#product" style="display: block; text-decoration: none; color: #352C2B"><span style="display: block; margin-top: 22px; font-family: Jost, Futura, system-ui, sans-serif; font-size: 10.5px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: #71645E">Svara</span><span class="pn" style="display: block; margin-top: 9px; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-size: 20px; line-height: 1.3">Svara Divya</span><span style="display: block; margin-top: 6px; font-family: Jost, Futura, system-ui, sans-serif; font-size: 14px; font-weight: 300">₹1,800</span></a></div></div></section><footer style="position: relative; background: #752F43; color: #FAF6EF; overflow: hidden">
+<svg aria-hidden="true" width="100%" height="24" style="display: block; background: #752F43"><defs><pattern id="ft" width="40" height="24" patternUnits="userSpaceOnUse"><path d="M12 18 C 6 16, 6 7, 13 6 C 18 6, 19 12, 15 13 C 13 13.5, 12 12, 13.5 11" fill="none" stroke="#F7D97A" stroke-width="1"></path><circle cx="28" cy="12" r="1.8" fill="#F2B648"></circle><circle cx="34" cy="8" r="1" fill="#F7D97A"></circle><circle cx="34" cy="16" r="1" fill="#F7D97A"></circle></pattern></defs><path d="M0 2.5 H3000 M0 21.5 H3000" stroke="#F7D97A" stroke-width=".6" opacity=".55"></path><rect y="0" width="100%" height="24" fill="url(#ft)" opacity=".8"></rect></svg>
+<svg class="tw" aria-hidden="true" width="9" height="9" viewBox="0 0 24 24" style="position: absolute; left: 8%; top: 18%; animation-delay: 0s; pointer-events: none"><path d="M12 0 C 12.8 8, 16 11.2, 24 12 C 16 12.8, 12.8 16, 12 24 C 11.2 16, 8 12.8, 0 12 C 8 11.2, 11.2 8, 12 0 Z" fill="#F7D97A"></path></svg><svg class="tw" aria-hidden="true" width="6" height="6" viewBox="0 0 24 24" style="position: absolute; left: 22%; top: 9%; animation-delay: 1.4s; pointer-events: none"><path d="M12 0 C 12.8 8, 16 11.2, 24 12 C 16 12.8, 12.8 16, 12 24 C 11.2 16, 8 12.8, 0 12 C 8 11.2, 11.2 8, 12 0 Z" fill="#F7D97A"></path></svg><svg class="tw" aria-hidden="true" width="7" height="7" viewBox="0 0 24 24" style="position: absolute; left: 46%; top: 14%; animation-delay: 2.6s; pointer-events: none"><path d="M12 0 C 12.8 8, 16 11.2, 24 12 C 16 12.8, 12.8 16, 12 24 C 11.2 16, 8 12.8, 0 12 C 8 11.2, 11.2 8, 12 0 Z" fill="#F7D97A"></path></svg><svg class="tw" aria-hidden="true" width="5" height="5" viewBox="0 0 24 24" style="position: absolute; left: 60%; top: 7%; animation-delay: 0.9s; pointer-events: none"><path d="M12 0 C 12.8 8, 16 11.2, 24 12 C 16 12.8, 12.8 16, 12 24 C 11.2 16, 8 12.8, 0 12 C 8 11.2, 11.2 8, 12 0 Z" fill="#F7D97A"></path></svg><svg class="tw" aria-hidden="true" width="8" height="8" viewBox="0 0 24 24" style="position: absolute; left: 92%; top: 34%; animation-delay: 3.2s; pointer-events: none"><path d="M12 0 C 12.8 8, 16 11.2, 24 12 C 16 12.8, 12.8 16, 12 24 C 11.2 16, 8 12.8, 0 12 C 8 11.2, 11.2 8, 12 0 Z" fill="#F7D97A"></path></svg>
+<div aria-hidden="true" style="position: absolute; right: 9%; top: 92px; width: 180px; height: 130px"><span style="position: absolute; left: 0; bottom: 0; width: 104px; height: 100px"><span aria-hidden="true" style="position: absolute; left: 0; bottom: 0; width: 104px; height: 10px; border-radius: 50%; background: rgba(0,0,0,.18); filter: blur(4px)"></span><span class="breathe" style="position: absolute; left: 0; bottom: 4px; width: 104px; height: 94px; transform: rotate(-6deg)"><svg viewBox="0 0 84 76" width="100%" height="100%" aria-hidden="true" style="overflow: visible; display: block"><path d="M0 3 C -5 -4, -12 1, 0 11 C 12 1, 5 -4, 0 3 Z" transform="translate(36 22) rotate(-24) scale(1.5)" fill="rgba(255,253,249,.88)" stroke="#B08A55" stroke-width="0.60" stroke-linejoin="round"></path><path d="M0 3 C -5 -4, -12 1, 0 11 C 12 1, 5 -4, 0 3 Z" transform="translate(50 20) rotate(18) scale(1.3)" fill="rgba(255,253,249,.88)" stroke="#B08A55" stroke-width="0.69" stroke-linejoin="round"></path><defs><clipPath id="bzzz104"><ellipse cx="44" cy="46" rx="25" ry="21"></ellipse></clipPath></defs><ellipse cx="44" cy="46" rx="25" ry="21" fill="#F7D97A"></ellipse><g clip-path="url(#bzzz104)"><path d="M22 22 C 17 36, 17 56, 22 70 L29 70 C 24 56, 24 36, 29 22 Z M34 22 C 29 36, 29 56, 34 70 L41 70 C 36 56, 36 36, 41 22 Z" fill="#752F43"></path><ellipse cx="56" cy="36" rx="9" ry="5" fill="#FFF1C2" opacity=".7"></ellipse></g><ellipse cx="44" cy="46" rx="25" ry="21" fill="none" stroke="#4A3B33" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round"></ellipse><path d="M19.5 46 l-6 2 l6 2" fill="#752F43" stroke="#4A3B33" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round"></path><path d="M54 27 C 52 19, 49 14, 46 11 M62 28 C 64 20, 68 15, 72 13" fill="none" stroke="#4A3B33" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round"></path><circle cx="45.5" cy="10.5" r="2.6" fill="#F7D97A"></circle><circle cx="72.5" cy="12.5" r="2.6" fill="#F7D97A"></circle><path d="M52.5 44 q2.6 2.4 5.2 0 M61.5 44 q2.6 2.4 5.2 0" fill="none" stroke="#2A211D" stroke-width="1.3" stroke-linecap="round"></path><ellipse cx="51.5" cy="50" rx="3.2" ry="2.1" fill="#F2A7A7" opacity=".8"></ellipse><ellipse cx="68" cy="50" rx="3" ry="2" fill="#F2A7A7" opacity=".8"></ellipse><path d="M57.5 50 q2.2 2.4 4.4 0" fill="none" stroke="#2A211D" stroke-width="1.1" stroke-linecap="round"></path><path d="M36 65 l-2 5 M45 67 v5 M54 65 l2 5" fill="none" stroke="#4A3B33" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round"></path></svg></span><span class="zz" style="position: absolute; left: 98px; top: -6px; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-style: italic; font-size: 18px; color: #F7D97A; animation-delay: 0s">z</span><span class="zz" style="position: absolute; left: 114px; top: -30px; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-style: italic; font-size: 24px; color: #F7D97A; animation-delay: 1.1s">z</span><span class="zz" style="position: absolute; left: 132px; top: -60px; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-style: italic; font-size: 32px; color: #F7D97A; animation-delay: 2.2s">Z</span></span></div>
+<div style="max-width: 1280px; margin: 0 auto; padding-left: 64px; padding-right: 64px; box-sizing: border-box; padding-top: 88px; padding-bottom: 40px; position: relative">
+<p style="margin: 0; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-size: 34px; letter-spacing: .32em; line-height: 1">BAKSA TALES</p>
+<p lang="hi" style="margin: 16px 0 0; font-family: 'Noto Serif Devanagari', serif; font-size: 19px; color: #F7D97A">दिल से दुनिया तक</p>
+<p style="margin: 4px 0 0; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-style: italic; font-size: 15px; color: rgba(250,246,239,.75)">Dil Se Duniya Tak.</p><p style="margin: 26px 0 0; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-size: 22px; color: #FAF6EF">Beautiful things. Remarkable makers. Stories worth sharing.</p><p style="margin: 8px 0 0; max-width: 34em; font-size: 14px; font-weight: 300; line-height: 1.7; color: rgba(250,246,239,.75)">A curated world of handmade discoveries, thoughtful gifting and independent Indian makers.</p>
+<div style="margin-top: 72px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px; padding-top: 52px; border-top: 1px solid rgba(250,246,239,.2)"><div style="display: flex; flex-direction: column; gap: 36px"><div><p style="margin: 0 0 16px; font-size: 10.5px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: #F7D97A">Shopping</p><div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px; font-weight: 300"><a class="fl" href="#f">The Baksa Edit</a><a class="fl" href="#f">Wishlist</a></div></div><div><p style="margin: 0 0 16px; font-size: 10.5px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: #F7D97A">Gifting</p><div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px; font-weight: 300"><a class="fl" href="#f">Gifting Studio</a><a class="fl" href="#f">Corporate gifting</a><a class="fl" href="#f">Keepsake boxes</a></div></div></div><div style="display: flex; flex-direction: column; gap: 36px"><div><p style="margin: 0 0 16px; font-size: 10.5px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: #F7D97A">Makers</p><div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px; font-weight: 300"><a class="fl" href="#f">Meet the makers</a><a class="fl" href="#f">Sell with Baksa</a><a class="fl" href="#f">Maker sign in</a></div></div><div><p style="margin: 0 0 16px; font-size: 10.5px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: #F7D97A">The Buzz Lab</p><div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px; font-weight: 300"><a class="fl" href="#f">The Buzz Lab</a><a class="fl" href="#f">Workshops</a></div></div></div><div style="display: flex; flex-direction: column; gap: 36px"><div><p style="margin: 0 0 16px; font-size: 10.5px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: #F7D97A">Journal</p><div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px; font-weight: 300"><a class="fl" href="#f">The Journal</a><a class="fl" href="#f">Dil Se Duniya Tak conversations</a></div></div><div><p style="margin: 0 0 16px; font-size: 10.5px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: #F7D97A">About</p><div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px; font-weight: 300"><a class="fl" href="#f">About Baksa Tales</a><a class="fl" href="#f">Kala Samāgam</a></div></div></div><div style="display: flex; flex-direction: column; gap: 36px"><div><p style="margin: 0 0 16px; font-size: 10.5px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: #F7D97A">Help</p><div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px; font-weight: 300"><a class="fl" href="#f">Track an order</a><a class="fl" href="#f">Shipping and returns</a><a class="fl" href="#f">Contact us</a></div></div><div><p style="margin: 0 0 16px; font-size: 10.5px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: #F7D97A">Policies</p><div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px; font-weight: 300"><a class="fl" href="#f">Privacy</a><a class="fl" href="#f">Terms</a><a class="fl" href="#f">Returns policy</a></div></div></div></div>
+<div style="margin-top: 64px; padding-top: 24px; border-top: 1px solid rgba(250,246,239,.2); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; font-size: 12px; font-weight: 300; color: rgba(250,246,239,.66)">
+<span>© 2026 Baksa Tales · Made in Delhi NCR</span>
+<span style="display: flex; gap: 28px"><a class="fl" href="#instagram">Instagram</a><a class="fl" href="#whatsapp">WhatsApp</a></span>
 </div>
 </div>
 </footer>
 </div>
-
-</div>
-
+<script>
+(function () {
+  var moods = ['ex', 'he', 'sh', 'so', 'th'], note = 0;
+  function show(name, on) { document.querySelectorAll('[data-if="' + name + '"]').forEach(function (e) { e.hidden = !on; }); }
+  function setMood(k) {
+    document.querySelectorAll('[data-pick]').forEach(function (b) { var on = b.dataset.pick === k; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+    moods.forEach(function (m) { show('is_' + m, m === k); });
+    show('is_none', false);
+  }
+  function openBox() {
+    var was = !!document.querySelector('.bstage.open');
+    document.querySelectorAll('.box2, .hstage, .b3, .bstage').forEach(function (b) { if (!b.closest('[data-static]')) b.classList.add('open'); });
+    var mo = document.getElementById('moods'); if (mo) mo.classList.add('arrived');
+    if (document.querySelector('.bstage')) setTimeout(function () { if (mo) mo.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 400);
+    document.querySelectorAll('.cmp2, .b3-tag').forEach(function (b) { b.tabIndex = 0; });
+    show('closed', false); show('opened', true);
+  }
+  document.querySelectorAll('[data-open]').forEach(function (b) { b.addEventListener('click', openBox); });
+  document.querySelectorAll('[data-pick]').forEach(function (b) { b.addEventListener('click', function () { if (!b.classList.contains('arch')) openBox(); setMood(b.dataset.pick); }); });
+  document.querySelectorAll('[data-chirp]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      note = note >= 3 ? 1 : note + 1;
+      [0, 1, 2].forEach(function (i) { show('n' + i, note === i + 1); });
+      document.querySelectorAll('[data-psst]').forEach(function (p) { p.textContent = ''; });
+    });
+  });
+  document.querySelectorAll('.chip[aria-pressed]').forEach(function (c) {
+    c.addEventListener('click', function () { c.setAttribute('aria-pressed', c.getAttribute('aria-pressed') === 'true' ? 'false' : 'true'); });
+  });
+})();
+</script>
 </body>
 </html>

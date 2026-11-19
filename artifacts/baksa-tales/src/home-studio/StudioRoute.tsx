@@ -75,5 +75,5 @@ export default function StudioRoute({ localOnly = false, preview }: {
   } else {
     content = <SiteStudio verifiedUser={verified} aiAvailable={!!config?.ai} preview={preview} />;
   }
-  return <div className="homepage-studio"><div style={{ padding: '18px 24px' }}><Link href="/">← Back to Baksa Tales</Link></div>{content}</div>;
+  return <div className="homepage-studio">{content}</div>;
 }

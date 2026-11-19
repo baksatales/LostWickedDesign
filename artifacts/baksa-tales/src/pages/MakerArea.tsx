@@ -222,7 +222,20 @@ function MakerBrandCard({brandDraft,setBrandDraft,saveBrand,queryClient,maker}:{
 }
 function MakerEditorialDraft({verifiedUser,aiAvailable}:{verifiedUser:boolean;aiAvailable:boolean}){
   const [facts,setFacts]=useState('');
-  return <div className="bk-panel"><span className="bk-eyebrow">Sahayak · human review required</span><h2>Write from facts you know.</h2><p>Dictate or type verified details. Sahayak can rewrite the text, but suggestions are unsaved and never publish by themselves.</p><label>Verified product or craft facts<textarea className="bk-input" minLength={20} maxLength={8000} value={facts} onChange={e=>setFacts(e.target.value)} placeholder="Materials, dimensions, listed features, and confirmed background only."/></label><SpeechDictationButton value={facts} onChange={setFacts}/><SahayakWriter text={facts} onUse={setFacts} verifiedUser={verifiedUser} aiAvailable={aiAvailable} sourceLabel="verified facts"/></div>;
+  return (
+    <div className="bk-panel">
+      <span className="bk-eyebrow">Sahayak · human review required</span>
+      <h2>Write from facts you know.</h2>
+      <p>Dictate or type verified details. Sahayak can rewrite the text, but suggestions are unsaved and never publish by themselves.</p>
+      <div className="bk-form">
+        <label className="wide">Verified product or craft facts
+          <textarea className="bk-input" minLength={20} maxLength={8000} value={facts} onChange={e=>setFacts(e.target.value)} placeholder="Materials, dimensions, listed features, and confirmed background only."/>
+        </label>
+        <SpeechDictationButton value={facts} onChange={setFacts}/>
+      </div>
+      <SahayakWriter text={facts} onUse={setFacts} verifiedUser={verifiedUser} aiAvailable={aiAvailable} sourceLabel="verified facts"/>
+    </div>
+  );
 }
 function MarginCalculator(){
   const [price,setPrice]=useState(2500);const [materials,setMaterials]=useState(500);const [labour,setLabour]=useState(750);const [fee,setFee]=useState(12);

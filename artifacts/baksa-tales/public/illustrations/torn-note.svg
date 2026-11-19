@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 230 170" width="230" height="170" role="img" aria-label="Torn paper note with a heart"><title>Torn paper note with a heart</title><style>.steam path{stroke-dasharray:4 4;animation:steam 3s linear infinite}@keyframes steam{to{stroke-dashoffset:-16}}@media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}</style>
+<path d="M10 22 L40 14 L62 22 L90 10 L118 18 L150 8 L176 18 L210 12 L222 40 L214 70 L224 104 L212 138 L220 160 L186 154 L150 164 L118 154 L84 164 L52 154 L20 162 L14 130 L4 96 L14 64 L4 40 Z" fill="#F4E4C4" stroke="#D9BF8C" stroke-width="1"></path>
+<path d="M30 40 L200 34 M28 70 L206 66 M30 100 L204 96" stroke="#EAD3A6" stroke-width="1"></path>
+<path d="M168 150 C 156 140, 148 132, 150 124 C 152 117, 162 116, 168 124 C 174 116, 184 117, 186 124 C 188 132, 180 140, 168 150 Z" fill="none" stroke="#9A3A55" stroke-width="1.5" stroke-linejoin="round"></path></svg>

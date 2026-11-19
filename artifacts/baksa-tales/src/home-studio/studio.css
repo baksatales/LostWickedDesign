@@ -1,4 +1,4 @@
-.homepage-studio { background:#FBF4EA; color:#2B1712; font:18px 'EB Garamond',Georgia,serif; min-height:100vh; }
+.homepage-studio { background:#FBF4EA; color:#352C2B; font:18px 'Bodoni Moda',Georgia,serif; min-height:100vh; }
 .homepage-studio .studio-shell {max-width:1700px;margin:auto;padding:28px 24px 64px}
 .homepage-studio h1 {font-size:44px;font-weight:500;margin:8px 0}
 .homepage-studio h2 {font-size:30px;font-weight:500;margin:8px 0 16px}
@@ -9,23 +9,23 @@
 .homepage-studio .studio-layout {display:grid;grid-template-columns:165px minmax(0,1fr);gap:22px;margin-top:24px}
 .homepage-studio .studio-workspace {display:grid;grid-template-columns:minmax(280px,420px) minmax(0,1fr);gap:24px;min-width:0}
 .homepage-studio .studio-tabs {display:flex;flex-direction:column;gap:7px}
-.homepage-studio button,.homepage-studio .bk-btn {font:12px Arvo,Georgia,serif;border:1px solid #DCCAB0;background:#FFFDF4;color:#611811;padding:12px 17px;border-radius:24px;cursor:pointer;min-height:44px}
+.homepage-studio button,.homepage-studio .bk-btn {font:12px Arvo,Georgia,serif;border:1px solid #E8DDD1;background:#FFFDF9;color:#752F43;padding:12px 17px;border-radius:24px;cursor:pointer;min-height:44px}
 .homepage-studio button:disabled {opacity:.5;cursor:not-allowed}
-.homepage-studio .studio-tabs .active,.homepage-studio .bk-btn:not(.secondary) {background:#611811;color:#FFFDF4}
+.homepage-studio .studio-tabs .active,.homepage-studio .bk-btn:not(.secondary) {background:#752F43;color:#FFFDF9}
 .homepage-studio .studio-mini {padding:9px;display:inline-flex;align-items:center}
-.homepage-studio .studio-card,.homepage-studio .studio-subcard {padding:20px;border:1px solid #DCCAB0;background:#FFFDF4;border-radius:18px;margin:0 0 18px}
+.homepage-studio .studio-card,.homepage-studio .studio-subcard {padding:20px;border:1px solid #E8DDD1;background:#FFFDF9;border-radius:18px;margin:0 0 18px}
 .homepage-studio .studio-subcard {background:#FBF4EA;margin-top:16px;padding:15px}
 .homepage-studio summary {cursor:pointer;font-family:Arvo,Georgia,serif;font-size:13px;line-height:1.6}
 .homepage-studio .studio-field {display:grid;gap:8px;margin:17px 0;font-size:16px}
-.homepage-studio input,.homepage-studio textarea,.homepage-studio select {box-sizing:border-box;width:100%;padding:12px;border:1px solid #DCCAB0;border-radius:10px;background:#FFFDF4;color:#2B1712;font:17px 'EB Garamond',Georgia,serif}
+.homepage-studio input,.homepage-studio textarea,.homepage-studio select {box-sizing:border-box;width:100%;padding:12px;border:1px solid #E8DDD1;border-radius:10px;background:#FFFDF9;color:#352C2B;font:17px 'Bodoni Moda',Georgia,serif}
 .homepage-studio .studio-check {display:flex;align-items:center;gap:9px;margin:12px 0}
 .homepage-studio input[type=checkbox] {width:auto}
 .homepage-studio .studio-preview {min-width:0;position:sticky;top:12px;align-self:start}
-.homepage-studio .studio-preview-frame {height:800px;overflow:auto;border:1px solid #DCCAB0;margin-top:14px;border-radius:16px;background:#FBF4EA;container-type:inline-size}
+.homepage-studio .studio-preview-frame {height:800px;overflow:auto;border:1px solid #E8DDD1;margin-top:14px;border-radius:16px;background:#FBF4EA;container-type:inline-size}
 .homepage-studio .studio-preview-frame.mobile {width:390px;max-width:100%;margin-inline:auto}
 .homepage-studio .studio-preview-tools {display:flex;gap:8px}
-.homepage-studio .studio-notice,.homepage-studio .studio-local-note {padding:15px 20px;border:1px solid #DCCAB0;border-radius:14px;background:#FBE3B2;margin-block:16px}
-.homepage-studio .studio-help,.homepage-studio .studio-preview-caption,.homepage-studio small,.homepage-studio .studio-sidefoot {font-size:14px;color:#5C463C;line-height:1.5}
+.homepage-studio .studio-notice,.homepage-studio .studio-local-note {padding:15px 20px;border:1px solid #E8DDD1;border-radius:14px;background:#FBE3B2;margin-block:16px}
+.homepage-studio .studio-help,.homepage-studio .studio-preview-caption,.homepage-studio small,.homepage-studio .studio-sidefoot {font-size:14px;color:#71645E;line-height:1.5}
 .homepage-studio .studio-sidefoot {padding-block:24px}
 .homepage-studio .studio-home-thumb {width:100%;max-height:150px;object-fit:contain}
 .homepage-studio .studio-section-row,.homepage-studio .studio-story-picker {display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
@@ -34,7 +34,7 @@
 .homepage-studio .studio-order {font-size:12px}
 .homepage-studio .studio-advanced {width:100%;min-height:400px;font-family:monospace}
 .homepage-studio .studio-entry {max-width:580px;margin:auto;padding:60px 24px}
-.homepage-studio .studio-entry a {color:#611811}
+.homepage-studio .studio-entry a {color:#752F43}
 .homepage-studio .studio-entry form {display:grid;gap:14px}
 @media(max-width:1100px) {.homepage-studio .studio-workspace{grid-template-columns:1fr}.homepage-studio .studio-preview{position:static}}
 @media(max-width:720px) {.homepage-studio .studio-shell{padding:20px 12px}.homepage-studio .studio-layout{grid-template-columns:1fr}.homepage-studio .studio-tabs{flex-direction:row;overflow:auto}.homepage-studio .studio-tabs button{flex-shrink:0}}

@@ -44,14 +44,14 @@ export function fieldError(anchor: Element | null, msg: string | null | undefine
     p = document.createElement('p');
     p.setAttribute('data-testid', id);
     p.setAttribute('role', 'alert');
-    p.setAttribute('style', "margin: 6px 0 0; font-family: 'EB Garamond', Georgia, serif; font-size: 16px; color: #C23A36");
+    p.setAttribute('style', "margin: 6px 0 0; font-family: 'Bodoni Moda', Georgia, serif; font-size: 16px; color: #752F43");
     anchor.insertAdjacentElement('afterend', p);
   }
   p.textContent = msg;
 }
 
-export const ARVO = 'Arvo, Georgia, serif';
-export const GARAMOND = "'EB Garamond', Georgia, serif";
-export const BTN_PRIMARY = `height: 50px; padding: 0 22px; border-radius: 999px; border: 0; background: #611811; color: #FFF8EC; font-family: ${ARVO}; font-size: 13px; cursor: pointer`;
-export const BTN_OUTLINE = `height: 50px; padding: 0 22px; border-radius: 999px; border: 1.5px solid #611811; background: transparent; color: #611811; font-family: ${ARVO}; font-size: 13px; cursor: pointer`;
+export const ARVO = 'Jost, Georgia, serif';
+export const GARAMOND = "'Bodoni Moda', Georgia, serif";
+export const BTN_PRIMARY = `height: 50px; padding: 0 22px; border-radius: 999px; border: 0; background: #752F43; color: #FAF6EF; font-family: ${ARVO}; font-size: 13px; cursor: pointer`;
+export const BTN_OUTLINE = `height: 50px; padding: 0 22px; border-radius: 999px; border: 1.5px solid #752F43; background: transparent; color: #752F43; font-family: ${ARVO}; font-size: 13px; cursor: pointer`;
 export const CHIP = (bg: string, fg: string) => `margin-left: 6px; background: ${bg}; color: ${fg}; border-radius: 999px; padding: 4px 10px; font-family: ${ARVO}; font-size: 11px`;
