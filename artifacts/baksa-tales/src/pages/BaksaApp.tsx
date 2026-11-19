@@ -291,7 +291,7 @@ const validReturnPath=(p:string|null)=>p&&(p.startsWith('/maker')||p.startsWith(
 type SignInRole='buyer'|'maker'|'admin';
 function SignInForm({role,runtime,client,user,workspace,returnTo}:{role:SignInRole;runtime?:Runtime;client:SupabaseClient|null;user:User|null;workspace:Workspace|undefined;returnTo:string}){
   const search=useSearch();
-  const roleDestination=workspace?.roles.includes('maker')?'/maker/sahayak':workspace?.roles.includes('admin')?'/admin':'/account';
+  const roleDestination=workspace?.roles.includes('admin')?'/admin':workspace?.roles.includes('maker')?'/maker/sahayak':'/account';
   const rawReturn=validReturnPath(new URLSearchParams(search).get('returnTo'));
   // /sell and /account are not role-specific destinations — always defer to roleDestination when workspace loads
   const requestedReturn=(rawReturn==='/sell'||rawReturn==='/account')?null:rawReturn;
